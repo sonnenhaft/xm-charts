@@ -3,7 +3,7 @@ import throttle from 'throttle-debounce/throttle'
 
 import styles from './TimelineChartWrapper.scss'
 import TimelineChart from '../TimelineChart/TimelineChart'
-import SquareButtons from './SquareButtons/SquareButtons'
+import RightBar from './RightBar/RightBar'
 import ControlPanel from './ControlPanel/ControlPanel'
 import GlobalKeyDetector from './GlobalKeyDetector'
 
@@ -56,12 +56,12 @@ export default class TimelineChartWrapper extends Component {
     this.setState({currentTime})
   }
 
-  onToggled = () => this.setState({isToggled: !this.state.isToggled})
+  onToggledChanged = isToggled => this.setState({isToggled})
   onZoomed = ({zoomFactor, zoomPosition}) => {
     this.setState({zoomPosition, zoomFactor: Math.min(this.CHROME_MAX_ZOOM, Math.max(zoomFactor, 1))})
   }
   onZoomChanged = zoomFactor => {
-    const {zoomPosition} = this.state
+    const zoomPosition = zoomFactor === 1 ? 0 : this.state.zoomPosition
     this.onZoomed({zoomFactor, zoomPosition})
   }
   onTimeChanged = currentTime => {
@@ -109,7 +109,6 @@ export default class TimelineChartWrapper extends Component {
     this.setState({currentTime: selectedEvent.date, selectedEvent})
   }
 
-  onReset = () => this.setState({zoomFactor: 1, zoomPosition: 0})
   onNext = () => this.jumpToOffset(1)
   onPrev = () => this.jumpToOffset(-1)
   onLongNext = () => this.longJump(true)
@@ -177,7 +176,7 @@ export default class TimelineChartWrapper extends Component {
       currentTime, selectedEvent, currentSpeed,
     } = this.state
     const {
-      onTimeChanged, onToggled, onZoomed, onKeyDown, onZoomChanged, onReset,
+      onTimeChanged, onToggledChanged, onZoomed, onKeyDown, onZoomChanged,
       onPrev, onNext, onLongPrev, onLongNext, stopPlaying, startPlaying, onSpeedUpdated, onResetPosition,
     } = this
 
@@ -187,7 +186,7 @@ export default class TimelineChartWrapper extends Component {
       events, chartData, isPlaying,
     }
     const callbacks = {
-      onTimeChanged, onToggled, onZoomed, onKeyDown, onZoomChanged, onReset,
+      onTimeChanged, onToggledChanged, onZoomed, onKeyDown, onZoomChanged,
       onPrev, onNext, onLongPrev, onLongNext, stopPlaying, startPlaying, onSpeedUpdated, onResetPosition,
     }
     const params = {...state, ...callbacks}
@@ -195,13 +194,11 @@ export default class TimelineChartWrapper extends Component {
     return <div>
       <div style={{display: 'flex', justifyContent: 'space-between'}}>
         <NetworkGrid {...{currentTime, chartData}}>Marketing</NetworkGrid>
-        {/*<NetworkGrid {...{currentTime, chartData}}>Testing</NetworkGrid>*/}
-        {/*<NetworkGrid {...{currentTime, chartData}} >Production</NetworkGrid>*/}
       </div>
       <GlobalKeyDetector className={styles['timeline-chart-wrapper']} onKeyDown={onKeyDown}>
         <ControlPanel {...params} />
         <TimelineChart {...params} />
-        <SquareButtons {...params} />
+        <RightBar {...{zoomFactor, onZoomChanged, isToggled, onToggledChanged}} />
       </GlobalKeyDetector>
     </div>
   }

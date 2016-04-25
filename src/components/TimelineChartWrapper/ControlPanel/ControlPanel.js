@@ -11,7 +11,7 @@ import circleButtonSvgIcon from '../../../assets/icons/circle-button.svg'
 import ShareButtons from '../../common/ShareButtons/ShareButtons'
 import styles from './ControlPanel.scss'
 import CircleIndicator from './CircleIndicator/CircleIndicator'
-import {Button as SquareButton} from './../SquareButtons/SquareButtons'
+import {Button as SquareButton} from '../RightBar/RightBar'
 
 const Icon = ({children: __html}) => {
   return <span className={styles['icon']} dangerouslySetInnerHTML={{__html}} />
