@@ -1,11 +1,14 @@
 # Frontend readme
 
+## Demo
+
+http://xm-charts.bitballoon.com pwd: 44444
+
 ## Prerequisites
 
 * node >= 7
 * [yarn](https://yarnpkg.com/en/docs/install) installed globaly
 * ports 8087 available on your machine
-
 
 ### Frontend server (dev)
 
