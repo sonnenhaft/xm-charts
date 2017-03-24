@@ -2,7 +2,7 @@
 
 ## Demo
 
-http://xm-charts.bitballoon.com pwd: 44444
+http://xm-charts.bitballoon.com pwd: 444444
 
 ## Prerequisites
 
