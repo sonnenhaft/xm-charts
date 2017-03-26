@@ -1,0 +1,83 @@
+svg.timeline-chart {
+  width: 100%;
+  display: block;
+  font-family: Arial;
+
+  &.toggled {
+    .blue-line,
+    .red-line {
+      width: 2px;
+      height: 7px;
+      dy: -2px;
+    }
+  }
+
+  text {
+    fill: white;
+  }
+
+  .white-horizontal-line {
+    height: 1px;
+  }
+
+  .blue-line, .red-line {
+    width: 2px;
+    height: 10px;
+  }
+  .red-bulk-line {
+    dx: -1px;
+    width: 2px;
+  }
+
+  .red-bulk-circle {
+    r: 9px;
+  }
+
+  .blue-line {
+    fill: #3646D7;
+  }
+  .black-background {
+    fill: #141414
+  }
+
+  .red-bulk-circle,
+  .red-bulk-line,
+  .red-line {
+    fill: #EB001E;
+  }
+
+  .axis {
+    path, line {
+      stroke: white;
+      opacity: 0.5;
+    }
+    &.axis--y .tick {
+      opacity: 0.3;
+      &:hover {
+        opacity: 1
+      }
+    }
+
+    &.axis--x line,
+    &.axis--x path,
+    &.axis--y path {
+      display: none
+    }
+  }
+
+  .circle-text {
+    text-anchor: middle;
+    font-size: 12px;
+  }
+
+  .zoom {
+    cursor: move;
+    fill: none;
+    pointer-events: all;
+  }
+
+  .brush-circle:hover {
+    cursor: pointer;
+    opacity: 0.7
+  }
+}

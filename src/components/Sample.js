@@ -4,8 +4,13 @@ import TimelineChartWrapper from './TimelineChartWrapper/TimelineChartWrapper'
 
 const Sample = () => (
   <div>
-    <div styleName="root">sample</div>
+    {/*<div styleName="root">sample</div>*/}
     <TimelineChartWrapper/>
+    <style>{`
+      body {
+        margin: 0;
+      }`}
+    </style>
   </div>
 )
 

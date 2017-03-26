@@ -1,56 +1,55 @@
-import React, { Component } from 'react'
-import TimelineChart from '../TimelineChart/TimelineChart'
-/* eslint-disable */
-import styles from 'raw-loader!./TimelineChartWrapper.plain-css'
-/* eslint-enable */
+import * as d3 from 'd3'
+import React, {Component} from 'react'
 
-// const d3 = {scaleLinear, select, tsvParse, max, axisBottom, axisLeft, zoom}
+import styles from './TimelineChartWrapper.scss'
+import dataTsv from 'raw-loader!./data.tsv'
+
+import TimelineChart from '../TimelineChart/TimelineChart'
 
 export default class TimelineChartWrapper extends Component {
   constructor(props) {
     super(props)
-    this.state = { toggled: false }
+    this.state = {isToggled: false, chartData: []}
   }
 
-  toggle =()=>{
-    this.setState({toggled: !this.state.toggled})
+  componentDidMount() {
+    const chartData = d3.tsvParse(dataTsv, ({date, type}) => ({data: (date - 0), type}))
+    this.setState({chartData})
+    this.interval = setInterval(() => {
+      const chartData = this.state.chartData
+      const data = chartData[chartData.length - 1].data + Math.random()
+      chartData.push({data, type: 'good'})
+      this.setState({chartData})
+    }, 5000)
   }
+
+  componentWillUnmount() {
+    clearInterval(this.interval)
+  }
+
+  toggleChart = ()=> this.setState({isToggled: !this.state.isToggled})
+  resetChartData = ()=> this.setState({chartData: this.state.chartData.slice(0, 4)})
 
   render() {
-    const isToggled = this.state.toggled
-    return <div>
-      <div className={'timeline-row chart-block'}>
-        <div className="chart-area">
-          <TimelineChart toggled={isToggled}/>
-        </div>
-        <div className="button-area">
-          <button className="toggle-button" onClick={this.toggle}>
-            <svg width="23" height="20">
-              <g transform={this.state.toggled ? 'rotate(180, 12, 10)' : ''}>
-                <rect width="2" height="18" fill="white" transform="translate(12, 0)"/>
-                <rect width="2" height="12" fill="white" transform="translate(12, 0) rotate(55, 0, 0)"/>
-                <rect width="2" height="15" fill="white" transform="translate(11, 0) rotate(-55, 0, 0)"/>
-              </g>
-            </svg>
-          </button>
-          {!isToggled && <button className="toggle-button">Toggle button</button>}
-        </div>
+    const {isToggled, chartData} = this.state
+    return <div className={styles['timeline-row']}>
+      <div className={styles['button-area']}></div>
+      <div className={styles['chart-area']}>
+        <TimelineChart {...{isToggled, chartData}}/>
       </div>
-      {!isToggled && <div className="timeline-row control-row">
-        <div className="chart-area">
-
-        </div>
-        <div className="button-area">
-          <button className="toggle-button" onClick={this.toggle}>
-            <svg width="23" height="20">
-              <rect width="2" height="18" fill="white" transform="translate(12, 0)"/>
-              <rect width="2" height="12" fill="white" transform="translate(12, 0) rotate(55, 0, 0)"/>
-              <rect width="2" height="15" fill="white" transform="translate(11, 0) rotate(-55, 0, 0)"/>
-            </svg>
-          </button>
-        </div>
-      </div>}
-      <style>{styles}</style>
+      <div className={styles['button-area']}>
+        <button className={styles['toggle-button']} onClick={this.toggleChart}>
+          <svg width="23" height="20">
+            <rect width="2" height="18" fill="white" transform="translate(12, 0)"/>
+            <rect width="2" height="12" fill="white" transform="translate(12, 0) rotate(55, 0, 0)"/>
+            <rect width="2" height="15" fill="white" transform="translate(11, 0) rotate(-55, 0, 0)"/>
+          </svg>
+        </button>
+      </div>
+      {!isToggled &&
+      <button className={styles['reset-button']} onClick={this.resetChartData}>
+        Reset
+      </button>}
     </div>
   }
 }
