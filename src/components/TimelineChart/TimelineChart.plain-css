@@ -1,51 +1,76 @@
 text {
-    fill: white;
+  fill: white;
 }
+
 path, line {
-    stroke: white;
+  stroke: white;
 }
 
-.white-rect {
-    height: 1px;
-}
-.bar, .red-bar {
-    width: 1px;
-    height: 10px;
-}
-.red-bar-bulk {
-    dx: -1px;
-    width: 2px;
-}
-.red-circle {
-    r: 10px;
-}
-.bar {
-    fill: #3646D7;
-}
-.red-bar, .red-circle, .red-bar-bulk {
-    fill: #EB001E;
+.white-horizontal-line {
+  height: 1px;
 }
 
-.bar:hover {
-    fill: brown;
-    cursor: pointer;
+.blue-line, .red-line {
+  width: 2px;
+  height: 10px;
+}
+svg.toggled .blue-line,
+svg.toggled .red-line {
+  width: 2px;
+  height: 7px;
+  dy: -2px;
+}
+
+.red-bulk-line {
+  dx: -1px;
+  width: 2px;
+}
+
+.red-bulk-circle {
+  r: 9px;
+}
+
+.blue-line {
+  fill: #3646D7;
+}
+.black-background {
+  fill: #141414
+}
+
+.red-line, .red-bulk-circle, .red-bulk-line {
+  fill: #EB001E;
 }
 
 .axis--x path {
-    display: none;
+  display: none;
 }
+
 .axis--y .tick {
-    opacity: 0.3
+  opacity: 0.3
 }
 
 .axis--x line,
 .axis--y path {
-    display: none
+  display: none
 }
+
 .axis--y .tick:hover {
-    opacity: 1
+  opacity: 1
 }
-svg {
-    width: 100%;
-    display: block;
+
+svg.timeline-chart {
+  width: 100%;
+  display: block;
+  font-family: Arial;
+}
+
+.circle-text {
+  text-anchor: middle;
+  font-size: 12px;
+}
+
+.zoom {
+  cursor: move;
+  fill: none;
+  pointer-events: all;
 }

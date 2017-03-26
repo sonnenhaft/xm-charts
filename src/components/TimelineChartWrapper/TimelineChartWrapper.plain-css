@@ -1,0 +1,41 @@
+.timeline-row {
+  display: flex;
+}
+
+.chart-area {
+  width: 100%
+}
+
+.button-area {
+  width: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.timeline-row {
+  background: #141414;
+  color: white;
+}
+.toggle-button {
+  background: #252525;
+  height: 60px;
+  color: white;
+  border: 1px solid #323232
+}
+.toggle-button:hover {
+  background: #4660DF;
+  cursor: pointer;
+}
+.toggle-button:focus {
+  outline: none;
+}
+
+.chart-block {
+  transition: max-height 0.2s ease-out 0.2s;
+  max-height: 300px;
+  overflow: hidden;
+}
+.chart-block.toggled {
+  max-height: 40px;
+}
