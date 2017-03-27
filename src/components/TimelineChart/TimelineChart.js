@@ -12,29 +12,43 @@ export default class TimelineChart extends Component {
       xScale: d3.scaleLinear(),
       yScale: d3.scaleLinear().domain([0, 1]),
       margin: TimelineChart.margin,
-      zoom: d3.zoom().scaleExtent([0.01, 100]),
+      zoom: d3.zoom().scaleExtent([1, 100]),
+      marginLeft: TimelineChart.margin.left,
+      brush: d3.brushX(),
     })
   }
 
   componentWillReceiveProps({isToggled, chartData = []}) {
     this.chartData = chartData
-    if (isToggled !== this.props.isToggled) {
-      this.isToggled = isToggled
-      this.setWidth()
-      this.applyDimensionsToScales()
-      this.renderChart()
-    } else {
-      this.renderChart(true)
+    this.isToggled = isToggled
+    this.setWidth()
+    const noDuration = isToggled !== this.props.isToggled
+    if (noDuration) {
+      this.disabledBrush = true
+      setTimeout(()=> {
+        this.disabledBrush = false
+      }, 750)
     }
+    this.renderChart(!noDuration)
   }
 
   componentDidMount() {
-    const {margin} = this
     this.d3svg = d3.select(this.svg)
     window.addEventListener('resize', this.onWindowResize)
     this.setWidth()
-    this.applyDimensionsToScales()
     this.componentWillReceiveProps(this.props)
+    this.brush.on('brush end', this.brushed)
+  }
+
+  brushed = ()=> {
+    const sourceEvent = d3.event.sourceEvent
+    if (this.disabledBrush || (sourceEvent && sourceEvent.type === 'zoom')) {
+      return
+    }
+    const [min, max]= d3.event.selection || this.brushSelection
+    this.brushSelection = d3.event.selection || [min, max]
+    const zoomPosition = d3.zoomIdentity.scale(this.width / (max - min)).translate(-min, 0)
+    this.zoomRect.call(this.zoom.transform, zoomPosition)
   }
 
   setWidth() {
@@ -46,24 +60,21 @@ export default class TimelineChart extends Component {
       realHeight = Math.max(Math.min(250, realWidth / 2), 160)
     }
 
-    const {zoom, margin} = this
+    const {zoom, margin, xScale, yScale} = this
     const {left, top, right, bottom} = margin
     this.marginLeft = left //this.isToggled ? left/2 : left
     const width = realWidth - this.marginLeft - right
     const height = Math.max(realHeight - top - bottom, 0)
-    Object.assign(this, {width, height, realWidth, realHeight})
-
-    this.zoomRect.attrs({width, height})
-      .call(zoom
-        .translateExtent([[0, 0], [width, height]])
-        .extent([[0, 0], [width, height]])
-        .on('zoom', this.zoomed))
-  }
-
-  applyDimensionsToScales() {
-    const {width, height, xScale, yScale} = this
     xScale.rangeRound([0, width])
     yScale.rangeRound([height, 0])
+    Object.assign(this, {width, height, realWidth, realHeight})
+
+    this.brushLine.attrs({width})
+    const zoomer = zoom
+      .translateExtent([[0, 0], [width, height]])
+      .extent([[0, 0], [width, height]])
+      .on('zoom', this.zoomed)
+    this.zoomRect.attrs({width, height}).call(zoomer)
   }
 
   zoomed = () => {
@@ -73,7 +84,6 @@ export default class TimelineChart extends Component {
 
   onWindowResize = () => {
     this.setWidth()
-    this.applyDimensionsToScales()
     this.renderChart(true)
   }
 
@@ -106,27 +116,52 @@ export default class TimelineChart extends Component {
     }, {redBulkLines: [], blueLines: []})
   }
 
+  _updateBrush() {
+    const {brush, xScale, zoomBehavior, brushCircle, brusher, width, notFirstRun} = this
+    brusher.call(brush).call(brush.move, xScale.range())
+    if (zoomBehavior) {
+      brusher.call(brush.move, xScale.range().map(zoomBehavior.invertX, zoomBehavior))
+    }
+    const brusherSelection = brusher.select('.selection')
+    const brusherWidth = brusherSelection.attr('width') * 1
+    let tooBig = brusherWidth === width
+    brusherSelection.attrs({stroke: 'none', 'fill-opacity': tooBig ? 0 : 0.3, 'pointer-events': tooBig ? 'none' : 'all'})
+    brushCircle.attr('cx', brusherSelection.attr('x') / 1 + ((brusherWidth || 0) / 2))
+    brusher.selectAll('.handle').attr('pointer-events', brusherWidth < 16 ? 'none' : 'all')
+    if (!notFirstRun) {
+      const timelineChart = this
+      brusher.selectAll('.overlay').each((d)=> d.type = 'selection').on('mousedown touchstart', function centralizeBrush() {
+        const brusherWidth = brusherSelection.attr('width') * 1
+        if (timelineChart.width === brusherWidth) {
+          return
+        }
+        const [center] = d3.mouse(this)
+        const halfWidth = brusherWidth / 2
+        brusher.call(brush.move, [center - halfWidth, center + halfWidth])
+      })
+    }
+  }
+
   renderChart(noDuration) {
-    const {width, height, xScale, yScale, margin} = this
+    const {width, height, xScale, yScale, margin, chartData, zoomBehavior} = this
     this.g.attr('transform', `translate(${  this.marginLeft  },${  margin.top  })`)
-    let chartData = this.chartData
     const maxValue = d3.max(chartData, ({data}) => data) * 1
     xScale.domain([0, maxValue])
-    let number = 20
-    if (this.zoomBehavior) {
-      this.xScale.domain(this.zoomBehavior.rescaleX(this.xScale).domain())
-      number = number / this.zoomBehavior.k
+    let number = 8 // 20
+    if (zoomBehavior) {
+      xScale.domain(zoomBehavior.rescaleX(xScale).domain())
+      number = number / zoomBehavior.k
     }
+    this._updateBrush()
+
     const maxTop = -margin.top / 2
-    const max = Math.max(100, chartData.length)
-    chartData = chartData.filter(({data})=>{
+    const numberOfItems = Math.max(100, chartData.length)
+    const data = chartData.map(({data, type}, index) => ({data, index: index / numberOfItems, type})).filter(({data})=> {
       const [min, max] = xScale.domain()
       return min < data && data < max
     })
-    const data = chartData.map(({data, type}, index) => ({data, index: index / max, type}))
     const redLines = data.filter(({type}) => type === 'bad')
-    const allBlueLines = data.filter(({type}) => type === 'good')
-    const {redBulkLines, blueLines} = TimelineChart.generateBlueLines(allBlueLines, width, number)
+    const {redBulkLines, blueLines} = TimelineChart.generateBlueLines(data.filter(({type}) => type === 'good'), width, number)
 
     const duration = noDuration ? 0 : 500
     let td
@@ -139,9 +174,7 @@ export default class TimelineChart extends Component {
 
     td(this.brushGroup).attr('transform', `translate(0,${  this.isToggled ? height + 6 : height + 50 + 6   })`)
     this.brushBack.attrs({width: this.realWidth})
-    this.brushLine.attrs({width: width})
-    // console.log(this.xScale(max))
-    this.brushedZone.attrs({width: width})
+
     td(this.xAxis).attr('transform', `translate(0,${  height  })`).call(d3.axisBottom(xScale))
     td(this.d3svg).attr('height', this.realHeight)
     td(this.axises).style('opacity', this.isToggled ? 0 : 1)
@@ -153,7 +186,7 @@ export default class TimelineChart extends Component {
     this.smalRects.bindData(`rect.${styles['blue-line']}`, blueLines, {x, y}, duration)
     this.smalRects.bindData(`rect.${styles['red-line']}`, redLines, {x, y}, duration)
     this.bulkRects.bindData(`rect.${styles['red-bulk-line']}`, redBulkLines,
-      {x, y: maxTop, height: Math.max(height - maxTop, 0)},
+      {x, y: maxTop, height: Math.max(height - maxTop, 0) + (this.isToggled ? 5 : 0)},
       duration
     )
     this.g.bindData(`circle.${styles['red-bulk-circle']}`, redBulkLines, {cy: maxTop, cx: x}, duration)
@@ -164,23 +197,28 @@ export default class TimelineChart extends Component {
     this.axises.bindData(`rect.${styles['white-horizontal-line']}`, data, {
       y,
       x: (item, idx) => idx === 0 ? 0 : x(data[idx - 1]),
-      width: (item, idx) => Math.max(0, idx === 0 ? x(item) : x(item) - x(data[idx - 1])),
+      width: (item, idx) => {
+        if (idx !== 0 && idx === data.length - 1 && item.data !== chartData[chartData.length - 1].data) {
+          return this.xScale.range()[1] - x(data[idx - 1])
+        } else {
+          return Math.max(0, idx === 0 ? x(item) : x(item) - x(data[idx - 1]))
+        }
+      },
     }, duration)
   }
 
   render() {
     const isToggled = this.isToggled
-    const isToggledClass = isToggled ? styles['isToggled'] : ''
     return <div>
-      <svg ref={ svg => this.svg = svg } className={`${isToggledClass} ${styles['timeline-chart']}`}>
+      <svg ref={ svg => this.svg = svg } className={`${(isToggled ? styles['isToggled'] : '')} ${styles['timeline-chart']}`}>
         <rect width="100%" height="100%" className={styles['black-background']}/>
         <g ref={ g => this.brushGroup = d3.select(g) }>
           <rect fill="#252525" height="50" ref={ g => this.brushBack = d3.select(g) }/>
           {isToggled && <rect height="20" fill="#252525" transform="translate(0,-20)" width="100%"/>}
           <g transform={`translate(${this.marginLeft},20)`}>
             <rect height="7" rx="3" ry="3" fill="#141414" ref={ g => this.brushLine = d3.select(g) }/>
-            {!isToggled && <rect fill="#777" stroke="#fff" opacity="0.2" y="-15" width="900" height="5" ref={ g => this.brushedZone = d3.select(g) }/>}
-            <circle fill="#4660DF" r="7" cy="3" className={styles['brush-circle']} ref={ g => this.brushCircle = d3.select(g) }/>
+            <g ref={ g => this.brusher = d3.select(g) } transform="translate(0,-20)"/>
+            <circle fill="#4660DF" r="7" cy="3" className={styles['brush-circle']} pointerEvents="none" ref={ g => this.brushCircle = d3.select(g) }/>
           </g>
         </g>
         <g ref={ g => this.g = d3.select(g) } fill="white">

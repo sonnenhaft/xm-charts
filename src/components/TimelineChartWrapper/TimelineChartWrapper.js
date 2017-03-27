@@ -15,6 +15,10 @@ export default class TimelineChartWrapper extends Component {
   componentDidMount() {
     const chartData = d3.tsvParse(dataTsv, ({date, type}) => ({data: (date - 0), type}))
     this.setState({chartData})
+    // this.runInterval()
+  }
+
+  runInterval() {
     this.interval = setInterval(() => {
       const chartData = this.state.chartData
       const data = chartData[chartData.length - 1].data + Math.random()
