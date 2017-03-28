@@ -16,13 +16,13 @@ export default (isYearly)=> {
     const EVENTS_NUMBER = r(isYearly ? 100 : 30)
     const HOURLY = 1000 * 60 * 60
     const YEARLY = HOURLY * 24 * 365
-    let eventStartedAd = startedAt;
+    let eventStartedAd = startedAt
     for (let eventId = 1; eventId < EVENTS_NUMBER; eventId++) {
-      eventStartedAd += (eventId ? rr(isYearly ? YEARLY : HOURLY) : 0);
+      eventStartedAd += (eventId ? rr(isYearly ? YEARLY : HOURLY) : 0)
       events.push({
         id: `${eventId  }_${  campainId}`,
         campainId,
-        flag: ['asset', 'device'][r(1)],
+        flag: ['asset', 'deviceSvgIcon'][r(1)],
         compromized: randBool(),
         date: eventStartedAd,
       })

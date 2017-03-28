@@ -1,7 +1,7 @@
 import React from 'react'
 import './Sample.scss'
 import TimelineChartWrapper from './TimelineChartWrapper/TimelineChartWrapper'
-import GenerateStub from './GenerateStub'
+import GenerateStub from './TimelineChartWrapper/GenerateStub'
 
 const Sample = () => (
   <div>

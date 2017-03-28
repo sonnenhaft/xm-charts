@@ -1,53 +1,12 @@
-.timeline-row {
+@import "../Colors";
+
+.timeline-chart-wrapper {
+  background: $darkBackground;
+  color: $white;
   display: flex;
-  transition: max-height 0.2s ease-out 0.2s;
+  font-family: sans-serif;
+  font-size: 12px;
   overflow: hidden;
-  background: #141414;
-  color: white;
   position: relative;
-
-  .chart-area {
-    width: 100%
-  }
-
-  $buttonWidth: 50px;
-  .button-area {
-    width: $buttonWidth;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-  }
-
-  .toggle-button {
-    background: #252525;
-    height: $buttonWidth;
-    width: $buttonWidth;
-    color: white;
-    border: 1px solid #323232;
-    &:hover {
-      background: #4660DF;
-    }
-  }
-
-  .reset-button {
-    font-size: 10px;
-    position: absolute;
-    top: 0;
-    background: #252525;
-    border: none;
-    color: grey;
-    &:hover {
-      background: #323232;
-    }
-  }
-
-  .toggle-button,
-  .reset-button {
-    &:focus {
-      outline: none;
-    }
-    &:hover {
-      cursor: pointer;
-    }
-  }
+  transition: max-height 0.2s ease-out 0.2s;
 }

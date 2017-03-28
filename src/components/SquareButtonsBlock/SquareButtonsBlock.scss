@@ -1,0 +1,33 @@
+@import "../Colors";
+
+.square-buttons-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  $buttonWidth: 50px;
+  width: $buttonWidth;
+
+  .square-button {
+    background: $buttonGrey;
+    border: 1px solid $buttonBorder;
+    color: $white;
+    cursor: pointer;
+    height: $buttonWidth;
+    width: $buttonWidth;
+    &:hover, &.active {
+      background: $buttonBlue;
+    }
+    &:focus {
+      outline: none;
+    }
+    svg {
+      width: 23px;
+    }
+
+    path {
+      stroke: $white;
+      fill: $white;
+    }
+  }
+}

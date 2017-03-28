@@ -130,7 +130,6 @@ export default class TimelineChart extends Component {
     const brusherSelection = brusher.select('.selection')
     const brusherWidth = brusherSelection.attr('width') * 1
     const tooBig = brusherWidth === width
-    const tooSmall = brusherWidth < 10
     brusherSelection.attrs({stroke: 'none', 'fill-opacity': tooBig ? 0 : 0.3, 'pointer-events': tooBig ? 'none' : 'all'})
     brushCircle.attrs({
       width: 10,
@@ -182,7 +181,7 @@ export default class TimelineChart extends Component {
       td = (d3Selection => d3Selection)
     }
 
-    td(this.brushGroup).attr('transform', `translate(0,${  this.isToggled ? height + 6 : height + 50 + 6   })`)
+    td(this.brushGroup).attr('transform', `translate(0,${  this.isToggled ? height + 5 : height + 50 + 5   })`)
     this.brushBack.attrs({width: this.realWidth})
 
     td(this.xAxis).attr('transform', `translate(0,${  height  })`).call(d3.axisBottom(xScale))
@@ -208,7 +207,7 @@ export default class TimelineChart extends Component {
         if (this.tooltipOpened) { return }
 
         this.tooltipBlock.classed(styles['visible-tooltip'], false).transition().duration(750).style('opacity', 0)
-      }, 500)
+      }, 100)
     }
 
     this.tooltipBlock.attrs({mouseout, mouseover: ()=> this.tooltipOpened = true})
@@ -231,8 +230,6 @@ export default class TimelineChart extends Component {
 
     const firstInSubnet = data.filter(({firstInSubnet}) => firstInSubnet)
     const lastInSubnet = data.filter(({lastInSubnet}) => lastInSubnet)
-    console.log(firstInSubnet)
-    console.log(lastInSubnet)
     this.g.bindData('g.bulkBlock', redBulkLines.concat(firstInSubnet).concat(lastInSubnet), {
       transform: (d) => `translate(${x(d)}, -12)`,
       mouseover: function (d) {
@@ -243,15 +240,16 @@ export default class TimelineChart extends Component {
       },
     }, duration).singleBind('rect.white-shadow-rect', {
         y: maxTop,
-        fill: 'white',
-        opacity: ({lastInSubnet}) => lastInSubnet ? 0.1 : 0,
+        fill: '#EB001E',
+        opacity: ({firstInSubnet}) => firstInSubnet ? 0.2 : 0,
         width: 18,
         height: Math.max(height - maxTop + 12 - 16 + 8, 0) + (this.isToggled ? 5 : 0),
         transform: 'translate(-9, 11)',
       },
       duration
     ).singleBind('circle.circleWrapper', {
-      stroke: ({value})=> !value ? '#EB001E' : '#61171A',
+      stroke: '#EB001E',
+      'stroke-opacity': ({value})=> value ? 0.3 : 1,
       'stroke-width': ({value})=> !value ? 2 : 4,
       transform: 'translate(0, -4)',
       fill: 'black',
@@ -294,7 +292,7 @@ export default class TimelineChart extends Component {
 
   render() {
     const isToggled = this.isToggled
-    return <div style={{position: 'relative'}}>
+    return <div style={{position: 'relative', width: '100%'}}>
       <svg ref={ svg => this.svg = svg } className={`${(isToggled ? styles['isToggled'] : '')} ${styles['timeline-chart']}`}>
         <rect width="100%" height="100%" className={styles['black-background']}/>
         <g ref={ g => this.brushGroup = d3.select(g) }>
