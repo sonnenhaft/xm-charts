@@ -131,11 +131,10 @@ export default class TimelineChart extends Component {
     const brusherWidth = brusherSelection.attr('width') * 1
     const tooBig = brusherWidth === width
     const tooSmall = brusherWidth < 10
-    brusherSelection.attrs({stroke: 'none', 'fill-opacity': (tooBig || !tooSmall) ? 0 : 0.3, 'pointer-events': tooBig ? 'none' : 'all'})
+    brusherSelection.attrs({stroke: 'none', 'fill-opacity': tooBig ? 0 : 0.3, 'pointer-events': tooBig ? 'none' : 'all'})
     brushCircle.attrs({
-      x: brusherSelection.attr('x') / 1,
-      width: Math.max(10, tooBig ? 0 : brusherWidth),
-      transform: `translate(${tooSmall ? (brusherWidth - 10) / 2 : 0},-2)`,
+      width: 10,
+      transform: `translate(${brusherSelection.attr('x') / 1 + (tooBig ? 0 : (brusherWidth - 10) / 2) },-2)`,
     })
     brusher.selectAll('.handle').attr('pointer-events', brusherWidth < 16 ? 'none' : 'all')
     if (!notFirstRun) {
