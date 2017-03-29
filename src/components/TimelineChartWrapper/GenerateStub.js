@@ -1,7 +1,8 @@
-export default (isYearly)=> {
-  const r = (number)=> Math.round(number / 2 + Math.random() * number / 2)
-  const rr = (number)=> Math.round(Math.random() * number)
-  const randBool = (number = 1)=> !![true, false][rr(number)]
+import loremIpsum from 'lorem-ipsum'
+export default isYearly => {
+  const r = number => Math.round(number / 2 + Math.random() * number / 2)
+  const rr = number => Math.round(Math.random() * number)
+  const randBool = (number = 1) => !![true, false][rr(number)]
 
   const CAMPAINS_NUMBER = r(10)
   const START_DATE = Date.now()
@@ -11,7 +12,7 @@ export default (isYearly)=> {
   for (let campainId = 1; campainId < CAMPAINS_NUMBER; campainId++) {
     startedAt += rr(1000)
     const events = []
-    const campain = {id: campainId, startedAt, events}
+    const campain = { id: campainId, startedAt, events }
 
     const EVENTS_NUMBER = r(isYearly ? 100 : 30)
     const HOURLY = 1000 * 60 * 60
@@ -21,6 +22,9 @@ export default (isYearly)=> {
       eventStartedAd += (eventId ? rr(isYearly ? YEARLY : HOURLY) : 0)
       events.push({
         id: `${eventId  }_${  campainId}`,
+        name: loremIpsum({ count: 2, units:'words' }).split(' ').join('-'),
+        method: loremIpsum({ count: 2, units:'words' }),
+        source: loremIpsum({ count: 2, units:'words' }),
         campainId,
         flag: ['asset', 'deviceSvgIcon'][r(1)],
         compromized: randBool(),
@@ -28,7 +32,7 @@ export default (isYearly)=> {
       })
     }
 
-    const compromizedEvents = events.filter(({compromized})=> compromized)
+    const compromizedEvents = events.filter(({ compromized }) => compromized)
     if (compromizedEvents.length) {
       const firstCompromized = compromizedEvents[0]
       firstCompromized.firstInSubnet = true

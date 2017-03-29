@@ -10,8 +10,8 @@
     align-items: center;
     display: flex;
     justify-content: center;
+    padding-top: 10px;
     max-height: 110px;
-    padding: 16px 0;
     transition: max-height 0.5s linear;
     &.stats-hidden {
       max-height: 0;
@@ -29,7 +29,6 @@
     }
 
     .stats-block {
-      margin: 5px 0;
       margin-right: 6px;
       white-space: nowrap;
 
@@ -78,15 +77,5 @@
         }
       }
     }
-  }
-
-  .play-action-block {
-    align-items: center;
-    background: $buttonGrey;
-    display: flex;
-    height: 50px;
-    justify-content: center;
-    width: 175px;
-    z-index: 1;
   }
 }

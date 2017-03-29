@@ -38,3 +38,19 @@ rules:
     - error
   react/prop-types:
     - off
+  object-curly-spacing:
+    - error
+    - always
+  arrow-spacing:
+    - error
+  arrow-parens:
+    - error
+    - as-needed
+  space-before-function-paren:
+    - error
+    - always
+  react/jsx-tag-spacing:
+    - error
+  react/jsx-curly-spacing:
+    - 2
+    - always

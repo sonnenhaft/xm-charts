@@ -1,24 +1,24 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 
 import styles from './TimelineChartWrapper.scss'
 import TimelineChart from '../TimelineChart/TimelineChart'
-import SquareButtonsBlock from '../SquareButtonsBlock/SquareButtonsBlock'
-import TimelineControlBlock from '../TimlineControlBlock/TimelineControlBlock'
+import SquareButtons from '../SquareButtons/SquareButtons'
+import TimelineControl from '../TimlineControl/TimelineControl'
 
 export default class TimelineChartWrapper extends Component {
-  constructor(props) {
+  constructor (props) {
     super(props)
-    this.state = {isToggled: false}
+    this.state = { isToggled: false }
   }
 
-  onToggle = () => this.setState({isToggled: !this.state.isToggled})
+  onToggle = () => this.setState({ isToggled: !this.state.isToggled })
 
-  render() {
-    const [{isToggled}, {data: chartData}, {onToggle}] = [this.state, this.props, this]
-    return <div className={styles['timeline-chart-wrapper']}>
-      <TimelineControlBlock {...{isToggled}}/>
-      <TimelineChart {...{isToggled, chartData}}/>
-      <SquareButtonsBlock {...{onToggle, isToggled}}/>
+  render () {
+    const { state: { isToggled }, props: { data: chartData }, onToggle } = this
+    return <div className={ styles['timeline-chart-wrapper'] }>
+      <TimelineControl { ...{ isToggled } } />
+      <TimelineChart { ...{ isToggled, chartData } } />
+      <SquareButtons { ...{ onToggle, isToggled } } />
     </div>
   }
 }

@@ -1,5 +1,0 @@
-<svg width="23" height="20">
-  <rect width="2" height="18" fill="white" transform="translate(12, 0)"/>
-  <rect width="2" height="12" fill="white" transform="translate(12, 0) rotate(55, 0, 0)"/>
-  <rect width="2" height="15" fill="white" transform="translate(11, 0) rotate(-55, 0, 0)"/>
-</svg>

@@ -9,7 +9,7 @@ import App from './App'
 const render = Component => {
   ReactDom.render(
     <AppContainer>
-      <Component/>
+      <Component />
     </AppContainer>,
     document.getElementById('root')
   )
@@ -18,7 +18,7 @@ const render = Component => {
 render(App)
 
 if (module.hot) {
-    module.hot.accept('./App', () =>{
+    module.hot.accept('./App', () => {
       render(App)
     })
 }

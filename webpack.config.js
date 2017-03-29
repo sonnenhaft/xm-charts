@@ -26,7 +26,7 @@ const coreCssRules = [
       importLoaders: 1,
       modules: true,
       sourceMap: true,
-      localIdentName: '[name]__[hash:base64:5]',
+      localIdentName: '[local]__[hash:base64:5]',
     },
   },
   {

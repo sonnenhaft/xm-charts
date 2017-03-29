@@ -1,10 +1,21 @@
 @import "../Colors";
 
+@font-face {
+  font-family: Geogrotesque;
+  src: url('../../../ignored/fonts/Geogtq-Md.otf');
+}
+
+@font-face {
+  font-family: RobotoMono;
+  src: url('../../../ignored/fonts/RobotoMono-Medium.ttf');
+}
+
+
 .timeline-chart-wrapper {
   background: $darkBackground;
   color: $white;
   display: flex;
-  font-family: sans-serif;
+  font-family: Geogrotesque, serif;
   font-size: 12px;
   overflow: hidden;
   position: relative;
