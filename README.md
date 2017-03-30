@@ -25,3 +25,17 @@ This should start the server on port 8085 with webpack monitor
 >  yarn dev 
 ```
 This should start the server on port 8087.
+
+
+### TODO List:
+
+1. Add x scale value (days years) in right bottom corner.
+2. Rotate toggle button after toggling
+3. Create and add 4 new buttons for playing.
+4. Create zoom indicator.
+5. Create time indicator.
+
+After new req, apply actions for 2 left buttons:
+1. Create circles with: triangle and circle, weird circle, triangle.
+2. For button with shield apply switch to data instead of time
+3. For second button apply unknown action.
