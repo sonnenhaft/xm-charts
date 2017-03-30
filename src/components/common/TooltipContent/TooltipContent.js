@@ -1,9 +1,21 @@
-import * as d3 from 'd3'
-import React, { Component } from 'react'
+import { timeFormat } from 'd3'
+import React, { Component, PropTypes } from 'react'
 import styles from './TooltipContent.scss'
 import ShareButtons from '../ShareButtons/ShareButtons'
 
+const string = React.PropTypes.string
 export default class TooltipContent extends Component {
+  static propTypes = {
+    tooltipData: PropTypes.shape({
+      name: string,
+      method: string,
+      source: string,
+      date: PropTypes.number, // date number, line Date.now()
+      value: PropTypes.number,
+    }),
+  }
+  static defaultProps = { tooltipData: {} };
+
   render () {
     const { tooltipData } = this.props
     return <div className={ styles['tooltip-content'] }>
@@ -23,22 +35,15 @@ export default class TooltipContent extends Component {
           <div className={ styles['tooltip-event-icons'] }>
             <ShareButtons type="vertical" />
             <div className={ styles['separator'] } />
-            <b>{d3.timeFormat('%H:%M:%S')(tooltipData.date)}</b>
+            <b>{timeFormat('%H:%M:%S')(tooltipData.date)}</b>
           </div>
         </div>
       </div>}
       {!tooltipData.name && <div>
         <ShareButtons type="dark-icons" />
         {/*<div>count {tooltipData.value}</div>*/}
-        <b>{d3.timeFormat('%H:%M:%S')(tooltipData.date)}</b>
+        <b>{timeFormat('%H:%M:%S')(tooltipData.date)}</b>
       </div>}
     </div>
   }
 }
-
-export const DemoTooltipContent = () =>  <TooltipContent tooltipData={ {
-  name: 'demo',
-  method: 'method',
-  source: 'source',
-  date: Date.now(),
-} } />

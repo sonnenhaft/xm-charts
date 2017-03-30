@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { arc, select, interpolate, interpolateRound } from 'd3'
-import '../../common/d3.shims'
+import '../../../common/d3.shims'
 import styles from './CircleIndicator.scss'
 import between from 'airbnb-prop-types/build/between'
 

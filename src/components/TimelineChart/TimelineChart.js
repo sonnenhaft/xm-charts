@@ -20,7 +20,11 @@ export default class TimelineChart extends Component {
     this.state = {}
   }
 
-  componentWillReceiveProps ({ isToggled, chartData = [] }) {
+  componentWillReceiveProps (props) {
+    const { isToggled, chartData = [] } = props
+    if (props !== this.props && (chartData === this.props.chartData && isToggled === this.props.isToggled)) {
+      return // preventing infinitive loop, take care
+    }
     this.isToggled = isToggled
     let events = chartData.reduce((arr, { events }) => arr.concat(events), [])
     const numberOfItems = events.length
@@ -37,6 +41,7 @@ export default class TimelineChart extends Component {
         this.disabledBrush = false
       }, 250)
     }
+
     this.renderChart(!noDuration)
   }
 
@@ -160,34 +165,38 @@ export default class TimelineChart extends Component {
     }
   }
 
-  renderChart (noDuration, zoomed) {
+  renderChart (noDuration, zoomHappened) {
     const { width, height, xScale, yScale, margin, chartData, zoomBehavior } = this
     this.g.attr('transform', `translate(${  this.marginLeft  },${  margin.top  })`)
     const maxValue = d3.max(chartData, ({ date }) => date)
     const minValue = d3.min(chartData, ({ date }) => date)
     xScale.domain([minValue, maxValue])
     let number = 25
+    const { k: currentZoomFactor = 1 } = zoomBehavior || {}
     if (zoomBehavior) {
       xScale.domain(zoomBehavior.rescaleX(xScale).domain())
-      number = number / zoomBehavior.k
+      number = number / currentZoomFactor
     }
     this._updateBrush()
 
     const maxTop = -margin.top / 2
-    const data = chartData.filter(({ date }) => {
+    let filterValues = ({ date }) => {
       const [min, max] = xScale.domain()
       return min < date && date < max
-    })
+    }
+    let data = chartData.filter(filterValues)
     const blueLines = data.filter(({ compromized }) => !compromized)
 
-    if (zoomed || !this.oldData) {
+    if (zoomHappened || !this.oldData) {
       this.oldData = TimelineChart.generateBlueLines(
         data.filter(({ compromized }) => compromized), width, number
       )
+      this.props.onZoomed(currentZoomFactor)
     }
+    this.props.onTimeChanged(xScale.domain()[0] - 0)
     let { redBulkLines, blueLines: redLines } = this.oldData
-
-
+    redBulkLines = redBulkLines.filter(filterValues)
+    redLines = redLines.filter(filterValues)
     const duration = noDuration ? 0 : 500
     let td
     if (this.notFirstRun) {
@@ -285,7 +294,6 @@ export default class TimelineChart extends Component {
       duration
     ).singleBind(`text.${styles['circle-text']}`, {
       text: ({ value }) => value,
-      transform: 'translate(0, -1)',
     })
 
     let pathData = data.length === 1 ? [data[0], data[0]] : data
@@ -321,11 +329,10 @@ export default class TimelineChart extends Component {
           {isToggled && <rect height="20" fill="#252525" transform="translate(0,-20)" width="100%" />}
           <g transform={ `translate(${this.marginLeft},20)` }>
             <g ref={ g => this.brusher = d3.select(g) } transform="translate(0,-20)" />
-            <rect height="7" rx="3" ry="3" fill="#141414" ref={ g => this.brushLine = d3.select(g) }
-                  pointerEvents="none" />
-            <rect className={ styles['brush-circle'] } ref={ g => this.brushCircle = d3.select(g) } pointerEvents="none"
-                  height="10" rx="5" ry="5"
-            />
+            <rect ref={ g => this.brushLine = d3.select(g) }
+                  pointerEvents="none" height="7" rx="3" ry="3" fill="#141414" />
+            <rect className={ styles['brush-circle'] } ref={ g => this.brushCircle = d3.select(g) }
+                  pointerEvents="none" height="10" rx="5" ry="5" />
           </g>
         </g>
         <g ref={ g => this.g = d3.select(g) } fill="white">

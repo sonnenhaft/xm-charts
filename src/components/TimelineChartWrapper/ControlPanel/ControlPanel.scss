@@ -69,3 +69,58 @@
     }
   }
 }
+
+.day-icon {
+  display: flex;
+  align-content: space-between;
+  justify-content: space-around;
+  font-family: GeogrotesqueBold, sans-serif;
+  font-size: 10px;
+}
+
+.day-time {
+  font-family: Geogrotesque, sans-serif;
+  font-size: 16px;
+}
+
+
+.play-buttons-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: $buttonGrey;
+  width: 175px;
+}
+
+.play-action-button {
+  width: 100%;
+  cursor: pointer;
+  display: flex;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  border: none;
+  background: $buttonGrey;
+
+  &:hover, &.active {
+    background: $buttonBlue;
+    &:hover {
+      circle {
+        fill: $white;
+      }
+    }
+  }
+  &:focus {
+    outline: none;
+  }
+  svg {
+    width: 23px;
+  }
+
+  path {
+    stroke: $white;
+    stroke-width: 0;
+    fill: $white;
+  }
+}

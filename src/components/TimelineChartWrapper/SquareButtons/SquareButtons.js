@@ -12,7 +12,7 @@ const Button = ({ onClick, children: __html, className }) => {
 
 export default class SquareButtons extends Component {
   render () {
-    const { onToggle, isToggled } = this.props
+    const { onToggled, isToggled } = this.props
 
     return <div className={ styles['square-buttons-block'] }>
       <div />
@@ -20,7 +20,7 @@ export default class SquareButtons extends Component {
         <Button className={ styles['active'] }>{overviewSvgIcon}</Button>
         <Button>{triangleSvgIcon}</Button>
       </div>}
-      <Button onClick={ onToggle }>{customArrowTop}</Button>
+      <Button onClick={ onToggled }>{customArrowTop}</Button>
     </div>
   }
 }
