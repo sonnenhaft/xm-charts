@@ -42,7 +42,8 @@ const methods = {
     enteredSelection.exit().remove()
     const mergedSelection = enteredSelection.enter().append(tag)
       .attr('class', className)
-    mergedSelection.attrs(opt_attrs)
+    mergedSelection
+      .attrs(opt_attrs)
       .merge(enteredSelection)
       .transition()
       .duration(duration)

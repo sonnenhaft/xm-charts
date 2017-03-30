@@ -1,6 +1,6 @@
 import * as d3 from 'd3'
 import React, { Component } from 'react'
-import './d3.shims'
+import '../common/d3.shims'
 import styles from './TimelineChart.scss'
 import TooltipContentBlock from '../common/TooltipContent/TooltipContent'
 
