@@ -1,12 +1,9 @@
 import React, { Component } from 'react'
 
+import overviewSvgIcon from '../../../assets/icons/overview.svg'
+import triangleSvgIcon from '../../../assets/icons/asset-downloaded.svg'
 import styles from './SquareButtons.scss'
 import customArrowTop from './custom-arrow-top.svg'
-import overviewSvgIcon from '../../assets/overview.svg'
-
-import triangleSvgIcon from '../../assets/asset-downloaded.svg'
-
-
 
 const Button = ({ onClick, children: __html, className }) => {
   className=  `${className } ${   styles['square-button']}`

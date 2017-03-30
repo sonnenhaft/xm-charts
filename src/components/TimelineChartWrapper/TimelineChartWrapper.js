@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 
 import styles from './TimelineChartWrapper.scss'
 import TimelineChart from '../TimelineChart/TimelineChart'
-import SquareButtons from '../SquareButtons/SquareButtons'
-import TimelineControl from '../TimlineControl/TimelineControl'
+import SquareButtons from './SquareButtons/SquareButtons'
+import TimelineControl from './TimlineControl/TimelineControl'
 
 export default class TimelineChartWrapper extends Component {
   constructor (props) {

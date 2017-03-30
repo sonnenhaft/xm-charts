@@ -1,15 +1,14 @@
 import React from 'react'
 import Router from 'react-router-dom/HashRouter'
 import { Route } from 'react-router-dom'
-import Sample from './components/Sample'
+import Demo from './components/Demo'
 
 const App = () => (
   <Router>
-    <Route exact path="/" component={ Sample } />
+    <Route exact path="/" component={ Demo } />
   </Router>
 )
 
-
-export default App
+export default  App
 
 

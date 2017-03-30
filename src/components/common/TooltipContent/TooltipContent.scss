@@ -1,0 +1,35 @@
+@import "../../Colors";
+
+.tooltip-content {
+  background: #F2F2F2;
+  border-radius: 4px;
+  color: $buttonGrey;
+  border: 1px $buttonGrey solid;
+  background: $white;
+  .title {
+    font-family: GeogrotesqueBold, sans-serif;
+  }
+  font-size: 10px;
+  padding: 8px 12px;
+  white-space: nowrap;
+
+  .tooltip-event-icons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  b {
+    font-family: GeogrotesqueSemiBold, sans-serif;
+    font-size: 14px;
+  }
+
+  .content {
+    margin: 4px 0
+  }
+
+  .separator {
+    width: 10px;
+    height: 1px;
+  }
+}

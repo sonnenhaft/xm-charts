@@ -1,8 +1,9 @@
 import loremIpsum from 'lorem-ipsum'
+
 export default isYearly => {
   const r = number => Math.round(number / 2 + Math.random() * number / 2)
   const rr = number => Math.round(Math.random() * number)
-  const randBool = (number = 1) => !![true, false][rr(number)]
+  const randBool = () => !![true, false][rr(1)]
 
   const CAMPAINS_NUMBER = r(10)
   const START_DATE = Date.now()

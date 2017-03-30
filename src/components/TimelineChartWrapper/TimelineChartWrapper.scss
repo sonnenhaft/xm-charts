@@ -2,12 +2,22 @@
 
 @font-face {
   font-family: Geogrotesque;
-  src: url('../../../ignored/fonts/Geogtq-Md.otf');
+  src: url('../../assets/fonts/Geogtq-Rg.otf');
+}
+
+@font-face {
+  font-family: GeogrotesqueBold;
+  src: url('../../assets/fonts/Geogtq-Bd.otf');
+}
+
+@font-face {
+  font-family: GeogrotesqueSemiBold;
+  src: url('../../assets/fonts/Geogtq-Md.otf');
 }
 
 @font-face {
   font-family: RobotoMono;
-  src: url('../../../ignored/fonts/RobotoMono-Medium.ttf');
+  src: url('../../assets/fonts/RobotoMono-Medium.ttf');
 }
 
 

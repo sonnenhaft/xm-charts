@@ -1,21 +1,23 @@
-@import "../Colors";
+@import "../../Colors";
 
-$buttonWidth: 50px;
-
-.square-buttons-block {
+.play-buttons-block {
   display: flex;
-  flex-direction: column;
   justify-content: space-between;
-  width: $buttonWidth;
+  background: $buttonGrey;
+  width: 175px;
 }
 
-.square-button {
-  background: $buttonGrey;
-  border: 1px solid $buttonBorder;
-  color: $white;
+.play-action-button {
+  width: 100%;
   cursor: pointer;
-  height: $buttonWidth;
-  width: $buttonWidth;
+  display: flex;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  border: none;
+  background: $buttonGrey;
+
   &:hover, &.active {
     background: $buttonBlue;
   }

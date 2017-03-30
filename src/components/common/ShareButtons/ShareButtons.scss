@@ -1,0 +1,56 @@
+@import "../../Colors";
+
+.share-buttons {
+  display: flex;
+  flex-direction: column;
+  .share-button {
+    align-items: center;
+    display: flex;
+    margin: 5px 0;
+  }
+
+  .icon {
+    margin-right: 4px;
+    padding: 0 6px;
+  }
+
+  svg {
+    height: 17px;
+    width: 12px;
+  }
+
+  path {
+    stroke: $white;
+    fill: $white;
+  }
+
+  &.vertical,
+  &.dark-icons {
+    path {
+      stroke: $buttonGrey;
+      fill: $buttonGrey;
+    }
+  }
+  &.dark-icons {
+    .share-button {
+      margin: 0;
+    }
+    .icon {
+      padding-left: 0;
+    }
+  }
+
+  &.vertical {
+    flex-direction: row;
+    .icon {
+      padding: 0;
+      & + span {
+        display: none;
+      }
+    }
+  }
+}
+
+
+
+
