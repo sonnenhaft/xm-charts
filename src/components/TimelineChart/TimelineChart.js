@@ -122,7 +122,7 @@ export default class TimelineChart extends Component {
 
     if (!this.prevZoomFactor || this.prevZoomFactor !== this.state.zoomFactor) {
       this.prevZoomFactor = currentZoom.k
-      this.composedData = composeCircles(chartData, width, 8,  this.prevZoomFactor)
+      this.composedData = composeCircles(chartData, width, 12,  this.prevZoomFactor)
     }
 
     let { bulkLines, redLines, blueLines } = this.composedData

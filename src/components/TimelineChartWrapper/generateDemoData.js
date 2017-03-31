@@ -28,7 +28,7 @@ export default isYearly => {
         source: loremIpsum({ count: 2, units:'words' }),
         campainId,
         flag: ['asset', 'deviceSvgIcon'][r(1)],
-        compromized: randBool(),
+        compromized: !!Math.round(Math.random()/4*3),
         date: eventStartedAd,
       })
     }

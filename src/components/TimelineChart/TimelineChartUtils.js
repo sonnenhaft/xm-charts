@@ -21,30 +21,29 @@ export const updateBrush = ({ brusher, brushBehavior, brushCircle, xScale, curre
 
 export const composeCircles = (data, width, groupWidth, k) => {
   const blueLines = data.filter(({ compromized }) => !compromized)
-  const lines = data.filter(({ compromized }) => compromized)
+  const redLines = data.filter(({ compromized }) => compromized)
 
-  const rounderRange = d3.scaleQuantile().domain([0, lines[lines.length - 1].date]).range(d3.range(0, Math.floor(width / groupWidth * k)))
-  const map = lines.reduce((map, item) => {
-    const mapKey = rounderRange(item.date)
-    if (map[mapKey]) {
-      map[mapKey].push(item)
+  const rounderRange = d3.scaleQuantile()
+    .domain([0, redLines[redLines.length - 1].date])
+    .range(d3.range(0, Math.floor(width / groupWidth * k)))
+
+  const groupedRedLines = redLines.reduce((map, item) => {
+    const groupedRedLines = rounderRange(item.date)
+    if (map[groupedRedLines]) {
+      map[groupedRedLines].push(item)
     } else {
-      map[mapKey] = [item]
+      map[groupedRedLines] = [item]
     }
     return map
   }, {})
-  console.log(map)
 
-  return Object.keys(map).reduce((result, key) => {
-    const items = map[key]
-    const [firstItem] = items
-    if (items.length > 1) {
-      result.bulkLines.push({ date: firstItem.date, value: items.length, id: firstItem.date })
-    } else {
-      result.redLines.push(firstItem)
-    }
-    return result
-  }, { bulkLines: [], redLines: [], blueLines })
+  const bulkLines = Object.keys(groupedRedLines)
+    .map(key => groupedRedLines[key])
+    .filter(items =>  items.length)
+    .map(items => ({
+      date: items[0].date, value: items.length, id: items[0].date,
+    }))
+  return { bulkLines, redLines, blueLines }
 }
 
 export const renderPath = ({ td, min, max, linePath, data, x, y, chartData }) => {
