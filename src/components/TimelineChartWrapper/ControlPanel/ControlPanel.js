@@ -9,9 +9,9 @@ import styles from './ControlPanel.scss'
 import CircleIndicator from './CircleIndicator/CircleIndicator'
 
 const Icon = ({ children: __html }) => <span className={ styles['icon'] } dangerouslySetInnerHTML={ { __html } } />
-const Button = ({ onClick, children: __html, className }) => {
+const Button = ({ onClick, children: __html, className, title }) => {
   className = `${className } ${   styles['play-action-button']}`
-  return <button { ...{ className, onClick } } dangerouslySetInnerHTML={ { __html } } />
+  return <button { ...{ className, onClick, title } } dangerouslySetInnerHTML={ { __html } } />
 }
 
 export default class ControlPanel extends Component {
@@ -19,11 +19,17 @@ export default class ControlPanel extends Component {
     isToggled: PropTypes.bool,
     zoomFactor: PropTypes.number,
     currentTime: PropTypes.number,
+    onReset: PropTypes.func.isRequired,
   }
   static defaultProps = {    zoomFactor: 1, isToggled: false  };
 
   render () {
-    const { isToggled, zoomFactor, currentTime } = this.props
+    const { isToggled, zoomFactor, currentTime, onReset } = this.props
+    let zoomFactorText = Math.round(zoomFactor)
+    if (zoomFactorText > 1000) {
+      zoomFactorText = `${Math.round(zoomFactorText/1000)  }k`
+    }
+    zoomFactorText = `x${  zoomFactorText}`
     return <div className={ styles['timeline-control-block'] }>
       <div />
       <div className={ `${styles['circle-stats-block']} ${isToggled ? styles['stats-hidden'] : ''}` }>
@@ -40,13 +46,23 @@ export default class ControlPanel extends Component {
             </span>
           </div>
         </div>
+        <div>
+          <Button>{playButtonSvgIcon}</Button>
+          <Button>{playButtonSvgIcon}</Button>
+          <Button>{playButtonSvgIcon}</Button>
+        </div>
+        <div>
+          <Button>{playButtonSvgIcon}</Button>
+          <Button>{playButtonSvgIcon}</Button>
+          <Button>{playButtonSvgIcon}</Button>
+        </div>
       </div>
 
       <div />
 
       <div className={ styles['play-buttons-block'] }>
         <Button>{circleButtonSvgIcon}</Button>
-        <div>
+        <div className={ styles['day-time-wrapper'] }>
           <div className={ styles['day-time'] }>
             &nbsp;
             {timeFormat('%d:%H:%M:%S')(currentTime)}
@@ -60,7 +76,7 @@ export default class ControlPanel extends Component {
           </div>
         </div>
         <Button>{playButtonSvgIcon}</Button>
-        <small>x{(Math.round(zoomFactor*10)/10 + .0).toFixed(1)}</small>
+        <Button onClick={ onReset } title="Reset Zoom">{zoomFactorText}</Button>
       </div>
     </div>
   }

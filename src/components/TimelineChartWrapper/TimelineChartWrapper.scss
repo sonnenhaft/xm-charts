@@ -23,11 +23,11 @@
 
 .timeline-chart-wrapper {
   background: $darkBackground;
+  height: 200px;
   color: $white;
   display: flex;
   font-family: Geogrotesque, serif;
   font-size: 12px;
   overflow: hidden;
   position: relative;
-  transition: max-height 0.2s ease-out 0.2s;
 }
