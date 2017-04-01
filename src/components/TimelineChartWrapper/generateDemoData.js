@@ -1,37 +1,34 @@
 import loremIpsum from 'lorem-ipsum'
+import Chance from 'chance'
+
+const chance = new Chance()
 
 export default isYearly => {
-  const r = number => Math.round(number / 2 + Math.random() * number / 2)
-  const rr = number => Math.round(Math.random() * number)
-  const randBool = () => !![true, false][rr(1)]
-
-  const CAMPAINS_NUMBER = r(10)
-  const START_DATE = Date.now()
+  const CAMPAINS_NUMBER = isYearly ? 10 : 3
+  const EVENTS_IN_CAMPAIN = isYearly ? 100 : 30
   const campains = []
 
-  let startedAt = START_DATE
   for (let campainId = 1; campainId < CAMPAINS_NUMBER; campainId++) {
-    startedAt += rr(1000)
-    const events = []
-    const campain = { id: campainId, startedAt, events }
+    let events = []
+    const campain = { id: campainId, events }
 
-    const EVENTS_NUMBER = r(isYearly ? 100 : 30)
-    const HOURLY = 1000 * 60 * 60
-    const YEARLY = HOURLY * 24 * 365
-    let eventStartedAd = startedAt
-    for (let eventId = 1; eventId < EVENTS_NUMBER; eventId++) {
-      eventStartedAd += (eventId ? rr(isYearly ? YEARLY : HOURLY) : 0)
+    let maxDate = new Date()
+    const DAY = 60*60*1000*24
+    const minDate = new Date(Date.now() - (isYearly ? 365*DAY : DAY))
+
+    for (let eventId = 1; eventId < EVENTS_IN_CAMPAIN; eventId++) {
       events.push({
         id: `${eventId  }_${  campainId}`,
         name: loremIpsum({ count: 2, units:'words' }).split(' ').join('-'),
         method: loremIpsum({ count: 2, units:'words' }),
         source: loremIpsum({ count: 2, units:'words' }),
         campainId,
-        flag: ['asset', 'deviceSvgIcon'][r(1)],
-        compromized: !!Math.round(Math.random()/4*3),
-        date: eventStartedAd,
+        flag: chance.pickone(['asset', 'deviceSvgIcon']),
+        compromized: chance.bool(),
+        date: chance.hammertime({ min: minDate, max: maxDate }),
       })
     }
+    events = events.sort((a, b) => a.date > b.date ? 1 : -1)
 
     const compromizedEvents = events.filter(({ compromized }) => compromized)
     if (compromizedEvents.length) {
@@ -40,10 +37,10 @@ export default isYearly => {
     }
     if (compromizedEvents.length > 1) {
       const lastCompromized = compromizedEvents[compromizedEvents.length - 1]
-      lastCompromized.lastInSubnet = randBool()
+      lastCompromized.lastInSubnet = chance.bool()
     }
 
-    if (randBool()) {
+    if (chance.bool()) {
       campain.terminatedAt = campain.events[campain.events.length - 1].date
     }
 

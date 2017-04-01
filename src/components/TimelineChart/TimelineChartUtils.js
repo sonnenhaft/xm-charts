@@ -2,6 +2,38 @@ import * as d3 from 'd3'
 import '../common/d3.shims'
 import styles from './TimelineChart.scss'
 
+export const composeCircles = (data, width, groupWidth, k) => {
+  const blueLines = data.filter(({ compromized }) => !compromized)
+  const redLines = data.filter(({ compromized }) => compromized)
+
+  const scaledGroupWidth = groupWidth / k
+  const rounderRange = d3.scaleQuantile()
+    .domain([redLines[0].date, redLines[redLines.length - 1].date])
+    .range(d3.range(0, width / scaledGroupWidth))
+
+  const groupedRedLines = redLines.reduce((map, item) => {
+    const groupedRedLines = rounderRange(item.date)
+    if (map[groupedRedLines]) {
+      map[groupedRedLines].push(item)
+    } else {
+      map[groupedRedLines] = [item]
+    }
+    return map
+  }, {})
+
+  const bulkLines = Object.keys(groupedRedLines)
+    .map(key => groupedRedLines[key])
+    .filter(items => items.length > 1)
+    .filter(items =>  items.length > 2 || items[1].date - items[0].date <= scaledGroupWidth)
+    .map(items => {
+      const date = Math.round(d3.sum(items, ({ date }) => date) / items.length)
+      return { date, value: items.length, id: date }
+    })
+
+
+  return { bulkLines, redLines, blueLines }
+}
+
 export const updateBrush = ({ brusher, brushBehavior, brushCircle, xScale, currentZoom, width }) => {
   brusher.call(brushBehavior).call(brushBehavior.move, xScale.range().map(currentZoom.invertX, currentZoom))
   const brusherSelection = brusher.select('.selection')
@@ -17,33 +49,6 @@ export const updateBrush = ({ brusher, brushBehavior, brushCircle, xScale, curre
     transform: `translate(${brusherSelection.attr('x') / 1 + (tooBig ? 0 : (brusherWidth - 10) / 2) },-2)`,
   })
   brusher.selectAll('.handle').attr('pointer-events', brusherWidth < 16 ? 'none' : 'all')
-}
-
-export const composeCircles = (data, width, groupWidth, k) => {
-  const blueLines = data.filter(({ compromized }) => !compromized)
-  const redLines = data.filter(({ compromized }) => compromized)
-
-  const rounderRange = d3.scaleQuantile()
-    .domain([0, redLines[redLines.length - 1].date])
-    .range(d3.range(0, Math.floor(width / groupWidth * k)))
-
-  const groupedRedLines = redLines.reduce((map, item) => {
-    const groupedRedLines = rounderRange(item.date)
-    if (map[groupedRedLines]) {
-      map[groupedRedLines].push(item)
-    } else {
-      map[groupedRedLines] = [item]
-    }
-    return map
-  }, {})
-
-  const bulkLines = Object.keys(groupedRedLines)
-    .map(key => groupedRedLines[key])
-    .filter(items =>  items.length)
-    .map(items => ({
-      date: items[0].date, value: items.length, id: items[0].date,
-    }))
-  return { bulkLines, redLines, blueLines }
 }
 
 export const renderPath = ({ td, min, max, linePath, data, x, y, chartData }) => {

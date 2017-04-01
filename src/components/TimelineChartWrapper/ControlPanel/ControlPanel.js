@@ -21,13 +21,17 @@ export default class ControlPanel extends Component {
     currentTime: PropTypes.number,
     onReset: PropTypes.func.isRequired,
   }
-  static defaultProps = {    zoomFactor: 1, isToggled: false  };
+  static defaultProps = { zoomFactor: 1, isToggled: false };
 
   render () {
     const { isToggled, zoomFactor, currentTime, onReset } = this.props
-    let zoomFactorText = Math.round(zoomFactor)
+    let zoomFactorText = zoomFactor
     if (zoomFactorText > 1000) {
-      zoomFactorText = `${Math.round(zoomFactorText/1000)  }k`
+      zoomFactorText = `${Math.round(zoomFactorText / 1000)  }k`
+    } else if (zoomFactor < 10) {
+      zoomFactorText = Math.round(zoomFactor * 10) / 10
+    } else {
+      zoomFactorText = Math.round(zoomFactor)
     }
     zoomFactorText = `x${  zoomFactorText}`
     return <div className={ styles['timeline-control-block'] }>

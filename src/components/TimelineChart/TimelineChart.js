@@ -122,7 +122,7 @@ export default class TimelineChart extends Component {
 
     if (!this.prevZoomFactor || this.prevZoomFactor !== this.state.zoomFactor) {
       this.prevZoomFactor = currentZoom.k
-      this.composedData = composeCircles(chartData, width, 12,  this.prevZoomFactor)
+      this.composedData = composeCircles(chartData, width, 20,  this.prevZoomFactor)
     }
 
     let { bulkLines, redLines, blueLines } = this.composedData
@@ -210,7 +210,7 @@ export default class TimelineChart extends Component {
     let zoomFactor = this.state.zoomFactor
     if (zoomFactor !== newZoomFactor) {
       if (!this.isBrushing) {
-        let k = Math.max(Math.log2(newZoomFactor))
+        let k = Math.max(0.1, Math.log2(newZoomFactor))
         if (newZoomFactor > 300) {
           k = 1000
         } else if (newZoomFactor > 30000) {
