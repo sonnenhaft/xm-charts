@@ -7,6 +7,7 @@ import between from 'airbnb-prop-types/build/between'
 const d3 = { arc, select, interpolate, interpolateRound }
 
 export default class CircleIndicator extends Component {
+  static counter = 0
   static Gradient = ({ startColor, stopColor, x1, x2, y1, y2, id }) => {
     return <linearGradient gradientUnits="objectBoundingBox" { ...{ x1, x2, y1, y2, id } }>
       <stop offset="0%" stopColor={ startColor } />
@@ -24,6 +25,8 @@ export default class CircleIndicator extends Component {
 
   constructor (props) {
     super(props)
+    CircleIndicator.counter++;
+    this.id = CircleIndicator.counter;
     const { RADIUS, WIDTH } = CircleIndicator
     const arc = d3.arc().innerRadius(RADIUS - WIDTH).outerRadius(RADIUS).startAngle(0)
       .cornerRadius(-10)
@@ -70,22 +73,22 @@ export default class CircleIndicator extends Component {
     return <div className={ styles['circle-indicator'] }>
       <svg viewBox="-10 -10 220 220" ref={ svg => this.svg = d3.select(svg) }>
         <defs>
-          <Gradient id="redyel" startColor="#35ABEC" stopColor="#356ADE" x1="0" y1="0" x2="1" y2="1" />
-          <Gradient id="yelgre" startColor="#356ADE" stopColor="#3547D7" x1="0" y1="0" x2="0" y2="1" />
-          <Gradient id="grecya" startColor="#3547D7" stopColor="#713DBD" x1="1" y1="0" x2="0" y2="1" />
-          <Gradient id="cyablu" startColor="#713DBD" stopColor="#D91E5D" x1="1" y1="1" x2="0" y2="0" />
-          <Gradient id="blumag" startColor="#D91E5D" stopColor="#EB0021" x1="0" y1="1" x2="0" y2="0" />
-          <Gradient id="magred" startColor="#EB0021" stopColor="#EB001E" x1="0" y1="1" x2="1" y2="0" />
+          <Gradient id={`redyel${this.id}`} startColor="#35ABEC" stopColor="#356ADE" x1="0" y1="0" x2="1" y2="1" />
+          <Gradient id={`yelgre${this.id}`} startColor="#356ADE" stopColor="#3547D7" x1="0" y1="0" x2="0" y2="1" />
+          <Gradient id={`grecya${this.id}`} startColor="#3547D7" stopColor="#713DBD" x1="1" y1="0" x2="0" y2="1" />
+          <Gradient id={`cyablu${this.id}`} startColor="#713DBD" stopColor="#D91E5D" x1="1" y1="1" x2="0" y2="0" />
+          <Gradient id={`blumag${this.id}`} startColor="#D91E5D" stopColor="#EB0021" x1="0" y1="1" x2="0" y2="0" />
+          <Gradient id={`magred${this.id}`} startColor="#EB0021" stopColor="#EB001E" x1="0" y1="1" x2="1" y2="0" />
         </defs>
 
         <g fill="none" strokeWidth="15" transform="translate(100,100)" visibility="hidden"
            ref={ g => this.g = d3.select(g) }>
-          <path d="M 0,-100 A 100,100 0 0,1 86.6,-50" stroke="url(#redyel)" />
-          <path d="M 86.6,-50 A 100,100 0 0,1 86.6,50" stroke="url(#yelgre)" />
-          <path d="M 86.6,50 A 100,100 0 0,1 0,100" stroke="url(#grecya)" />
-          <path d="M 0,100 A 100,100 0 0,1 -86.6,50" stroke="url(#cyablu)" />
-          <path d="M -86.6,50 A 100,100 0 0,1 -86.6,-50" stroke="url(#blumag)" />
-          <path d="M -86.6,-50 A 100,100 0 0,1 0,-100" stroke="url(#magred)" />
+          <path d="M 0,-100 A 100,100 0 0,1 86.6,-50" stroke={`url(#redyel)${this.id}`} />
+          <path d="M 86.6,-50 A 100,100 0 0,1 86.6,50" stroke={`url(#yelgre)${this.id}`} />
+          <path d="M 86.6,50 A 100,100 0 0,1 0,100" stroke={`url(#grecya)${this.id}`} />
+          <path d="M 0,100 A 100,100 0 0,1 -86.6,50" stroke={`url(#cyablu)${this.id}`} />
+          <path d="M -86.6,50 A 100,100 0 0,1 -86.6,-50" stroke={`url(#blumag)${this.id}`} />
+          <path d="M -86.6,-50 A 100,100 0 0,1 0,-100" stroke={`url(#magred)${this.id}`} />
 
           <circle ref={ circle => this.circle = d3.select(circle) } stroke="red" { ...{ strokeWidth, r } } />
           <path ref={ path => this.path = d3.select(path) } fill="#1C1C1C" />
