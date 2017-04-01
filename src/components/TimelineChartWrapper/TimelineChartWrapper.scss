@@ -23,7 +23,7 @@
 
 .timeline-chart-wrapper {
   background: $darkBackground;
-  height: 200px;
+  max-height: 200px;
   color: $white;
   display: flex;
   font-family: Geogrotesque, serif;

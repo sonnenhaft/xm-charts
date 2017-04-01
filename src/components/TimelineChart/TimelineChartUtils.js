@@ -66,11 +66,14 @@ export const renderPath = ({ td, min, max, linePath, data, x, y, chartData }) =>
   td(linePath).attr('d', d3.line().x(x).y(y).curve(d3.curveBundle.beta(0.9))(data))
 }
 
-export const renderCircles = ({ g, data, x, height, duration, bulkLines, actions }) => {
+export const renderCircles = ({ g, data, x, height, duration, bulkLines, actions, isToggled }) => {
   const firstInSubnet = data.filter(({ firstInSubnet }) => firstInSubnet)
   const lastInSubnet = data.filter(({ lastInSubnet }) => lastInSubnet)
   let radius = 8
   height = height + radius * 2
+  if (isToggled) {
+    height = 22
+  }
 
   g.bindData('g.bulkBlock', bulkLines.concat(firstInSubnet).concat(lastInSubnet), {
     transform: d => `translate(${x(d)}, ${-radius * 2})`,

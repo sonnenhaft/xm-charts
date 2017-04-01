@@ -10,12 +10,9 @@
     align-items: center;
     display: flex;
     justify-content: center;
-    padding-top: 10px;
-    max-height: 110px;
-    transition: max-height 0.5s linear;
+    height: 150px;
     &.stats-hidden {
-      max-height: 0;
-      position: absolute;
+      display: none;
     }
     & > span {
       align-items: center;

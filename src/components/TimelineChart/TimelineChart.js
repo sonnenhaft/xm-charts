@@ -47,22 +47,23 @@ export default class TimelineChart extends Component {
     window.removeEventListener('resize', this.onWindowResize)
   }
 
-  componentWillReceiveProps ({ zoomFactor }) {
+  componentWillReceiveProps ({ zoomFactor, isToggled }) {
     if (this.state.zoomFactor !== zoomFactor) {
       this.isZoomDisabled = true
       this.zoomBehavior.scaleTo(this.zoomRect, zoomFactor)
       this.setState({ zoomFactor, noDuration: true })
       this.isZoomDisabled = false
+    } else if (this.props.isToggled !== isToggled) {
+      this.setState({ noDuration: true })
     }
   }
 
-  shouldComponentUpdate ({ chartData, isToggled }, { noDuration, zoomFactor, tooltipData }) {
+  shouldComponentUpdate ({ chartData }, { noDuration, zoomFactor, tooltipData }) {
     const { state, props } = this
     return props.chartData !== chartData
       || (noDuration && !state.noDuration)
       || state.zoomFactor !== zoomFactor
       || state.tooltipData !== tooltipData
-      || props.isToggled !== isToggled
   }
 
   componentWillUpdate ({ chartData }) {
@@ -89,7 +90,7 @@ export default class TimelineChart extends Component {
     const realWidth = this.svg.parentNode.clientWidth
     let realHeight = Math.min(Math.max(100, this.svg.parentNode.clientHeight), 200)
     if (this.props.isToggled) {
-      realHeight = 50;
+      realHeight = 50
     }
     const width = realWidth - this.marginLeft - right
     const height = Math.max(realHeight - top - bottom, 0)
@@ -101,7 +102,7 @@ export default class TimelineChart extends Component {
     zoomBehavior.translateExtent([[0, 0], [width, height]]).extent([[0, 0], [width, height]])
     brushBehavior.extent([[0, 0], [width, height]])
 
-    zoomRect.attrs({ width, height })
+    zoomRect.attrs({ width, height: height + top, y: -top })
 
     const currentZoom = d3.zoomTransform(this.zoomRect.node())
     xScale.domain(currentZoom.rescaleX(xScale).domain())
@@ -112,7 +113,7 @@ export default class TimelineChart extends Component {
 
     let translate = (x, y) => ({ transform: `translate(${x}, ${y})` })
     this.g.attrs(translate(this.marginLeft, TimelineChart.margin.top))
-    td(this.brushGroup).attr('transform', `translate(0,${  this.isToggled ? height + 5 : height + 40  })`)
+    td(this.brushGroup).attr('transform', `translate(0,${  this.props.isToggled ? height + 13 : height + 40  })`)
     this.brushBack.attrs({ width: realWidth })
     this.brushLine.attrs({ width })
     td(this.xAxis).attrs(translate(0, realHeight - 57)).call(d3.axisBottom(xScale))
@@ -124,10 +125,10 @@ export default class TimelineChart extends Component {
     let filterVisible = ({ date }) => min <= date && date <= max
     const data = chartData.filter(filterVisible)
 
-    let prevGroupWidth = 20 / currentZoom.k;
+    let prevGroupWidth = 20 / currentZoom.k
     if (this.prevGroupWidth !== prevGroupWidth) {
       this.prevGroupWidth = prevGroupWidth
-      this.composedData = composeCircles(chartData, width,  prevGroupWidth)
+      this.composedData = composeCircles(chartData, width, prevGroupWidth)
     }
 
     let { bulkLines, redLines, blueLines } = this.composedData
@@ -135,6 +136,7 @@ export default class TimelineChart extends Component {
     redLines = redLines.filter(filterVisible)
     blueLines = blueLines.filter(filterVisible)
     const lineAttrs = { width: 2, height: 10, 'pointer-events': 'none' }
+    this.axises.attr('visibility', this.props.isToggled ? 'hidden' : 'visible')
     const x = ({ date }) => xScale(date)
     const y = ({ index }) => yScale(index)
     this.smalRects.bindData(`rect.${styles['blue-line']}`, blueLines, { x, y, ...lineAttrs }, duration)
@@ -154,7 +156,8 @@ export default class TimelineChart extends Component {
         }
       },
     }
-    renderCircles({ g, data, x, height, duration, bulkLines, actions })
+    let isToggled = this.props.isToggled
+    renderCircles({ g, data, x, height, duration, bulkLines, actions, isToggled })
     const { brusher, brushCircle } = this
     updateBrush({ brusher, brushBehavior, brushCircle, xScale, currentZoom, width })
   }
@@ -242,7 +245,7 @@ export default class TimelineChart extends Component {
   onWindowResize = () => this.setState({ noDuration: true })
 
   render () {
-    const { isToggled, state: { tooltipData = {} } } = this
+    const { props: { isToggled }, state: { tooltipData = {} } } = this
     return <div style={ { position: 'relative', width: '100%' } }>
       <svg ref={ svg => {
         this.d3svg = d3.select(svg)
