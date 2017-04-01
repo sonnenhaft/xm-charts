@@ -6,13 +6,13 @@ import TooltipContentBlock from '../common/TooltipContent/TooltipContent'
 import { composeCircles, updateBrush, renderCircles, renderPath } from './TimelineChartUtils'
 
 export default class TimelineChart extends Component {
-  static margin = { top: 30, right: 10, bottom: 75, left: 30 }
+  static margin = { top: 30, right: 10, bottom: 60, left: 30 }
   static propTypes = {
     zoomFactor: PropTypes.number,
     chartData: PropTypes.arrayOf(PropTypes.object).isRequired,
     onZoomed: PropTypes.func.isRequired,
   }
-  static defaultProps = { zoomFactor: 1 };
+  static defaultProps = { zoomFactor: 1, isToggled: true };
 
   constructor (props) {
     super(props)
@@ -56,12 +56,13 @@ export default class TimelineChart extends Component {
     }
   }
 
-  shouldComponentUpdate ({ chartData }, { noDuration, zoomFactor, tooltipData }) {
+  shouldComponentUpdate ({ chartData, isToggled }, { noDuration, zoomFactor, tooltipData }) {
     const { state, props } = this
     return props.chartData !== chartData
       || (noDuration && !state.noDuration)
       || state.zoomFactor !== zoomFactor
       || state.tooltipData !== tooltipData
+      || props.isToggled !== isToggled
   }
 
   componentWillUpdate ({ chartData }) {
@@ -86,7 +87,10 @@ export default class TimelineChart extends Component {
 
     this.marginLeft = left
     const realWidth = this.svg.parentNode.clientWidth
-    const realHeight = Math.min(Math.max(100, this.svg.parentNode.clientHeight), 200)
+    let realHeight = Math.min(Math.max(100, this.svg.parentNode.clientHeight), 200)
+    if (this.props.isToggled) {
+      realHeight = 50;
+    }
     const width = realWidth - this.marginLeft - right
     const height = Math.max(realHeight - top - bottom, 0)
     Object.assign(this, { width, height, realWidth, realHeight })
@@ -108,10 +112,10 @@ export default class TimelineChart extends Component {
 
     let translate = (x, y) => ({ transform: `translate(${x}, ${y})` })
     this.g.attrs(translate(this.marginLeft, TimelineChart.margin.top))
-    td(this.brushGroup).attr('transform', `translate(0,${  this.isToggled ? height + 5 : height + 50 + 5   })`)
+    td(this.brushGroup).attr('transform', `translate(0,${  this.isToggled ? height + 5 : height + 40  })`)
     this.brushBack.attrs({ width: realWidth })
     this.brushLine.attrs({ width })
-    td(this.xAxis).attrs(translate(0, height)).call(d3.axisBottom(xScale))
+    td(this.xAxis).attrs(translate(0, realHeight - 57)).call(d3.axisBottom(xScale))
     td(this.d3svg).attr('height', this.realHeight)
     td(this.yAxis).call(d3.axisLeft(yScale).ticks(5, '%').tickSize(-width)).selectAll('.tick')
       .attr('class', (date, idx) => `tick ${(idx === 4 ? styles['extra-white'] : '')}`)
@@ -120,9 +124,10 @@ export default class TimelineChart extends Component {
     let filterVisible = ({ date }) => min <= date && date <= max
     const data = chartData.filter(filterVisible)
 
-    if (!this.prevZoomFactor || this.prevZoomFactor !== this.state.zoomFactor) {
-      this.prevZoomFactor = currentZoom.k
-      this.composedData = composeCircles(chartData, width, 20,  this.prevZoomFactor)
+    let prevGroupWidth = 20 / currentZoom.k;
+    if (this.prevGroupWidth !== prevGroupWidth) {
+      this.prevGroupWidth = prevGroupWidth
+      this.composedData = composeCircles(chartData, width,  prevGroupWidth)
     }
 
     let { bulkLines, redLines, blueLines } = this.composedData
@@ -247,13 +252,13 @@ export default class TimelineChart extends Component {
         <rect width="100%" height="100%" className={ styles['black-background'] } />
         <g ref={ g => this.brushGroup = d3.select(g) }>
           <rect fill="#252525" height="50" ref={ g => this.brushBack = d3.select(g) } />
-          {isToggled && <rect height="20" fill="#252525" transform="translate(0,-20)" width="100%" />}
-          <g transform={ `translate(${this.marginLeft},20)` }>
-            <g ref={ g => this.brusher = d3.select(g) } transform="translate(0,-20)" />
+          {isToggled && <rect height="20" fill="#252525" transform="translate(0,-15)" width="100%" />}
+          <g transform={ `translate(${this.marginLeft},15)` }>
+            <g ref={ g => this.brusher = d3.select(g) } transform="translate(0,-15)" />
             <rect ref={ g => this.brushLine = d3.select(g) }
-                  pointerEvents="none" height="7" rx="3" ry="3" fill="#141414" />
+                  pointerEvents="none" height="5" rx="3" ry="3" fill="#141414" />
             <rect className={ styles['brush-circle'] } ref={ g => this.brushCircle = d3.select(g) }
-                  pointerEvents="none" height="10" rx="5" ry="5" />
+                  pointerEvents="none" height="9" rx="5" ry="5" />
           </g>
         </g>
         <g ref={ g => this.g = d3.select(g) } fill="white">

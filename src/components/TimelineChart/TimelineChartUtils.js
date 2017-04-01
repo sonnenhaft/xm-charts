@@ -2,14 +2,13 @@ import * as d3 from 'd3'
 import '../common/d3.shims'
 import styles from './TimelineChart.scss'
 
-export const composeCircles = (data, width, groupWidth, k) => {
+export const composeCircles = (data, width, groupWidth) => {
   const blueLines = data.filter(({ compromized }) => !compromized)
   const redLines = data.filter(({ compromized }) => compromized)
 
-  const scaledGroupWidth = groupWidth / k
   const rounderRange = d3.scaleQuantile()
     .domain([redLines[0].date, redLines[redLines.length - 1].date])
-    .range(d3.range(0, width / scaledGroupWidth))
+    .range(d3.range(0, width / groupWidth))
 
   const groupedRedLines = redLines.reduce((map, item) => {
     const groupedRedLines = rounderRange(item.date)
@@ -24,12 +23,11 @@ export const composeCircles = (data, width, groupWidth, k) => {
   const bulkLines = Object.keys(groupedRedLines)
     .map(key => groupedRedLines[key])
     .filter(items => items.length > 1)
-    .filter(items =>  items.length > 2 || items[1].date - items[0].date <= scaledGroupWidth)
+    .filter(items =>  items.length > 2 || items[1].date - items[0].date <= groupWidth)
     .map(items => {
       const date = Math.round(d3.sum(items, ({ date }) => date) / items.length)
       return { date, value: items.length, id: date }
     })
-
 
   return { bulkLines, redLines, blueLines }
 }
