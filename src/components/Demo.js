@@ -5,9 +5,9 @@ import generateDemoData from './TimelineChartWrapper/generateDemoData'
 const Demo = () => (
   <div>
     <br />
-    <TimelineChartWrapper data={ generateDemoData(true) } />
+    <TimelineChartWrapper data={generateDemoData(true)} />
     <br />
-    <TimelineChartWrapper data={ generateDemoData() } />
+    <TimelineChartWrapper data={generateDemoData()} />
     <style>{`
       body {
         margin: 0;

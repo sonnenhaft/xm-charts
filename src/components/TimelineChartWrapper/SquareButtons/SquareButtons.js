@@ -1,26 +1,26 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 
 import overviewSvgIcon from '../../../assets/icons/overview.svg'
 import triangleSvgIcon from '../../../assets/icons/asset-downloaded.svg'
 import styles from './SquareButtons.scss'
 import customArrowTop from './custom-arrow-top.svg'
 
-const Button = ({ onClick, children: __html, className }) => {
+const Button = ({onClick, children: __html, className}) => {
   className=  `${className } ${   styles['square-button']}`
-  return <button { ...{ className, onClick } } dangerouslySetInnerHTML={ { __html } } />
+  return <button {...{className, onClick}} dangerouslySetInnerHTML={{__html}} />
 }
 
 export default class SquareButtons extends Component {
-  render () {
-    const { onToggled, isToggled } = this.props
+  render() {
+    const {onToggled, isToggled} = this.props
 
-    return <div className={ styles['square-buttons-block'] }>
+    return <div className={styles['square-buttons-block']}>
       <div />
       {!isToggled && <div>
-        <Button className={ styles['active'] }>{overviewSvgIcon}</Button>
+        <Button className={styles['active']}>{overviewSvgIcon}</Button>
         <Button>{triangleSvgIcon}</Button>
       </div>}
-      <Button onClick={ onToggled }>{customArrowTop}</Button>
+      <Button onClick={onToggled}>{customArrowTop}</Button>
     </div>
   }
 }

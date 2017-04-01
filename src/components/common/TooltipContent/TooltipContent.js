@@ -1,5 +1,5 @@
-import { timeFormat } from 'd3'
-import React, { Component, PropTypes } from 'react'
+import {timeFormat} from 'd3'
+import React, {Component, PropTypes} from 'react'
 import styles from './TooltipContent.scss'
 import ShareButtons from '../ShareButtons/ShareButtons'
 
@@ -14,27 +14,27 @@ export default class TooltipContent extends Component {
       value: PropTypes.number,
     }),
   }
-  static defaultProps = { tooltipData: {} };
+  static defaultProps = {tooltipData: {}};
 
-  render () {
-    const { tooltipData } = this.props
-    return <div className={ styles['tooltip-content'] }>
+  render() {
+    const {tooltipData} = this.props
+    return <div className={styles['tooltip-content']}>
       {tooltipData.name && <div>
         <div>
-          <div className={ styles['title'] }>{tooltipData.name}</div>
-          <div className={ styles['content'] }>
+          <div className={styles['title']}>{tooltipData.name}</div>
+          <div className={styles['content']}>
             <div>
-              <span className={ styles['title'] }>Method: </span>
+              <span className={styles['title']}>Method: </span>
               <span>{tooltipData.method}</span>
             </div>
             <div>
-              <span className={ styles['title'] }>Source: </span>
+              <span className={styles['title']}>Source: </span>
               <span>{tooltipData.source}</span>
             </div>
           </div>
-          <div className={ styles['tooltip-event-icons'] }>
+          <div className={styles['tooltip-event-icons']}>
             <ShareButtons type="vertical" />
-            <div className={ styles['separator'] } />
+            <div className={styles['separator']} />
             <b>{timeFormat('%H:%M:%S')(tooltipData.date)}</b>
           </div>
         </div>

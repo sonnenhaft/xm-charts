@@ -4,18 +4,18 @@ import {
 } from 'd3'
 
 const methods = {
-  styles: function (stylesAsObject) {
+  styles: function(stylesAsObject) {
     Object.keys(stylesAsObject).forEach(key => {
       this.style(key, stylesAsObject[key])
     })
     return this
   },
-  moveToFront: function () {
-    return this.each(function () {
+  moveToFront: function() {
+    return this.each(function() {
       this.parentNode.appendChild(this)
     })
   },
-  attrs: function (object, noEvents = false) {
+  attrs: function(object, noEvents = false) {
     const mouseEvents = ['mouseover', 'mouseout']
     Object.keys(object).forEach(key => {
       const value = object[key]
@@ -31,14 +31,14 @@ const methods = {
     })
     return this
   },
-  singleBind: function (tagAndClass, opt_attrs, duration) {
+  singleBind: function(tagAndClass, opt_attrs, duration) {
     this.bindData(tagAndClass, d => [d], opt_attrs, duration)
     return this
   },
-  bindData: function (tagAndClass, data, opt_attrs, duration) {
+  bindData: function(tagAndClass, data, opt_attrs, duration) {
     const [tag, className] = tagAndClass.split('.')
     const selector = className ? `${tag}.${className}` : tag
-    const enteredSelection = this.selectAll(selector).data(data, ({ id }) => id)
+    const enteredSelection = this.selectAll(selector).data(data, ({id}) => id)
     enteredSelection.exit().remove()
     const mergedSelection = enteredSelection.enter().append(tag)
       .attr('class', className)

@@ -10,7 +10,7 @@ export default isYearly => {
 
   for (let campainId = 1; campainId < CAMPAINS_NUMBER; campainId++) {
     let events = []
-    const campain = { id: campainId, events }
+    const campain = {id: campainId, events}
 
     let maxDate = new Date()
     const DAY = 60*60*1000*24
@@ -19,18 +19,18 @@ export default isYearly => {
     for (let eventId = 1; eventId < EVENTS_IN_CAMPAIN; eventId++) {
       events.push({
         id: `${eventId  }_${  campainId}`,
-        name: loremIpsum({ count: 2, units:'words' }).split(' ').join('-'),
-        method: loremIpsum({ count: 2, units:'words' }),
-        source: loremIpsum({ count: 2, units:'words' }),
+        name: loremIpsum({count: 2, units:'words'}).split(' ').join('-'),
+        method: loremIpsum({count: 2, units:'words'}),
+        source: loremIpsum({count: 2, units:'words'}),
         campainId,
         flag: chance.pickone(['asset', 'deviceSvgIcon']),
         compromized: chance.bool(),
-        date: chance.hammertime({ min: minDate, max: maxDate }),
+        date: chance.hammertime({min: minDate, max: maxDate}),
       })
     }
     events = events.sort((a, b) => a.date > b.date ? 1 : -1)
 
-    const compromizedEvents = events.filter(({ compromized }) => compromized)
+    const compromizedEvents = events.filter(({compromized}) => compromized)
     if (compromizedEvents.length) {
       const firstCompromized = compromizedEvents[0]
       firstCompromized.firstInSubnet = true
