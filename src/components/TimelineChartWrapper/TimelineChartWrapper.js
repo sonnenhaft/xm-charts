@@ -4,8 +4,9 @@ import styles from './TimelineChartWrapper.scss'
 import TimelineChart from '../TimelineChart/TimelineChart'
 import SquareButtons from './SquareButtons/SquareButtons'
 import ControlPanel from './ControlPanel/ControlPanel'
+import GlobalKeyDetector from './GlobalKeyDetector'
 
-const DAY = 60*60*24*1000
+const DAY = 60 * 60 * 24 * 1000
 
 export default class TimelineChartWrapper extends Component {
   DEFAULT_ZOOM = 2
@@ -20,25 +21,45 @@ export default class TimelineChartWrapper extends Component {
   onTimeChanged = currentTime => this.setState({currentTime})
   onReset = () => this.setState({zoomFactor: 1})
 
-  onNext = () => this.setState({currentTime: this.state.currentTime + DAY})
-  onPrev = () => this.setState({currentTime: this.state.currentTime - DAY})
+  onNext = () => this.moveOnDaysNumber(1)
+  onPrev = () => this.moveOnDaysNumber(-1)
 
-  onLongNext = () => this.setState({currentTime: this.state.currentTime + 2*DAY})
-  onLongPrev = () => this.setState({currentTime: this.state.currentTime - 2*DAY})
+  onLongNext = () => this.moveOnDaysNumber(2)
+  onLongPrev = () => this.moveOnDaysNumber(-2)
+
+  moveOnDaysNumber(count) {
+    this.setState({currentTime: this.state.currentTime + count * DAY})
+  }
 
   onPlay = () => console.log('onPlay')
   onResetPosition = () => console.log('onResetPosition')
+  onKeyDown = e => {
+    const code = e.code || `Arrow${e.key}`
+    if (code === 'ArrowRight') {
+      this.onNext()
+    } else if (code === 'ArrowLeft') {
+      this.onPrev()
+    } else if (code === 'ArrowUp') {
+      this.onZoomed(this.state.zoomFactor * 2)
+    } else if (code === 'ArrowDown') {
+      this.onZoomed(this.state.zoomFactor / 2)
+    }
+    if (code.indexOf('Arrow') !== -1) {
+      e.preventDefault()
+    }
+  }
 
   render() {
     const {isToggled, zoomFactor, currentTime} = this.state
-    const chartData = this.props.data
-    const {onTimeChanged, onToggled, onZoomed} = this
+    const {data: chartData} = this.props
+    const {onTimeChanged, onToggled, onZoomed, onKeyDown} = this
     const {onReset, onPrev, onNext, onLongPrev, onLongNext, onPlay, onResetPosition} = this
     const controlActions = {onReset, onPrev, onNext, onLongPrev, onLongNext, onPlay, onResetPosition}
-    return <div className={styles['timeline-chart-wrapper']}>
+
+    return <GlobalKeyDetector className={styles['timeline-chart-wrapper']} onKeyDown={onKeyDown}>
       <ControlPanel {...{isToggled, zoomFactor, currentTime, ...controlActions}} />
       <TimelineChart {...{isToggled, currentTime, chartData, onZoomed, onTimeChanged, zoomFactor}} />
       <SquareButtons {...{onToggled, isToggled}} />
-    </div>
+    </GlobalKeyDetector>
   }
 }

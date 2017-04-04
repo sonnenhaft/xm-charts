@@ -22,6 +22,9 @@ export default class TooltipContent extends Component {
       {tooltipData.name && <div>
         <div>
           <div className={styles['title']}>{tooltipData.name}</div>
+          <div className={styles['tooltip-event-icons']}>
+            <ShareButtons type="vertical" />
+          </div>
           <div className={styles['content']}>
             <div>
               <span className={styles['title']}>Method: </span>
@@ -32,9 +35,7 @@ export default class TooltipContent extends Component {
               <span>{tooltipData.source}</span>
             </div>
           </div>
-          <div className={styles['tooltip-event-icons']}>
-            <ShareButtons type="vertical" />
-            <div className={styles['separator']} />
+          <div>
             <b>{timeFormat('%H:%M:%S')(tooltipData.date)}</b>
           </div>
         </div>

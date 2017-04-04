@@ -10,7 +10,7 @@
     font-family: geogrotesque, serif;
     font-weight: bold;
   }
-  font-size: 10px;
+  font-size: 12px;
   padding: 8px 12px;
   white-space: nowrap;
 
@@ -22,15 +22,11 @@
 
   b {
     font-family: geogrotesque, serif;
-    font-weight: 700;
+    font-weight: bold;
+    font-size: 18px;
   }
 
   .content {
     margin: 4px 0
-  }
-
-  .separator {
-    width: 10px;
-    height: 1px;
   }
 }

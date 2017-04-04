@@ -47,8 +47,6 @@ export default class TimelineChart extends Component {
         timelineChart.brusher.call(timelineChart.brushBehavior.move, [center - halfWidth, center + halfWidth])
       })
     }, 0)
-
-    window.addEventListener('resize', this.onWindowResize)
   }
 
   componentWillUnmount() {
