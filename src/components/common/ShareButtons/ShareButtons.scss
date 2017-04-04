@@ -40,14 +40,23 @@
     }
   }
 
+  &.vertical-black .share-button {
+    flex-direction: column-reverse;
+    margin: 0 4px;
+    .icon {
+      margin: 0;
+    }
+  }
+
+  &.vertical-black,
   &.vertical {
     flex-direction: row;
     .icon {
       padding: 0;
-      & + span {
-        display: none;
-      }
     }
+  }
+  &.vertical .icon + span {
+    display: none;
   }
 }
 

@@ -23,7 +23,7 @@ export const composeCircles = (data, width, groupWidth) => {
   const bulkLines = Object.keys(groupedRedLines)
     .map(key => groupedRedLines[key])
     .filter(items => items.length > 1)
-    .filter(items =>  items.length > 2 || items[1].date - items[0].date <= groupWidth)
+    .filter(items => items.length > 2 || items[1].date - items[0].date <= groupWidth)
     .map(items => {
       const date = Math.round(d3.sum(items, ({date}) => date) / items.length)
       return {date, value: items.length, id: date}
@@ -32,19 +32,20 @@ export const composeCircles = (data, width, groupWidth) => {
   return {bulkLines, redLines, blueLines}
 }
 
-export const updateBrush = ({brusher, brushBehavior, brushCircle, xScale, currentZoom, width}) => {
-  brusher.call(brushBehavior).call(brushBehavior.move, xScale.range().map(currentZoom.invertX, currentZoom))
+export const updateBrush = ({brusher, brushBehavior, brushCircle, xScale, currentZoom, width, isToggled}) => {
+  brusher.call(brushBehavior)
   const brusherSelection = brusher.select('.selection')
+  brusher.call(brushBehavior.move, xScale.range().map(currentZoom.invertX, currentZoom))
   const brusherWidth = brusherSelection.attr('width') * 1
   const tooBig = brusherWidth === width
   brusherSelection.attrs({
     stroke: 'none',
+    transform: `translate(0, ${isToggled ? -15: 0})`,
     'fill-opacity': tooBig ? 0 : 0.3,
     'pointer-events': tooBig ? 'none' : 'all',
   })
   brushCircle.attrs({
-    width: 10,
-    transform: `translate(${brusherSelection.attr('x') / 1 + (tooBig ? 0 : (brusherWidth - 10) / 2) },-2)`,
+    transform: `translate(${brusherSelection.attr('x') / 1 + (tooBig ? 0 : brusherWidth / 2) },0)`,
   })
   brusher.selectAll('.handle').attr('pointer-events', brusherWidth < 16 ? 'none' : 'all')
 }
@@ -66,44 +67,37 @@ export const renderPath = ({td, min, max, linePath, data, x, y, chartData}) => {
   td(linePath).attr('d', d3.line().x(x).y(y).curve(d3.curveBundle.beta(0.9))(data))
 }
 
-export const renderCircles = ({g, data, x, height, duration, bulkLines, actions, isToggled}) => {
+export const renderCircles = ({g, data, x, height, duration, bulkLines, actions, isToggled, opacity}) => {
   const firstInSubnet = data.filter(({firstInSubnet}) => firstInSubnet)
   const lastInSubnet = data.filter(({lastInSubnet}) => lastInSubnet)
-  let radius = 8
-  height = height + radius * 2
-  if (isToggled) {
-    height = 22
-  }
+  const radius = 8
+  height = isToggled ? 22 : height + radius * 2
 
-  g.bindData('g.bulkBlock', bulkLines.concat(firstInSubnet).concat(lastInSubnet), {
-    transform: d => `translate(${x(d)}, ${-radius * 2})`,
-    ...actions,
-  }, duration).singleBind('rect.white-shadow-rect', {
-      fill: '#EB001E',
-      'pointer-events': 'none',
-      opacity: ({firstInSubnet}) => firstInSubnet ? 0.2 : 0,
-      width: (radius + 1) * 2,
-      height,
-      transform: `translate(${-(radius + 1)})`,
-    },
-    duration
-  ).singleBind('circle.circleWrapper', {
-    stroke: '#EB001E',
-    fill: 'black',
-    'stroke-opacity': ({value}) => value ? 0.3 : 1,
-    'stroke-width': ({value}) => !value ? 2 : 4,
-    r: radius,
-  }).singleBind(`circle.${styles['red-bulk-circle']}`, {
-    r: ({value}) => !value ? radius / 2 : radius,
-  }).singleBind(`rect.${styles['red-bulk-line']}`, {
-      width: radius / 4,
-      height: height - radius / 2 - 2,
-      'pointer-events': 'none',
-      transform: `translate(${-radius / 8}, ${radius - 1})`,
-    },
-    duration
-  ).singleBind(`text.${styles['circle-text']}`, {
-    transform: 'translate(0, 3)',
-    text: ({value}) => value,
+  const allCirclesData = bulkLines.concat(firstInSubnet).concat(lastInSubnet)
+  const enteredSelection = g.selectAll('.bulkBlock').data(allCirclesData, ({id}) => id)
+  enteredSelection.exit().remove()
+
+  const mergedSelection = enteredSelection.enter().append('g')
+    .attr('class', 'bulkBlock').html(({value}) => `<g>
+    <rect fill="#EB001E"  pointer-events="none" class="white-shadow-rect"
+        transform="translate(${-(radius + 1)})"    width="${(radius + 1) * 2}"></rect>
+     <circle class="circleWrapper" fill="#252525"  stroke-opacity="${value ? 0.3 : 1}"
+        stroke-width="${value ? 4 : 2}"  r="${radius}" stroke="#EB001E"></circle>
+     <circle class="${styles['red-bulk-circle']}" r="${value ? radius : radius / 2}" fill="#EB001E"></circle>
+     <rect class="${styles['red-bulk-line']}" width="${radius / 4}" pointer-events="none"
+        transform="translate(${-radius / 8}, ${radius - 1})" ></rect>
+     <text transform="translate(0, 3.5)" class="${styles['circle-text']}">${value || ''}</text>
+  </g>`)
+
+  const opt_attrs = {opacity, transform: d => `translate(${x(d)}, ${-radius * 2})`, ...actions}
+  const allElements = mergedSelection.attrs(opt_attrs).merge(enteredSelection)
+  allElements.transition().duration(duration).attrs(opt_attrs, true)
+
+  const td = selection => selection.transition().duration(duration)
+  allElements.each(function() {
+    const g = d3.select(this)
+    const {firstInSubnet} = g.datum()
+    td(g.select('.white-shadow-rect')).attrs({opacity: firstInSubnet ? 0.2 : 0, height})
+    td(g.select(`.${styles['red-bulk-line']}`)).attrs({height: height - radius / 2 - 2})
   })
 }

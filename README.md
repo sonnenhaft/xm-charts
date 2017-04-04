@@ -29,13 +29,14 @@ This should start the server on port 8087.
 
 ### TODO List:
 
-1. Add x scale value (days years) in right bottom corner.
-2. Rotate toggle button after toggling
-3. Create and add 4 new buttons for playing.
-4. Create zoom indicator.
-5. Create time indicator.
+0. Update popup
+1. add forward backward action
+2. add long forward backward action
+3. Add x scale value (days years) in right bottom corner.
 
 After new req, apply actions for 2 left buttons:
 1. Create circles with: triangle and circle, weird circle, triangle.
 2. For button with shield apply switch to data instead of time
 3. For second button apply unknown action.
+4. Add custom grouping on big zooming
+5. Ask proper icons.

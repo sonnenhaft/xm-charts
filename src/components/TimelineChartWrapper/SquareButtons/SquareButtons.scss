@@ -9,6 +9,17 @@ $buttonWidth: 50px;
   width: $buttonWidth;
 }
 
+.no-top-border .square-button {
+  border-top: none;
+  svg {
+    transition: transform 0.3s ease-out;
+  }
+}
+
+.is-toggled .square-button svg {
+  transform: rotate(180deg);
+}
+
 .square-button {
   background: $buttonGrey;
   border: 1px solid $buttonBorder;
@@ -18,6 +29,7 @@ $buttonWidth: 50px;
   width: $buttonWidth;
   &:hover, &.active {
     background: $buttonBlue;
+    border-color: $buttonBlue;
   }
   &:focus {
     outline: none;

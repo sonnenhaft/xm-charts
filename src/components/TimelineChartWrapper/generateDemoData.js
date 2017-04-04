@@ -24,7 +24,7 @@ export default isYearly => {
         source: loremIpsum({count: 2, units:'words'}),
         campainId,
         flag: chance.pickone(['asset', 'deviceSvgIcon']),
-        compromized: chance.bool(),
+        compromized: chance.bool({likelihood : 25}),
         date: chance.hammertime({min: minDate, max: maxDate}),
       })
     }

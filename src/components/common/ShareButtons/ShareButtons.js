@@ -8,7 +8,7 @@ import networkSvgIcon from '../../../assets/icons/asset-network.svg'
 const Icon = ({children: __html}) => <span className={styles['icon']} dangerouslySetInnerHTML={{__html}} />
 
 export default class ShareButtons extends Component {
-  static propTypes = {type: PropTypes.oneOf(['vertical', 'dark-icons', ''])}
+  static propTypes = {type: PropTypes.oneOf(['vertical', 'dark-icons', '', 'vertical-black'])}
   static defaultProps = {type: ''};
 
   render() {
@@ -26,6 +26,9 @@ export default class ShareButtons extends Component {
         <Icon>{networkSvgIcon}</Icon>
         <span>32</span>
       </div>
+      {this.props.children && <div className={styles['share-button']}>
+        {this.props.children}
+      </div>}
     </div>
   }
 }

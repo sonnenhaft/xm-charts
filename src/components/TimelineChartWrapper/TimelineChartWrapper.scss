@@ -1,18 +1,27 @@
 @import "../Colors";
 
 @font-face {
-  font-family: Geogrotesque;
-  src: url('../../assets/fonts/Geogtq-Rg.otf');
-}
-
-@font-face {
-  font-family: GeogrotesqueBold;
+  font-family: geogrotesque;
   src: url('../../assets/fonts/Geogtq-Bd.otf');
+  font-weight: bold;
 }
 
 @font-face {
-  font-family: GeogrotesqueSemiBold;
+  font-family: geogrotesque;
   src: url('../../assets/fonts/Geogtq-Md.otf');
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: geogrotesque;
+  src: url('../../assets/fonts/Geogtq-Rg.otf');
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: geogrotesque;
+  src: url('../../assets/fonts/Geogtq-Ul.otf');
+  font-weight:  normal;
 }
 
 @font-face {
@@ -26,8 +35,8 @@
   max-height: 200px;
   color: $white;
   display: flex;
-  font-family: Geogrotesque, serif;
+  font-family: geogrotesque, serif;
+  font-weight: 400;
   font-size: 12px;
-  overflow: hidden;
   position: relative;
 }

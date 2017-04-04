@@ -72,19 +72,21 @@
   display: flex;
   align-content: space-between;
   justify-content: space-around;
-  font-family: GeogrotesqueBold, sans-serif;
+  font-family: geogrotesque, serif;
+  font-weight: bold;
   font-size: 10px;
   width: 82px;
   margin: auto;
 }
 
 .day-time {
-  font-family: Geogrotesque, sans-serif;
-  font-size: 16px;
+  font-family: geogrotesque, serif;
+  font-weight: normal;
+  font-size: 18px;
 }
 
 .day-time-wrapper {
-  width: 118px;
+  width: 117px;
   text-align: center;
 }
 
@@ -96,6 +98,17 @@
   background: $buttonGrey;
 }
 
+.left-buttons .play-action-button {
+  border-left: none;
+}
+.black-buttons .play-action-button{
+  background: none;
+  height: 75px;
+  &:nth-of-type(even) {
+    border-bottom: none;
+  }
+}
+
 .play-action-button {
   color: white;
   width: 50px;
@@ -105,9 +118,12 @@
   align-items: center;
   justify-content: center;
   z-index: 1;
-  border: none;
+  border: 1px solid #333;
+  border-top: none;
   background: $buttonGrey;
-
+  &.blacked {
+    background: black;
+  }
   &:hover, &.active {
     background: $buttonBlue;
     &:hover {
@@ -128,4 +144,56 @@
     stroke-width: 0;
     fill: $white;
   }
+}
+
+.small-circle-block {
+  width: 40px;
+  height: 50px;
+  margin-bottom: -10px;
+}
+
+.toggled-buttons-wrapper {
+  position: relative;
+  background: black;
+  height: 50px;
+  width: 50px;
+  text-align: center;
+  line-height: 47px;
+  border: none;
+  .middle-buttons {
+    display: flex;
+    border: 1px solid #333;
+    border-top: none;
+    .play-action-button {
+      border: none;
+    }
+  }
+  .play-action-button {
+    background: black;
+    border-width: 1px;
+    font-size: 7px;
+    border:none;
+    &:hover {
+      background: $buttonBlue;
+    }
+    width: 25px;
+    height: 25px;
+  }
+  .toggled-buttons {
+    position: absolute;
+    background: black;
+    display: flex;
+    transform: translate(-33.3%,-100%);
+    transition: opacity 0.5s ease-out;
+    opacity: 0;
+  }
+  &:hover{
+    .toggled-buttons {
+      opacity: 1;
+    }
+  }
+}
+
+.toggled-control {
+  width: 370px;
 }

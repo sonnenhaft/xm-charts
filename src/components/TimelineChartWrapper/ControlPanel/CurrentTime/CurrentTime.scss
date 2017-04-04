@@ -1,0 +1,24 @@
+@import "../../../Colors";
+
+.day-icon {
+  display: flex;
+  align-content: space-between;
+  justify-content: space-around;
+  font-family: geogrotesque, serif;
+  font-weight: bold;
+  font-size: 10px;
+  width: 82px;
+  margin: auto;
+}
+
+.day-time {
+  font-family: geogrotesque, serif;
+  font-weight: normal;
+  font-size: 18px;
+}
+
+.day-time-wrapper {
+  width: 117px;
+  text-align: center;
+}
+

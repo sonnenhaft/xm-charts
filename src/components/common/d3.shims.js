@@ -16,7 +16,7 @@ const methods = {
     })
   },
   attrs: function(object, noEvents = false) {
-    const mouseEvents = ['mouseover', 'mouseout']
+    const mouseEvents = ['mouseover', 'mouseout', 'click']
     Object.keys(object).forEach(key => {
       const value = object[key]
       if (key === 'text') {
@@ -29,10 +29,6 @@ const methods = {
         this.attr(key, value)
       }
     })
-    return this
-  },
-  singleBind: function(tagAndClass, opt_attrs, duration) {
-    this.bindData(tagAndClass, d => [d], opt_attrs, duration)
     return this
   },
   bindData: function(tagAndClass, data, opt_attrs, duration) {
