@@ -31,7 +31,6 @@ This should start the server on port 8087.
 
 1. Add jump to exact time.
 2. Add play functionality.
-3. Add x scale value (days years) in right bottom corner.
 
 Questions: 
 1. What are doing circles with triangles and squares inside, when to display them?

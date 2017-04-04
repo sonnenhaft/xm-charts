@@ -4,6 +4,7 @@ import styles from './TimelineChart.scss'
 import React, {PropTypes, Component} from 'react'
 import TooltipContentBlock from '../common/TooltipContent/TooltipContent'
 import {composeCircles, updateBrush, renderCircles, renderPath} from './TimelineChartUtils'
+import YearTextScale from './YearTextScale'
 
 export default class TimelineChart extends Component {
   static margin = {top: 30, right: 10, bottom: 60, left: 30}
@@ -47,6 +48,7 @@ export default class TimelineChart extends Component {
         timelineChart.brusher.call(timelineChart.brushBehavior.move, [center - halfWidth, center + halfWidth])
       })
     }, 0)
+    window.addEventListener('resize', this.onWindowResize)
   }
 
   componentWillUnmount() {
@@ -167,6 +169,12 @@ export default class TimelineChart extends Component {
       .attr('class', (date, idx) => `tick ${(idx === 4 ? styles['extra-white'] : '')}`)
 
     const [min, max] = xScale.domain()
+    td(this.axisLabel).attrs({
+      ...translate(width + 5, height + 20),
+      text: YearTextScale(max - min),
+      'text-anchor': 'end',
+    })
+
     let filterVisible = ({date}) => min <= date && date <= max
     const data = chartData.filter(filterVisible)
 
@@ -230,7 +238,6 @@ export default class TimelineChart extends Component {
       this.tooltipBlock.classed(styles['visible-tooltip'], false).transition().duration(750).style('opacity', 0)
     }, 10)
   }
-
   openTooltip = tooltipData => {
     if (this.campainSelected && !tooltipData.isEventSelected) {
       return
@@ -252,7 +259,6 @@ export default class TimelineChart extends Component {
         .transition().duration(100).styles({opacity: 1})
     })
   }
-
   onBrushed = () => {
     if (this.isBrushDisabled) {return}
 
@@ -272,7 +278,6 @@ export default class TimelineChart extends Component {
     this.zoomRect.call(this.zoomBehavior.transform, zoomPosition)
     this.isBrushing = false
   }
-
   onZoomChanged = () => {
     if (this.isZoomDisabled) { return }
     this.isZoomDisabled = true
@@ -309,6 +314,7 @@ export default class TimelineChart extends Component {
   render() {
     const {props: {isToggled}, state: {tooltipData = {}}} = this
     let backgroundClass = isToggled ? styles['toggled-background'] : styles['black-background']
+    let visibility = isToggled ? 'hidden' : 'visible'
     return <div style={{position: 'relative', width: '100%'}}>
       <svg ref={svg => {
         this.d3svg = d3.select(svg)
@@ -317,17 +323,18 @@ export default class TimelineChart extends Component {
            className={`${(isToggled ? styles['toggled'] : '')} ${styles['timeline-chart']}`}>
         <rect width="100%" height="100%" className={backgroundClass} />
         <g ref={g => this.brushLineGroup = d3.select(g)}>
-          <rect height="50" fill="#252525" width="100%" visibility={isToggled ? 'hidden' : 'visible'} />
+          <rect height="50" fill="#252525" width="100%" visibility={visibility} />
           <g transform={`translate(${this.marginLeft},15)`}>
             <rect ref={g => this.brushLine = d3.select(g)}
                   pointerEvents="none" height="5" rx="3" ry="3" fill="#141414" />
           </g>
         </g>
         <g ref={g => this.g = d3.select(g)} fill="white">
-          <g ref={g => this.axises = d3.select(g)} visibility={isToggled ? 'hidden' : 'visible'}>
+          <g ref={g => this.axises = d3.select(g)} visibility={visibility}>
             <g ref={g => this.xAxis = d3.select(g)} className={`${styles['axis']} ${styles['axis--x']}`} />
             <g ref={g => this.yAxis = d3.select(g)} className={`${styles['axis']} ${styles['axis--y']}`} />
             <path ref={g => this.linePath = d3.select(g)} className={styles['line-path']} />
+            <text ref={text => this.axisLabel = d3.select(text)} visibility={visibility} />
           </g>
           <rect ref={rect => this.zoomRect = d3.select(rect)} className={styles['zoom']} />
           <g ref={g => this.smalRects = d3.select(g)} transform="translate(0, -5)" />
