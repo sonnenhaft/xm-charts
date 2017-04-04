@@ -9,11 +9,11 @@ export default class TimelineChart extends Component {
   static margin = {top: 30, right: 10, bottom: 60, left: 30}
   static TOGGLED_MARGIN_LEFT = 15
   static propTypes = {
-    zoomFactor: PropTypes.number,
+    zoomFactor: PropTypes.number.isRequired,
+    isToggled: PropTypes.bool.isRequired,
     chartData: PropTypes.arrayOf(PropTypes.object).isRequired,
     onZoomed: PropTypes.func.isRequired,
   }
-  static defaultProps = {zoomFactor: 1, isToggled: true};
 
   updateMarginLeft({isToggled}) {
     this.marginLeft = isToggled ? TimelineChart.TOGGLED_MARGIN_LEFT : TimelineChart.margin.left
@@ -26,7 +26,7 @@ export default class TimelineChart extends Component {
     this.yScale = d3.scaleLinear().domain([0, 1])
     this.zoomBehavior = d3.zoom().scaleExtent([1, 1000 * 1000 * 1000]).on('zoom', this.onZoomChanged)
     this.brushBehavior = d3.brushX().on('brush end', this.onBrushed)
-    this.state = {noDuration: true, zoomFactor: props.zoomFactor}
+    this.state = {noDuration: true, zoomFactor: 1}
   }
 
   componentDidMount() {

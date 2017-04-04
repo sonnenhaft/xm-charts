@@ -19,12 +19,17 @@ const Button = ({onClick, children: __html, className, title}) => {
 
 export default class ControlPanel extends Component {
   static propTypes = {
-    isToggled: PropTypes.bool,
-    zoomFactor: PropTypes.number,
+    isToggled: PropTypes.bool.isRequired,
+    zoomFactor: PropTypes.number.isRequired,
     currentTime: PropTypes.number,
     onReset: PropTypes.func.isRequired,
+    onPrev: PropTypes.func.isRequired,
+    onNext: PropTypes.func.isRequired,
+    onLongPrev: PropTypes.func.isRequired,
+    onLongNext: PropTypes.func.isRequired,
+    onPlay: PropTypes.func.isRequired,
+    onResetPosition: PropTypes.func.isRequired,
   }
-  static defaultProps = {zoomFactor: 1, isToggled: false};
 
   render() {
     const {isToggled, zoomFactor, currentTime, onReset} = this.props
@@ -37,6 +42,8 @@ export default class ControlPanel extends Component {
       zoomFactorText = Math.round(zoomFactor)
     }
     zoomFactorText = `x${  zoomFactorText}`
+
+    const {onPrev, onNext, onLongPrev, onLongNext, onPlay, onResetPosition} = this.props
     return <div>
       {!isToggled && <div className={styles['timeline-control-block']}>
         <div />
@@ -55,20 +62,20 @@ export default class ControlPanel extends Component {
             </div>
           </div>
           <div className={`${styles['black-buttons']}`}>
-            <Button>{backwardLinedButtonSvgIcon}</Button>
-            <Button>{backwardButtonSvgIcon}</Button>
+            <Button onClick={onPrev}>{backwardLinedButtonSvgIcon}</Button>
+            <Button onClick={onLongPrev}>{backwardButtonSvgIcon}</Button>
           </div>
           <div className={`${styles['left-buttons']} ${styles['black-buttons']}`}>
-            <Button>{forwardLinedButtonSvgIcon}</Button>
-            <Button>{playButtonSvgIcon}</Button>
+            <Button onClick={onNext}>{forwardLinedButtonSvgIcon}</Button>
+            <Button onClick={onLongNext}>{playButtonSvgIcon}</Button>
           </div>
         </div>
 
         <div />
         <div className={styles['play-buttons-block']}>
-          <Button>{circleButtonSvgIcon}</Button>
+          <Button onClick={onResetPosition}>{circleButtonSvgIcon}</Button>
           <CurrentTime {...{currentTime}} />
-          <Button>{playButtonSvgIcon}</Button>
+          <Button onClick={onPlay}>{playButtonSvgIcon}</Button>
           <div className={`${styles['left-buttons']}`}>
             <Button onClick={onReset} title="Reset Zoom">{zoomFactorText}</Button>
           </div>
@@ -90,14 +97,14 @@ export default class ControlPanel extends Component {
           <CurrentTime {...{currentTime}} />
           <div className={styles['toggled-buttons-wrapper']}>
             <div className={styles['toggled-buttons']}>
-              <Button>{backwardLinedButtonSvgIcon}</Button>
-              <Button>{forwardLinedButtonSvgIcon}</Button>
+              <Button onClick={onLongPrev}>{backwardLinedButtonSvgIcon}</Button>
+              <Button onClick={onLongNext}>{forwardLinedButtonSvgIcon}</Button>
               <div className={styles['middle-buttons']}>
-                <Button>{playButtonSvgIcon}</Button>
+                <Button onClick={onPlay}>{playButtonSvgIcon}</Button>
                 <Button onClick={onReset} title="Reset Zoom">{zoomFactorText}</Button>
               </div>
-              <Button>{backwardButtonSvgIcon}</Button>
-              <Button>{playButtonSvgIcon}</Button>
+              <Button onClick={onPrev}>{backwardButtonSvgIcon}</Button>
+              <Button onClick={onNext}>{playButtonSvgIcon}</Button>
             </div>
             Controls
           </div>

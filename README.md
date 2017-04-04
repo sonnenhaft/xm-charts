@@ -33,10 +33,13 @@ This should start the server on port 8087.
 1. add forward backward action
 2. add long forward backward action
 3. Add x scale value (days years) in right bottom corner.
+4. Add left right KEY press actions same as forward-backward
+5. Add play functionality.
 
-After new req, apply actions for 2 left buttons:
-1. Create circles with: triangle and circle, weird circle, triangle.
-2. For button with shield apply switch to data instead of time
-3. For second button apply unknown action.
-4. Add custom grouping on big zooming
-5. Ask proper icons.
+Questions: 
+1. What are doing circles with triangles and squares inside, when to display them?
+2. Where can I find custom button icons? May be you can share me the designs tool?
+3. What is the logic of switching data from % to gigabytes (shield button)?
+4. What triangle below toggle button is doing?
+5. What triangle near circle near gigabytes is doing?
+
