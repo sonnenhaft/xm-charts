@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import throttle from 'throttle-debounce/throttle'
 
 import styles from './TimelineChartWrapper.scss'
 import TimelineChart from '../TimelineChart/TimelineChart'
@@ -14,10 +15,12 @@ export default class TimelineChartWrapper extends Component {
   constructor(props) {
     super(props)
     this.state = {isToggled: false, zoomFactor: this.DEFAULT_ZOOM, currentTime: null}
+
+    this.onKeyDown = throttle(300, this.onKeyDown)
   }
 
   onToggled = () => this.setState({isToggled: !this.state.isToggled})
-  onZoomed = zoomFactor => this.setState({zoomFactor})
+  onZoomed = zoomFactor => this.setState({zoomFactor: Math.max(zoomFactor, 1)})
   onTimeChanged = currentTime => this.setState({currentTime})
   onReset = () => this.setState({zoomFactor: 1})
 
