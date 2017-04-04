@@ -5,6 +5,8 @@ import TimelineChart from '../TimelineChart/TimelineChart'
 import SquareButtons from './SquareButtons/SquareButtons'
 import ControlPanel from './ControlPanel/ControlPanel'
 
+const DAY = 60*60*24*1000
+
 export default class TimelineChartWrapper extends Component {
   DEFAULT_ZOOM = 2
 
@@ -18,11 +20,11 @@ export default class TimelineChartWrapper extends Component {
   onTimeChanged = currentTime => this.setState({currentTime})
   onReset = () => this.setState({zoomFactor: 1})
 
-  onNext = () => console.log('onNext')
-  onPrev = () => console.log('onPrev')
+  onNext = () => this.setState({currentTime: this.state.currentTime + DAY})
+  onPrev = () => this.setState({currentTime: this.state.currentTime - DAY})
 
-  onLongNext = () => console.log('onLongNext')
-  onLongPrev = () => console.log('onLongPrev')
+  onLongNext = () => this.setState({currentTime: this.state.currentTime + 2*DAY})
+  onLongPrev = () => this.setState({currentTime: this.state.currentTime - 2*DAY})
 
   onPlay = () => console.log('onPlay')
   onResetPosition = () => console.log('onResetPosition')
@@ -35,7 +37,7 @@ export default class TimelineChartWrapper extends Component {
     const controlActions = {onReset, onPrev, onNext, onLongPrev, onLongNext, onPlay, onResetPosition}
     return <div className={styles['timeline-chart-wrapper']}>
       <ControlPanel {...{isToggled, zoomFactor, currentTime, ...controlActions}} />
-      <TimelineChart {...{isToggled, chartData, onZoomed, onTimeChanged, zoomFactor}} />
+      <TimelineChart {...{isToggled, currentTime, chartData, onZoomed, onTimeChanged, zoomFactor}} />
       <SquareButtons {...{onToggled, isToggled}} />
     </div>
   }

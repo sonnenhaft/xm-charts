@@ -56,7 +56,7 @@ export default class TimelineChart extends Component {
   }
 
   componentWillReceiveProps(props) {
-    const {zoomFactor, isToggled, chartData} = props
+    const {zoomFactor, isToggled, chartData, currentTime} = props
 
     if (chartData !== this.props.chartData || props === this.props) {
       const events = chartData.reduce((arr, {events}) => arr.concat(events), [])
@@ -68,22 +68,34 @@ export default class TimelineChart extends Component {
       const minValue = d3.min(this.chartData, ({date}) => date)
       this.domain = [minValue, maxValue]
     }
-    if (this.state.zoomFactor !== zoomFactor) {
+    if (this.currentTime !== currentTime && currentTime) {
+      const delta = this.currentTime - currentTime
+      this.currentTime = currentTime
+      const currentZoom = d3.zoomTransform(this.zoomRect.node())
       this.isZoomDisabled = true
-      this.zoomBehavior.scaleTo(this.zoomRect, zoomFactor)
-      this.setState({zoomFactor, noDuration: true})
+      this.zoomBehavior.translateBy(this.zoomRect, delta > 0 ? 20 : -20, currentZoom.y)
+      this.updateChart()
       this.isZoomDisabled = false
+    } else if (this.zoomFactor !== zoomFactor) {
+      this.rezoom(zoomFactor)
     } else if (this.props.isToggled !== isToggled) {
       this.updateMarginLeft({isToggled})
       this.setState({noDuration: true})
     }
   }
 
-  shouldComponentUpdate({chartData}, {noDuration, zoomFactor, tooltipData}) {
+  rezoom(zoomFactor) {
+    this.isZoomDisabled = true
+    this.zoomFactor = zoomFactor
+    this.zoomBehavior.scaleTo(this.zoomRect, zoomFactor)
+    this.updateChart()
+    this.isZoomDisabled = false
+  }
+
+  shouldComponentUpdate({chartData}, {noDuration, tooltipData}) {
     const {state, props} = this
     return props.chartData !== chartData
       || (noDuration && !state.noDuration)
-      || state.zoomFactor !== zoomFactor
       || state.tooltipData !== tooltipData
   }
 
@@ -99,18 +111,19 @@ export default class TimelineChart extends Component {
   }
 
   componentDidUpdate() {
-    this.updateChart()
+    let {noDuration} = this.state
+    this.updateChart(noDuration)
+    this.setState({noDuration: false})
   }
 
-  updateChart() {
+  updateChart(noDuration = true) {
     const margin = TimelineChart.margin
     const {isToggled} = this.props
-    let {noDuration} = this.state
+
     if (isToggled) {
       noDuration = true
     }
     const {zoomBehavior, brushBehavior, xScale, yScale, zoomRect, chartData, campainSelected} = this
-    this.setState({noDuration: false})
     const realWidth = this.svg.parentNode.clientWidth
     let realHeight = Math.min(Math.max(100, this.svg.parentNode.clientHeight), 200)
     if (isToggled) {
@@ -132,7 +145,8 @@ export default class TimelineChart extends Component {
 
     const currentZoom = d3.zoomTransform(this.zoomRect.node())
     xScale.domain(currentZoom.rescaleX(xScale).domain())
-    this.props.onTimeChanged(xScale.domain()[0] - 0)
+    this.currentTime = xScale.domain()[0] - 0
+    this.props.onTimeChanged(this.currentTime)
 
     const duration = noDuration ? 0 : 500
     let td = (d3Selection => d3Selection.transition().duration(duration))
@@ -265,7 +279,7 @@ export default class TimelineChart extends Component {
     if (this.isZoomDisabled) { return }
     this.isZoomDisabled = true
     const newZoomFactor = d3.zoomTransform(this.zoomRect.node()).k
-    let zoomFactor = this.state.zoomFactor
+    let zoomFactor = this.zoomFactor
     if (zoomFactor !== newZoomFactor) {
       if (!this.isBrushing) {
         let k = Math.max(0.05, Math.log2(newZoomFactor))
@@ -284,7 +298,7 @@ export default class TimelineChart extends Component {
       } else {
         zoomFactor = newZoomFactor
       }
-      this.setState({noDuration: true, zoomFactor})
+      this.setState({noDuration: true})
       this.props.onZoomed(zoomFactor)
     } else {
       this.onWindowResize()
