@@ -5,6 +5,7 @@ import React, {PropTypes, Component} from 'react'
 import TooltipContentBlock from '../common/TooltipContent/TooltipContent'
 import {composeCircles, updateBrush, renderCircles, renderPath} from './TimelineChartUtils'
 import YearTextScale from './YearTextScale'
+import WindowDependable from './WindowDependable'
 
 export default class TimelineChart extends Component {
   static margin = {top: 30, right: 10, bottom: 60, left: 30}
@@ -48,11 +49,6 @@ export default class TimelineChart extends Component {
         timelineChart.brusher.call(timelineChart.brushBehavior.move, [center - halfWidth, center + halfWidth])
       })
     }, 0)
-    window.addEventListener('resize', this.onWindowResize)
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.onWindowResize)
   }
 
   componentWillReceiveProps(props) {
@@ -312,10 +308,10 @@ export default class TimelineChart extends Component {
   onWindowResize = () => this.setState({noDuration: true})
 
   render() {
-    const {props: {isToggled}, state: {tooltipData = {}}} = this
+    const {props: {isToggled}, state: {tooltipData = {}}, onWindowResize} = this
     let backgroundClass = isToggled ? styles['toggled-background'] : styles['black-background']
     let visibility = isToggled ? 'hidden' : 'visible'
-    return <div style={{position: 'relative', width: '100%'}}>
+    return <WindowDependable style={{position: 'relative', width: '100%'}} onResize={onWindowResize}>
       <svg ref={svg => {
         this.d3svg = d3.select(svg)
         this.svg = svg
@@ -359,6 +355,6 @@ export default class TimelineChart extends Component {
         </div>
         <TooltipContentBlock tooltipData={tooltipData} />
       </div>
-    </div>
+    </WindowDependable>
   }
 }
