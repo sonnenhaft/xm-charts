@@ -11,6 +11,7 @@ const DAY = 60 * 60 * 24 * 1000
 
 export default class TimelineChartWrapper extends Component {
   DEFAULT_ZOOM = 2
+  CHROME_MAX_ZOOM = Math.min(Math.pow(10, 5)*5) // higher magic zoom crashes chrome with out of memory
 
   constructor(props) {
     super(props)
@@ -20,7 +21,7 @@ export default class TimelineChartWrapper extends Component {
   }
 
   onToggled = () => this.setState({isToggled: !this.state.isToggled})
-  onZoomed = zoomFactor => this.setState({zoomFactor: Math.max(zoomFactor, 1)})
+  onZoomed = zoomFactor => this.setState({zoomFactor: Math.min(this.CHROME_MAX_ZOOM, Math.max(zoomFactor, 1))})
   onTimeChanged = currentTime => this.setState({currentTime})
   onReset = () => this.setState({zoomFactor: 1})
 
