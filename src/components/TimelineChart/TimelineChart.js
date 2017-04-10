@@ -130,11 +130,8 @@ export default class TimelineChart extends Component {
       noDuration = true
     }
     const {zoomBehavior, brushBehavior, xScale, yScale, zoomRect, chartData, campainSelected} = this
-    const {clientWidth: realWidth, clientHeight} = this.d3rootNode.node()
-    let realHeight = Math.max(100, clientHeight)
-    if (isToggled) {
-      realHeight = 50
-    }
+    const {clientWidth: realWidth} = this.d3rootNode.node()
+    const realHeight = isToggled ? 50 : 200
     const width = realWidth - this.marginLeft - margin.right
     const height = Math.max(realHeight - margin.top - margin.bottom, 0)
     Object.assign(this, {width, height, realWidth, realHeight})
@@ -243,7 +240,7 @@ export default class TimelineChart extends Component {
         return
       }
       this.tooltipBlock.classed(styles['visible-tooltip'], false).transition().duration(750).style('opacity', 0)
-    }, 10)
+    }, 100)
   }
   openTooltip = tooltipData => {
     if (this.campainSelected && !tooltipData.isEventSelected) {
