@@ -40,12 +40,12 @@ export const updateBrush = ({brusher, brushBehavior, brushCircle, xScale, curren
   const tooBig = brusherWidth === width
   brusherSelection.attrs({
     stroke: 'none',
-    transform: `translate(0, ${isToggled ? -15: 0})`,
-    'fill-opacity': tooBig ? 0 : 0.3,
+    transform: `translate(0, ${isToggled ? -4 : 0})`,
+    'fill-opacity': 0.3,
     'pointer-events': tooBig ? 'none' : 'all',
   })
   brushCircle.attrs({
-    transform: `translate(${brusherSelection.attr('x') / 1 + (tooBig ? 0 : brusherWidth / 2) },0)`,
+    transform: `translate(${brusherSelection.attr('x') / 1 + brusherWidth / 2 },0)`,
   })
   brusher.selectAll('.handle').attr('pointer-events', brusherWidth < 16 ? 'none' : 'all')
 }

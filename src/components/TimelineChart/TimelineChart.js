@@ -32,6 +32,10 @@ export default class TimelineChart extends Component {
   }
 
   componentDidMount() {
+    this.zoomRect = this.find('.zoomRect')
+    this.brusher = this.find('.brusher')
+    this.tooltipBlock = this.find('.tooltipBlock')
+
     this.zoomRect.call(this.zoomBehavior)
     setTimeout(() => {
       this.componentWillReceiveProps(this.props)
@@ -102,7 +106,9 @@ export default class TimelineChart extends Component {
       .forEach(event => event.isEventSelected = false)
     this.chartData
       .filter(({campainId}) => campainId === _campainId)
-      .forEach(event => { event.isEventSelected = true })
+      .forEach(event => {
+        event.isEventSelected = true
+      })
     this.setState({noDuration: true}, () => this.isBrushDisabled = false)
   }
 
@@ -110,6 +116,10 @@ export default class TimelineChart extends Component {
     let {noDuration} = this.state
     this.updateChart(noDuration)
     this.setState({noDuration: false})
+  }
+
+  find(selector) {
+    return this.d3rootNode.select(selector)
   }
 
   updateChart(noDuration = true) {
@@ -120,8 +130,8 @@ export default class TimelineChart extends Component {
       noDuration = true
     }
     const {zoomBehavior, brushBehavior, xScale, yScale, zoomRect, chartData, campainSelected} = this
-    const realWidth = this.svg.parentNode.clientWidth
-    let realHeight = Math.min(Math.max(100, this.svg.parentNode.clientHeight), 200)
+    const {clientWidth: realWidth, clientHeight} = this.d3rootNode.node()
+    let realHeight = Math.max(100, clientHeight)
     if (isToggled) {
       realHeight = 50
     }
@@ -129,9 +139,7 @@ export default class TimelineChart extends Component {
     const height = Math.max(realHeight - margin.top - margin.bottom, 0)
     Object.assign(this, {width, height, realWidth, realHeight})
 
-    this.xScale.domain(this.domain)
-
-    xScale.rangeRound([0, width])
+    this.xScale.domain(this.domain).rangeRound([0, width])
     yScale.rangeRound([height, 0])
 
     zoomBehavior.translateExtent([[0, 0], [width, height]]).extent([[0, 0], [width, height]])
@@ -148,24 +156,28 @@ export default class TimelineChart extends Component {
     let td = (d3Selection => d3Selection.transition().duration(duration))
 
     let translate = (x, y) => ({transform: `translate(${x}, ${y})`})
-    this.g.attrs(translate(this.marginLeft, margin.top))
-    td(this.brushGroup).attr('transform', `translate(0,${  isToggled ? height + 13 : height + 40  })`)
-    td(this.brushLineGroup).attr('transform', `translate(0,${  isToggled ? height + 13 : height + 40  })`)
-    this.brushLine.attrs({width})
-    td(this.xAxis).attrs(translate(0, realHeight - 57)).call(d3.axisBottom(xScale))
-    td(this.d3svg).attr('height', this.realHeight)
-    this.d3svg.on('click', () => this.highlightCampaign(null))
+    const g = this.find('.mainGroup')
+    g.attrs(translate(this.marginLeft, margin.top))
+    td(this.find('.brushGroup')).attr('transform', `translate(0,${  isToggled ? height + 13 : height + 40  })`)
+    td(this.find('.brushLineGroup')).attr('transform', `translate(0,${  isToggled ? height + 13 : height + 40  })`)
+    this.find('.brushLine').attrs({width})
+    td(this.find('.xAxis')).attrs(translate(0, realHeight - 57)).call(d3.axisBottom(xScale))
+
+    const svgNode = this.find('svg')
+    td(svgNode).attrs({height: this.realHeight})
+    svgNode.on('click', () => this.highlightCampaign(null))
+    const whiteLineNode = this.find('.whiteLine')
     if (isToggled) {
-      td(this.whiteLine).attrs({height: 37, y: -height - 20})
+      td(whiteLineNode).attrs({height: 37, y: -height - 20})
     } else {
-      td(this.whiteLine).attrs({height: height + 50, y: -height - 50})
+      td(whiteLineNode).attrs({height: height + 50, y: -height - 50})
     }
 
-    td(this.yAxis).call(d3.axisLeft(yScale).ticks(5, '%').tickSize(-width)).selectAll('.tick')
+    td(this.find('.yAxis')).call(d3.axisLeft(yScale).ticks(5, '%').tickSize(-width)).selectAll('.tick')
       .attr('class', (date, idx) => `tick ${(idx === 4 ? styles['extra-white'] : '')}`)
 
     const [min, max] = xScale.domain()
-    td(this.axisLabel).attrs({
+    td(this.find('.axisLabel')).attrs({
       ...translate(width + 5, height + 20),
       text: YearTextScale(max - min),
       'text-anchor': 'end',
@@ -195,13 +207,11 @@ export default class TimelineChart extends Component {
       }
     }
 
-    let attrs = {x, y, ...lineAttrs, opacity}
-
-    this.smalRects.bindData(`rect.${styles['blue-line']}`, blueLines, attrs, duration)
-    this.smalRects.bindData(`rect.${styles['red-line']}`, redLines, attrs, duration)
-    renderPath({td, min, max, linePath: this.linePath, data, x, y, chartData})
-    const {g} = this
-
+    const attrs = {x, y, ...lineAttrs, opacity}
+    const smallRects = this.find('.smalRects')
+    smallRects.bindData(`rect.${styles['blue-line']}`, blueLines, attrs, duration)
+    smallRects.bindData(`rect.${styles['red-line']}`, redLines, attrs, duration)
+    renderPath({td, min, max, linePath: this.find('.linePath'), data, x, y, chartData})
     const mouseout = this.closeTooltip
     const moveTooltip = this.openTooltip
     this.tooltipBlock.attrs({mouseout, mouseover: () => this.tooltipOpened = true})
@@ -221,7 +231,8 @@ export default class TimelineChart extends Component {
       },
     }
     renderCircles({g, data, x, height, duration, bulkLines, actions, isToggled, opacity})
-    const {brusher, brushCircle} = this
+    const {brusher} = this
+    const brushCircle = this.find('.brushCircleGroup')
     updateBrush({brusher, brushBehavior, brushCircle, xScale, currentZoom, width, isToggled})
   }
 
@@ -238,7 +249,7 @@ export default class TimelineChart extends Component {
     if (this.campainSelected && !tooltipData.isEventSelected) {
       return
     }
-    const svgBounding = this.svg.getBoundingClientRect()
+    const svgBounding = this.find('svg').node().getBoundingClientRect()
     const left = `${this.xScale(tooltipData.date) + svgBounding.left + this.marginLeft  }px`
     this.isZoomDisabled = true
     this.isBrushDisabled = true
@@ -246,7 +257,8 @@ export default class TimelineChart extends Component {
       this.isZoomDisabled = false
       this.isBrushDisabled = false
       this.tooltipOpened = true
-      const top = 22 + svgBounding.top
+      const TRIANGLE_HEIGHT = 22
+      const top = TRIANGLE_HEIGHT + svgBounding.top
       let tooltipHeight = this.tooltipBlock.style('height').replace('px', '') - 0
       this.tooltipBlock
         .styles({left, top: `${ top - (tooltipHeight > top ? 0 : 20) }px`})
@@ -256,7 +268,9 @@ export default class TimelineChart extends Component {
     })
   }
   onBrushed = () => {
-    if (this.isBrushDisabled) {return}
+    if (this.isBrushDisabled) {
+      return
+    }
 
     const {sourceEvent} = d3.event
     if (!sourceEvent || sourceEvent.type === 'zoom') {
@@ -275,7 +289,9 @@ export default class TimelineChart extends Component {
     this.isBrushing = false
   }
   onZoomChanged = () => {
-    if (this.isZoomDisabled) { return }
+    if (this.isZoomDisabled) {
+      return
+    }
     this.isZoomDisabled = true
     const newZoomFactor = d3.zoomTransform(this.zoomRect.node()).k
     let zoomFactor = this.zoomFactor
@@ -307,54 +323,51 @@ export default class TimelineChart extends Component {
   }
   onWindowResize = () => this.setState({noDuration: true})
 
+  setD3Node = node => this.d3rootNode = d3.select(node)
+
   render() {
-    const {props: {isToggled}, state: {tooltipData = {}}, onWindowResize} = this
-    let backgroundClass = isToggled ? styles['toggled-background'] : styles['black-background']
-    let visibility = isToggled ? 'hidden' : 'visible'
-    return <WindowDependable style={{position: 'relative', width: '100%'}} onResize={onWindowResize}>
-      <svg ref={svg => {
-        this.d3svg = d3.select(svg)
-        this.svg = svg
-      }}
-           className={`${(isToggled ? styles['toggled'] : '')} ${styles['timeline-chart']}`}>
-        <rect width="100%" height="100%" className={backgroundClass} />
-        <g ref={g => this.brushLineGroup = d3.select(g)}>
-          <rect height="50" fill="#252525" width="100%" visibility={visibility} />
-          <g transform={`translate(${this.marginLeft},15)`}>
-            <rect ref={g => this.brushLine = d3.select(g)}
-                  pointerEvents="none" height="5" rx="3" ry="3" fill="#141414" />
+    const {props: {isToggled}, state: {tooltipData = {}}, onWindowResize, setD3Node} = this
+    const backgroundClass = isToggled ? styles['toggled-background'] : styles['black-background']
+    const visibility = isToggled ? 'hidden' : 'visible'
+    return <div ref={setD3Node} style={{position: 'relative', width: '100%'}}>
+      <WindowDependable onWindowResize={onWindowResize}>
+        <svg className={`${(isToggled ? styles['toggled'] : '')} ${styles['timeline-chart']}`}>
+          <rect width="100%" height="100%" className={backgroundClass} />
+          <g className="brushLineGroup">
+            <rect height="50" fill="#252525" width="100%" visibility={visibility} />
+            <rect className="brushLine" pointerEvents="none" height="5" rx="3" ry="3" fill="#141414"
+                  transform={`translate(${this.marginLeft},15)`} />
           </g>
-        </g>
-        <g ref={g => this.g = d3.select(g)} fill="white">
-          <g ref={g => this.axises = d3.select(g)} visibility={visibility}>
-            <g ref={g => this.xAxis = d3.select(g)} className={`${styles['axis']} ${styles['axis--x']}`} />
-            <g ref={g => this.yAxis = d3.select(g)} className={`${styles['axis']} ${styles['axis--y']}`} />
-            <path ref={g => this.linePath = d3.select(g)} className={styles['line-path']} />
-            <text ref={text => this.axisLabel = d3.select(text)} visibility={visibility} />
+          <g fill="white" className="mainGroup">
+            <g visibility={visibility}>
+              <g className={`xAxis ${styles['axis']} ${styles['axis--x']}`} />
+              <g className={`yAxis ${styles['axis']} ${styles['axis--y']}`} />
+              <path className={`linePath ${styles['line-path']}`} />
+              <text className="axisLabel" visibility={visibility} />
+            </g>
+            <rect className={`${styles['zoom']} zoomRect`} />
+            <g className="smalRects" transform="translate(0, -5)" />
           </g>
-          <rect ref={rect => this.zoomRect = d3.select(rect)} className={styles['zoom']} />
-          <g ref={g => this.smalRects = d3.select(g)} transform="translate(0, -5)" />
-        </g>
-        <g ref={g => this.brushGroup = d3.select(g)}>
-          <g transform={`translate(${this.marginLeft},15)`}>
-            <g ref={g => this.brusher = d3.select(g)} transform={`translate(0,${isToggled ? 0 : -15})`} />
-            <g ref={g => this.brushCircle = d3.select(g)}>
-              <rect width="1" fill="white" ref={g => this.whiteLine = d3.select(g)} transform="translate(0, 0)" />
-              <rect className={styles['brush-circle']} stroke="#7D92F6" strokeWidth="1"
-                    pointerEvents="none" height="14" width="14" rx="9" ry="12" transform="translate(-6.5, -5)" />
+          <g className="brushGroup">
+            <g transform={`translate(${this.marginLeft},15)`}>
+              <g className="brusher" transform={`translate(0,${isToggled ? 0 : -15})`} />
+              <g className="brushCircleGroup">
+                <rect width="1" fill="white" className="whiteLine" />
+                <rect className={styles['brush-circle']} height="14" width="14" rx="9" ry="12" />
+              </g>
             </g>
           </g>
-        </g>
-      </svg>
+        </svg>
 
-      <div ref={div => this.tooltipBlock = d3.select(div)} className={styles['tooltip']}>
-        <div className={styles['triangle-wrapper']}>
-          <div className={styles['triangle']}>
-            <div className={`${styles['triangle']  } ${  styles['triangle-content']}`} />
+        <div className={`tooltipBlock ${styles['tooltip']}`}>
+          <div className={styles['triangle-wrapper']}>
+            <div className={styles['triangle']}>
+              <div className={`${styles['triangle']  } ${  styles['triangle-content']}`} />
+            </div>
           </div>
+          <TooltipContentBlock tooltipData={tooltipData} />
         </div>
-        <TooltipContentBlock tooltipData={tooltipData} />
-      </div>
-    </WindowDependable>
+      </WindowDependable>
+    </div>
   }
 }
