@@ -10,7 +10,7 @@ import GlobalKeyDetector from './GlobalKeyDetector'
 const DAY = 60 * 60 * 24 * 1000
 
 export default class TimelineChartWrapper extends Component {
-  DEFAULT_ZOOM = 2
+  DEFAULT_ZOOM = 1
   CHROME_MAX_ZOOM = Math.min(Math.pow(10, 5)*5) // higher magic zoom crashes chrome with out of memory
 
   constructor(props) {

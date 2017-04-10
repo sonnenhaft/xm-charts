@@ -3,14 +3,12 @@ import '../common/d3.shims'
 import styles from './TimelineChart.scss'
 
 export const composeCircles = (data, width, groupWidth) => {
-  const blueLines = data.filter(({compromized}) => !compromized)
-  const redLines = data.filter(({compromized}) => compromized)
-
+  const firstInSubnet = data.filter(({firstInSubnet}) => firstInSubnet)
   const rounderRange = d3.scaleQuantile()
-    .domain([redLines[0].date, redLines[redLines.length - 1].date])
+    .domain([data[0].date, data[data.length - 1].date])
     .range(d3.range(0, width / groupWidth))
 
-  const groupedRedLines = redLines.reduce((map, item) => {
+  const groupedRedLines = firstInSubnet.reduce((map, item) => {
     const groupedRedLines = rounderRange(item.date)
     if (map[groupedRedLines]) {
       map[groupedRedLines].push(item)
@@ -26,10 +24,13 @@ export const composeCircles = (data, width, groupWidth) => {
     .filter(items => items.length > 2 || items[1].date - items[0].date <= groupWidth)
     .map(items => {
       const date = Math.round(d3.sum(items, ({date}) => date) / items.length)
+      items.forEach(item => {
+        firstInSubnet.splice(firstInSubnet.indexOf(item), 1)
+      })
       return {date, value: items.length, id: date}
     })
 
-  return {bulkLines, redLines, blueLines}
+  return {bulkLines, firstInSubnet}
 }
 
 export const updateBrush = ({brusher, brushBehavior, brushCircle, xScale, currentZoom, width, isToggled}) => {
@@ -67,13 +68,12 @@ export const renderPath = ({td, min, max, linePath, data, x, y, chartData}) => {
   td(linePath).attr('d', d3.line().x(x).y(y).curve(d3.curveBundle.beta(0.9))(data))
 }
 
-export const renderCircles = ({g, data, x, height, duration, bulkLines, actions, isToggled, opacity}) => {
-  const firstInSubnet = data.filter(({firstInSubnet}) => firstInSubnet)
+export const renderCircles = ({g, data, x, height, duration, bulkLines, firstInSubnet, actions, isToggled, opacity}) => {
   const lastInSubnet = data.filter(({lastInSubnet}) => lastInSubnet)
   const radius = 8
   height = isToggled ? 22 : height + radius * 2
 
-  const allCirclesData = bulkLines.concat(firstInSubnet).concat(lastInSubnet)
+  const allCirclesData = [...firstInSubnet, ...lastInSubnet, ...bulkLines]
   const enteredSelection = g.selectAll('.bulkBlock').data(allCirclesData, ({id}) => id)
   enteredSelection.exit().remove()
 

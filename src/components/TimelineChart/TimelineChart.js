@@ -132,7 +132,7 @@ export default class TimelineChart extends Component {
     const {zoomBehavior, brushBehavior, xScale, yScale, zoomRect, chartData, campainSelected} = this
     const {clientWidth: realWidth} = this.d3rootNode.node()
     const realHeight = isToggled ? 50 : 200
-    const width = realWidth - this.marginLeft - margin.right
+    const width = Math.max(realWidth - this.marginLeft - margin.right, 0)
     const height = Math.max(realHeight - margin.top - margin.bottom, 0)
     Object.assign(this, {width, height, realWidth, realHeight})
 
@@ -151,6 +151,9 @@ export default class TimelineChart extends Component {
 
     const duration = noDuration ? 0 : 500
     let td = (d3Selection => d3Selection.transition().duration(duration))
+    if (!duration) {
+      td = d3Selection => d3Selection
+    }
 
     let translate = (x, y) => ({transform: `translate(${x}, ${y})`})
     const g = this.find('.mainGroup')
@@ -183,25 +186,16 @@ export default class TimelineChart extends Component {
     let filterVisible = ({date}) => min <= date && date <= max
     const data = chartData.filter(filterVisible)
 
-    let prevGroupWidth = width / 20 / currentZoom.k
-    if (this.prevGroupWidth !== prevGroupWidth) {
-      this.prevGroupWidth = prevGroupWidth
-      this.composedData = composeCircles(chartData, width, 20 / currentZoom.k)
-    }
+    const blueLines = data.filter(({compromized}) => !compromized).filter(filterVisible)
+    const redLines = data.filter(({compromized}) => compromized).filter(filterVisible)
 
-    let {bulkLines, redLines, blueLines} = this.composedData
-    bulkLines = bulkLines.filter(filterVisible)
-    redLines = redLines.filter(filterVisible)
-    blueLines = blueLines.filter(filterVisible)
     const lineAttrs = {width: 2, height: 10, 'pointer-events': 'none'}
     const x = ({date}) => xScale(date)
     const y = ({index}) => yScale(index)
 
     let opacity = 1
     if (campainSelected) {
-      opacity = data => {
-        return data.isEventSelected ? 1 : 0.3
-      }
+      opacity = ({isEventSelected}) => isEventSelected ? 1 : 0.3
     }
 
     const attrs = {x, y, ...lineAttrs, opacity}
@@ -227,7 +221,19 @@ export default class TimelineChart extends Component {
         }
       },
     }
-    renderCircles({g, data, x, height, duration, bulkLines, actions, isToggled, opacity})
+
+
+    const groupWidth = 25 / currentZoom.k
+    let prevGroupWidth = width / groupWidth
+    if (this.prevGroupWidth !== prevGroupWidth) {
+      this.prevGroupWidth = prevGroupWidth
+        this.composedData = composeCircles(chartData, width, groupWidth)
+    }
+
+    let {bulkLines, firstInSubnet} = this.composedData
+    bulkLines = bulkLines.filter(filterVisible)
+    firstInSubnet = firstInSubnet.filter(filterVisible)
+    renderCircles({g, data, x, height, duration, bulkLines, firstInSubnet, actions, isToggled, opacity})
     const {brusher} = this
     const brushCircle = this.find('.brushCircleGroup')
     updateBrush({brusher, brushBehavior, brushCircle, xScale, currentZoom, width, isToggled})
@@ -236,9 +242,7 @@ export default class TimelineChart extends Component {
   closeTooltip = () => {
     this.tooltipOpened = false
     setTimeout(() => {
-      if (this.tooltipOpened) {
-        return
-      }
+      if (this.tooltipOpened) { return }
       this.tooltipBlock.classed(styles['visible-tooltip'], false).transition().duration(750).style('opacity', 0)
     }, 100)
   }
