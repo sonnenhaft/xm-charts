@@ -54,7 +54,7 @@ export default class TimelineChartWrapper extends Component {
 
   render() {
     const {isToggled, zoomFactor, currentTime} = this.state
-    const {data: chartData} = this.props
+    const {chartData} = this.props
     const {onTimeChanged, onToggled, onZoomed, onKeyDown} = this
     const {onReset, onPrev, onNext, onLongPrev, onLongNext, onPlay, onResetPosition} = this
     const controlActions = {onReset, onPrev, onNext, onLongPrev, onLongNext, onPlay, onResetPosition}

@@ -3,6 +3,19 @@ import Chance from 'chance'
 
 const chance = new Chance()
 
+export function createEvent({eventId, campainId, minDate, maxDate}) {
+  return {
+    id: `${eventId  }_${  campainId}`,
+    name: loremIpsum({count: 2, units: 'words'}).split(' ').join('-'),
+    method: loremIpsum({count: 2, units: 'words'}),
+    source: loremIpsum({count: 2, units: 'words'}),
+    campainId,
+    flag: chance.pickone(['asset', 'deviceSvgIcon']),
+    compromized: chance.bool({likelihood: 25}),
+    date: chance.hammertime({min: minDate, max: maxDate}),
+  }
+}
+
 export default isYearly => {
   const CAMPAINS_NUMBER = isYearly ? 10 : 3
   const EVENTS_IN_CAMPAIN = isYearly ? 100 : 30
@@ -17,16 +30,7 @@ export default isYearly => {
     const minDate = new Date(Date.now() - (isYearly ? 365*DAY : DAY))
 
     for (let eventId = 1; eventId < EVENTS_IN_CAMPAIN; eventId++) {
-      events.push({
-        id: `${eventId  }_${  campainId}`,
-        name: loremIpsum({count: 2, units:'words'}).split(' ').join('-'),
-        method: loremIpsum({count: 2, units:'words'}),
-        source: loremIpsum({count: 2, units:'words'}),
-        campainId,
-        flag: chance.pickone(['asset', 'deviceSvgIcon']),
-        compromized: chance.bool({likelihood : 25}),
-        date: chance.hammertime({min: minDate, max: maxDate}),
-      })
+      events.push(createEvent({eventId, campainId, minDate, maxDate}))
     }
     events = events.sort((a, b) => a.date > b.date ? 1 : -1)
 
