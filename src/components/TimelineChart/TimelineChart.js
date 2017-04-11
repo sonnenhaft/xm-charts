@@ -146,7 +146,7 @@ export default class TimelineChart extends Component {
 
     const currentZoom = d3.zoomTransform(this.zoomRect.node())
     xScale.domain(currentZoom.rescaleX(xScale).domain())
-    this.currentTime = xScale.domain()[0] - 0
+    this.currentTime = xScale.domain()[0] - this.domain[0]
     this.props.onTimeChanged(this.currentTime)
 
     const duration = noDuration ? 0 : 500

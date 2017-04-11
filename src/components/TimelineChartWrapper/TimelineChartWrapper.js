@@ -10,12 +10,11 @@ import GlobalKeyDetector from './GlobalKeyDetector'
 const DAY = 60 * 60 * 24 * 1000
 
 export default class TimelineChartWrapper extends Component {
-  DEFAULT_ZOOM = 1
   CHROME_MAX_ZOOM = Math.min(Math.pow(10, 5)*5) // higher magic zoom crashes chrome with out of memory
 
   constructor(props) {
     super(props)
-    this.state = {isToggled: false, zoomFactor: this.DEFAULT_ZOOM, currentTime: null}
+    this.state = {isToggled: false, zoomFactor: 1, currentTime: null}
 
     this.onKeyDown = throttle(300, this.onKeyDown)
   }
@@ -59,7 +58,6 @@ export default class TimelineChartWrapper extends Component {
     const {onTimeChanged, onToggled, onZoomed, onKeyDown} = this
     const {onReset, onPrev, onNext, onLongPrev, onLongNext, onPlay, onResetPosition} = this
     const controlActions = {onReset, onPrev, onNext, onLongPrev, onLongNext, onPlay, onResetPosition}
-
     return <GlobalKeyDetector className={styles['timeline-chart-wrapper']} onKeyDown={onKeyDown}>
       <ControlPanel {...{isToggled, zoomFactor, currentTime, ...controlActions}} />
       <TimelineChart {...{isToggled, currentTime, chartData, onZoomed, onTimeChanged, zoomFactor}} />

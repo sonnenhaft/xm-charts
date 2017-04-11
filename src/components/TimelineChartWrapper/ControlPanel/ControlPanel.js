@@ -32,7 +32,7 @@ export default class ControlPanel extends Component {
   }
 
   render() {
-    const {isToggled, zoomFactor, currentTime, onReset} = this.props
+    const {isToggled, zoomFactor, currentTime, offsetTime, onReset} = this.props
     let zoomFactorText = zoomFactor
     if (zoomFactorText > 1000) {
       zoomFactorText = `${Math.round(zoomFactorText / 1000)  }k`
@@ -74,7 +74,7 @@ export default class ControlPanel extends Component {
         <div />
         <div className={styles['play-buttons-block']}>
           <Button onClick={onResetPosition}>{circleButtonSvgIcon}</Button>
-          <CurrentTime {...{currentTime}} />
+          <CurrentTime {...{currentTime, offsetTime}} />
           <Button onClick={onPlay}>{playButtonSvgIcon}</Button>
           <div className={`${styles['left-buttons']}`}>
             <Button onClick={onReset} title="Reset Zoom">{zoomFactorText}</Button>
