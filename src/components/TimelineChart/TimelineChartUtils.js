@@ -39,14 +39,17 @@ export const updateBrush = ({brusher, brushBehavior, brushCircle, xScale, curren
   brusher.call(brushBehavior.move, xScale.range().map(currentZoom.invertX, currentZoom))
   const brusherWidth = brusherSelection.attr('width') * 1
   const tooBig = brusherWidth === width
+  const MIN_WIDTH = 6
+  const tooSmall = brusherWidth < MIN_WIDTH
   brusherSelection.attrs({
+    width: tooSmall ? MIN_WIDTH : brusherWidth,
     stroke: 'none',
-    transform: `translate(0, ${isToggled ? -4 : 0})`,
+    transform: `translate(${tooSmall ? (brusherWidth - MIN_WIDTH)/2 : 0}, ${isToggled ? -4 : 0})`,
     'fill-opacity': 0.3,
     'pointer-events': tooBig ? 'none' : 'all',
   })
   brushCircle.attrs({
-    transform: `translate(${brusherSelection.attr('x') / 1 + brusherWidth / 2 },0)`,
+    transform: `translate(${brusherSelection.attr('x') / 1 + brusherWidth / 2 -0.5 },0)`,
   })
   brusher.selectAll('.handle').attr('pointer-events', brusherWidth < 16 ? 'none' : 'all')
 }
