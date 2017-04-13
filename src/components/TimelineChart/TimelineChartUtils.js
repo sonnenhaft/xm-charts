@@ -33,7 +33,7 @@ export const composeCircles = (data, width, groupWidth) => {
   return {bulkLines, firstInSubnet}
 }
 
-export const updateBrush = ({brusher, brushBehavior, brushCircle, xScale, currentZoom, width, isToggled}) => {
+export const updateBrush = ({brusher, brushBehavior, xScale, currentZoom, width, isToggled}) => {
   brusher.call(brushBehavior)
   const brusherSelection = brusher.select('.selection')
   brusher.call(brushBehavior.move, xScale.range().map(currentZoom.invertX, currentZoom))
@@ -47,9 +47,6 @@ export const updateBrush = ({brusher, brushBehavior, brushCircle, xScale, curren
     transform: `translate(${tooSmall ? (brusherWidth - MIN_WIDTH)/2 : 0}, ${isToggled ? -4 : 0})`,
     'fill-opacity': 0.3,
     'pointer-events': tooBig ? 'none' : 'all',
-  })
-  brushCircle.attrs({
-    transform: `translate(${brusherSelection.attr('x') / 1 + brusherWidth / 2 -0.5 },0)`,
   })
   brusher.selectAll('.handle').attr('pointer-events', brusherWidth < 16 ? 'none' : 'all')
 }

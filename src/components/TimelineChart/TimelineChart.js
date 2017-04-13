@@ -7,6 +7,8 @@ import {composeCircles, updateBrush, renderCircles, renderPath} from './Timeline
 import YearTextScale from './YearTextScale'
 import WindowDependable from './WindowDependable'
 
+const translate = (x, y) => ({transform: `translate(${x}, ${y})`})
+
 export default class TimelineChart extends Component {
   static margin = {top: 30, right: 10, bottom: 60, left: 30}
   static TOGGLED_MARGIN_LEFT = 15
@@ -25,6 +27,7 @@ export default class TimelineChart extends Component {
     super(props)
     this.xScale = d3.scaleTime()
     this.updateMarginLeft(props)
+    this.brushCirclePosition = 0
     this.yScale = d3.scaleLinear().domain([0, 1])
     this.zoomBehavior = d3.zoom().scaleExtent([1, 1000 * 1000 * 1000]).on('zoom', this.onZoomChanged)
     this.brushBehavior = d3.brushX().on('brush end', this.onBrushed)
@@ -133,6 +136,7 @@ export default class TimelineChart extends Component {
     const {clientWidth: realWidth} = this.d3rootNode.node()
     const realHeight = isToggled ? 50 : 200
     const width = Math.max(realWidth - this.marginLeft - margin.right, 0)
+    this.width = width
     const height = Math.max(realHeight - margin.top - margin.bottom, 0)
     Object.assign(this, {width, height, realWidth, realHeight})
 
@@ -146,16 +150,13 @@ export default class TimelineChart extends Component {
 
     const currentZoom = d3.zoomTransform(this.zoomRect.node())
     xScale.domain(currentZoom.rescaleX(xScale).domain())
-    this.currentTime = xScale.domain()[0] - this.domain[0]
-    this.props.onTimeChanged(this.currentTime)
-
+    this.rememberCurrentTime()
     const duration = noDuration ? 0 : 500
     let td = (d3Selection => d3Selection.transition().duration(duration))
     if (!duration) {
       td = d3Selection => d3Selection
     }
 
-    let translate = (x, y) => ({transform: `translate(${x}, ${y})`})
     const g = this.find('.mainGroup')
     g.attrs(translate(this.marginLeft, margin.top))
     td(this.find('.brushGroup')).attr('transform', `translate(0,${  isToggled ? height + 13 : height + 40  })`)
@@ -189,7 +190,7 @@ export default class TimelineChart extends Component {
     const blueLines = data.filter(({compromized}) => !compromized).filter(filterVisible)
     const redLines = data.filter(({compromized}) => compromized).filter(filterVisible)
 
-    const lineAttrs = {width: 2, height: 10, 'pointer-events': 'none'}
+    const lineAttrs = {width: 2, height: 10}
     const x = ({date}) => xScale(date)
     const y = ({index}) => yScale(index)
 
@@ -198,7 +199,8 @@ export default class TimelineChart extends Component {
       opacity = ({isEventSelected}) => isEventSelected ? 1 : 0.3
     }
 
-    const attrs = {x, y, ...lineAttrs, opacity}
+    let dataClick = ({date}) => this.rememberCurrentTime(this.xScale(date))
+    const attrs = {x, y, ...lineAttrs, opacity, click: dataClick}
     const smallRects = this.find('.smalRects')
     smallRects.bindData(`rect.${styles['blue-line']}`, blueLines, attrs, duration)
     smallRects.bindData(`rect.${styles['red-line']}`, redLines, attrs, duration)
@@ -208,7 +210,8 @@ export default class TimelineChart extends Component {
     this.tooltipBlock.attrs({mouseout, mouseover: () => this.tooltipOpened = true})
     const actions = {
       mouseout,
-      click: ({campainId}) => {
+      click: ({campainId, date}) => {
+        dataClick({date})
         if (campainId) {
           this.highlightCampaign(campainId)
           d3.event.stopPropagation()
@@ -227,16 +230,29 @@ export default class TimelineChart extends Component {
     let prevGroupWidth = width / groupWidth
     if (this.prevGroupWidth !== prevGroupWidth) {
       this.prevGroupWidth = prevGroupWidth
-        this.composedData = composeCircles(chartData, width, groupWidth)
+      this.composedData = composeCircles(chartData, width, groupWidth)
     }
 
     let {bulkLines, firstInSubnet} = this.composedData
     bulkLines = bulkLines.filter(filterVisible)
     firstInSubnet = firstInSubnet.filter(filterVisible)
     renderCircles({g, data, x, height, duration, bulkLines, firstInSubnet, actions, isToggled, opacity})
+    const onDrag = d3.drag().on('drag', () => {
+      this.rememberCurrentTime(Math.min(Math.max(0, d3.event.x), this.width), true)
+    })
+
+    this.find('.brushCircleGroup').call(onDrag)
     const {brusher} = this
-    const brushCircle = this.find('.brushCircleGroup')
-    updateBrush({brusher, brushBehavior, brushCircle, xScale, currentZoom, width, isToggled})
+    updateBrush({brusher, brushBehavior, xScale, currentZoom, width, isToggled})
+  }
+
+  rememberCurrentTime = (x = this.brushCirclePosition, noDuration = false) => {
+    this.brushCirclePosition = x
+    let invertedX = this.xScale.invert(this.brushCirclePosition) - this.domain[0]
+    this.currentTime = invertedX
+    this.find('.brushCircleGroup').transition().duration(noDuration ? 0 : 300)
+      .attrs(translate(this.brushCirclePosition, 0))
+    this.props.onTimeChanged(invertedX)
   }
 
   closeTooltip = () => {

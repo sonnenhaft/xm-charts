@@ -23,8 +23,15 @@ svg.timeline-chart {
 
   .blue-line, .red-line {
     height: 10px;
-    pointer-events: none;
     width: 2px;
+    stroke-width: 10;
+    stroke: white;
+    stroke-opacity: 0;
+    &:hover {
+      width: 6px;
+      transform: translate(-2.5px, -10px);
+      height: 30px;
+    }
   }
   .red-bulk-line {
     width: 2px;
@@ -100,7 +107,7 @@ svg.timeline-chart {
     }
     stroke: #7D92F6;
     stroke-width: 1;
-    pointer-events: none;
+    //pointer-events: none;
     transform: translate(-6.5px, -5px);
     fill: $buttonBlue;
   }
