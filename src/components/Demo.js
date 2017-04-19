@@ -15,14 +15,16 @@ class Demo extends Component {
   }
 
   addSomeValues = () => {
-    this.demoDataArray = this.demoDataArray.map(data => data.slice())
-    this.demoDataArray.forEach(items => {
-      const lastCampain = items[items.length - 1].events
+    this.demoDataArray = this.demoDataArray.map(data => ({...data}))
+    this.demoDataArray.forEach(({nodes, campains, events}) => {
+      const lastCampain = campains[campains.length - 1].events
       const {date, campainId} = lastCampain[lastCampain.length - 1]
       const eventId = lastCampain.length
       const maxDate = new Date()
       const minDate = new Date(maxDate + (maxDate - date))
-      lastCampain.push(createEvent({eventId, campainId, minDate, maxDate}))
+      let event = createEvent({eventId, campainId, minDate, maxDate, nodes})
+      events.push(event)
+      lastCampain.push(event)
     })
 
     this.forceUpdate()

@@ -31,9 +31,7 @@ const coreCssRules = [
   },
   {
     loader: 'sass-loader',
-    options: {
-      sourceMap: true
-    }
+    options: {sourceMap: true}
   }
 ]
 
@@ -48,46 +46,21 @@ const common = {
   },
   module: {
     rules: [
+      // {
+      //   test: /\.jsx?$/,
+      //   enforce: 'pre',
+      //   use: [{loader: 'eslint-loader', options: {emitWarning: true,},}],
+      //   exclude: paths.node_modules,
+      // },
       {
         test: /\.jsx?$/,
-        enforce: 'pre',
-        use: [{
-          loader: 'eslint-loader',
-          options: {
-            emitWarning: true,
-          },
-        }],
+        use: [{loader: 'babel-loader', options: {cacheDirectory: true,},},],
         exclude: paths.node_modules,
       },
-      {
-        test: /\.jsx?$/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              cacheDirectory: true,
-            },
-          },
-        ],
-        exclude: paths.node_modules,
-      },
-      {
-        test: /\.ya?ml$/,
-        use: [ {loader: 'yaml-loader' }],
-        exclude: paths.node_modules,
-      },
-      {
-        test: /\.svg$/,
-        use: [ {loader: 'raw-loader' }],
-      },
-      {
-        test: /\.(png|gif)(\?.*)?$/,
-        loader: 'url-loader?limit=100000',
-      },
-      {
-        test: /\.(eot|otf|woff|ttf)?$/,
-        loaders: ['url-loader'],
-      },
+      {test: /\.ya?ml$/, use: [{loader: 'yaml-loader'}], exclude: paths.node_modules,},
+      {test: /\.svg$/, use: [{loader: 'raw-loader'}],},
+      {test: /\.(png|gif)(\?.*)?$/, loader: 'url-loader?limit=100000',},
+      {test: /\.(eot|otf|woff|ttf)?$/, loaders: ['url-loader'],},
     ],
   },
   plugins: [
@@ -95,9 +68,7 @@ const common = {
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
       'process.env.API_BASEURL': JSON.stringify(process.env.API_BASEURL),
     }),
-    new HtmlWebpackPlugin({
-      template: paths.html,
-    }),
+    new HtmlWebpackPlugin({template: paths.html,}),
   ],
 }
 
@@ -108,8 +79,8 @@ const development = {
     'webpack/hot/only-dev-server',
     paths.src,
   ],
-  // devtool: 'cheap-eval-source-map',
-  devtool: 'source-map',
+  devtool: 'cheap-eval-source-map',
+  // devtool: 'source-map',
   devServer: {
     hot: true,
     //stats: 'errors-only',
@@ -121,21 +92,16 @@ const development = {
     rules: [
       {
         test: /\.scss$/,
-        use: [
-          'style-loader',
-          ...coreCssRules,
-        ],
+        use: ['style-loader', ...coreCssRules,],
         include: paths.src,
       },
     ],
   },
-  performance: {
-    hints: false,
-  },
+  performance: {hints: false,},
   plugins: [
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new DashboardPlugin({ port: 9001 }),
+    new DashboardPlugin({port: 9001}),
   ],
 }
 
@@ -155,11 +121,7 @@ const production = {
     rules: [
       {
         test: /\.scss$/,
-        use: ExtractTextPlugin.extract({
-          loader: [
-            ...coreCssRules,
-          ],
-        }),
+        use: ExtractTextPlugin.extract({loader: [...coreCssRules,],}),
         include: paths.src,
       },
     ],
@@ -170,15 +132,11 @@ const production = {
     new webpack.optimize.CommonsChunkPlugin({
       names: ['vendor', 'manifest'],
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-      },
-    }),
+    new webpack.optimize.UglifyJsPlugin({compress: {warnings: false,},}),
   ],
 }
 
 
 module.exports = process.env.NODE_ENV === 'production' ?
-    merge(common, production) :
-    merge(common, development)
+  merge(common, production) :
+  merge(common, development)

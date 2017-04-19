@@ -15,7 +15,7 @@ export default class TimelineChart extends Component {
   static propTypes = {
     zoomFactor: PropTypes.number.isRequired,
     isToggled: PropTypes.bool.isRequired,
-    chartData: PropTypes.arrayOf(PropTypes.object).isRequired,
+    // chartData: PropTypes.arrayOf(PropTypes.object).isRequired,
     onZoomed: PropTypes.func.isRequired,
   }
 
@@ -62,10 +62,9 @@ export default class TimelineChart extends Component {
     const {zoomFactor, isToggled, chartData, currentTime} = props
 
     if (chartData !== this.props.chartData || props === this.props) {
-      const events = chartData.reduce((arr, {events}) => arr.concat(events), [])
+      const {events} = chartData
       const numberOfItems = events.length
       this.chartData = events
-        .sort(({date: a}, {date: b}) => a > b ? 1 : -1)
         .map((item, index) => ({...item, index: index / numberOfItems}))
       const maxValue = d3.max(this.chartData, ({date}) => date)
       const minValue = d3.min(this.chartData, ({date}) => date)
@@ -109,9 +108,7 @@ export default class TimelineChart extends Component {
       .forEach(event => event.isEventSelected = false)
     this.chartData
       .filter(({campainId}) => campainId === _campainId)
-      .forEach(event => {
-        event.isEventSelected = true
-      })
+      .forEach(event => event.isEventSelected = true)
     this.setState({noDuration: true}, () => this.isBrushDisabled = false)
   }
 

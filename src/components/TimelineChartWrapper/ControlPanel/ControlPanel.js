@@ -62,12 +62,12 @@ export default class ControlPanel extends Component {
             </div>
           </div>
           <div className={`${styles['black-buttons']}`}>
-            <Button onClick={onPrev}>{backwardLinedButtonSvgIcon}</Button>
             <Button onClick={onLongPrev}>{backwardButtonSvgIcon}</Button>
+            <Button onClick={onPrev}>{backwardLinedButtonSvgIcon}</Button>
           </div>
           <div className={`${styles['left-buttons']} ${styles['black-buttons']}`}>
-            <Button onClick={onNext}>{forwardLinedButtonSvgIcon}</Button>
             <Button onClick={onLongNext}>{playButtonSvgIcon}</Button>
+            <Button onClick={onNext}>{forwardLinedButtonSvgIcon}</Button>
           </div>
         </div>
 

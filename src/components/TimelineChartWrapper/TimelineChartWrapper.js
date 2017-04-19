@@ -7,10 +7,12 @@ import SquareButtons from './SquareButtons/SquareButtons'
 import ControlPanel from './ControlPanel/ControlPanel'
 import GlobalKeyDetector from './GlobalKeyDetector'
 
+import NetworkGrid from '../NetworkGrid'
+
 const DAY = 60 * 60 * 24 * 1000
 
 export default class TimelineChartWrapper extends Component {
-  CHROME_MAX_ZOOM = Math.min(Math.pow(10, 5)*5) // higher magic zoom crashes chrome with out of memory
+  CHROME_MAX_ZOOM = Math.min(Math.pow(10, 5) * 5) // higher magic zoom crashes chrome with out of memory
 
   constructor(props) {
     super(props)
@@ -58,10 +60,13 @@ export default class TimelineChartWrapper extends Component {
     const {onTimeChanged, onToggled, onZoomed, onKeyDown} = this
     const {onReset, onPrev, onNext, onLongPrev, onLongNext, onPlay, onResetPosition} = this
     const controlActions = {onReset, onPrev, onNext, onLongPrev, onLongNext, onPlay, onResetPosition}
-    return <GlobalKeyDetector className={styles['timeline-chart-wrapper']} onKeyDown={onKeyDown}>
-      <ControlPanel {...{isToggled, zoomFactor, currentTime, ...controlActions}} />
-      <TimelineChart {...{isToggled, currentTime, chartData, onZoomed, onTimeChanged, zoomFactor}} />
-      <SquareButtons {...{onToggled, isToggled}} />
-    </GlobalKeyDetector>
+    return <div>
+      <NetworkGrid {...{currentTime, chartData}} />
+      <GlobalKeyDetector className={styles['timeline-chart-wrapper']} onKeyDown={onKeyDown}>
+        <ControlPanel {...{isToggled, zoomFactor, currentTime, ...controlActions}} />
+        <TimelineChart {...{isToggled, currentTime, chartData, onZoomed, onTimeChanged, zoomFactor}} />
+        <SquareButtons {...{onToggled, isToggled}} />
+      </GlobalKeyDetector>
+    </div>
   }
 }

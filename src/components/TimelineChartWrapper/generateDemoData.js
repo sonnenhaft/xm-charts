@@ -3,7 +3,7 @@ import Chance from 'chance'
 
 const chance = new Chance()
 
-export function createEvent({eventId, campainId, minDate, maxDate}) {
+export function createEvent({eventId, campainId, minDate, maxDate, nodes}) {
   return {
     id: `${eventId  }_${  campainId}`,
     name: loremIpsum({count: 2, units: 'words'}).split(' ').join('-'),
@@ -12,6 +12,7 @@ export function createEvent({eventId, campainId, minDate, maxDate}) {
     campainId,
     flag: chance.pickone(['asset', 'deviceSvgIcon']),
     compromized: chance.bool({likelihood: 25}),
+    nodeId: chance.pickone(nodes).id,
     date: chance.hammertime({min: minDate, max: maxDate}),
   }
 }
@@ -21,16 +22,21 @@ export default isYearly => {
   const EVENTS_IN_CAMPAIN = isYearly ? 100 : 30
   const campains = []
 
+
+  let q = 40
+  const nodes = chance.rpg(`${Math.round(q * (0.5 + 0.5 * Math.random()))  }d6`).map((i, id) => ({id}))
+  console.log(nodes)
+
   for (let campainId = 1; campainId < CAMPAINS_NUMBER; campainId++) {
     let events = []
     const campain = {id: campainId, events}
 
     let maxDate = new Date()
-    const DAY = 60*60*1000*24
-    const minDate = new Date(Date.now() - (isYearly ? 365*DAY : DAY))
+    const DAY = 60 * 60 * 1000 * 24
+    const minDate = new Date(Date.now() - (isYearly ? 365 * DAY : DAY))
 
     for (let eventId = 1; eventId < EVENTS_IN_CAMPAIN; eventId++) {
-      events.push(createEvent({eventId, campainId, minDate, maxDate}))
+      events.push(createEvent({eventId, campainId, minDate, maxDate, nodes}))
     }
     events = events.sort((a, b) => a.date > b.date ? 1 : -1)
 
@@ -50,5 +56,8 @@ export default isYearly => {
 
     campains.push(campain)
   }
-  return campains
+  const events = campains.reduce((arr, {events}) => arr.concat(events), [])
+    .sort(({date: a}, {date: b}) => a > b ? 1 : -1)
+
+  return {campains, events, nodes}
 }
