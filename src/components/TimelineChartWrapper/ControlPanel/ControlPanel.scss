@@ -33,6 +33,7 @@
       .buttoned-item {
         display: flex;
         margin: 5px 0;
+        min-width: 87px;
         align-items: stretch;
         border-radius: 4px;
         overflow: hidden;
@@ -46,6 +47,9 @@
           &:hover {
             background: #4a4a4b;
           }
+        }
+        > span:last-of-type {
+          width: 100%;
         }
 
         .icon {

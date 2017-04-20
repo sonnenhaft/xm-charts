@@ -26,6 +26,7 @@ export default class TimelineChart extends Component {
   constructor(props) {
     super(props)
     this.xScale = d3.scaleTime()
+    this.xScaleMini = d3.scaleTime()
     this.updateMarginLeft(props)
     this.brushCirclePosition = 0
     this.yScale = d3.scaleLinear().domain([0, 1])
@@ -63,9 +64,8 @@ export default class TimelineChart extends Component {
 
     if (chartData !== this.props.chartData || props === this.props) {
       const {events} = chartData
-      const numberOfItems = events.length
       this.chartData = events
-        .map((item, index) => ({...item, index: index / numberOfItems}))
+        .map((item, index) => ({...item, index: item.networkSuperiority/100}))
       const maxValue = d3.max(this.chartData, ({date}) => date)
       const minValue = d3.min(this.chartData, ({date}) => date)
       this.domain = [minValue, maxValue]
@@ -159,7 +159,13 @@ export default class TimelineChart extends Component {
     td(this.find('.brushGroup')).attr('transform', `translate(0,${  isToggled ? height + 13 : height + 40  })`)
     td(this.find('.brushLineGroup')).attr('transform', `translate(0,${  isToggled ? height + 13 : height + 40  })`)
     this.find('.brushLine').attrs({width})
-    td(this.find('.xAxis')).attrs(translate(0, realHeight - 57)).call(d3.axisBottom(xScale))
+    td(this.find('.xAxis')).attrs({
+      ...translate(0, realHeight - 85),
+      visibility: this.zoomFactor !== 1 ? 'visible' : 'hidden',
+    }).call(d3.axisBottom(xScale))
+
+    this.xScaleMini.domain(this.domain).rangeRound([0, width])
+    td(this.find('.miniMap')).attrs(translate(0, realHeight - 57)).call(d3.axisBottom(this.xScaleMini))
 
     const svgNode = this.find('svg')
     td(svgNode).attrs({height: this.realHeight})
@@ -168,18 +174,20 @@ export default class TimelineChart extends Component {
     if (isToggled) {
       td(whiteLineNode).attrs({height: 37, y: -height - 20})
     } else {
-      td(whiteLineNode).attrs({height: height + 50, y: -height - 50})
+      td(whiteLineNode).attrs({height: height + 50 - 5, y: -height - 50})
     }
 
     td(this.find('.yAxis')).call(d3.axisLeft(yScale).ticks(5, '%').tickSize(-width)).selectAll('.tick')
       .attr('class', (date, idx) => `tick ${(idx === 4 ? styles['extra-white'] : '')}`)
 
     const [min, max] = xScale.domain()
-    td(this.find('.axisLabel')).attrs({
-      ...translate(width + 5, height + 20),
-      text: YearTextScale(max - min),
-      'text-anchor': 'end',
-    })
+
+    // TODO: uncomment when indicator will become necessary, remove by 10th of may
+    // td(this.find('.axisLabel')).attrs({
+    //   ...translate(width + 5, height + 20),
+    //   text: YearTextScale(max - min),
+    //   'text-anchor': 'end',
+    // })
 
     let filterVisible = ({date}) => min <= date && date <= max
     const data = chartData.filter(filterVisible)
@@ -245,7 +253,7 @@ export default class TimelineChart extends Component {
 
   rememberCurrentTime = (x = this.brushCirclePosition, noDuration = false) => {
     this.brushCirclePosition = x
-    let invertedX = this.xScale.invert(this.brushCirclePosition) - this.domain[0]
+    let invertedX = this.xScale.invert(this.brushCirclePosition)
     this.currentTime = invertedX
     this.find('.brushCircleGroup').transition().duration(noDuration ? 0 : 300)
       .attrs(translate(this.brushCirclePosition, 0))
@@ -356,6 +364,7 @@ export default class TimelineChart extends Component {
             <g visibility={visibility}>
               <g className={`xAxis ${styles['axis']} ${styles['axis--x']}`} />
               <g className={`yAxis ${styles['axis']} ${styles['axis--y']}`} />
+              <g className={`miniMap ${styles['axis']} ${styles['axis--x']}`} />
               <path className={`linePath ${styles['line-path']}`} />
               <text className="axisLabel" visibility={visibility} />
             </g>

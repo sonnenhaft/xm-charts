@@ -1,0 +1,900 @@
+[
+  {
+    "id": "58ee5414b9dbde17888d54dc",
+    "timestamp": "2017-04-12T16:21:40.921Z",
+    "type": "newStartingPointNode",
+    "networkSuperiority": 0,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {},
+    "node": {
+      "id": "12300000000"
+    }
+  },
+  {
+    "id": "58ee5416b9dbde17888d54de",
+    "timestamp": "2017-04-12T16:21:42.187Z",
+    "type": "newStartingPointNode",
+    "networkSuperiority": 0.43478260869565216,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {},
+    "node": {
+      "id": "12300000002"
+    }
+  },
+  {
+    "id": "58ee541bb9dbde17888d54e0",
+    "timestamp": "2017-04-12T16:21:47.217Z",
+    "type": "newStartingPointNode",
+    "networkSuperiority": 0.8695652173913043,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {},
+    "node": {
+      "id": "12300000006"
+    }
+  },
+  {
+    "id": "58ee5427b9dbde17888d54e6",
+    "timestamp": "2017-04-12T16:21:59.843Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 1.3043478260869565,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000006"
+      }
+    },
+    "node": {
+      "id": "12300000198"
+    }
+  },
+  {
+    "id": "58ee5428b9dbde17888d54e8",
+    "timestamp": "2017-04-12T16:22:00.841Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 1.3043478260869565,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000002"
+      }
+    },
+    "node": {
+      "id": "12300000091"
+    }
+  },
+  {
+    "id": "58ee5429b9dbde17888d54eb",
+    "timestamp": "2017-04-12T16:22:01.847Z",
+    "type": "nodeMarkAsRed",
+    "networkSuperiority": 1.7391304347826086,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000002"
+      },
+      "localRank": "100%",
+      "globalRank": "100%"
+    },
+    "node": {
+      "id": "12300000091"
+    }
+  },
+  {
+    "id": "58ee542ab9dbde17888d54f1",
+    "timestamp": "2017-04-12T16:22:02.849Z",
+    "type": "nodeMarkAsRed",
+    "networkSuperiority": 2.1739130434782608,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000000"
+      },
+      "localRank": "100%",
+      "globalRank": "100%"
+    },
+    "node": {
+      "id": "12300000198"
+    }
+  },
+  {
+    "id": "58ee542bb9dbde17888d54f6",
+    "timestamp": "2017-04-12T16:22:03.847Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 2.1739130434782608,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000006"
+      }
+    },
+    "node": {
+      "id": "12300000214"
+    }
+  },
+  {
+    "id": "58ee542cb9dbde17888d54f8",
+    "timestamp": "2017-04-12T16:22:04.848Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 2.1739130434782608,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000006"
+      }
+    },
+    "node": {
+      "id": "12300000102"
+    }
+  },
+  {
+    "id": "58ee542db9dbde17888d54fb",
+    "timestamp": "2017-04-12T16:22:05.858Z",
+    "type": "nodeMarkAsRed",
+    "networkSuperiority": 2.608695652173913,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000006"
+      },
+      "localRank": "100%",
+      "globalRank": "100%"
+    },
+    "node": {
+      "id": "12300000102"
+    }
+  },
+  {
+    "id": "58ee542eb9dbde17888d5500",
+    "timestamp": "2017-04-12T16:22:06.853Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 2.608695652173913,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000102"
+      }
+    },
+    "node": {
+      "id": "12300000112"
+    }
+  },
+  {
+    "id": "58ee542fb9dbde17888d5503",
+    "timestamp": "2017-04-12T16:22:07.860Z",
+    "type": "nodeMarkAsRed",
+    "networkSuperiority": 3.0434782608695654,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000002"
+      },
+      "localRank": "100%",
+      "globalRank": "100%"
+    },
+    "node": {
+      "id": "12300000112"
+    }
+  },
+  {
+    "id": "58ee5430b9dbde17888d5508",
+    "timestamp": "2017-04-12T16:22:08.858Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 3.0434782608695654,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000091"
+      }
+    },
+    "node": {
+      "id": "12300000193"
+    }
+  },
+  {
+    "id": "58ee5431b9dbde17888d550a",
+    "timestamp": "2017-04-12T16:22:09.858Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 3.0434782608695654,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000091"
+      }
+    },
+    "node": {
+      "id": "12300000010"
+    }
+  },
+  {
+    "id": "58ee5432b9dbde17888d550c",
+    "timestamp": "2017-04-12T16:22:10.862Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 3.0434782608695654,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000002"
+      }
+    },
+    "node": {
+      "id": "12300000131"
+    }
+  },
+  {
+    "id": "58ee5433b9dbde17888d550e",
+    "timestamp": "2017-04-12T16:22:11.867Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 3.0434782608695654,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000102"
+      }
+    },
+    "node": {
+      "id": "12300000135"
+    }
+  },
+  {
+    "id": "58ee5434b9dbde17888d5511",
+    "timestamp": "2017-04-12T16:22:12.876Z",
+    "type": "nodeMarkAsRed",
+    "networkSuperiority": 3.4782608695652173,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000091"
+      },
+      "localRank": "100%",
+      "globalRank": "100%"
+    },
+    "node": {
+      "id": "12300000135"
+    }
+  },
+  {
+    "id": "58ee5435b9dbde17888d5517",
+    "timestamp": "2017-04-12T16:22:13.881Z",
+    "type": "nodeMarkAsRed",
+    "networkSuperiority": 3.9130434782608696,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000112"
+      },
+      "localRank": "100%",
+      "globalRank": "100%"
+    },
+    "node": {
+      "id": "12300000214"
+    }
+  },
+  {
+    "id": "58ee5436b9dbde17888d551c",
+    "timestamp": "2017-04-12T16:22:14.878Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 3.9130434782608696,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000000"
+      }
+    },
+    "node": {
+      "id": "12300000068"
+    }
+  },
+  {
+    "id": "58ee5437b9dbde17888d551e",
+    "timestamp": "2017-04-12T16:22:15.873Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 3.9130434782608696,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000006"
+      }
+    },
+    "node": {
+      "id": "12300000063"
+    }
+  },
+  {
+    "id": "58ee5438b9dbde17888d5520",
+    "timestamp": "2017-04-12T16:22:16.911Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 3.9130434782608696,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000135"
+      }
+    },
+    "node": {
+      "id": "12300000122"
+    }
+  },
+  {
+    "id": "58ee5439b9dbde17888d5522",
+    "timestamp": "2017-04-12T16:22:17.878Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 3.9130434782608696,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000198"
+      }
+    },
+    "node": {
+      "id": "12300000030"
+    }
+  },
+  {
+    "id": "58ee543ab9dbde17888d5525",
+    "timestamp": "2017-04-12T16:22:18.888Z",
+    "type": "nodeMarkAsRed",
+    "networkSuperiority": 4.3478260869565215,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000135"
+      },
+      "localRank": "100%",
+      "globalRank": "100%"
+    },
+    "node": {
+      "id": "12300000193"
+    }
+  },
+  {
+    "id": "58ee543bb9dbde17888d552a",
+    "timestamp": "2017-04-12T16:22:19.886Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 4.3478260869565215,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000000"
+      }
+    },
+    "node": {
+      "id": "12300000197"
+    }
+  },
+  {
+    "id": "58ee543cb9dbde17888d552c",
+    "timestamp": "2017-04-12T16:22:20.889Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 4.3478260869565215,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000000"
+      }
+    },
+    "node": {
+      "id": "12300000188"
+    }
+  },
+  {
+    "id": "58ee543db9dbde17888d552e",
+    "timestamp": "2017-04-12T16:22:21.890Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 4.3478260869565215,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000006"
+      }
+    },
+    "node": {
+      "id": "12300000176"
+    }
+  },
+  {
+    "id": "58ee543eb9dbde17888d5530",
+    "timestamp": "2017-04-12T16:22:22.890Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 4.3478260869565215,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000135"
+      }
+    },
+    "node": {
+      "id": "12300000203"
+    }
+  },
+  {
+    "id": "58ee543fb9dbde17888d5533",
+    "timestamp": "2017-04-12T16:22:23.898Z",
+    "type": "nodeMarkAsRed",
+    "networkSuperiority": 4.782608695652174,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000193"
+      },
+      "localRank": "100%",
+      "globalRank": "100%"
+    },
+    "node": {
+      "id": "12300000188"
+    }
+  },
+  {
+    "id": "58ee5440b9dbde17888d5538",
+    "timestamp": "2017-04-12T16:22:24.896Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 4.782608695652174,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000198"
+      }
+    },
+    "node": {
+      "id": "12300000014"
+    }
+  },
+  {
+    "id": "58ee5441b9dbde17888d553c",
+    "timestamp": "2017-04-12T16:22:25.906Z",
+    "type": "nodeMarkAsRed",
+    "networkSuperiority": 5.217391304347826,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000198"
+      },
+      "localRank": "100%",
+      "globalRank": "100%"
+    },
+    "node": {
+      "id": "12300000014"
+    }
+  },
+  {
+    "id": "58ee5442b9dbde17888d5540",
+    "timestamp": "2017-04-12T16:22:26.901Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 5.217391304347826,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000214"
+      }
+    },
+    "node": {
+      "id": "12300000207"
+    }
+  },
+  {
+    "id": "58ee5443b9dbde17888d5542",
+    "timestamp": "2017-04-12T16:22:27.905Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 5.217391304347826,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000102"
+      }
+    },
+    "node": {
+      "id": "12300000219"
+    }
+  },
+  {
+    "id": "58ee5444b9dbde17888d5545",
+    "timestamp": "2017-04-12T16:22:28.911Z",
+    "type": "nodeMarkAsRed",
+    "networkSuperiority": 5.6521739130434785,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000000"
+      },
+      "localRank": "100%",
+      "globalRank": "100%"
+    },
+    "node": {
+      "id": "12300000176"
+    }
+  },
+  {
+    "id": "58ee5445b9dbde17888d554b",
+    "timestamp": "2017-04-12T16:22:29.912Z",
+    "type": "nodeMarkAsRed",
+    "networkSuperiority": 6.086956521739131,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000198"
+      },
+      "localRank": "100%",
+      "globalRank": "100%"
+    },
+    "node": {
+      "id": "12300000203"
+    }
+  },
+  {
+    "id": "58ee5446b9dbde17888d5550",
+    "timestamp": "2017-04-12T16:22:30.910Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 6.086956521739131,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000014"
+      }
+    },
+    "node": {
+      "id": "12300000226"
+    }
+  },
+  {
+    "id": "58ee5447b9dbde17888d5553",
+    "timestamp": "2017-04-12T16:22:31.913Z",
+    "type": "nodeMarkAsRed",
+    "networkSuperiority": 6.521739130434782,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000214"
+      },
+      "localRank": "100%",
+      "globalRank": "100%"
+    },
+    "node": {
+      "id": "12300000068"
+    }
+  },
+  {
+    "id": "58ee5448b9dbde17888d5559",
+    "timestamp": "2017-04-12T16:22:32.922Z",
+    "type": "nodeMarkAsRed",
+    "networkSuperiority": 6.956521739130435,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000006"
+      },
+      "localRank": "100%",
+      "globalRank": "100%"
+    },
+    "node": {
+      "id": "12300000010"
+    }
+  },
+  {
+    "id": "58ee5449b9dbde17888d555e",
+    "timestamp": "2017-04-12T16:22:33.914Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 6.956521739130435,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000000"
+      }
+    },
+    "node": {
+      "id": "12300000206"
+    }
+  },
+  {
+    "id": "58ee544ab9dbde17888d5561",
+    "timestamp": "2017-04-12T16:22:34.919Z",
+    "type": "nodeMarkAsRed",
+    "networkSuperiority": 7.391304347826087,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000000"
+      },
+      "localRank": "100%",
+      "globalRank": "100%"
+    },
+    "node": {
+      "id": "12300000131"
+    }
+  },
+  {
+    "id": "58ee544bb9dbde17888d5567",
+    "timestamp": "2017-04-12T16:22:35.925Z",
+    "type": "nodeMarkAsRed",
+    "networkSuperiority": 7.826086956521739,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000112"
+      },
+      "localRank": "100%",
+      "globalRank": "100%"
+    },
+    "node": {
+      "id": "12300000207"
+    }
+  },
+  {
+    "id": "58ee544cb9dbde17888d556c",
+    "timestamp": "2017-04-12T16:22:36.920Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 7.826086956521739,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000203"
+      }
+    },
+    "node": {
+      "id": "12300000164"
+    }
+  },
+  {
+    "id": "58ee544db9dbde17888d556e",
+    "timestamp": "2017-04-12T16:22:37.925Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 7.826086956521739,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000193"
+      }
+    },
+    "node": {
+      "id": "12300000041"
+    }
+  }
+]
+

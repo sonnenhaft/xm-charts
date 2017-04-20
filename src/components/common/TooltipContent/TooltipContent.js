@@ -7,7 +7,7 @@ const string = React.PropTypes.string
 export default class TooltipContent extends Component {
   static propTypes = {
     tooltipData: PropTypes.shape({
-      name: string,
+      type: string,
       method: string,
       source: string,
       date: PropTypes.number, // date number, line Date.now()
@@ -17,33 +17,33 @@ export default class TooltipContent extends Component {
   static defaultProps = {tooltipData: {}};
 
   render() {
-    const {tooltipData} = this.props
+    const {type, name, source, method, date, value} = this.props.tooltipData
     return <div className={styles['tooltip-content']}>
-      {tooltipData.name && <div>
+      {type && <div>
         <div>
-          <div className={styles['title']}>{tooltipData.name}</div>
+          <div className={styles['title']}>{type}</div>
           <div className={styles['tooltip-event-icons']}>
             <ShareButtons type="vertical" />
           </div>
           <div className={styles['content']}>
-            <div>
+            {method && <div>
               <span className={styles['title']}>Method: </span>
-              <span>{tooltipData.method}</span>
-            </div>
-            <div>
+              <span>{method}</span>
+            </div>}
+            {source && <div>
               <span className={styles['title']}>Source: </span>
-              <span>{tooltipData.source}</span>
-            </div>
+              <span>{source}</span>
+            </div>}
           </div>
           <div>
-            <b>{timeFormat('%H:%M:%S')(tooltipData.date)}</b>
+            <b>{timeFormat('%H:%M:%S')(date)}</b>
           </div>
         </div>
       </div>}
-      {!tooltipData.name && <div>
+      {!type && <div>
         <ShareButtons type="dark-icons" />
-        {/*<div>count {tooltipData.value}</div>*/}
-        <b>{timeFormat('%H:%M:%S')(tooltipData.date)}</b>
+        {/*<div>count {value}</div>*/}
+        <b>{timeFormat('%H:%M:%S')(date)}</b>
       </div>}
     </div>
   }

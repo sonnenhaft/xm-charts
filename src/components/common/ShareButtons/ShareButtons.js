@@ -8,26 +8,31 @@ import networkSvgIcon from '../../../assets/icons/asset-network.svg'
 const Icon = ({children: __html}) => <span className={styles['icon']} dangerouslySetInnerHTML={{__html}} />
 
 export default class ShareButtons extends Component {
-  static propTypes = {type: PropTypes.oneOf(['vertical', 'dark-icons', '', 'vertical-black'])}
-  static defaultProps = {type: ''};
+  static propTypes = {
+    type: PropTypes.oneOf(['vertical', 'dark-icons', '', 'vertical-black']),
+  }
+  static defaultProps = {type: '', data: {}};
 
   render() {
-    const {type} = this.props
-    return <div className={`${styles['share-buttons']  } ${  styles[type]}`}>
-      <div className={styles['share-button']}>
+    const {type, data: _data, children} = this.props
+    const {data, device, network} = _data
+
+    let className = styles['share-button']
+    return <div className={`${styles['share-buttons']} ${styles[type]}`}>
+      <div {...{className}}>
         <Icon>{saveSvgIcon}</Icon>
-        <span>213</span>
+        <span>{data}</span>
       </div>
-      <div className={styles['share-button']}>
+      <div {...{className}}>
         <Icon>{deviceSvgIcon}</Icon>
-        <span>12</span>
+        <span>{device}</span>
       </div>
-      <div className={styles['share-button']}>
+      <div {...{className}}>
         <Icon>{networkSvgIcon}</Icon>
-        <span>32</span>
+        <span>{network}</span>
       </div>
-      {this.props.children && <div className={styles['share-button']}>
-        {this.props.children}
+      {children && <div {...{className}}>
+        {children}
       </div>}
     </div>
   }

@@ -10,6 +10,7 @@ import circleButtonSvgIcon from './button-icons/circle-button.svg'
 import ShareButtons from '../../common/ShareButtons/ShareButtons'
 import styles from './ControlPanel.scss'
 import CircleIndicator from './CircleIndicator/CircleIndicator'
+import {timeFormat} from 'd3'
 
 const Icon = ({children: __html}) => <span className={styles['icon']} dangerouslySetInnerHTML={{__html}} />
 const Button = ({onClick, children: __html, className, title}) => {
@@ -21,7 +22,7 @@ export default class ControlPanel extends Component {
   static propTypes = {
     isToggled: PropTypes.bool.isRequired,
     zoomFactor: PropTypes.number.isRequired,
-    currentTime: PropTypes.number,
+    events: PropTypes.array,
     onReset: PropTypes.func.isRequired,
     onPrev: PropTypes.func.isRequired,
     onNext: PropTypes.func.isRequired,
@@ -31,34 +32,41 @@ export default class ControlPanel extends Component {
     onResetPosition: PropTypes.func.isRequired,
   }
 
+  static defaultProps = {
+    events: [],
+  }
+
   render() {
-    const {isToggled, zoomFactor, currentTime, offsetTime, onReset} = this.props
+    const {isToggled, zoomFactor, currentTime, onReset} = this.props
     let zoomFactorText = zoomFactor
     if (zoomFactorText > 1000) {
-      zoomFactorText = `${Math.round(zoomFactorText / 1000)  }k`
+      zoomFactorText = `${ Math.round(zoomFactorText / 1000)  }k`
     } else if (zoomFactor < 10) {
       zoomFactorText = Math.round(zoomFactor * 10) / 10
     } else {
       zoomFactorText = Math.round(zoomFactor)
     }
-    zoomFactorText = `x${  zoomFactorText}`
+    zoomFactorText = `x${zoomFactorText}`
 
     const {onPrev, onNext, onLongPrev, onLongNext, onPlay, onResetPosition} = this.props
+    const {compromisedAssets, compromisedDataGB = 0, networkSuperiority} = this.props.selectedEvent || {}
+
     return <div>
       {!isToggled && <div className={styles['timeline-control-block']}>
         <div />
         <div className={`${styles['circle-stats-block']} ${isToggled ? styles['stats-hidden'] : ''}`}>
           <div className={styles['circle-block']}>
-            <CircleIndicator percent={0.4} />
+            <CircleIndicator percent={networkSuperiority} />
           </div>
 
           <div className={styles['stats-block']}>
-            <ShareButtons />
-            <div className={`${styles['buttoned-item']}`}>
+            <ShareButtons data={compromisedAssets} />
+            <div className={styles['buttoned-item']}>
               <Icon>{triangleSvgIcon}</Icon>
               <span>
-              <span>2,173.2 <small>GB</small></span>
-            </span>
+                {compromisedDataGB}
+                <small>GB</small>
+              </span>
             </div>
           </div>
           <div className={`${styles['black-buttons']}`}>
@@ -74,7 +82,7 @@ export default class ControlPanel extends Component {
         <div />
         <div className={styles['play-buttons-block']}>
           <Button onClick={onResetPosition}>{circleButtonSvgIcon}</Button>
-          <CurrentTime {...{currentTime, offsetTime}} />
+          <CurrentTime {...{currentTime, offset: this.props.events[0].date}} />
           <Button onClick={onPlay}>{playButtonSvgIcon}</Button>
           <div className={`${styles['left-buttons']}`}>
             <Button onClick={onReset} title="Reset Zoom">{zoomFactorText}</Button>
@@ -89,9 +97,9 @@ export default class ControlPanel extends Component {
           <div className={`${styles['circle-block']  } ${  styles['small-circle-block']}`}>
             <CircleIndicator percent={0.4} small={true} />
           </div>
-          <ShareButtons type="vertical-black">
+          <ShareButtons type="vertical-black" data={compromisedAssets}>
             <Icon>{triangleSvgIcon}</Icon>
-            <span>2,173.2</span>
+            <span>{compromisedDataGB}</span>
           </ShareButtons>
 
           <CurrentTime {...{currentTime}} />

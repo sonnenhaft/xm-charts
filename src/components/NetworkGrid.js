@@ -16,8 +16,8 @@ export default class NetworkGrid extends Component {
   componentWillReceiveProps() {
     const {chartData: {events, nodes}, currentTime} = this.props
     const gridSize = Math.ceil(Math.sqrt(nodes.length))
-    this.nodeColors = nodes.reduce((map, {id}) => {
-      map[id] = 'white'
+    this.nodeColors = nodes.reduce((map, {agentId}) => {
+      map[agentId] = 'white'
       return map
     }, {})
     this.currentTime = currentTime + events[0].date
@@ -56,8 +56,8 @@ export default class NetworkGrid extends Component {
     return <svg {...{width, height}} ref={this.setSvg}>
       {this.lines.map((data, yCoord) => {
         return <g key={yCoord}>
-          {data.map(({id}, xCoord) => {
-            let nodeColor = this.nodeColors[id]
+          {data.map(({agentId}, xCoord) => {
+            let nodeColor = this.nodeColors[agentId]
             return <rect {...{
               stroke: 'black',
               strokeWidth: 1,
@@ -68,7 +68,7 @@ export default class NetworkGrid extends Component {
               fill: nodeColor,
               x: xScale(yCoord) + wOffset,
               y: yScale(xCoord) + wOffset,
-              key: `${xCoord  } ${  yCoord}`,
+              key: `${xCoord} ${yCoord}`,
             }} />
           })}
         </g>

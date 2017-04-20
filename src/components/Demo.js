@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import TimelineChartWrapper from './TimelineChartWrapper/TimelineChartWrapper'
-import generateDemoData, {createEvent} from './TimelineChartWrapper/generateDemoData'
+import generateDemoData, {createEvent} from './TimelineChartWrapper/generateDemoData/generateDemoData'
 
 import packageJson from '../../package.json'
 import styles from './Demo.scss'
@@ -10,7 +10,7 @@ class Demo extends Component {
     super(props)
     this.demoDataArray = [
       generateDemoData(true),
-      generateDemoData(),
+      // generateDemoData(),
     ]
   }
 

@@ -16,14 +16,32 @@ export default class TimelineChartWrapper extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {isToggled: false, zoomFactor: 1, currentTime: null}
+    this.state = {isToggled: false, zoomFactor: 2, currentTime: this._getCurrentTime(props)}
 
     this.onKeyDown = throttle(300, this.onKeyDown)
   }
 
+  _getCurrentTime(props) {
+    let {chartData: {events = []} = {}} = props
+    return events.length ? events[events.length - 1].date : 0
+  }
+
+  componentWillReceiveProps(props) {
+    const currentTime = this._getCurrentTime(props)
+    this.setState({currentTime})
+  }
+
   onToggled = () => this.setState({isToggled: !this.state.isToggled})
   onZoomed = zoomFactor => this.setState({zoomFactor: Math.min(this.CHROME_MAX_ZOOM, Math.max(zoomFactor, 1))})
-  onTimeChanged = currentTime => this.setState({currentTime})
+  onTimeChanged = currentTime => {
+    let {chartData: {events = []} = {}} = this.props
+    let time = Math.max(currentTime, events[events.length - 1].date)
+    let number = Math.max(events.findIndex(({date}) => date > time), 1) - 1
+    let selectedEvent = events[number]
+
+    this.setState({currentTime, selectedEvent})
+  }
+
   onReset = () => this.setState({zoomFactor: 1})
 
   onNext = () => this.moveOnDaysNumber(1)
@@ -55,15 +73,16 @@ export default class TimelineChartWrapper extends Component {
   }
 
   render() {
-    const {isToggled, zoomFactor, currentTime} = this.state
+    const {isToggled, zoomFactor, currentTime, selectedEvent} = this.state
     const {chartData} = this.props
+    const {events} = chartData
     const {onTimeChanged, onToggled, onZoomed, onKeyDown} = this
     const {onReset, onPrev, onNext, onLongPrev, onLongNext, onPlay, onResetPosition} = this
     const controlActions = {onReset, onPrev, onNext, onLongPrev, onLongNext, onPlay, onResetPosition}
     return <div>
       <NetworkGrid {...{currentTime, chartData}} />
       <GlobalKeyDetector className={styles['timeline-chart-wrapper']} onKeyDown={onKeyDown}>
-        <ControlPanel {...{isToggled, zoomFactor, currentTime, ...controlActions}} />
+        <ControlPanel {...{events, isToggled, zoomFactor, currentTime, ...controlActions, selectedEvent}} />
         <TimelineChart {...{isToggled, currentTime, chartData, onZoomed, onTimeChanged, zoomFactor}} />
         <SquareButtons {...{onToggled, isToggled}} />
       </GlobalKeyDetector>

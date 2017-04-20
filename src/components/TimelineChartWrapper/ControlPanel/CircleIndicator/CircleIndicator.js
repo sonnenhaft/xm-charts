@@ -16,11 +16,11 @@ export default class CircleIndicator extends Component {
   }
 
   static defaultProps = {percent: 0, small: false}
-  static propTypes = {percent: between({gte: 0, lte: 1}), small: PropTypes.bool}
+  static propTypes = {percent: between({gte: 0, lte: 100}), small: PropTypes.bool}
 
   static RADIUS = 107
   static WIDTH = 14
-  static ANIMATION_DURATION = 750
+  static ANIMATION_DURATION = 150
   static td = selection => selection.transition().duration(CircleIndicator.ANIMATION_DURATION)
 
   constructor(props) {
@@ -53,15 +53,24 @@ export default class CircleIndicator extends Component {
 
   componentDidUpdate() {
     this.g.attr('visibility', 'visible') // prevents bad view before app loaded
-    const percent = this.props.percent
+    const {percent} = this.props
     const td = CircleIndicator.td
     const {path, circle, text: textBlock} = this
+    const percentNumbered = percent/100
 
-    td(path).attrTween('d', this.arcTween(-(1 - percent) * this.TAU))
-    td(circle).attr('opacity', percent > 0.8 ? 1 : 0)
+    td(path).attrTween('d', this.arcTween(-(1 - percentNumbered) * this.TAU))
+    td(circle).attr('opacity', percent > 80 ? 1 : 0)
     td(textBlock).tween('text', function() {
-      const i = d3.interpolateRound(this.textContent - 0, percent * 100)
-      return t => textBlock.text((i(t)))
+      const i = d3.interpolate(this.textContent - 0, percent*10)
+      return t => {
+        let percentTime = i(t)/10
+        if (percentTime > 10) {
+          percentTime = Math.round(percentTime)
+        } else {
+          percentTime = percentTime.toFixed(1)
+        }
+        textBlock.text(percentTime)
+      }
     })
   }
 

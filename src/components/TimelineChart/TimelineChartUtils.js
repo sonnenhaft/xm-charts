@@ -65,7 +65,7 @@ export const renderPath = ({td, min, max, linePath, data, x, y, chartData}) => {
     data = [{date: min, index}, {date: max, index}]
   }
 
-  td(linePath).attr('d', d3.line().x(x).y(y).curve(d3.curveBundle.beta(0.9))(data))
+  td(linePath).attr('d', d3.line().x(x).y(y).curve(d3.curveBundle.beta(0.97))(data))
 }
 
 export const renderCircles = ({g, data, x, height, duration, bulkLines, firstInSubnet, actions, isToggled, opacity}) => {
@@ -78,7 +78,7 @@ export const renderCircles = ({g, data, x, height, duration, bulkLines, firstInS
   enteredSelection.exit().remove()
 
   const mergedSelection = enteredSelection.enter().append('g')
-    .attr('class', 'bulkBlock').html(({value}) => `<g>
+    .attr('class', 'bulkBlock').html(({value}) => `<g transform="translate(1, 0)">
     <rect fill="#EB001E"  pointer-events="none" class="white-shadow-rect"
         transform="translate(${-(radius + 1)})"    width="${(radius + 1) * 2}"></rect>
      <circle class="circleWrapper" fill="#252525"  stroke-opacity="${value ? 0.3 : 1}"
