@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import TimelineChartWrapper from './TimelineChartWrapper/TimelineChartWrapper'
-import generateDemoData, {createEvent} from './TimelineChartWrapper/generateDemoData/generateDemoData'
+import generateDemoData from './TimelineChartWrapper/generateDemoData/generateDemoData'
 
 import packageJson from '../../package.json'
 import styles from './Demo.scss'
@@ -8,23 +8,19 @@ import styles from './Demo.scss'
 class Demo extends Component {
   constructor(props) {
     super(props)
-    this.demoDataArray = [
-      generateDemoData(true),
-      // generateDemoData(),
-    ]
+    this.demoDataArray = [generateDemoData()]
   }
 
   addSomeValues = () => {
     this.demoDataArray = this.demoDataArray.map(data => ({...data}))
-    this.demoDataArray.forEach(({nodes, campains, events}) => {
-      const lastCampain = campains[campains.length - 1].events
-      const {date, campainId} = lastCampain[lastCampain.length - 1]
-      const eventId = lastCampain.length
-      const maxDate = new Date()
-      const minDate = new Date(maxDate + (maxDate - date))
-      let event = createEvent({eventId, campainId, minDate, maxDate, nodes})
+    this.demoDataArray.forEach(({events}) => {
+      const lastevent = events[events.length - 1]
+      const event = Object.assign({}, lastevent)
+      event.date += (lastevent.date - events[0].date) / events.length
+      event.networkSuperiority += event.networkSuperiority / events.length
+      event.compromized = !Math.round(Math.random())
+      event._id = Date.now()
       events.push(event)
-      lastCampain.push(event)
     })
 
     this.forceUpdate()

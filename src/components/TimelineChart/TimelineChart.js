@@ -229,7 +229,7 @@ export default class TimelineChart extends Component {
       },
     }
 
-    let dataClick = ({date}) => this.rememberCurrentTime(this.xScale(date))
+    let dataClick = ({date}) => this.rememberCurrentTime(this.xScaleMini(date))
     const attrs = {x, y, ...lineAttrs, opacity, click: dataClick}
     g.bindData(`rect.${styles['small-line']}`, data.filter(filterVisible), attrs, duration)
 
