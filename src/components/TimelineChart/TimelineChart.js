@@ -7,7 +7,7 @@ import {composeCircles, updateBrush, renderCircles, renderPath} from './Timeline
 import YearTextScale from './YearTextScale'
 import WindowDependable from './WindowDependable'
 
-const translate = (x, y) => ({transform: `translate(${x}, ${y})`})
+const translate = (x, y = 0) => ({transform: `translate(${x}, ${y})`})
 
 export default class TimelineChart extends Component {
   static margin = {top: 30, right: 10, bottom: 60, left: 30}
@@ -73,10 +73,14 @@ export default class TimelineChart extends Component {
     if (this.currentTime !== currentTime && currentTime) {
       const delta = this.currentTime - currentTime
       this.currentTime = currentTime
+
+
+
       const currentZoom = d3.zoomTransform(this.zoomRect.node())
       this.isZoomDisabled = true
       this.zoomBehavior.translateBy(this.zoomRect, delta > 0 ? 20 : -20, currentZoom.y)
       this.updateChart()
+      this.brushCirclePosition = this.xScale(currentTime)
       this.isZoomDisabled = false
     } else if (this.zoomFactor !== zoomFactor) {
       this.rezoom(zoomFactor)
@@ -160,21 +164,23 @@ export default class TimelineChart extends Component {
     td(this.find('.brushLineGroup')).attr('transform', `translate(0,${  isToggled ? height + 13 : height + 40  })`)
     this.find('.brushLine').attrs({width})
     td(this.find('.xAxis')).attrs({
-      ...translate(0, realHeight - 85),
+      ...translate(0, realHeight - (isToggled ? 78 : 85)),
       visibility: this.zoomFactor !== 1 ? 'visible' : 'hidden',
     }).call(d3.axisBottom(xScale))
 
     this.xScaleMini.domain(this.domain).rangeRound([0, width])
-    td(this.find('.miniMap')).attrs(translate(0, realHeight - 57)).call(d3.axisBottom(this.xScaleMini))
+    td(this.find('.miniMap'))
+      .attrs(translate(0, realHeight - (isToggled ? realHeight : 57)))
+      .call(d3.axisBottom(this.xScaleMini))
 
     const svgNode = this.find('svg')
     td(svgNode).attrs({height: this.realHeight})
     svgNode.on('click', () => this.highlightCampaign(null))
     const whiteLineNode = this.find('.whiteLine')
     if (isToggled) {
-      td(whiteLineNode).attrs({height: 37, y: -height - 20})
+      td(whiteLineNode).attrs({height: 15, y: -height - 20})
     } else {
-      td(whiteLineNode).attrs({height: height + 50 - 5, y: -height - 50})
+      td(whiteLineNode).attrs({height: height + 50 - 13, y: -height - 50})
     }
 
     td(this.find('.yAxis')).call(d3.axisLeft(yScale).ticks(5, '%').tickSize(-width)).selectAll('.tick')
@@ -192,10 +198,8 @@ export default class TimelineChart extends Component {
     let filterVisible = ({date}) => min <= date && date <= max
     const data = chartData.filter(filterVisible)
 
-    const blueLines = data.filter(({compromized}) => !compromized).filter(filterVisible)
-    const redLines = data.filter(({compromized}) => compromized).filter(filterVisible)
-
-    const lineAttrs = {width: 2, height: 10}
+    const fill = ({compromized}) => compromized ? '#4660DF' : ' #EB001E'
+    const lineAttrs = {width: 2, height: 10, fill}
     const x = ({date}) => xScale(date)
     const y = ({index}) => yScale(index)
 
@@ -204,11 +208,6 @@ export default class TimelineChart extends Component {
       opacity = ({isEventSelected}) => isEventSelected ? 1 : 0.3
     }
 
-    let dataClick = ({date}) => this.rememberCurrentTime(this.xScale(date))
-    const attrs = {x, y, ...lineAttrs, opacity, click: dataClick}
-    const smallRects = this.find('.smalRects')
-    smallRects.bindData(`rect.${styles['blue-line']}`, blueLines, attrs, duration)
-    smallRects.bindData(`rect.${styles['red-line']}`, redLines, attrs, duration)
     renderPath({td, min, max, linePath: this.find('.linePath'), data, x, y, chartData})
     const mouseout = this.closeTooltip
     const moveTooltip = this.openTooltip
@@ -230,6 +229,9 @@ export default class TimelineChart extends Component {
       },
     }
 
+    let dataClick = ({date}) => this.rememberCurrentTime(this.xScale(date))
+    const attrs = {x, y, ...lineAttrs, opacity, click: dataClick}
+    g.bindData(`rect.${styles['small-line']}`, data.filter(filterVisible), attrs, duration)
 
     const groupWidth = 25 / currentZoom.k
     let prevGroupWidth = width / groupWidth
@@ -253,10 +255,12 @@ export default class TimelineChart extends Component {
 
   rememberCurrentTime = (x = this.brushCirclePosition, noDuration = false) => {
     this.brushCirclePosition = x
-    let invertedX = this.xScale.invert(this.brushCirclePosition)
+    let invertedX = this.xScaleMini.invert(this.brushCirclePosition)
     this.currentTime = invertedX
-    this.find('.brushCircleGroup').transition().duration(noDuration ? 0 : 300)
-      .attrs(translate(this.brushCirclePosition, 0))
+
+    let td = selector => this.find(selector).transition().duration(noDuration ? 0 : 300)
+    td('.brushCircleGroup').attrs(translate(x))
+    this.find('.whiteLine').attrs(translate(this.xScale(this.currentTime)))
     this.props.onTimeChanged(invertedX)
   }
 
@@ -361,10 +365,10 @@ export default class TimelineChart extends Component {
                   transform={`translate(${this.marginLeft},15)`} />
           </g>
           <g fill="white" className="mainGroup">
+            <g className={`miniMap ${styles['axis']} ${styles['axis--x']}`} />
             <g visibility={visibility}>
               <g className={`xAxis ${styles['axis']} ${styles['axis--x']}`} />
               <g className={`yAxis ${styles['axis']} ${styles['axis--y']}`} />
-              <g className={`miniMap ${styles['axis']} ${styles['axis--x']}`} />
               <path className={`linePath ${styles['line-path']}`} />
               <text className="axisLabel" visibility={visibility} />
             </g>
@@ -374,9 +378,10 @@ export default class TimelineChart extends Component {
           <g className="brushGroup">
             <g transform={`translate(${this.marginLeft},15)`}>
               <g className="brusher" transform={`translate(0,${isToggled ? 0 : -15})`} />
+              <rect width="1" fill="white" className="whiteLine" />
               <g className="brushCircleGroup">
-                <rect width="1" fill="white" className="whiteLine" />
                 <rect className={styles['brush-circle']} height="14" width="14" rx="9" ry="12" />
+                <rect width="1" fill="white" height="50" transform={`translate(0,${isToggled ? 17 : 27})`} />
               </g>
             </g>
           </g>

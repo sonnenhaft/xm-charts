@@ -13,23 +13,23 @@ svg.timeline-chart {
   }
 
   &.toggled {
-    .blue-line,
-    .red-line {
+    .small-line {
       height: 7px;
       width: 2px;
-      transform: translateY(2px);
+      transform: translateY(-4px);
     }
   }
 
-  .blue-line, .red-line {
+  .small-line {
     height: 10px;
     width: 2px;
-    stroke-width: 10;
+    stroke-width: 5;
     stroke: white;
     stroke-opacity: 0;
+    transform: translateY(-5px);
     &:hover {
       width: 6px;
-      transform: translate(-2.5px, -10px);
+      transform: translate(-2.5px, -14px);
       height: 30px;
     }
   }
@@ -39,9 +39,6 @@ svg.timeline-chart {
     pointer-events: none;
   }
 
-  .blue-line {
-    fill: $buttonBlue;
-  }
   .black-background {
     fill: #141414
   }
@@ -50,9 +47,8 @@ svg.timeline-chart {
   }
 
   .red-bulk-circle,
-  .red-bulk-line,
-  .red-line {
-    fill: $chartRed;
+  .red-bulk-line {
+    fill: $chartRed
   }
 
   .axis {

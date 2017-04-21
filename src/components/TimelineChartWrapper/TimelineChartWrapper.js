@@ -16,7 +16,7 @@ export default class TimelineChartWrapper extends Component {
 
   constructor(props) {
     super(props)
-    this.state = {isToggled: false, zoomFactor: 2, currentTime: this._getCurrentTime(props)}
+    this.state = {isToggled: false, zoomFactor: 1, currentTime: this._getCurrentTime(props)}
 
     this.onKeyDown = throttle(300, this.onKeyDown)
   }
@@ -80,7 +80,7 @@ export default class TimelineChartWrapper extends Component {
     const {onReset, onPrev, onNext, onLongPrev, onLongNext, onPlay, onResetPosition} = this
     const controlActions = {onReset, onPrev, onNext, onLongPrev, onLongNext, onPlay, onResetPosition}
     return <div>
-      <NetworkGrid {...{currentTime, chartData}} />
+      {/*<NetworkGrid {...{currentTime, chartData}} />*/}
       <GlobalKeyDetector className={styles['timeline-chart-wrapper']} onKeyDown={onKeyDown}>
         <ControlPanel {...{events, isToggled, zoomFactor, currentTime, ...controlActions, selectedEvent}} />
         <TimelineChart {...{isToggled, currentTime, chartData, onZoomed, onTimeChanged, zoomFactor}} />
