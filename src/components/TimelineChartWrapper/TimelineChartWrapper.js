@@ -41,12 +41,12 @@ export default class TimelineChartWrapper extends Component {
   }
 
   setEvent(indexOffset = 1) {
-    const {chartData: {events}} = this.props;
-    let {selectedEvent} = this.state;
-    let prevIndex = events.indexOf(selectedEvent);
+    const {chartData: {events}} = this.props
+    let {selectedEvent} = this.state
+    let prevIndex = events.indexOf(selectedEvent)
     let newIndex = prevIndex + indexOffset
     newIndex = newIndex >= 0 ? newIndex : events.length - 1
-    selectedEvent = events[newIndex];
+    selectedEvent = events[newIndex]
     this.setState({currentTime: selectedEvent.date, selectedEvent})
   }
 
@@ -55,8 +55,8 @@ export default class TimelineChartWrapper extends Component {
   onNext = () => this.setEvent()
   onPrev = () => this.setEvent(-1)
 
-  onLongNext = () => this.moveOnDaysNumber(2)
-  onLongPrev = () => this.moveOnDaysNumber(-2)
+  onLongNext = () => this.setEvent()
+  onLongPrev = () => this.setEvent(-1)
 
   moveOnDaysNumber(count) {
     this.setState({currentTime: this.state.currentTime + count * DAY})
@@ -95,7 +95,7 @@ export default class TimelineChartWrapper extends Component {
     const {onReset, onPrev, onNext, onLongPrev, onLongNext, onPlay, onResetPosition} = this
     const controlActions = {onReset, onPrev, onNext, onLongPrev, onLongNext, onPlay, onResetPosition}
     return <div>
-      {/*<NetworkGrid {...{currentTime, chartData}} />*/}
+      <NetworkGrid {...{currentTime, chartData}} />
       <GlobalKeyDetector className={styles['timeline-chart-wrapper']} onKeyDown={onKeyDown}>
         <ControlPanel {...{events, isToggled, zoomFactor, currentTime, ...controlActions, selectedEvent}} />
         <TimelineChart {...{isToggled, currentTime, chartData, onZoomed, onTimeChanged, zoomFactor}} />

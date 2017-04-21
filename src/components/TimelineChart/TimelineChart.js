@@ -72,7 +72,6 @@ export default class TimelineChart extends Component {
     }
 
     if (this.currentTime !== currentTime && currentTime) {
-      console.log('not equal')
       const delta = this.currentTime - currentTime
       this.currentTime = currentTime
 
