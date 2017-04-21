@@ -35,17 +35,25 @@ export default class TimelineChartWrapper extends Component {
   onZoomed = zoomFactor => this.setState({zoomFactor: Math.min(this.CHROME_MAX_ZOOM, Math.max(zoomFactor, 1))})
   onTimeChanged = currentTime => {
     let {chartData: {events = []} = {}} = this.props
-    let time = Math.max(currentTime, events[events.length - 1].date)
+    let time = Math.min(currentTime, events[events.length - 1].date)
     let number = Math.max(events.findIndex(({date}) => date > time), 1) - 1
-    let selectedEvent = events[number]
+    this.setState({currentTime, selectedEvent: events[number]})
+  }
 
-    this.setState({currentTime, selectedEvent})
+  setEvent(indexOffset = 1) {
+    const {chartData: {events}} = this.props;
+    let {selectedEvent} = this.state;
+    let prevIndex = events.indexOf(selectedEvent);
+    let newIndex = prevIndex + indexOffset
+    newIndex = newIndex >= 0 ? newIndex : events.length - 1
+    selectedEvent = events[newIndex];
+    this.setState({currentTime: selectedEvent.date, selectedEvent})
   }
 
   onReset = () => this.setState({zoomFactor: 1})
 
-  onNext = () => this.moveOnDaysNumber(1)
-  onPrev = () => this.moveOnDaysNumber(-1)
+  onNext = () => this.setEvent()
+  onPrev = () => this.setEvent(-1)
 
   onLongNext = () => this.moveOnDaysNumber(2)
   onLongPrev = () => this.moveOnDaysNumber(-2)
@@ -55,7 +63,14 @@ export default class TimelineChartWrapper extends Component {
   }
 
   onPlay = () => console.log('onPlay')
-  onResetPosition = () => console.log('onResetPosition')
+
+  getLast() {
+    const {chartData: {events}} = this.props
+    return events[events.length - 1]
+  }
+
+  onResetPosition = () => console.log('on record like button pressed')
+
   onKeyDown = e => {
     const code = e.code || `Arrow${e.key}`
     if (code === 'ArrowRight') {

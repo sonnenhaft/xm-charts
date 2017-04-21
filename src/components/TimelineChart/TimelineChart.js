@@ -70,17 +70,17 @@ export default class TimelineChart extends Component {
       const minValue = d3.min(this.chartData, ({date}) => date)
       this.domain = [minValue, maxValue]
     }
+
     if (this.currentTime !== currentTime && currentTime) {
+      console.log('not equal')
       const delta = this.currentTime - currentTime
       this.currentTime = currentTime
-
-
 
       const currentZoom = d3.zoomTransform(this.zoomRect.node())
       this.isZoomDisabled = true
       this.zoomBehavior.translateBy(this.zoomRect, delta > 0 ? 20 : -20, currentZoom.y)
       this.updateChart()
-      this.brushCirclePosition = this.xScale(currentTime)
+      this.rememberCurrentTime(this.xScale(currentTime))
       this.isZoomDisabled = false
     } else if (this.zoomFactor !== zoomFactor) {
       this.rezoom(zoomFactor)
@@ -245,7 +245,7 @@ export default class TimelineChart extends Component {
     firstInSubnet = firstInSubnet.filter(filterVisible)
     renderCircles({g, data, x, height, duration, bulkLines, firstInSubnet, actions, isToggled, opacity})
     const onDrag = d3.drag().on('drag', () => {
-      this.rememberCurrentTime(Math.min(Math.max(0, d3.event.x), this.width), true)
+      this.rememberCurrentTime(Math.min(Math.max(0, d3.event.x), this.width))
     })
 
     this.find('.brushCircleGroup').call(onDrag)
@@ -253,13 +253,12 @@ export default class TimelineChart extends Component {
     updateBrush({brusher, brushBehavior, xScale, currentZoom, width, isToggled})
   }
 
-  rememberCurrentTime = (x = this.brushCirclePosition, noDuration = false) => {
+  rememberCurrentTime = (x = this.brushCirclePosition) => {
     this.brushCirclePosition = x
     let invertedX = this.xScaleMini.invert(this.brushCirclePosition)
     this.currentTime = invertedX
 
-    let td = selector => this.find(selector).transition().duration(noDuration ? 0 : 300)
-    td('.brushCircleGroup').attrs(translate(x))
+    this.find('.brushCircleGroup').attrs(translate(x))
     this.find('.whiteLine').attrs(translate(this.xScale(this.currentTime)))
     this.props.onTimeChanged(invertedX)
   }
