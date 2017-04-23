@@ -20,7 +20,8 @@ export default class TimelineChartWrapper extends Component {
       isToggled: false,
       zoomFactor: 1,
       zoomPosition: 0,
-      currentTime: this._getCurrentTime(props)}
+      currentTime: this._getCurrentTime(props),
+    }
 
     this.onKeyDown = throttle(300, this.onKeyDown)
   }
@@ -51,7 +52,7 @@ export default class TimelineChartWrapper extends Component {
     let {selectedEvent} = this.state
     let prevIndex = events.indexOf(selectedEvent)
     let newIndex = prevIndex + indexOffset
-    const lastIndex = events.length - 1;
+    const lastIndex = events.length - 1
     if (newIndex < 0) {
       newIndex = lastIndex
     } else if (newIndex > lastIndex) {
@@ -73,7 +74,16 @@ export default class TimelineChartWrapper extends Component {
     this.setState({currentTime: this.state.currentTime + count * DAY})
   }
 
-  onPlay = () => console.log('onPlay')
+  onPlay = () => {
+    let {playingInterval} = this.state
+    if (playingInterval) {
+      clearTimeout(playingInterval)
+      playingInterval = null
+    } else {
+      playingInterval = setInterval(this.onNext, 100)
+    }
+    this.setState({playingInterval})
+  }
 
   getLast() {
     const {chartData: {events}} = this.props
