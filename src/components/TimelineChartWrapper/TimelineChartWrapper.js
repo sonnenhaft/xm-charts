@@ -26,6 +26,23 @@ export default class TimelineChartWrapper extends Component {
     this.onKeyDown = throttle(300, this.onKeyDown)
   }
 
+  componentDidMount() {
+    document.addEventListener('visibilitychange', () => {
+      const isTabHidden = window.document.hidden;
+      if (!isTabHidden && this.wasPlaying) {
+        this.onPlay()
+      }
+      this.wasPlaying = this.playingInterval;
+      if (isTabHidden && this.wasPlaying) {
+        this.onPlay()
+      }
+    })
+  }
+
+  componentWillUnmount() {
+
+  }
+
   _getCurrentTime(props) {
     let {chartData: {events = []} = {}} = props
     return events.length ? events[events.length - 1].date : 0
