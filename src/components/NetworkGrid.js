@@ -74,7 +74,7 @@ export default class NetworkGrid extends Component {
     const FILLED_SPACE = 0.8
     const MAX_STROKE = 2
     const strokeWidth = Math.min(MAX_STROKE, Math.max(MAX_STROKE*k, MAX_STROKE/ 4))
-    const rx = strokeWidth
+    const rx = strokeWidth *3
     const attrs = {
       rx,
       ry: rx,
