@@ -54,6 +54,28 @@ export default class TimelineChart extends Component {
     Object.assign(this.zoom, {k, x})
   }
 
+  shouldComponentUpdate({zoomPosition, currentTime}) {
+    let {zoomPosition: x, currentTime: t} = this.props
+    if (t !== currentTime && x === zoomPosition) {
+      const [min, max] = this.xScale.domain()
+      const w = this.width / 2
+      const k = this.zoom.k
+      let toUpdate = false
+      if (currentTime > max) {
+        x = Math.min(x - w, -this.xScale(max))
+        toUpdate = true
+      } else if (currentTime < min) {
+        x = Math.max(x + w, -this.xScale(min))
+        toUpdate = true
+      }
+      if (toUpdate) {
+        this.onZoomed({x, k})
+        return false
+      }
+    }
+    return true
+  }
+
   componentWillReceiveProps(props) {
     const {isToggled, chartData} = props
     this.setZoom(props)

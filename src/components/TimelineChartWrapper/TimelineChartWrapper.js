@@ -18,7 +18,7 @@ export default class TimelineChartWrapper extends Component {
     super(props)
     this.state = {
       isToggled: false,
-      zoomFactor: 1,
+      zoomFactor: 2,
       zoomPosition: 0,
       currentTime: this._getCurrentTime(props),
     }
