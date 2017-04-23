@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import * as d3 from 'd3'
 
+const LINES_RATIO = 2
+
 export default class NetworkGrid extends Component {
   setSvg = svg => this.svg = svg;
   setZoomRect = zoomRect => {
@@ -8,42 +10,49 @@ export default class NetworkGrid extends Component {
     d3.select(zoomRect).call(this.zoom)
   }
 
-  onZoomChanged =() => {
+  onZoomChanged = () => {
     this.currentZoom = d3.zoomTransform(this.zoomRect)
     this.forceUpdate()
   }
 
   constructor(props) {
     super(props)
-    this.zoom = d3.zoom().scaleExtent([1, 1000 * 1000 * 1000]).on('zoom', this.onZoomChanged)
-    this.componentWillReceiveProps()
+    this.zoom = d3.zoom().scaleExtent([0.001, 1000]).on('zoom', this.onZoomChanged)
+    this.currentZoom = d3.zoomIdentity
+    this.componentWillReceiveProps(props)
   }
 
-  static defaultProps = {
-    currentTime: 0,
-  }
 
-  componentWillReceiveProps() {
-    const {chartData: {events, nodes}, currentTime} = this.props
+  componentWillReceiveProps({chartData: {events, nodes}, currentTime}) {
     const gridSize = Math.ceil(Math.sqrt(nodes.length))
     this.nodeColors = nodes.reduce((map, {agentId}) => {
       map[agentId] = 'white'
       return map
     }, {})
-    this.currentTime = currentTime
     events
-      .filter(({date}) => this.currentTime > date)
+      .filter(({date}) => currentTime > date)
       .forEach(item => {
         const {compromized, nodeId} = item
-        if (this.nodeColors[nodeId] !== 'red') {
-          this.nodeColors[nodeId] = compromized ? 'red' : 'blue'
+        const red = 'rgb(242, 30, 39)'
+        const blue = 'rgb(70, 96, 223)'
+        if (this.nodeColors[nodeId] !== red) {
+          this.nodeColors[nodeId] = compromized ? red : blue
         }
       })
 
-    this.lines = nodes.reduce((array, item, index) => {
-      array[(index % gridSize)].push(item)
-      return array
-    }, d3.range(0, gridSize).map(() => []))
+    let count = 0
+    let lines = [[]]
+
+    nodes.forEach(item => {
+      if (count === Math.round(gridSize * 1.5)) {
+        lines.push([])
+        count = 0
+      }
+      lines[lines.length - 1].push(item)
+      count += 1
+    })
+
+    this.lines = lines
   }
 
   render() {
@@ -52,44 +61,52 @@ export default class NetworkGrid extends Component {
     let width = 200
     let height = 200
 
-    const WIDTH_SIZE = 0.5
-    const HEIGHT_SIZE = 0.8
-
-    const w = width * WIDTH_SIZE / size
-    const h = height * HEIGHT_SIZE / size
-    const wOffset = width * (1 - WIDTH_SIZE) / size / 2
-    const hOffset = height * (1 - HEIGHT_SIZE) / size / 2
+    const w = 40
+    const h = w * LINES_RATIO
 
     this.zoom.translateExtent([[0, 0], [width, height]]).extent([[0, 0], [width, height]])
-    const xScale = d3.scaleLinear().domain([0, size]).range([0, height - hOffset])
-    const yScale = d3.scaleLinear().domain([0, size]).range([0, width - wOffset])
-    if (this.currentZoom) {
-      xScale.domain(this.currentZoom.rescaleX(xScale).domain())
-      yScale.domain(this.currentZoom.rescaleY(yScale).domain())
+    const xScale = d3.scaleLinear().domain([0, size]).range([0, width * LINES_RATIO])
+    const yScale = d3.scaleLinear().domain([0, size]).range([0, h * size])
+    xScale.domain(this.currentZoom.rescaleX(xScale).domain())
+    yScale.domain(this.currentZoom.rescaleY(yScale).domain())
+    const k = this.currentZoom.k
+
+    const FILLED_SPACE = 0.8
+    const MAX_STROKE = 2
+    const strokeWidth = Math.min(MAX_STROKE, Math.max(MAX_STROKE*k, MAX_STROKE/ 4))
+    const rx = strokeWidth
+    const attrs = {
+      rx,
+      ry: rx,
+      strokeWidth,
+      stroke: 'black',
+      height: h*FILLED_SPACE*k,
+      width: w*FILLED_SPACE*k,
     }
 
-    return <svg {...{width, height}} ref={this.setSvg}>
-      {this.lines.map((data, yCoord) => {
-        return <g key={yCoord}>
-          {data.map(({agentId}, xCoord) => {
-            let nodeColor = this.nodeColors[agentId]
-            return <rect {...{
-              stroke: 'black',
-              strokeWidth: 1,
-              rx: 1,
-              ry: 1,
-              height: h,
-              width: w,
-              fill: nodeColor,
-              x: xScale(yCoord) + wOffset,
-              y: yScale(xCoord) + wOffset,
-              key: `${xCoord} ${yCoord}`,
-            }} />
-          })}
-        </g>
-      })}
-      <rect className={'zoomRect'} fill="black" opacity={0}
-            {...{width, height}} ref={this.setZoomRect} />
-    </svg>
+    return <div>
+      <div style={{fontWeight: 'bold', textTransform: 'uppercase', fontFamily: 'sans-serif', padding: '0 5px'}}>
+        {this.props.children}
+      </div>
+      <svg {...{width, height}} ref={this.setSvg}>
+        {this.lines.map((data, xCoord) => {
+          return <g key={xCoord}>
+            {data.map(({agentId}, yCoord) => {
+              let nodeColor = this.nodeColors[agentId]
+              return <rect {...{
+                ...attrs,
+                fill: nodeColor,
+                x: xScale(xCoord),
+                y: yScale(yCoord),
+                key: `${xCoord} ${yCoord}`,
+              }} />
+            })}
+          </g>
+        })}
+        <rect className={'zoomRect'} fill="black" opacity={0}
+              cursor="move"
+              {...{width, height}} ref={this.setZoomRect} />
+      </svg>
+    </div>
   }
 }

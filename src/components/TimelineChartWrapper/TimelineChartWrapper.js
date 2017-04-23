@@ -26,21 +26,23 @@ export default class TimelineChartWrapper extends Component {
     this.onKeyDown = throttle(300, this.onKeyDown)
   }
 
-  componentDidMount() {
-    document.addEventListener('visibilitychange', () => {
-      const isTabHidden = window.document.hidden;
-      if (!isTabHidden && this.wasPlaying) {
-        this.onPlay()
-      }
-      this.wasPlaying = this.playingInterval;
-      if (isTabHidden && this.wasPlaying) {
-        this.onPlay()
-      }
-    })
+  tabListener = () => {
+    const isTabHidden = window.document.hidden
+    if (!isTabHidden && this.wasPlaying) {
+      this.onPlay()
+    }
+    this.wasPlaying = this.playingInterval
+    if (isTabHidden && this.wasPlaying) {
+      this.onPlay()
+    }
   }
 
+  componentDidMount() { document.addEventListener('visibilitychange', this.tabListener) }
   componentWillUnmount() {
-
+    document.removeEventListener('visibilitychange', this.tabListener)
+    if (this.playingInterval) {
+      this.onPlay()
+    }
   }
 
   _getCurrentTime(props) {
@@ -133,7 +135,11 @@ export default class TimelineChartWrapper extends Component {
     const {onReset, onPrev, onNext, onLongPrev, onLongNext, onPlay, onResetPosition} = this
     const controlActions = {onReset, onPrev, onNext, onLongPrev, onLongNext, onPlay, onResetPosition}
     return <div>
-      {/*<NetworkGrid {...{currentTime, chartData}} />*/}
+      <div style={{display: 'flex', justifyContent: 'space-between'}}>
+        <NetworkGrid {...{currentTime, chartData}}>Marketing</NetworkGrid>
+        <NetworkGrid {...{currentTime, chartData}}>Testing</NetworkGrid>
+        <NetworkGrid {...{currentTime, chartData}} >Production</NetworkGrid>
+      </div>
       <GlobalKeyDetector className={styles['timeline-chart-wrapper']} onKeyDown={onKeyDown}>
         <ControlPanel {...{events, isToggled, zoomFactor, currentTime, ...controlActions, selectedEvent}} />
         <TimelineChart {...{isToggled, currentTime, zoomPosition, chartData, onZoomed, onTimeChanged, zoomFactor}} />
