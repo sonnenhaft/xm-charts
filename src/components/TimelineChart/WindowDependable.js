@@ -2,21 +2,23 @@ import '../common/d3.shims'
 import React, {PropTypes, Component} from 'react'
 
 export default class WindowDependable extends Component {
-  static propTypes = {onWindowResize: PropTypes.func.isRequired}
+  static propTypes = {onDimensionsChanged: PropTypes.func.isRequired}
 
   componentDidMount() {
-    window.addEventListener('resize', this.onWindowResize)
+    window.addEventListener('resize', this.onDimensionsChanged)
+    console.log('mounted')
   }
 
-  onWindowResize = () => this.props.onWindowResize()
+  onDimensionsChanged = () => {
+    this.props.onDimensionsChanged()
+  }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.onWindowResize)
+    window.removeEventListener('resize', this.onDimensionsChanged)
   }
 
   render() {
-    const {children, style} = this.props
-
-    return <div style={style}>{children}</div>
+    const {children, style, refCb: ref} = this.props
+    return <div {...{style, ref}}>{children}</div>
   }
 }

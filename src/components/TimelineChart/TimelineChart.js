@@ -3,9 +3,13 @@ import '../common/d3.shims'
 import styles from './TimelineChart.scss'
 import React, {PropTypes, Component} from 'react'
 import TooltipContentBlock from '../common/TooltipContent/TooltipContent'
-import {composeCircles, updateBrush, renderCircles, renderPath} from './TimelineChartUtils'
-import YearTextScale from './YearTextScale'
+import {composeCircles, renderCircles, renderPath} from './TimelineChartUtils'
 import WindowDependable from './WindowDependable'
+import BrushCircleGroup from './BrushCircleGroup/BrushCircleGroup'
+import ZoomRect from './ZoomRect'
+import BrushGroup from './BrushGroup'
+import Axes from './Axes/Axes'
+import {zoomTransform} from 'd3-zoom'
 
 const translate = (x, y = 0) => ({transform: `translate(${x}, ${y})`})
 
@@ -14,8 +18,9 @@ export default class TimelineChart extends Component {
   static TOGGLED_MARGIN_LEFT = 15
   static propTypes = {
     zoomFactor: PropTypes.number.isRequired,
+    zoomPosition: PropTypes.number.isRequired,
     isToggled: PropTypes.bool.isRequired,
-    // chartData: PropTypes.arrayOf(PropTypes.object).isRequired,
+    chartData: PropTypes.object.isRequired,
     onZoomed: PropTypes.func.isRequired,
   }
 
@@ -25,132 +30,111 @@ export default class TimelineChart extends Component {
 
   constructor(props) {
     super(props)
+    this.zoom = new zoomTransform(1, 0, 0)
     this.xScale = d3.scaleTime()
     this.xScaleMini = d3.scaleTime()
     this.updateMarginLeft(props)
-    this.brushCirclePosition = 0
     this.yScale = d3.scaleLinear().domain([0, 1])
-    this.zoomBehavior = d3.zoom().scaleExtent([1, 1000 * 1000 * 1000]).on('zoom', this.onZoomChanged)
-    this.brushBehavior = d3.brushX().on('brush end', this.onBrushed)
-    this.state = {noDuration: true, zoomFactor: 1}
+    this.state = {noDuration: true}
+
+    this.setZoom(props)
   }
 
-  componentDidMount() {
-    this.zoomRect = this.find('.zoomRect')
-    this.brusher = this.find('.brusher')
-    this.tooltipBlock = this.find('.tooltipBlock')
+  setChartData(chartData) {
+    const {events} = chartData
+    this.chartData = events
+      .map((item, index) => ({...item, index: item.networkSuperiority / 100}))
+    const maxValue = d3.max(this.chartData, ({date}) => date)
+    const minValue = d3.min(this.chartData, ({date}) => date)
+    this.domain = [minValue, maxValue]
+  }
 
-    this.zoomRect.call(this.zoomBehavior)
-    setTimeout(() => {
-      this.componentWillReceiveProps(this.props)
-      this.componentDidUpdate()
-      const timelineChart = this
-
-      this.brusher.selectAll('.overlay').each(d => d.type = 'selection').on('mousedown touchstart', function centralizeBrush() {
-        const brusherWidth = timelineChart.brusher.select('.selection').attr('width') * 1
-        let [center] = d3.mouse(this)
-        if (this.isBrushDisabled) {
-          return
-        }
-        const halfWidth = brusherWidth / 2
-        center = Math.max(halfWidth, Math.min(center, timelineChart.width - halfWidth))
-        timelineChart.brusher.call(timelineChart.brushBehavior.move, [center - halfWidth, center + halfWidth])
-      })
-    }, 0)
+  setZoom(props) {
+    const {zoomFactor: k, zoomPosition: x} = props
+    Object.assign(this.zoom, {k, x})
   }
 
   componentWillReceiveProps(props) {
-    const {zoomFactor, isToggled, chartData, currentTime} = props
+    const {isToggled, chartData} = props
+    this.setZoom(props)
 
     if (chartData !== this.props.chartData || props === this.props) {
-      const {events} = chartData
-      this.chartData = events
-        .map((item, index) => ({...item, index: item.networkSuperiority/100}))
-      const maxValue = d3.max(this.chartData, ({date}) => date)
-      const minValue = d3.min(this.chartData, ({date}) => date)
-      this.domain = [minValue, maxValue]
+      this.setChartData(chartData)
     }
-
-    if (this.currentTime !== currentTime && currentTime) {
-      const delta = this.currentTime - currentTime
-      this.currentTime = currentTime
-
-      const currentZoom = d3.zoomTransform(this.zoomRect.node())
-      this.isZoomDisabled = true
-      this.zoomBehavior.translateBy(this.zoomRect, delta > 0 ? 20 : -20, currentZoom.y)
-      this.updateChart()
-      this.rememberCurrentTime(this.xScale(currentTime))
-      this.isZoomDisabled = false
-    } else if (this.zoomFactor !== zoomFactor) {
-      this.rezoom(zoomFactor)
-    } else if (this.props.isToggled !== isToggled) {
+    if (this.props.isToggled !== isToggled) {
       this.updateMarginLeft({isToggled})
-      this.setState({noDuration: true})
     }
   }
 
-  rezoom(zoomFactor) {
-    this.isZoomDisabled = true
-    this.zoomFactor = zoomFactor
-    this.zoomBehavior.scaleTo(this.zoomRect, zoomFactor)
-    this.updateChart()
-    this.isZoomDisabled = false
-  }
 
-  shouldComponentUpdate({chartData}, {noDuration, tooltipData}) {
-    const {state, props} = this
-    return props.chartData !== chartData
-      || (noDuration && !state.noDuration)
-      || state.tooltipData !== tooltipData
-  }
+  // shouldComponentUpdate({chartData}, {noDuration, tooltipData}) {
+  //   const {state, props} = this
+  //   return props.chartData !== chartData
+  //     || (noDuration && !state.noDuration)
+  //     || state.tooltipData !== tooltipData
+  // }
 
   highlightCampaign(_campainId) {
-    this.isBrushDisabled = true
     this.campainSelected = _campainId !== null
     this.chartData
       .forEach(event => event.isEventSelected = false)
     this.chartData
       .filter(({campainId}) => campainId === _campainId)
       .forEach(event => event.isEventSelected = true)
-    this.setState({noDuration: true}, () => this.isBrushDisabled = false)
   }
 
-  componentDidUpdate() {
-    let {noDuration} = this.state
-    this.updateChart(noDuration)
-    this.setState({noDuration: false})
+  closeTooltip = () => {
+    this.tooltipOpened = false
+    setTimeout(() => {
+      if (this.tooltipOpened) { return }
+      this.tooltipBlock.classed(styles['visible-tooltip'], false).transition().duration(750).style('opacity', 0)
+    }, 100)
   }
-
-  find(selector) {
-    return this.d3rootNode.select(selector)
-  }
-
-  updateChart(noDuration = true) {
-    const margin = TimelineChart.margin
-    const {isToggled} = this.props
-
-    if (isToggled) {
-      noDuration = true
+  openTooltip = tooltipData => {
+    if (this.campainSelected && !tooltipData.isEventSelected) {
+      return
     }
-    const {zoomBehavior, brushBehavior, xScale, yScale, zoomRect, chartData, campainSelected} = this
+    const svgBounding = this.find('svg').node().getBoundingClientRect()
+    const left = `${this.xScale(tooltipData.date) + svgBounding.left + this.marginLeft  }px`
+    this.isZoomDisabled = true
+    this.setState({tooltipData}, () => {
+      this.isZoomDisabled = false
+      this.tooltipOpened = true
+      const TRIANGLE_HEIGHT = 22
+      const top = TRIANGLE_HEIGHT + svgBounding.top
+      let tooltipHeight = this.tooltipBlock.style('height').replace('px', '') - 0
+      this.tooltipBlock
+        .styles({left, top: `${ top - (tooltipHeight > top ? 0 : 20) }px`})
+        .classed(styles['bottom-triangle'], tooltipHeight <= top)
+        .classed(styles['visible-tooltip'], true)
+        .transition().duration(100).styles({opacity: 1})
+    })
+  }
+
+  setD3Node = node => this.d3rootNode = d3.select(node)
+
+  componentWillUpdate() {
+    const margin = TimelineChart.margin
     const {clientWidth: realWidth} = this.d3rootNode.node()
-    const realHeight = isToggled ? 50 : 200
+    const realHeight = this.props.isToggled ? 50 : 200
     const width = Math.max(realWidth - this.marginLeft - margin.right, 0)
-    this.width = width
     const height = Math.max(realHeight - margin.top - margin.bottom, 0)
     Object.assign(this, {width, height, realWidth, realHeight})
 
     this.xScale.domain(this.domain).rangeRound([0, width])
-    yScale.rangeRound([height, 0])
+    this.xScale.domain(this.zoom.rescaleX(this.xScale).domain())
+    this.yScale.rangeRound([height, 0])
 
-    zoomBehavior.translateExtent([[0, 0], [width, height]]).extent([[0, 0], [width, height]])
-    brushBehavior.extent([[0, 0], [width, Math.max(100, height)]])
+    this.xScaleMini.domain(this.domain).rangeRound([0, width])
+  }
 
-    zoomRect.attrs({width, height: height + margin.top, y: -margin.top})
+  componentDidUpdate() {
+    const noDuration = true
+    const margin = TimelineChart.margin
+    const {isToggled} = this.props
 
-    const currentZoom = d3.zoomTransform(this.zoomRect.node())
-    xScale.domain(currentZoom.rescaleX(xScale).domain())
-    this.rememberCurrentTime()
+    const {xScale, yScale, chartData, campainSelected} = this
+    const {width, height} = this
     const duration = noDuration ? 0 : 500
     let td = (d3Selection => d3Selection.transition().duration(duration))
     if (!duration) {
@@ -159,40 +143,14 @@ export default class TimelineChart extends Component {
 
     const g = this.find('.mainGroup')
     g.attrs(translate(this.marginLeft, margin.top))
-    td(this.find('.brushGroup')).attr('transform', `translate(0,${  isToggled ? height + 13 : height + 40  })`)
     td(this.find('.brushLineGroup')).attr('transform', `translate(0,${  isToggled ? height + 13 : height + 40  })`)
     this.find('.brushLine').attrs({width})
-    td(this.find('.xAxis')).attrs({
-      ...translate(0, realHeight - (isToggled ? 78 : 85)),
-      visibility: this.zoomFactor !== 1 ? 'visible' : 'hidden',
-    }).call(d3.axisBottom(xScale))
-
-    this.xScaleMini.domain(this.domain).rangeRound([0, width])
-    td(this.find('.miniMap'))
-      .attrs(translate(0, realHeight - (isToggled ? realHeight : 57)))
-      .call(d3.axisBottom(this.xScaleMini))
 
     const svgNode = this.find('svg')
     td(svgNode).attrs({height: this.realHeight})
     svgNode.on('click', () => this.highlightCampaign(null))
-    const whiteLineNode = this.find('.whiteLine')
-    if (isToggled) {
-      td(whiteLineNode).attrs({height: 15, y: -height - 20})
-    } else {
-      td(whiteLineNode).attrs({height: height + 50 - 13, y: -height - 50})
-    }
-
-    td(this.find('.yAxis')).call(d3.axisLeft(yScale).ticks(5, '%').tickSize(-width)).selectAll('.tick')
-      .attr('class', (date, idx) => `tick ${(idx === 4 ? styles['extra-white'] : '')}`)
 
     const [min, max] = xScale.domain()
-
-    // TODO: uncomment when indicator will become necessary, remove by 10th of may
-    // td(this.find('.axisLabel')).attrs({
-    //   ...translate(width + 5, height + 20),
-    //   text: YearTextScale(max - min),
-    //   'text-anchor': 'end',
-    // })
 
     let filterVisible = ({date}) => min <= date && date <= max
     const data = chartData.filter(filterVisible)
@@ -228,11 +186,11 @@ export default class TimelineChart extends Component {
       },
     }
 
-    let dataClick = ({date}) => this.rememberCurrentTime(this.xScaleMini(date))
+    let dataClick = ({date}) => this.props.onTimeChanged(date)
     const attrs = {x, y, ...lineAttrs, opacity, click: dataClick}
     g.bindData(`rect.${styles['small-line']}`, data.filter(filterVisible), attrs, duration)
 
-    const groupWidth = 25 / currentZoom.k
+    const groupWidth = 25 / this.zoom.k
     let prevGroupWidth = width / groupWidth
     if (this.prevGroupWidth !== prevGroupWidth) {
       this.prevGroupWidth = prevGroupWidth
@@ -243,157 +201,65 @@ export default class TimelineChart extends Component {
     bulkLines = bulkLines.filter(filterVisible)
     firstInSubnet = firstInSubnet.filter(filterVisible)
     renderCircles({g, data, x, height, duration, bulkLines, firstInSubnet, actions, isToggled, opacity})
-    const onDrag = d3.drag().on('drag', () => {
-      this.rememberCurrentTime(Math.min(Math.max(0, d3.event.x), this.width))
-    })
-
-    this.find('.brushCircleGroup').call(onDrag)
-    const {brusher} = this
-    updateBrush({brusher, brushBehavior, xScale, currentZoom, width, isToggled})
   }
 
-  rememberCurrentTime = (x = this.brushCirclePosition) => {
-    this.brushCirclePosition = x
-    let invertedX = this.xScaleMini.invert(this.brushCirclePosition)
-    this.currentTime = invertedX
+  onDimensionsChanged = () => this.forceUpdate()
 
-    this.find('.brushCircleGroup').attrs(translate(x))
-    this.find('.whiteLine').attrs(translate(this.xScale(this.currentTime)))
-    this.props.onTimeChanged(invertedX)
+  find(selector) {
+    return this.d3rootNode.select(selector)
   }
 
-  closeTooltip = () => {
-    this.tooltipOpened = false
+  componentDidMount() {
+    this.tooltipBlock = this.find('.tooltipBlock')
     setTimeout(() => {
-      if (this.tooltipOpened) { return }
-      this.tooltipBlock.classed(styles['visible-tooltip'], false).transition().duration(750).style('opacity', 0)
-    }, 100)
+      this.setChartData(this.props.chartData)
+      this.forceUpdate()
+    }, 0)
   }
-  openTooltip = tooltipData => {
-    if (this.campainSelected && !tooltipData.isEventSelected) {
-      return
-    }
-    const svgBounding = this.find('svg').node().getBoundingClientRect()
-    const left = `${this.xScale(tooltipData.date) + svgBounding.left + this.marginLeft  }px`
-    this.isZoomDisabled = true
-    this.isBrushDisabled = true
-    this.setState({tooltipData}, () => {
-      this.isZoomDisabled = false
-      this.isBrushDisabled = false
-      this.tooltipOpened = true
-      const TRIANGLE_HEIGHT = 22
-      const top = TRIANGLE_HEIGHT + svgBounding.top
-      let tooltipHeight = this.tooltipBlock.style('height').replace('px', '') - 0
-      this.tooltipBlock
-        .styles({left, top: `${ top - (tooltipHeight > top ? 0 : 20) }px`})
-        .classed(styles['bottom-triangle'], tooltipHeight <= top)
-        .classed(styles['visible-tooltip'], true)
-        .transition().duration(100).styles({opacity: 1})
-    })
-  }
-  onBrushed = () => {
-    if (this.isBrushDisabled) {
-      return
-    }
 
-    const {sourceEvent} = d3.event
-    if (!sourceEvent || sourceEvent.type === 'zoom') {
-      return
-    }
-    // pev bursh necessary for centralizing the brush
-    let [min, max] = d3.event.selection || this.prevBrush
-    if (min + max === this.width) {
-      max = max / 2
-    }
-    this.prevBrush = [min, max]
-    const zoomPosition = d3.zoomIdentity.scale(this.width / (max - min)).translate(-min, 0)
-    zoomPosition.k = Math.round(zoomPosition.k * 100) / 100
-    this.isBrushing = true
-    this.zoomRect.call(this.zoomBehavior.transform, zoomPosition)
-    this.isBrushing = false
-  }
-  onZoomChanged = () => {
-    if (this.isZoomDisabled) {
-      return
-    }
-    this.isZoomDisabled = true
-    const newZoomFactor = d3.zoomTransform(this.zoomRect.node()).k
-    let zoomFactor = this.zoomFactor
-    if (zoomFactor !== newZoomFactor) {
-      if (!this.isBrushing) {
-        let k = Math.max(0.05, Math.log2(newZoomFactor))
-        if (newZoomFactor > 300) {
-          k = 1000
-        } else if (newZoomFactor > 30000) {
-          k = 10000
-        }
-        if (newZoomFactor > zoomFactor) {
-          zoomFactor += k
-        } else {
-          zoomFactor -= k
-        }
-        zoomFactor = Math.max(zoomFactor, 1)
-        this.zoomBehavior.scaleTo(this.zoomRect, zoomFactor)
-      } else {
-        zoomFactor = newZoomFactor
-      }
-      this.setState({noDuration: true})
-      this.props.onZoomed(zoomFactor)
-    } else {
-      this.onWindowResize()
-    }
-
-    this.isZoomDisabled = false
-  }
-  onWindowResize = () => this.setState({noDuration: true})
-
-  setD3Node = node => this.d3rootNode = d3.select(node)
+  onBrushed = zoomPosition => this.onZoomed(zoomPosition)
+  onZoomed = ({k, x}) => this.props.onZoomed({zoomFactor: k, zoomPosition: x})
 
   render() {
-    const {props: {isToggled}, state: {tooltipData = {}}, onWindowResize, setD3Node} = this
+    const margin = TimelineChart.margin
+    const {
+      props: {isToggled, onTimeChanged, currentTime}, state: {tooltipData = {}},
+      onDimensionsChanged, setD3Node, xScale, yScale, xScaleMini, realHeight,
+      onBrushed, marginLeft, onZoomed,
+    } = this
+    const {x: zoomPosition, k: zoomFactor} = this.zoom
     const backgroundClass = isToggled ? styles['toggled-background'] : styles['black-background']
     const visibility = isToggled ? 'hidden' : 'visible'
-    return <div ref={setD3Node} style={{position: 'relative', width: '100%'}}>
-      <WindowDependable onWindowResize={onWindowResize}>
-        <svg className={`${(isToggled ? styles['toggled'] : '')} ${styles['timeline-chart']}`}>
-          <rect width="100%" height="100%" className={backgroundClass} />
-          <g className="brushLineGroup">
-            <rect height="50" fill="#252525" width="100%" visibility={visibility} />
-            <rect className="brushLine" pointerEvents="none" height="5" rx="3" ry="3" fill="#141414"
-                  transform={`translate(${this.marginLeft},15)`} />
-          </g>
-          <g fill="white" className="mainGroup">
-            <g className={`miniMap ${styles['axis']} ${styles['axis--x']}`} />
-            <g visibility={visibility}>
-              <g className={`xAxis ${styles['axis']} ${styles['axis--x']}`} />
-              <g className={`yAxis ${styles['axis']} ${styles['axis--y']}`} />
-              <path className={`linePath ${styles['line-path']}`} />
-              <text className="axisLabel" visibility={visibility} />
-            </g>
-            <rect className={`${styles['zoom']} zoomRect`} />
-            <g className="smalRects" transform="translate(0, -5)" />
-          </g>
-          <g className="brushGroup">
-            <g transform={`translate(${this.marginLeft},15)`}>
-              <g className="brusher" transform={`translate(0,${isToggled ? 0 : -15})`} />
-              <rect width="1" fill="white" className="whiteLine" />
-              <g className="brushCircleGroup">
-                <rect className={styles['brush-circle']} height="14" width="14" rx="9" ry="12" />
-                <rect width="1" fill="white" height="50" transform={`translate(0,${isToggled ? 17 : 27})`} />
-              </g>
-            </g>
-          </g>
-        </svg>
+    return <WindowDependable refCb={setD3Node} style={{position: 'relative', width: '100%'}}
+                             {...{onDimensionsChanged}}>
+      <svg className={`${(isToggled ? styles['toggled'] : '')} ${styles['timeline-chart']}`}>
+        <rect width="100%" height="100%" className={backgroundClass} />
+        <g className="brushLineGroup">
+          <rect height="50" fill="#252525" width="100%" visibility={visibility} />
+          <rect className="brushLine" pointerEvents="none" height="5" rx="3" ry="3" fill="#141414"
+                transform={`translate(${this.marginLeft},15)`} />
+        </g>
+        <g fill="white" className="mainGroup">
+          <Axes {...{xScale, yScale, xScaleMini, isToggled, realHeight, zoomFactor}}>
+            <path className={`linePath ${styles['line-path']}`} />
+          </Axes>
+          <ZoomRect {...{xScale, yScale, isToggled, zoomFactor, margin, onZoomed, zoomPosition}} />
+          <g className="smalRects" transform="translate(0, -5)" />
+        </g>
+        <BrushGroup {...{xScale, yScale, zoomFactor, zoomPosition, isToggled, onBrushed, marginLeft}}>
+          <BrushCircleGroup {...{xScale, yScale, xScaleMini, isToggled, onTimeChanged, currentTime}} />
+        </BrushGroup>
 
-        <div className={`tooltipBlock ${styles['tooltip']}`}>
-          <div className={styles['triangle-wrapper']}>
-            <div className={styles['triangle']}>
-              <div className={`${styles['triangle']  } ${  styles['triangle-content']}`} />
-            </div>
+      </svg>
+
+      <div className={`tooltipBlock ${styles['tooltip']}`}>
+        <div className={styles['triangle-wrapper']}>
+          <div className={styles['triangle']}>
+            <div className={`${styles['triangle']  } ${  styles['triangle-content']}`} />
           </div>
-          <TooltipContentBlock tooltipData={tooltipData} />
         </div>
-      </WindowDependable>
-    </div>
+        <TooltipContentBlock tooltipData={tooltipData} />
+      </div>
+    </WindowDependable>
   }
 }

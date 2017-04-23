@@ -8,9 +8,6 @@ svg.timeline-chart {
     font-family: RobotoMono, serif;
     font-size: 9px;
   }
-  .axis--x text {
-    font-size: 8px;
-  }
 
   &.toggled {
     .small-line {
@@ -51,49 +48,12 @@ svg.timeline-chart {
     fill: $chartRed
   }
 
-  .axis {
-    path, line {
-      pointer-events: none;
-      stroke: #3D3D3D;
-    }
-    &.axis--y .tick {
-      opacity: 0.3;
-      &:hover {
-        opacity: 1
-      }
-    }
 
-    text {
-      fill: #5B5B5B;
-    }
-
-    .extra-white line {
-      stroke: white
-    }
-
-    .extra-white,
-    &.axis--x {
-      text {
-        fill: white;
-      }
-    }
-    &.axis--x line,
-    &.axis--x path,
-    &.axis--y path {
-      display: none
-    }
-  }
 
   .circle-text {
     cursor: pointer;
     font-size: 11px;
     text-anchor: middle;
-  }
-
-  .zoom {
-    cursor: move;
-    pointer-events: all;
-    fill: none;
   }
 
   .brush-circle {

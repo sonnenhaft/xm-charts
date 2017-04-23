@@ -33,24 +33,6 @@ export const composeCircles = (data, width, groupWidth) => {
   return {bulkLines, firstInSubnet}
 }
 
-export const updateBrush = ({brusher, brushBehavior, xScale, currentZoom, width, isToggled}) => {
-  brusher.call(brushBehavior)
-  const brusherSelection = brusher.select('.selection')
-  brusher.call(brushBehavior.move, xScale.range().map(currentZoom.invertX, currentZoom))
-  const brusherWidth = brusherSelection.attr('width') * 1
-  const tooBig = brusherWidth === width
-  const MIN_WIDTH = 6
-  const tooSmall = brusherWidth < MIN_WIDTH
-  brusherSelection.attrs({
-    width: tooSmall ? MIN_WIDTH : brusherWidth,
-    stroke: 'none',
-    transform: `translate(${tooSmall ? (brusherWidth - MIN_WIDTH)/2 : 0}, ${isToggled ? -4 : 0})`,
-    'fill-opacity': 0.3,
-    'pointer-events': tooBig ? 'none' : 'all',
-  })
-  brusher.selectAll('.handle').attr('pointer-events', brusherWidth < 16 ? 'none' : 'all')
-}
-
 export const renderPath = ({td, min, max, linePath, data, x, y, chartData}) => {
   if (data.length) {
     let first, last
