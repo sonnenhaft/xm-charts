@@ -20,7 +20,7 @@ export default class BrushGroup extends Component {
 
   _centralizeBrush = center => {
     let brusherWidth = this.brusher.select('.selection').attr('width') * 1
-    const width = this.getWidth();
+    const width = this.getWidth()
     if (brusherWidth === width) {
       brusherWidth /= 2
     }
@@ -35,7 +35,7 @@ export default class BrushGroup extends Component {
     this.setZoom(this.props)
     this.brusher.call(this.brush)
     const centralizeBrush = this._centralizeBrush
-    const clickedInsideTheBrush = function (e) {
+    const clickedInsideTheBrush = function(e) {
       centralizeBrush(d3.mouse(this)[0])
       d3.event.stopPropagation()
     }
@@ -70,7 +70,6 @@ export default class BrushGroup extends Component {
 
     const {k, x} = zoomPosition
     if (this.zoom.x !== x || this.zoom.k !== k) {
-      this.setZoom({zoomFactor: k, zoomPosition: x})
       this.props.onBrushed({k, x})
     }
   }
@@ -111,7 +110,7 @@ export default class BrushGroup extends Component {
     return <g className="brushGroup" ref={this.setBrushGroup}
               transform={transform(height + 13, height + 40)}>
       <g transform={`translate(${this.props.marginLeft},15)`}>
-        <g className="brusher" transform={transform(0, -15)} ref={this.setBrusher}/>
+        <g className="brusher" transform={transform(0, -15)} ref={this.setBrusher} />
         {this.props.children}
       </g>
     </g>

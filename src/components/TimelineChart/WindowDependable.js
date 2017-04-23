@@ -6,7 +6,6 @@ export default class WindowDependable extends Component {
 
   componentDidMount() {
     window.addEventListener('resize', this.onDimensionsChanged)
-    console.log('mounted')
   }
 
   onDimensionsChanged = () => {

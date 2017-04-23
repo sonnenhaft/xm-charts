@@ -16,10 +16,13 @@ export default class ZoomRect extends Component {
   getHeight = () => this.props.yScale.range()[0]
 
   componentWillMount() {
-    this.zoom = d3.zoom().scaleExtent([1, 1000 * 1000 * 1000]).on('zoom', this.onZoomChanged)
+    this.zoom = d3.zoom().scaleExtent([1, 1000 * 1000 * 1000]).on('zoom', this.onZoomed)
   }
 
-  onZoomChanged = () => {
+  onZoomed = () => {
+    if (this.isDisabled) {
+      return
+    }
     const {sourceEvent} = d3.event
     if (!sourceEvent || sourceEvent.type === 'brush') {
       return
@@ -43,7 +46,9 @@ export default class ZoomRect extends Component {
     const currentZoom = this.getCurrentZoom()
     const {k, x} = currentZoom
     if (k !== zoomFactor || x !== zoomPosition) {
+      this.isDisabled = true
       this.zoom.scaleTo(this.zoomRect, zoomFactor)
+      this.isDisabled = false
     }
   }
 

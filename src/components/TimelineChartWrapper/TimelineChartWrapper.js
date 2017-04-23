@@ -51,7 +51,12 @@ export default class TimelineChartWrapper extends Component {
     let {selectedEvent} = this.state
     let prevIndex = events.indexOf(selectedEvent)
     let newIndex = prevIndex + indexOffset
-    newIndex = newIndex >= 0 ? newIndex : events.length - 1
+    const lastIndex = events.length - 1;
+    if (newIndex < 0) {
+      newIndex = lastIndex
+    } else if (newIndex > lastIndex) {
+      newIndex = 0
+    }
     selectedEvent = events[newIndex]
     this.setState({currentTime: selectedEvent.date, selectedEvent})
   }

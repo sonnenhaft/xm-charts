@@ -66,14 +66,6 @@ export default class TimelineChart extends Component {
     }
   }
 
-
-  // shouldComponentUpdate({chartData}, {noDuration, tooltipData}) {
-  //   const {state, props} = this
-  //   return props.chartData !== chartData
-  //     || (noDuration && !state.noDuration)
-  //     || state.tooltipData !== tooltipData
-  // }
-
   highlightCampaign(_campainId) {
     this.campainSelected = _campainId !== null
     this.chartData
@@ -186,7 +178,10 @@ export default class TimelineChart extends Component {
       },
     }
 
-    let dataClick = ({date}) => this.props.onTimeChanged(date)
+    let dataClick = ({date}) => {
+      this.props.onTimeChanged(date)
+      d3.event.stopPropagation()
+    }
     const attrs = {x, y, ...lineAttrs, opacity, click: dataClick}
     g.bindData(`rect.${styles['small-line']}`, data.filter(filterVisible), attrs, duration)
 
