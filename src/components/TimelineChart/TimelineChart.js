@@ -54,7 +54,7 @@ export default class TimelineChart extends Component {
     Object.assign(this.zoom, {k, x})
   }
 
-  shouldComponentUpdate({zoomPosition, currentTime}) {
+  shouldComponentUpdate({zoomPosition, currentTime, isToggled}) {
     let {zoomPosition: x, currentTime: t} = this.props
     if (t !== currentTime && x === zoomPosition) {
       const [min, max] = this.xScale.domain()
@@ -70,7 +70,7 @@ export default class TimelineChart extends Component {
       }
       if (toUpdate) {
         this.onZoomed({x, k})
-        return false
+        // return false
       }
     }
     return true
@@ -82,9 +82,6 @@ export default class TimelineChart extends Component {
 
     if (chartData !== this.props.chartData || props === this.props) {
       this.setChartData(chartData)
-    }
-    if (this.props.isToggled !== isToggled) {
-      this.updateMarginLeft({isToggled})
     }
   }
 
@@ -127,10 +124,11 @@ export default class TimelineChart extends Component {
 
   setD3Node = node => this.d3rootNode = d3.select(node)
 
-  componentWillUpdate() {
+  componentWillUpdate({isToggled}) {
     const margin = TimelineChart.margin
     const {clientWidth: realWidth} = this.d3rootNode.node()
-    const realHeight = this.props.isToggled ? 50 : 200
+    this.updateMarginLeft(isToggled)
+    const realHeight = isToggled ? 50 : 200
     const width = Math.max(realWidth - this.marginLeft - margin.right, 0)
     const height = Math.max(realHeight - margin.top - margin.bottom, 0)
     Object.assign(this, {width, height, realWidth, realHeight})
@@ -192,7 +190,7 @@ export default class TimelineChart extends Component {
           d3.event.stopPropagation()
         }
       },
-      mouseover: function(d) {
+      mouseover: function (d) {
         d3.select(this).moveToFront()
         if (d3.event.target.tagName !== 'rect') {
           moveTooltip(d)
@@ -250,18 +248,18 @@ export default class TimelineChart extends Component {
     return <WindowDependable refCb={setD3Node} style={{position: 'relative', width: '100%'}}
                              {...{onDimensionsChanged}}>
       <svg className={`${(isToggled ? styles['toggled'] : '')} ${styles['timeline-chart']}`}>
-        <rect width="100%" height="100%" className={backgroundClass} />
+        <rect width="100%" height="100%" className={backgroundClass}/>
         <g className="brushLineGroup">
-          <rect height="50" fill="#252525" width="100%" visibility={visibility} />
+          <rect height="50" fill="#252525" width="100%" visibility={visibility}/>
           <rect className="brushLine" pointerEvents="none" height="5" rx="3" ry="3" fill="#141414"
-                transform={`translate(${this.marginLeft},15)`} />
+                transform={`translate(${this.marginLeft},15)`}/>
         </g>
         <g fill="white" className="mainGroup">
           <Axes {...{xScale, yScale, xScaleMini, isToggled, realHeight, zoomFactor}}>
-            <path className={`linePath ${styles['line-path']}`} />
+            <path className={`linePath ${styles['line-path']}`}/>
           </Axes>
           <ZoomRect {...{xScale, yScale, isToggled, zoomFactor, margin, onZoomed, zoomPosition}} />
-          <g className="smalRects" transform="translate(0, -5)" />
+          <g className="smalRects" transform="translate(0, -5)"/>
         </g>
         <BrushGroup {...{xScale, yScale, zoomFactor, zoomPosition, isToggled, onBrushed, marginLeft}}>
           <BrushCircleGroup {...{xScale, yScale, xScaleMini, isToggled, onTimeChanged, currentTime}} />
@@ -272,10 +270,10 @@ export default class TimelineChart extends Component {
       <div className={`tooltipBlock ${styles['tooltip']}`}>
         <div className={styles['triangle-wrapper']}>
           <div className={styles['triangle']}>
-            <div className={`${styles['triangle']  } ${  styles['triangle-content']}`} />
+            <div className={`${styles['triangle']  } ${  styles['triangle-content']}`}/>
           </div>
         </div>
-        <TooltipContentBlock tooltipData={tooltipData} />
+        <TooltipContentBlock tooltipData={tooltipData}/>
       </div>
     </WindowDependable>
   }
