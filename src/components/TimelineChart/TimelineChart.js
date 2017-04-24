@@ -180,7 +180,7 @@ export default class TimelineChart extends Component {
           d3.event.stopPropagation()
         }
       },
-      mouseover: function (d) {
+      mouseover: function(d) {
         d3.select(this).moveToFront()
         if (d3.event.target.tagName !== 'rect') {
           moveTooltip(d)
@@ -238,18 +238,18 @@ export default class TimelineChart extends Component {
     return <WindowDependable refCb={setD3Node} style={{position: 'relative', width: '100%'}}
                              {...{onDimensionsChanged}}>
       <svg className={`${(isToggled ? styles['toggled'] : '')} ${styles['timeline-chart']}`}>
-        <rect width="100%" height="100%" className={backgroundClass}/>
+        <rect width="100%" height="100%" className={backgroundClass} />
         <g className="brushLineGroup">
-          <rect height="50" fill="#252525" width="100%" visibility={visibility}/>
+          <rect height="50" fill="#252525" width="100%" visibility={visibility} />
           <rect className="brushLine" pointerEvents="none" height="5" rx="3" ry="3" fill="#141414"
-                transform={`translate(${marginLeft},15)`}/>
+                transform={`translate(${marginLeft},15)`} />
         </g>
         <g fill="white" className="mainGroup">
           <Axes {...{xScale, yScale, xScaleMini, isToggled, realHeight, zoomFactor}}>
-            <path className={`linePath ${styles['line-path']}`}/>
+            <path className={`linePath ${styles['line-path']}`} />
           </Axes>
           <ZoomRect {...{xScale, yScale, isToggled, zoomFactor, margin, onZoomed, zoomPosition}} />
-          <g className="smalRects" transform="translate(0, -5)"/>
+          <g className="smalRects" transform="translate(0, -5)" />
         </g>
         <BrushGroup {...{xScale, yScale, zoomFactor, zoomPosition, isToggled, onBrushed, marginLeft}}>
           <BrushCircleGroup {...{xScale, yScale, xScaleMini, isToggled, onTimeChanged, currentTime}} />
@@ -260,10 +260,10 @@ export default class TimelineChart extends Component {
       <div className={`tooltipBlock ${styles['tooltip']}`}>
         <div className={styles['triangle-wrapper']}>
           <div className={styles['triangle']}>
-            <div className={`${styles['triangle']  } ${  styles['triangle-content']}`}/>
+            <div className={`${styles['triangle']  } ${  styles['triangle-content']}`} />
           </div>
         </div>
-        <TooltipContentBlock tooltipData={tooltipData}/>
+        <TooltipContentBlock tooltipData={tooltipData} />
       </div>
     </WindowDependable>
   }

@@ -1,18 +1,42 @@
 @import "../../Colors";
 
 $buttonWidth: 50px;
+$halfWidth: 30px;
 
 .square-buttons-block {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   width: $buttonWidth;
+  align-items: center;
 }
 
 .no-top-border .square-button {
   border-top: none;
   svg {
     transition: transform 0.3s ease-out;
+  }
+}
+
+.small-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 100%;
+  .square-button {
+    width: $halfWidth;
+    height: $halfWidth;
+    font-size: 25px;
+    font-weight: 200;
+    padding: 0;
+    svg {
+      width: 13px;
+    }
+  }
+  > div {
+    display: flex;
+    min-height: 10px;
+    flex-direction: column;
   }
 }
 

@@ -59,6 +59,10 @@ export default class TimelineChartWrapper extends Component {
   onZoomed = ({zoomFactor, zoomPosition}) => {
     this.setState({zoomPosition, zoomFactor: Math.min(this.CHROME_MAX_ZOOM, Math.max(zoomFactor, 1))})
   }
+  onZoomChanged = zoomFactor => {
+    const {zoomPosition} = this.state
+    this.onZoomed({zoomFactor, zoomPosition})
+  }
   onTimeChanged = currentTime => {
     let {chartData: {events = []} = {}} = this.props
     let time = Math.min(currentTime, events[events.length - 1].date)
@@ -131,19 +135,19 @@ export default class TimelineChartWrapper extends Component {
     const {isToggled, zoomFactor, zoomPosition, currentTime, selectedEvent} = this.state
     const {chartData} = this.props
     const {events} = chartData
-    const {onTimeChanged, onToggled, onZoomed, onKeyDown} = this
+    const {onTimeChanged, onToggled, onZoomed, onKeyDown, onZoomChanged} = this
     const {onReset, onPrev, onNext, onLongPrev, onLongNext, onPlay, onResetPosition} = this
     const controlActions = {onReset, onPrev, onNext, onLongPrev, onLongNext, onPlay, onResetPosition}
     return <div>
       <div style={{display: 'flex', justifyContent: 'space-between'}}>
-        <NetworkGrid {...{currentTime, chartData}}>Marketing</NetworkGrid>
-        <NetworkGrid {...{currentTime, chartData}}>Testing</NetworkGrid>
-        <NetworkGrid {...{currentTime, chartData}} >Production</NetworkGrid>
+        {/*<NetworkGrid {...{currentTime, chartData}}>Marketing</NetworkGrid>*/}
+        {/*<NetworkGrid {...{currentTime, chartData}}>Testing</NetworkGrid>*/}
+        {/*<NetworkGrid {...{currentTime, chartData}} >Production</NetworkGrid>*/}
       </div>
       <GlobalKeyDetector className={styles['timeline-chart-wrapper']} onKeyDown={onKeyDown}>
         <ControlPanel {...{events, isToggled, zoomFactor, currentTime, ...controlActions, selectedEvent}} />
         <TimelineChart {...{isToggled, currentTime, zoomPosition, chartData, onZoomed, onTimeChanged, zoomFactor}} />
-        <SquareButtons {...{onToggled, isToggled}} />
+        <SquareButtons {...{onToggled, isToggled, zoomFactor, onZoomChanged}} />
       </GlobalKeyDetector>
     </div>
   }
