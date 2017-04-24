@@ -73,14 +73,19 @@ export default class IconsGroup extends Component {
 
   render() {
     const {k, fill} = this.props
+    const isZoomTooSmall = k < 0.65
+    const isNormalZoom = !isZoomTooSmall
     return <g transform={`scale(${k}, ${k})`} fill={fill}>
       <g transform="translate(3,1) scale(0.9, 0.9)">
-        <Desktop />
+        {isNormalZoom && <Desktop />}
+        {isZoomTooSmall && <circle cx="15" cy="13" r="8" />}
         <g transform="translate(0, 20)">
-          <Diskette />
+          {isNormalZoom && <Diskette />}
+          {isZoomTooSmall && <circle cx="15" cy="13" r="8" />}
         </g>
         <g transform="translate(0, 40)">
-          <Snow />
+          {isNormalZoom && <Snow />}
+          {isZoomTooSmall && <circle cx="15" cy="13" r="8" />}
         </g>
       </g>
     </g>
