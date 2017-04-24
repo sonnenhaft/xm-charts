@@ -8,3 +8,4 @@ coverage/
 .DS_Store
 ignored
 npm-debug.log*
+src/assets/all-icons
