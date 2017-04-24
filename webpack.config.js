@@ -79,8 +79,8 @@ const development = {
     'webpack/hot/only-dev-server',
     paths.src,
   ],
-  // devtool: 'cheap-eval-source-map',
-  devtool: 'source-map',
+  devtool: 'cheap-eval-source-map',
+  // devtool: 'source-map',
   devServer: {
     hot: true,
     //stats: 'errors-only',

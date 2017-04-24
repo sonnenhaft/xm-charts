@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import * as d3 from 'd3'
+import IconsGroup from './IconsGroup'
 
 const LINES_RATIO = 2
 
@@ -22,6 +23,10 @@ export default class NetworkGrid extends Component {
     this.componentWillReceiveProps(props)
   }
 
+  shouldComponentUpdate({currentTime, chartData}) {
+    const props = this.props
+    return props.currentTime !== currentTime || props.chartData !== chartData
+  }
 
   componentWillReceiveProps({chartData: {events, nodes}, currentTime}) {
     const gridSize = Math.ceil(Math.sqrt(nodes.length))
@@ -73,15 +78,15 @@ export default class NetworkGrid extends Component {
 
     const FILLED_SPACE = 0.8
     const MAX_STROKE = 2
-    const strokeWidth = Math.min(MAX_STROKE, Math.max(MAX_STROKE*k, MAX_STROKE/ 4))
-    const rx = strokeWidth *3
+    const strokeWidth = Math.min(MAX_STROKE, Math.max(MAX_STROKE * k, MAX_STROKE / 4))
+    const rx = strokeWidth * 3
     const attrs = {
       rx,
       ry: rx,
       strokeWidth,
       stroke: 'black',
-      height: h*FILLED_SPACE*k,
-      width: w*FILLED_SPACE*k,
+      height: h * FILLED_SPACE * k,
+      width: w * FILLED_SPACE * k,
     }
 
     return <div>
@@ -92,21 +97,21 @@ export default class NetworkGrid extends Component {
         {this.lines.map((data, xCoord) => {
           return <g key={xCoord}>
             {data.map(({agentId}, yCoord) => {
-              let nodeColor = this.nodeColors[agentId]
-              return <rect {...{
-                ...attrs,
-                fill: nodeColor,
-                x: xScale(xCoord),
-                y: yScale(yCoord),
-                key: `${xCoord} ${yCoord}`,
-              }} />
+              const fill = this.nodeColors[agentId]
+              const isWhite = fill === 'white'
+              return <g key={`${xCoord} ${yCoord}`}
+                        transform={`translate(${xScale(xCoord)},${yScale(yCoord)})`}>
+                <rect {...{...attrs, fill}} />
+                <IconsGroup {...{k, fill: isWhite ? 'black' : 'white'}} />
+              </g>
             })}
           </g>
         })}
-        <rect className={'zoomRect'} fill="black" opacity={0}
-              cursor="move"
+        <rect className={'zoomRect'} fill="black" opacity={0} cursor="move"
               {...{width, height}} ref={this.setZoomRect} />
       </svg>
     </div>
   }
 }
+
+
