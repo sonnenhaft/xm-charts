@@ -20,6 +20,8 @@ export default class TimelineChartWrapper extends Component {
       isToggled: false,
       zoomFactor: 2,
       zoomPosition: 0,
+      playingInterval: null,
+      currentSpeed: 1,
       currentTime: this._getCurrentTime(props),
     }
 
@@ -28,20 +30,17 @@ export default class TimelineChartWrapper extends Component {
 
   tabListener = () => {
     const isTabHidden = window.document.hidden
-    if (!isTabHidden && this.wasPlaying) {
-      this.onPlay()
-    }
-    this.wasPlaying = this.playingInterval
-    if (isTabHidden && this.wasPlaying) {
-      this.onPlay()
+    if (!isTabHidden) {
+      this.stopPlaying()
     }
   }
 
   componentDidMount() { document.addEventListener('visibilitychange', this.tabListener) }
+
   componentWillUnmount() {
     document.removeEventListener('visibilitychange', this.tabListener)
-    if (this.playingInterval) {
-      this.onPlay()
+    if (this.state.playingInterval) {
+      this.startPlaying()
     }
   }
 
@@ -70,42 +69,49 @@ export default class TimelineChartWrapper extends Component {
     this.setState({currentTime, selectedEvent: events[number]})
   }
 
-  setEvent(indexOffset = 1) {
+  jumpToOffset(eventIndexOffset) {
     const {chartData: {events}} = this.props
     let {selectedEvent} = this.state
     let prevIndex = events.indexOf(selectedEvent)
-    let newIndex = prevIndex + indexOffset
+    let newIndex = prevIndex + eventIndexOffset
     const lastIndex = events.length - 1
     if (newIndex < 0) {
       newIndex = lastIndex
     } else if (newIndex > lastIndex) {
       newIndex = 0
+      if (this.state.playingInterval) {
+        console.log(this.state.playingInterval)
+        this.stopPlaying()
+        return
+      }
     }
     selectedEvent = events[newIndex]
     this.setState({currentTime: selectedEvent.date, selectedEvent})
   }
 
   onReset = () => this.setState({zoomFactor: 1, zoomPosition: 0})
-
-  onNext = () => this.setEvent()
-  onPrev = () => this.setEvent(-1)
-
-  onLongNext = () => this.setEvent()
-  onLongPrev = () => this.setEvent(-1)
+  onNext = () => this.jumpToOffset(1)
+  onPrev = () => this.jumpToOffset(-1)
+  onLongNext = () => this.jumpToOffset(1)
+  onLongPrev = () => this.jumpToOffset(-1)
 
   moveOnDaysNumber(count) {
     this.setState({currentTime: this.state.currentTime + count * DAY})
   }
 
-  onPlay = () => {
-    let {playingInterval} = this.state
-    if (playingInterval) {
-      clearTimeout(playingInterval)
-      playingInterval = null
-    } else {
-      playingInterval = setInterval(this.onNext, 100)
+  startPlaying = () => {
+    if (!this.state.playingInterval) {
+      this.setState({
+        playingInterval: setInterval(this.onNext, 400 / this.state.currentSpeed),
+      }, this.onNext)
     }
-    this.setState({playingInterval})
+  }
+
+  stopPlaying = () => {
+    if (this.state.playingInterval) {
+      clearTimeout(this.state.playingInterval)
+      this.setState({playingInterval: null})
+    }
   }
 
   getLast() {
@@ -131,13 +137,41 @@ export default class TimelineChartWrapper extends Component {
     }
   }
 
+  onSpeedUpdated = currentSpeed => {
+    if (this.state.playingInterval) {
+      this.stopPlaying()
+      this.setState({currentSpeed}, () => {
+        this.startPlaying()
+      })
+    } else {
+      this.setState({currentSpeed})
+    }
+  }
+
   render() {
-    const {isToggled, zoomFactor, zoomPosition, currentTime, selectedEvent} = this.state
-    const {chartData} = this.props
+    const chartData = this.props.chartData
+    const isPlaying = !!this.state.playingInterval
     const {events} = chartData
-    const {onTimeChanged, onToggled, onZoomed, onKeyDown, onZoomChanged} = this
-    const {onReset, onPrev, onNext, onLongPrev, onLongNext, onPlay, onResetPosition} = this
-    const controlActions = {onReset, onPrev, onNext, onLongPrev, onLongNext, onPlay, onResetPosition}
+    const {
+      isToggled, zoomFactor, zoomPosition,
+      currentTime, selectedEvent, currentSpeed,
+    } = this.state
+    const {
+      onTimeChanged, onToggled, onZoomed, onKeyDown, onZoomChanged, onReset,
+      onPrev, onNext, onLongPrev, onLongNext, stopPlaying, startPlaying, onSpeedUpdated, onResetPosition,
+    } = this
+
+    const state = {
+      isToggled, zoomFactor, zoomPosition,
+      currentTime, selectedEvent, currentSpeed,
+      events, chartData, isPlaying,
+    }
+    const callbacks = {
+      onTimeChanged, onToggled, onZoomed, onKeyDown, onZoomChanged, onReset,
+      onPrev, onNext, onLongPrev, onLongNext, stopPlaying, startPlaying, onSpeedUpdated, onResetPosition,
+    }
+    const params = {...state, ...callbacks}
+
     return <div>
       <div style={{display: 'flex', justifyContent: 'space-between'}}>
         {/*<NetworkGrid {...{currentTime, chartData}}>Marketing</NetworkGrid>*/}
@@ -145,9 +179,9 @@ export default class TimelineChartWrapper extends Component {
         {/*<NetworkGrid {...{currentTime, chartData}} >Production</NetworkGrid>*/}
       </div>
       <GlobalKeyDetector className={styles['timeline-chart-wrapper']} onKeyDown={onKeyDown}>
-        <ControlPanel {...{events, isToggled, zoomFactor, currentTime, ...controlActions, selectedEvent}} />
-        <TimelineChart {...{isToggled, currentTime, zoomPosition, chartData, onZoomed, onTimeChanged, zoomFactor}} />
-        <SquareButtons {...{onToggled, isToggled, zoomFactor, onZoomChanged}} />
+        <ControlPanel {...params} />
+        <TimelineChart {...params} />
+        <SquareButtons {...params} />
       </GlobalKeyDetector>
     </div>
   }

@@ -5,9 +5,15 @@ import triangleSvgIcon from '../../../assets/icons/asset-downloaded.svg'
 import styles from './SquareButtons.scss'
 import customArrowTop from './custom-arrow-top.svg'
 
-const Button = ({onClick, children: __html, className}) => {
-  className = `${className } ${   styles['square-button']}`
-  return <button {...{className, onClick}} dangerouslySetInnerHTML={{__html}} />
+export class Button extends Component {
+  buttonClassName = styles['square-button']
+
+  render() {
+    const {children: __html, onClick} = this.props
+    const className = `${ this.props.className } ${ this.buttonClassName }`
+
+    return <button {...{className, onClick}} dangerouslySetInnerHTML={{__html}} />
+  }
 }
 
 export default class SquareButtons extends Component {
@@ -27,12 +33,12 @@ export default class SquareButtons extends Component {
 
   render() {
     const props = this.props
-    const toggleButtonClassName = `${styles['no-top-border']  } ${  props.isToggled ? styles['is-toggled'] : ''}`
+    const toggleButtonClassName = `${styles['no-top-border']} ${props.isToggled ? styles['is-toggled'] : ''}`
 
     return <div className={styles['square-buttons-block']}>
       <div />
       {!props.isToggled && <div className={styles['small-buttons']}>
-        <div onContextMenu={this.onZoomReset}>
+        <div onContextMenu={this.onZoomReset} className={styles['text-shifted-to-top']}>
           <Button onClick={this.zoomIn}>+</Button>
           <Button onClick={this.onZoomOut}>-</Button>
         </div>

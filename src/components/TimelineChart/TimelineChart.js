@@ -49,28 +49,6 @@ export default class TimelineChart extends Component {
     Object.assign(this.zoom, {k, x})
   }
 
-  shouldComponentUpdate({zoomPosition, currentTime}) {
-    let {zoomPosition: x, currentTime: t} = this.props
-    // NEXT WILL MOVE TO NEXT SCREEN WHEN WHITE LINE IS AFTER IT
-    // if (t !== currentTime && x === zoomPosition) {
-    //   const [min, max] = this.xScale.domain()
-    //   const w = this.width / 2
-    //   const k = this.zoom.k
-    //   let toUpdate = false
-    //   if (currentTime > max) {
-    //     x = Math.min(x - w, -this.xScale(max))
-    //     toUpdate = true
-    //   } else if (currentTime < min) {
-    //     x = Math.max(x + w, -this.xScale(min))
-    //     toUpdate = true
-    //   }
-    //   if (toUpdate) {
-    //     this.onZoomed({x, k})
-    //   }
-    // }
-    return true
-  }
-
   componentWillReceiveProps(props) {
     this.setZoom(props)
     if (props.chartData !== this.props.chartData) {
@@ -227,7 +205,7 @@ export default class TimelineChart extends Component {
 
   render() {
     const {
-      props: {isToggled, onTimeChanged, currentTime}, state: {tooltipData = {}},
+      props: {isToggled, onTimeChanged, currentTime, isPlaying, currentSpeed}, state: {tooltipData = {}},
       onDimensionsChanged, setD3Node, xScale, yScale, xScaleMini, realHeight,
       onBrushed, onZoomed,
     } = this
@@ -252,7 +230,7 @@ export default class TimelineChart extends Component {
           <g className="smalRects" transform="translate(0, -5)" />
         </g>
         <BrushGroup {...{xScale, yScale, zoomFactor, zoomPosition, isToggled, onBrushed, marginLeft}}>
-          <BrushCircleGroup {...{xScale, yScale, xScaleMini, isToggled, onTimeChanged, currentTime}} />
+          <BrushCircleGroup {...{xScale, yScale, xScaleMini, isToggled, onTimeChanged, currentTime, currentSpeed, isPlaying}} />
         </BrushGroup>
 
       </svg>

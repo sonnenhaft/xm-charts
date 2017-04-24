@@ -2,11 +2,12 @@ import React, {PropTypes, Component} from 'react'
 import * as d3 from 'd3'
 import {zoomTransform} from 'd3-zoom'
 
+const ScaleObjectFunction = PropTypes.func.isRequired
 export default class BrushGroup extends Component {
   static defaultProps = {isToggled: false, width: 0}
   static propTypes = {
-    xScale: PropTypes.func.isRequired, // scale object-function
-    yScale: PropTypes.func.isRequired, // scale object-function
+    xScale: ScaleObjectFunction,
+    yScale: ScaleObjectFunction,
     onBrushed: PropTypes.func.isRequired,
     zoomFactor: PropTypes.number.isRequired,
     zoomPosition: PropTypes.number.isRequired,

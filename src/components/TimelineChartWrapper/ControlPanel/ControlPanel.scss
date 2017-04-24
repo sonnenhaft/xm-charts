@@ -94,7 +94,6 @@
   text-align: center;
 }
 
-
 .play-buttons-block {
   display: flex;
   align-items: center;
@@ -105,11 +104,33 @@
 .left-buttons .play-action-button {
   border-left: none;
 }
-.black-buttons .play-action-button{
+
+.right-buttons .play-action-button {
+  transform: scale(-1, 1);
+}
+
+.black-buttons .play-action-button {
   background: none;
   height: 75px;
   &:nth-of-type(even) {
     border-bottom: none;
+  }
+}
+
+.show-zoom-menu {
+  .zoom-menu {
+    display: none;
+  }
+  &:hover {
+    position: relative;
+    .zoom-menu {
+      display: flex;
+      flex-direction: row;
+      position: absolute;
+      top: 0;
+      left: 50px;
+      z-index: 1;
+    }
   }
 }
 
@@ -128,7 +149,7 @@
   &.blacked {
     background: black;
   }
-  &:hover, &.active {
+  &:hover:not(.no-hover), &.active {
     background: $buttonBlue;
     &:hover {
       circle {
@@ -176,7 +197,7 @@
     background: black;
     border-width: 1px;
     font-size: 7px;
-    border:none;
+    border: none;
     &:hover {
       background: $buttonBlue;
     }
@@ -187,11 +208,11 @@
     position: absolute;
     background: black;
     display: flex;
-    transform: translate(-33.3%,-100%);
+    transform: translate(-33.3%, -100%);
     transition: opacity 0.5s ease-out;
     opacity: 0;
   }
-  &:hover{
+  &:hover {
     .toggled-buttons {
       opacity: 1;
     }

@@ -2,16 +2,17 @@ import React, {PropTypes, Component} from 'react'
 import * as d3 from 'd3'
 import styles from './BrushCircleGroup.scss'
 
-
+const ScaleObjectFunction = PropTypes.func.isRequired
 export default class BrushCircleGroup extends Component {
-  static defaultProps = {currentTime: 0, isToggled: false}
   static propTypes = {
-    xScale: PropTypes.func.isRequired, // scale object-function
-    yScale: PropTypes.func.isRequired, // scale object-function
-    xScaleMini: PropTypes.func.isRequired, // scale object-function
+    xScale: ScaleObjectFunction,
+    yScale: ScaleObjectFunction,
+    xScaleMini: ScaleObjectFunction,
     onTimeChanged: PropTypes.func.isRequired,
-    isToggled: PropTypes.bool,
-    currentTime: PropTypes.number,
+    currentSpeed: PropTypes.number.isRequired,
+    isToggled: PropTypes.bool.isRequired,
+    isPlaying: PropTypes.bool.isRequired,
+    currentTime: PropTypes.number.isRequired,
   }
   static translate = (x, y = 0) => ({transform: `translate(${x}, ${y})`})
   static middleValue = (min, middle, max) => Math.min(Math.max(min, middle), max)
@@ -28,21 +29,18 @@ export default class BrushCircleGroup extends Component {
     const props = this.props
     const {middleValue} = BrushCircleGroup
     const currentDate = props.xScaleMini.invert(middleValue(0, d3.event.x, this.getWidth()))
-    this.currentTime = currentDate.getTime()
-    props.onTimeChanged(this.currentTime)
+    props.onTimeChanged(currentDate.getTime())
   })
 
   componentDidUpdate() {
     const props = this.props
     const {translate} = BrushCircleGroup
-    const currentTime = props.currentTime
     let td = x => x
-    if (this.currentTime !== currentTime) {
-      this.currentTime = currentTime
-      td = x => x.transition().ease(d3.easeLinear).duration(100)
+    if (props.isPlaying) {
+      td = x => x.transition().ease(d3.easeLinear).duration(400 / this.props.currentSpeed)
     }
-    td(this.whiteLine).attrs(translate(props.xScale(currentTime)))
-    td(this.drag).attrs(translate(props.xScaleMini(currentTime)))
+    td(this.whiteLine).attrs(translate(props.xScale(props.currentTime)))
+    td(this.drag).attrs(translate(props.xScaleMini(props.currentTime)))
   }
 
 

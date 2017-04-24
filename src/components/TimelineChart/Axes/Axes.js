@@ -2,11 +2,12 @@ import React, {PropTypes, Component} from 'react'
 import * as d3 from 'd3'
 import styles from './Axes.scss'
 
+const ScaleObjectFunction = PropTypes.func.isRequired
 export default class Axes extends Component {
   static propTypes = {
-    xScale: PropTypes.func.isRequired, // scale object-function
-    yScale: PropTypes.func.isRequired, // scale object-function
-    xScaleMini: PropTypes.func.isRequired, // scale object-function
+    xScale: ScaleObjectFunction,
+    yScale: ScaleObjectFunction,
+    xScaleMini: ScaleObjectFunction,
     isToggled: PropTypes.bool,
     realHeight: PropTypes.number,
     zoomFactor: PropTypes.number,
