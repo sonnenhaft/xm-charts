@@ -41,7 +41,7 @@ export default class TimelineChart extends Component {
 
   setChartData({events}) {
     this.chartData = events
-      .map((item, index) => ({...item, index: item.networkSuperiority / 100}))
+      .map(item => ({...item, index: item.networkSuperiority / 100}))
     const maxValue = d3.max(this.chartData, ({date}) => date)
     const minValue = d3.min(this.chartData, ({date}) => date)
     this.domain = [minValue, maxValue]

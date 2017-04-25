@@ -17,7 +17,7 @@ export default class TooltipContent extends Component {
   static defaultProps = {tooltipData: {}};
 
   render() {
-    const {type, name, source, method, date, value} = this.props.tooltipData
+    const {type, source, method, date} = this.props.tooltipData
     return <div className={styles['tooltip-content']}>
       {type && <div>
         <div>

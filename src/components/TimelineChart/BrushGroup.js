@@ -39,7 +39,7 @@ export default class BrushGroup extends Component {
     this.setZoom(this.props)
     this.brusher.call(this.brush)
     const centralizeBrush = this._centralizeBrush
-    const clickedInsideTheBrush = function(e) {
+    const clickedInsideTheBrush = function() {
       centralizeBrush(d3.mouse(this)[0])
       d3.event.stopPropagation()
     }
@@ -57,7 +57,6 @@ export default class BrushGroup extends Component {
       return
     }
     const {sourceEvent} = d3.event
-    const width = this.getWidth()
     if (!sourceEvent || sourceEvent.type === 'zoom') {
       return
     }
@@ -83,9 +82,9 @@ export default class BrushGroup extends Component {
     }
   }
 
-  componentWillReceiveProps(props) {
-    const {zoomPosition: x, zoomFactor: k} = props
-  }
+  // componentWillReceiveProps(props) {
+  //   const {zoomPosition: x, zoomFactor: k} = props
+  // }
 
   componentDidUpdate() {
     const {isToggled, xScale} = this.props

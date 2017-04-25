@@ -46,12 +46,12 @@ const common = {
   },
   module: {
     rules: [
-      // {
-      //   test: /\.jsx?$/,
-      //   enforce: 'pre',
-      //   use: [{loader: 'eslint-loader', options: {emitWarning: true,},}],
-      //   exclude: paths.node_modules,
-      // },
+      {
+        test: /\.jsx?$/,
+        enforce: 'pre',
+        use: [{loader: 'eslint-loader', options: {emitWarning: true,},}],
+        exclude: paths.node_modules,
+      },
       {
         test: /\.jsx?$/,
         use: [{loader: 'babel-loader', options: {cacheDirectory: true,},},],
