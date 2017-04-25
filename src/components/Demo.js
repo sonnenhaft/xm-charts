@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 import TimelineChartWrapper from './TimelineChartWrapper/TimelineChartWrapper'
 import generateDemoData from './TimelineChartWrapper/generateDemoData/generateDemoData'
-
-import packageJson from '../../package.json'
 import styles from './Demo.scss'
+
+const version = `${process.env.npm_package_name} v${process.env.npm_package_version}`
 
 class Demo extends Component {
   constructor(props) {
@@ -57,7 +57,7 @@ class Demo extends Component {
           <br />
         </div>)}
 
-      <div className={styles['version']}>{packageJson.name} v{packageJson.version}</div>
+      <div className={styles['version']}>{version}</div>
       <style>{'body{margin:0}'}</style>
     </div>
   }

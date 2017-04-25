@@ -12,6 +12,11 @@ const pkg = require('./package.json')
 const vendorPackages = Object.keys(pkg.dependencies)
   .filter(k => k !== 'babel-plugin-react-css-modules')
 
+function copyEnvVars(...vars){
+  return vars.reduce((e, v) =>  {e[`process.env.${v}`] = JSON.stringify(process.env[v]); return e}, {})
+}
+
+
 const paths = {
   src: path.join(__dirname, 'src'),
   html: path.join(__dirname, 'src/index.html'),
@@ -64,10 +69,7 @@ const common = {
     ],
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
-      'process.env.API_BASEURL': JSON.stringify(process.env.API_BASEURL),
-    }),
+    new webpack.DefinePlugin(copyEnvVars('NODE_ENV', 'API_BASEURL', 'CM_ID','npm_package_name', 'npm_package_version')),
     new HtmlWebpackPlugin({template: paths.html,}),
   ],
 }
