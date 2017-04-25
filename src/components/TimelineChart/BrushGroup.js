@@ -117,7 +117,7 @@ export default class BrushGroup extends Component {
     const transform = (y1, y2) => `translate(0,${  this.props.isToggled ? y1 : y2  })`
 
     return <g className="brushGroup" ref={this.setBrushGroup}
-              transform={transform(height + 13, height + 40)}>
+              transform={transform(height + 58, height + 40)}>
       <g transform={`translate(${this.props.marginLeft},15)`}>
         <g className="brusher" transform={transform(0, -15)} ref={this.setBrusher} />
         {this.props.children}

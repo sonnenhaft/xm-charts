@@ -41,7 +41,7 @@ export default class ControlPanel extends Component {
 
   static defaultProps = {events: []}
 
-  onPlay =() => {
+  onPlay = () => {
     if (this.props.isPlaying) {
       this.props.stopPlaying()
     } else {
@@ -60,96 +60,66 @@ export default class ControlPanel extends Component {
 
     const onPlay = this.onPlay
 
-    return <div>
-      {!isToggled && <div className={styles['timeline-control-block']}>
-        <div />
-        <div className={`${styles['circle-stats-block']} ${isToggled ? styles['stats-hidden'] : ''}`}>
-          <div className={styles['circle-block']}>
-            <CircleIndicator percent={networkSuperiority} />
-          </div>
-
-          <div className={styles['stats-block']}>
-            <ShareButtons data={compromisedAssets} />
-            <div className={styles['buttoned-item']}>
-              <Icon>{downloadedSvg}</Icon>
-              <span>
-                {compromisedDataGB}
-                <small>GB</small>
-              </span>
-            </div>
-          </div>
-          <div className={`${styles['right-buttons']} ${styles['black-buttons']}`}>
-            <Button onClick={onPrev} reversed title="jump to previous event">
-              {nextStorySvg}
-            </Button>
-            <Button onClick={onLongPrev} reversed title="long jump backward">
-              {nextFlagSvg}
-            </Button>
-          </div>
-          <div className={`${styles['left-buttons']} ${styles['black-buttons']}`}>
-            <Button onClick={onNext} title="jump to next event">
-              {nextStorySvg}
-            </Button>
-            <Button onClick={onLongNext} title="long jump forward">
-              {nextFlagSvg}
-            </Button>
-          </div>
+    const style = isToggled ? styles['is-toggled'] : ''
+    return <div className={`${styles['timeline-control-block']  } ${  style}`}>
+      <div />
+      <div className={`${styles['circle-stats-block']}`}>
+        <div className={styles['circle-block']}>
+          <CircleIndicator percent={networkSuperiority} />
         </div>
 
-        <div />
-        <div className={styles['play-buttons-block']}>
-          <Button onClick={onResetPosition}>{circleButtonSvgIcon}</Button>
-          <CurrentTime {...{currentTime, offset: this.props.events[0].date}} />
-          <Button onClick={onPlay} title={isPlaying ? 'pause' : 'play'}>{playSvg}</Button>
-          <div className={`${styles['left-buttons']} ${styles['show-zoom-menu']}`}>
-            <Button className={styles['no-hover']} title="Current speed">
-              {`${currentSpeed}x`}
-            </Button>
-            <div className={styles['zoom-menu']}>
-              {[0.5, 1, 2, 4].map(number => (
-                <div key={number}>
-                  {number !== currentSpeed &&
-                  <Button onClick={() => onSpeedUpdated(number)}
-                          title="Change play speed">
-                    {`${number}x`}
-                  </Button>
-                  }
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-      }
-
-      {isToggled && <div className={`${styles['timeline-control-block']  } ${  styles['toggled-control']}`}>
-        <div className={styles['play-buttons-block']}>
-          <Button>{circleButtonSvgIcon}</Button>
-          <div className={`${styles['circle-block']  } ${  styles['small-circle-block']}`}>
-            <CircleIndicator percent={0.4} small={true} />
-          </div>
-          <ShareButtons type="vertical-black" data={compromisedAssets}>
+        <div className={styles['stats-block']}>
+          <ShareButtons data={compromisedAssets}
+                        type={isToggled ? 'vertical-black' : ''} />
+          <div className={styles['buttoned-item']}>
             <Icon>{downloadedSvg}</Icon>
-            <span>{compromisedDataGB}</span>
-          </ShareButtons>
+            <span>
+                {compromisedDataGB}
+              <small>GB</small>
+              </span>
+          </div>
+        </div>
+        <div className={`${styles['right-buttons']} ${styles['black-buttons']}`}>
+          <Button onClick={onPrev} reversed title="jump to previous event">
+            {nextStorySvg}
+          </Button>
+          <Button onClick={onLongPrev} reversed title="long jump backward">
+            {nextFlagSvg}
+          </Button>
+        </div>
+        <div className={`${styles['left-buttons']} ${styles['black-buttons']}`}>
+          <Button onClick={onNext} title="jump to next event">
+            {nextStorySvg}
+          </Button>
+          <Button onClick={onLongNext} title="long jump forward">
+            {nextFlagSvg}
+          </Button>
+        </div>
+      </div>
 
-          <CurrentTime {...{currentTime}} />
-          <div className={styles['toggled-buttons-wrapper']}>
-            <div className={styles['toggled-buttons']}>
-              <Button onClick={onLongPrev}>{nextFlagSvg}</Button>
-              <Button onClick={onLongNext} nextFlagSvg>{nextFlagSvg}</Button>
-              <div className={styles['middle-buttons']}>
-                <Button onClick={onPlay}>{playSvg}</Button>
-                <Button onClick={onResetPosition} title="Reset Zoom">1x</Button>
+      <div />
+      <div className={styles['play-buttons-block']}>
+        <Button onClick={onResetPosition}>{circleButtonSvgIcon}</Button>
+        <CurrentTime {...{currentTime, offset: this.props.events[0].date}} />
+        <Button onClick={onPlay} title={isPlaying ? 'pause' : 'play'}>{playSvg}</Button>
+        <div className={`${styles['left-buttons']} ${styles['show-zoom-menu']}`}>
+          <Button className={styles['no-hover']} title="Current speed">
+            {`${currentSpeed}x`}
+          </Button>
+          <div className={styles['zoom-menu']}>
+            {[0.5, 1, 2, 4].map(number => (
+              <div key={number}>
+                {number !== currentSpeed &&
+                <Button onClick={() => onSpeedUpdated(number)}
+                        title="Change play speed">
+                  {`${number}x`}
+                </Button>
+                }
               </div>
-              <Button onClick={onPrev}>{nextStorySvg}</Button>
-              <Button onClick={onNext} reversed>{nextStorySvg}</Button>
-            </div>
-            Controls
+            ))}
           </div>
         </div>
       </div>
-      }
     </div>
   }
 }

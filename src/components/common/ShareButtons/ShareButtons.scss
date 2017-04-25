@@ -40,8 +40,13 @@
     }
   }
 
+  &.vertical-black {
+    width: 100%;
+    justify-content: space-around;
+  }
   &.vertical-black .share-button {
     flex-direction: column-reverse;
+    justify-content: center;
     margin: 0 4px;
     .icon {
       margin: 0;

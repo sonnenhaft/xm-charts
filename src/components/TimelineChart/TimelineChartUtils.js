@@ -53,7 +53,8 @@ export const renderPath = ({td, min, max, linePath, data, x, y, chartData}) => {
 export const renderCircles = ({g, data, x, height, duration, bulkLines, firstInSubnet, actions, isToggled, opacity}) => {
   const lastInSubnet = data.filter(({lastInSubnet}) => lastInSubnet)
   const radius = 8
-  height = isToggled ? 22 : height + radius * 2
+  height = isToggled ? 54 : height + radius * 2
+  const offset = isToggled ? -40 : 0
 
   const allCirclesData = [...firstInSubnet, ...lastInSubnet, ...bulkLines]
   const enteredSelection = g.selectAll('.bulkBlock').data(allCirclesData, ({id}) => id)
@@ -71,7 +72,7 @@ export const renderCircles = ({g, data, x, height, duration, bulkLines, firstInS
      <text transform="translate(0, 3.5)" class="${styles['circle-text']}">${value || ''}</text>
   </g>`)
 
-  const opt_attrs = {opacity, transform: d => `translate(${x(d)}, ${-radius * 2})`, ...actions}
+  const opt_attrs = {opacity, transform: d => `translate(${x(d)}, ${-radius * 2 + offset})`, ...actions}
   const allElements = mergedSelection.attrs(opt_attrs).merge(enteredSelection)
   allElements.transition().duration(duration).attrs(opt_attrs, true)
 

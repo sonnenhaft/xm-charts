@@ -13,9 +13,12 @@ import {zoomTransform} from 'd3-zoom'
 
 const translate = (x, y = 0) => ({transform: `translate(${x}, ${y})`})
 const margin = {top: 30, right: 10, bottom: 60, left: 30}
-const TOGGLED_MARGIN_LEFT = 15
 const getMarginLeft = ({isToggled}) => {
-  return isToggled ? TOGGLED_MARGIN_LEFT : margin.left
+  return isToggled ? margin.left/2 : margin.left
+}
+
+const getMarginTop = ({isToggled}) => {
+  return isToggled ? 70 : margin.top
 }
 
 export default class TimelineChart extends Component {
@@ -97,9 +100,9 @@ export default class TimelineChart extends Component {
 
   componentWillUpdate({isToggled}) {
     const {clientWidth: realWidth} = this.d3rootNode.node()
-    const realHeight = isToggled ? 50 : 200
+    const realHeight = isToggled ? 100 : 200
     const width = Math.max(realWidth - getMarginLeft({isToggled}) - margin.right, 0)
-    const height = Math.max(realHeight - margin.top - margin.bottom, 0)
+    const height = Math.max(realHeight - getMarginTop({isToggled}) - margin.bottom, 0)
     Object.assign(this, {width, height, realWidth, realHeight})
 
     this.xScale.domain(this.domain).rangeRound([0, width])
@@ -122,8 +125,8 @@ export default class TimelineChart extends Component {
     }
 
     const g = this.find('.mainGroup')
-    g.attrs(translate(getMarginLeft(this.props), margin.top))
-    td(this.find('.brushLineGroup')).attr('transform', `translate(0,${  isToggled ? height + 13 : height + 40  })`)
+    g.attrs(translate(getMarginLeft(this.props), getMarginTop({isToggled})))
+    td(this.find('.brushLineGroup')).attr('transform', `translate(0,${  height + 40  })`)
     this.find('.brushLine').attrs({width})
 
     const svgNode = this.find('svg')
@@ -209,6 +212,7 @@ export default class TimelineChart extends Component {
       onDimensionsChanged, setD3Node, xScale, yScale, xScaleMini, realHeight,
       onBrushed, onZoomed,
     } = this
+    const marginTop = getMarginTop(this.props)
     const marginLeft = getMarginLeft(this.props)
     const {x: zoomPosition, k: zoomFactor} = this.zoom
     const backgroundClass = isToggled ? styles['toggled-background'] : styles['black-background']
@@ -220,13 +224,13 @@ export default class TimelineChart extends Component {
         <g className="brushLineGroup">
           <rect height="50" fill="#252525" width="100%" visibility={visibility} />
           <rect className="brushLine" pointerEvents="none" height="5" rx="3" ry="3" fill="#141414"
-                transform={`translate(${marginLeft},15)`} />
+                transform={`translate(${marginLeft},${isToggled ? 26 : 15})`} />
         </g>
         <g fill="white" className="mainGroup">
           <Axes {...{xScale, yScale, xScaleMini, isToggled, realHeight, zoomFactor}}>
             <path className={`linePath ${styles['line-path']}`} />
           </Axes>
-          <ZoomRect {...{xScale, yScale, isToggled, zoomFactor, margin, onZoomed, zoomPosition}} />
+          <ZoomRect {...{xScale, yScale, isToggled, zoomFactor, marginTop, onZoomed, zoomPosition}} />
           <g className="smalRects" transform="translate(0, -5)" />
         </g>
         <BrushGroup {...{xScale, yScale, zoomFactor, zoomPosition, isToggled, onBrushed, marginLeft}}>

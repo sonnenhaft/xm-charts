@@ -35,8 +35,8 @@ export default class Axes extends Component {
       return {transform: `translate(0, ${y})`}
     }
 
-    this.xAxis.attrs({...translateY(78, 85), visibility}).call(d3.axisBottom(props.xScale))
-    this.miniMap.attrs(translateY(realHeight, 57)).call(d3.axisBottom(props.xScaleMini))
+    this.xAxis.attrs({...translateY(125, 85), visibility}).call(d3.axisBottom(props.xScale))
+    this.miniMap.attrs(translateY(realHeight - 3, 57)).call(d3.axisBottom(props.xScaleMini))
 
     const width = props.xScale.range()[1]
     this.yAxis.call(d3.axisLeft(props.yScale).ticks(5, '%').tickSize(-width)).selectAll('.tick')

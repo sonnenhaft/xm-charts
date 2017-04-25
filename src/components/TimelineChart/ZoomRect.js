@@ -8,7 +8,7 @@ export default class ZoomRect extends Component {
     xScale: ScaleObjectFunction,
     yScale: ScaleObjectFunction,
     isToggled: PropTypes.bool,
-    margin: PropTypes.object.isRequired,
+    marginTop: PropTypes.number.isRequired,
     onZoomed: PropTypes.func.isRequired,
     zoomFactor: PropTypes.number,
     zoomPosition: PropTypes.number,
@@ -65,8 +65,8 @@ export default class ZoomRect extends Component {
     const [width, height] = [this.getWidth(), this.getHeight()]
     this.zoom.translateExtent([[0, 0], [width, height]]).extent([[0, 0], [width, height]])
 
-    const margin = this.props.margin
-    const attrs = {width, height: height + margin.top, y: -margin.top}
+    const marginTop = this.props.marginTop
+    const attrs = {width, height: height + marginTop, y: -marginTop}
 
     return <rect ref={this.refZoomRect}  {...attrs}
                  cursor="move" pointerEvents="all" fill="none" />

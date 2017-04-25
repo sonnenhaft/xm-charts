@@ -40,15 +40,15 @@ svg.timeline-chart {
     fill: #141414
   }
   .toggled-background {
-    fill: #252525
+    fill: #252525;
+    height: 50px;
+    y: 50px;
   }
 
   .red-bulk-circle,
   .red-bulk-line {
     fill: $chartRed
   }
-
-
 
   .circle-text {
     cursor: pointer;
