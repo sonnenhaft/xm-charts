@@ -25,7 +25,7 @@ export default class TimelineChartWrapper extends Component {
       currentTime: this._getCurrentTime(props),
     }
 
-    this.onKeyDown = throttle(300, this.onKeyDown)
+    this.onKeyDown = throttle(50, this.onKeyDown)
   }
 
   tabListener = () => {
@@ -80,7 +80,6 @@ export default class TimelineChartWrapper extends Component {
     } else if (newIndex > lastIndex) {
       newIndex = 0
       if (this.state.playingInterval) {
-        console.log(this.state.playingInterval)
         this.stopPlaying()
         return
       }

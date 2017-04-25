@@ -20,13 +20,14 @@ export default class SquareButtons extends Component {
   static propTypes = {
     zoomFactor: PropTypes.number.isRequired,
     onZoomChanged: PropTypes.func.isRequired,
+    onReset: PropTypes.func.isRequired,
   }
 
   zoomIn = () => this.props.onZoomChanged(this.props.zoomFactor * 2)
   onZoomOut = () => this.props.onZoomChanged(this.props.zoomFactor / 2)
   onZoomReset = e => {
     e.preventDefault()
-    this.props.onZoomChanged(1)
+    this.props.onReset()
   }
 
   shouldComponentUpdate({isToggled}) { return this.props.isToggled !== isToggled }

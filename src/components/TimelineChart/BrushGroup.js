@@ -20,14 +20,17 @@ export default class BrushGroup extends Component {
   getHeight = () => this.props.yScale.range()[0]
 
   _centralizeBrush = center => {
+    if (this.isDisabled) {
+      return
+    }
     let brusherWidth = this.brusher.select('.selection').attr('width') * 1
     const width = this.getWidth()
     if (brusherWidth === width) {
       brusherWidth /= 2
     }
-    const halfWidth = brusherWidth / 2
+    const halfWidth = brusherWidth/2
     center = Math.max(halfWidth, Math.min(center, width - halfWidth))
-    this.brusher.call(this.brush.move, [center - halfWidth, center + halfWidth])
+    this._onBrushed([center - halfWidth, center + halfWidth])
   }
 
   componentDidMount() {
@@ -58,19 +61,24 @@ export default class BrushGroup extends Component {
     if (!sourceEvent || sourceEvent.type === 'zoom') {
       return
     }
-    // pev brush necessary for centralizing the brush
-    let [min, max] = d3.event.selection || this.prevBrush || []
+    this._onBrushed(d3.event.selection || [])
+  }
+
+  _onBrushed([min, max]) {
+    if (!min && !max) {
+      return
+    }
+
+    const width = this.getWidth()
     if (min + max === width) {
       max = max / 2
     }
-    if (!min || !max) {
-      return
-    }
-    this.prevBrush = [min, max]
+    this.prevBrush = null
     const zoomPosition = d3.zoomIdentity.scale(width / (max - min)).translate(-min, 0)
 
     const {k, x} = zoomPosition
     if (this.zoom.x !== x || this.zoom.k !== k) {
+      this.setZoom({k, x})
       this.props.onBrushed({k, x})
     }
   }

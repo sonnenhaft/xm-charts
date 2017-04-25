@@ -1,5 +1,6 @@
 import React, {PropTypes, Component} from 'react'
 import * as d3 from 'd3'
+import {zoomTransform} from 'd3-zoom'
 
 const ScaleObjectFunction = PropTypes.func.isRequired
 export default class ZoomRect extends Component {
@@ -45,10 +46,10 @@ export default class ZoomRect extends Component {
 
   setZoom({zoomFactor, zoomPosition}) {
     const currentZoom = this.getCurrentZoom()
-    const {k, x} = currentZoom
+    const {k, x, y} = currentZoom
     if (k !== zoomFactor || x !== zoomPosition) {
       this.isDisabled = true
-      this.zoom.scaleTo(this.zoomRect, zoomFactor)
+      this.zoom.transform(this.zoomRect, new zoomTransform(zoomFactor, zoomPosition, y))
       this.isDisabled = false
     }
   }
