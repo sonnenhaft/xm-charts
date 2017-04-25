@@ -1,6 +1,17 @@
 @import "../../../Colors";
 
-.day-icon {
+.current-time {
+  width: 117px;
+  text-align: center;
+}
+
+.current-time-value {
+  font-family: geogrotesque, serif;
+  font-weight: normal;
+  font-size: 18px;
+}
+
+.current-time-legend {
   display: flex;
   align-content: space-between;
   justify-content: space-around;
@@ -9,16 +20,5 @@
   font-size: 10px;
   width: 82px;
   margin: auto;
-}
-
-.day-time {
-  font-family: geogrotesque, serif;
-  font-weight: normal;
-  font-size: 18px;
-}
-
-.day-time-wrapper {
-  width: 117px;
-  text-align: center;
 }
 

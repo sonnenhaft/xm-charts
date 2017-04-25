@@ -9,9 +9,9 @@ import nextStorySvg from './../../../assets/icons/next-story.svg'
 
 import circleButtonSvgIcon from '../../../assets/icons/circle-button.svg'
 import ShareButtons from '../../common/ShareButtons/ShareButtons'
-import styles from './ControlPanel.scss'
+import styles from './LeftBar.scss'
 import CircleIndicator from './CircleIndicator/CircleIndicator'
-import {Button as SquareButton} from '../RightBar/RightBar'
+import {Button as SquareButton} from '../RightBar'
 
 const Icon = ({children: __html}) => {
   return <span className={styles['icon']} dangerouslySetInnerHTML={{__html}} />
@@ -22,7 +22,7 @@ export class Button extends SquareButton {
 }
 
 const RequiredCallback = PropTypes.func.isRequired
-export default class ControlPanel extends Component {
+class LeftBar extends Component {
   static propTypes = {
     isToggled: PropTypes.bool.isRequired,
     isPlaying: PropTypes.bool.isRequired,
@@ -100,7 +100,7 @@ export default class ControlPanel extends Component {
       <div />
       <div className={styles['play-buttons-block']}>
         <Button onClick={onResetPosition}>{circleButtonSvgIcon}</Button>
-        <CurrentTime {...{currentTime, offset: this.props.events[0].date}} />
+        <CurrentTime {...{time: currentTime - this.props.events[0].date}} />
         <Button onClick={onPlay} title={isPlaying ? 'pause' : 'play'}>{playSvg}</Button>
         <div className={`${styles['left-buttons']} ${styles['show-zoom-menu']}`}>
           <Button className={styles['no-hover']} title="Current speed">
@@ -123,3 +123,5 @@ export default class ControlPanel extends Component {
     </div>
   }
 }
+
+export {LeftBar}

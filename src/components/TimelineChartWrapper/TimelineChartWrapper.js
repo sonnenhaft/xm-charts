@@ -3,8 +3,8 @@ import throttle from 'throttle-debounce/throttle'
 
 import styles from './TimelineChartWrapper.scss'
 import TimelineChart from '../TimelineChart/TimelineChart'
-import RightBar from './RightBar/RightBar'
-import ControlPanel from './ControlPanel/ControlPanel'
+import {RightBar} from './RightBar'
+import {LeftBar} from './LeftBar'
 import GlobalKeyDetector from './GlobalKeyDetector'
 
 import NetworkGrid from '../NetworkGrid'
@@ -196,7 +196,7 @@ export default class TimelineChartWrapper extends Component {
         <NetworkGrid {...{currentTime, chartData}}>Marketing</NetworkGrid>
       </div>
       <GlobalKeyDetector className={styles['timeline-chart-wrapper']} onKeyDown={onKeyDown}>
-        <ControlPanel {...params} />
+        <LeftBar {...params} />
         <TimelineChart {...params} />
         <RightBar {...{zoomFactor, onZoomChanged, isToggled, onToggledChanged}} />
       </GlobalKeyDetector>

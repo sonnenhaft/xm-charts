@@ -6,9 +6,7 @@ import styles from './RightBar.scss'
 import customArrowTop from './custom-arrow-top.svg'
 import {Button} from './RightBar.Button'
 
-export {Button}
-
-export default class RightBar extends Component {
+class RightBar extends Component {
   static propTypes = {
     zoomFactor: P.number.isRequired,
     onZoomChanged: P.func.isRequired,
@@ -68,3 +66,7 @@ export default class RightBar extends Component {
     </div>
   }
 }
+
+export {Button}
+export {RightBar}
+
