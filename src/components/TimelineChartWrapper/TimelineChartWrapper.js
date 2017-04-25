@@ -18,7 +18,7 @@ export default class TimelineChartWrapper extends Component {
     super(props)
     this.state = {
       isToggled: false,
-      zoomFactor: 2,
+      zoomFactor: 1,
       zoomPosition: 0,
       playingInterval: null,
       currentSpeed: 1,
@@ -173,9 +173,9 @@ export default class TimelineChartWrapper extends Component {
 
     return <div>
       <div style={{display: 'flex', justifyContent: 'space-between'}}>
-        {/*<NetworkGrid {...{currentTime, chartData}}>Marketing</NetworkGrid>*/}
-        {/*<NetworkGrid {...{currentTime, chartData}}>Testing</NetworkGrid>*/}
-        {/*<NetworkGrid {...{currentTime, chartData}} >Production</NetworkGrid>*/}
+        <NetworkGrid {...{currentTime, chartData}}>Marketing</NetworkGrid>
+        <NetworkGrid {...{currentTime, chartData}}>Testing</NetworkGrid>
+        <NetworkGrid {...{currentTime, chartData}} >Production</NetworkGrid>
       </div>
       <GlobalKeyDetector className={styles['timeline-chart-wrapper']} onKeyDown={onKeyDown}>
         <ControlPanel {...params} />

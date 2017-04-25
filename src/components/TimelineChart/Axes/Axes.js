@@ -13,6 +13,10 @@ export default class Axes extends Component {
     zoomFactor: PropTypes.number,
   }
 
+  static defaultProps = {
+    realHeight: 0,
+  }
+
   componentDidMount() {
     this.renderAxis()
   }
