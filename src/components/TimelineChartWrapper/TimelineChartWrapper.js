@@ -35,7 +35,9 @@ export default class TimelineChartWrapper extends Component {
     }
   }
 
-  componentDidMount() { document.addEventListener('visibilitychange', this.tabListener) }
+  componentDidMount() {
+    document.addEventListener('visibilitychange', this.tabListener)
+  }
 
   componentWillUnmount() {
     document.removeEventListener('visibilitychange', this.tabListener)
@@ -69,6 +71,25 @@ export default class TimelineChartWrapper extends Component {
     this.setState({currentTime, selectedEvent: events[number]})
   }
 
+  longJump = forward => {
+    let {selectedEvent} = this.state
+    if (!selectedEvent) {
+      const events = this.props.chartData.events
+      selectedEvent = events[events.length - 1]
+    }
+    const {chartData: {events}} = this.props
+    let nextEvent = events.filter(({firstInSubnet, lastInSubnet}) => {
+      return firstInSubnet || lastInSubnet
+    }).find(({date}) => {
+      return forward ? date > selectedEvent.date : date < selectedEvent.date
+    })
+    if (nextEvent) {
+      let prevIndex = events.indexOf(selectedEvent)
+      let nextIndex = events.indexOf(nextEvent)
+      this.jumpToOffset(nextIndex - prevIndex)
+    }
+  }
+
   jumpToOffset(eventIndexOffset) {
     const {chartData: {events}} = this.props
     let {selectedEvent} = this.state
@@ -91,8 +112,8 @@ export default class TimelineChartWrapper extends Component {
   onReset = () => this.setState({zoomFactor: 1, zoomPosition: 0})
   onNext = () => this.jumpToOffset(1)
   onPrev = () => this.jumpToOffset(-1)
-  onLongNext = () => this.jumpToOffset(1)
-  onLongPrev = () => this.jumpToOffset(-1)
+  onLongNext = () => this.longJump(true)
+  onLongPrev = () => this.longJump(false)
 
   moveOnDaysNumber(count) {
     this.setState({currentTime: this.state.currentTime + count * DAY})
@@ -174,8 +195,8 @@ export default class TimelineChartWrapper extends Component {
     return <div>
       <div style={{display: 'flex', justifyContent: 'space-between'}}>
         <NetworkGrid {...{currentTime, chartData}}>Marketing</NetworkGrid>
-        <NetworkGrid {...{currentTime, chartData}}>Testing</NetworkGrid>
-        <NetworkGrid {...{currentTime, chartData}} >Production</NetworkGrid>
+        {/*<NetworkGrid {...{currentTime, chartData}}>Testing</NetworkGrid>*/}
+        {/*<NetworkGrid {...{currentTime, chartData}} >Production</NetworkGrid>*/}
       </div>
       <GlobalKeyDetector className={styles['timeline-chart-wrapper']} onKeyDown={onKeyDown}>
         <ControlPanel {...params} />

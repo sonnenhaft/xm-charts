@@ -38,16 +38,18 @@ export default class SquareButtons extends Component {
 
     return <div className={styles['square-buttons-block']}>
       <div />
-      {!props.isToggled && <div className={styles['small-buttons']}>
+      <div className={`${styles['small-buttons']  } ${  props.isToggled ? styles['is-toggled'] : ''}`}>
         <div onContextMenu={this.onZoomReset} className={styles['text-shifted-to-top']}>
           <Button onClick={this.zoomIn}>+</Button>
           <Button onClick={this.onZoomOut}>-</Button>
         </div>
+        {!props.isToggled &&
         <div>
           <Button className={styles['active']}>{overviewSvgIcon}</Button>
           <Button>{triangleSvgIcon}</Button>
         </div>
-      </div>}
+        }
+      </div>
       <div className={toggleButtonClassName}>
         <Button onClick={props.onToggled}>{customArrowTop}</Button>
       </div>

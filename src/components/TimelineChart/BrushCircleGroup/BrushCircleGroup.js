@@ -2,6 +2,9 @@ import React, {PropTypes, Component} from 'react'
 import * as d3 from 'd3'
 import styles from './BrushCircleGroup.scss'
 
+const translate = (x, y = 0) => ({transform: `translate(${x}, ${y})`})
+const middleValue = (min, middle, max) => Math.min(Math.max(min, middle), max)
+
 const ScaleObjectFunction = PropTypes.func.isRequired
 export default class BrushCircleGroup extends Component {
   static propTypes = {
@@ -14,8 +17,6 @@ export default class BrushCircleGroup extends Component {
     isPlaying: PropTypes.bool.isRequired,
     currentTime: PropTypes.number.isRequired,
   }
-  static translate = (x, y = 0) => ({transform: `translate(${x}, ${y})`})
-  static middleValue = (min, middle, max) => Math.min(Math.max(min, middle), max)
 
   getWidth = () => this.props.xScale.range()[1]
   getHeight = () => this.props.yScale.range()[0]
@@ -27,26 +28,30 @@ export default class BrushCircleGroup extends Component {
 
   _onDrag = d3.drag().on('drag', () => {
     const props = this.props
-    const {middleValue} = BrushCircleGroup
     const currentDate = props.xScaleMini.invert(middleValue(0, d3.event.x, this.getWidth()))
-    props.onTimeChanged(currentDate.getTime())
+    const time = currentDate.getTime()
+    this.move(time)
+    props.onTimeChanged(time)
   })
+
+  move(time) {
+    const props = this.props
+    let td = x => x
+    if (props.isPlaying) {
+      td = x => x.transition().ease(d3.easeLinear).duration(400 / props.currentSpeed)
+    }
+    td(this.whiteLine).attrs(translate(props.xScale(time)))
+    td(this.drag).attrs(translate(props.xScaleMini(time)))
+  }
 
   componentDidUpdate() {
     const props = this.props
-    const {translate} = BrushCircleGroup
-    let td = x => x
-    if (props.isPlaying) {
-      td = x => x.transition().ease(d3.easeLinear).duration(400 / this.props.currentSpeed)
-    }
-    td(this.whiteLine).attrs(translate(props.xScale(props.currentTime)))
-    td(this.drag).attrs(translate(props.xScaleMini(props.currentTime)))
+    this.move(props.currentTime)
   }
 
 
   render() {
     const props = this.props
-    const {translate} = BrushCircleGroup
     const [width, height] = [this.getWidth(), this.getHeight()]
     let y = -(height + 50)
     let x = props.xScale(props.currentTime)
