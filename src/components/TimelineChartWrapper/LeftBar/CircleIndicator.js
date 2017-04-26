@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react'
 import {arc, select, interpolate, interpolateRound} from 'd3'
-import '../../../common/d3.shims'
+import '../../common/d3.shims'
 import './CircleIndicator.scss'
 import between from 'airbnb-prop-types/build/between'
 
@@ -44,7 +44,7 @@ export default class CircleIndicator extends Component {
 
   componentDidMount() {
     const endAngle = -(2 * Math.PI)
-    this.path.datum({endAngle}).attr('d', this.arc)
+    this.svg.select('.path').datum({endAngle}).attr('d', this.arc)
     setTimeout(() => this.componentDidUpdate())
   }
 
@@ -53,13 +53,12 @@ export default class CircleIndicator extends Component {
   }
 
   componentDidUpdate() {
-    this.g.attr('visibility', 'visible') // prevents bad view before app loaded
+    this.svg.select('.g').attr('visibility', 'visible') // prevents bad view before app loaded
     const percent = this.props.percent
-    const {path, circle} = this
     const percentNumbered = percent/100
 
-    td(path).attrTween('d', this.arcTween(-(1 - percentNumbered) * 2 * Math.PI))
-    td(circle).attr('opacity', percent > 80 ? 1 : 0)
+    td(  this.svg.select('.path')).attrTween('d', this.arcTween(-(1 - percentNumbered) * 2 * Math.PI))
+    td(  this.svg.select('.circle')).attr('opacity', percent > 80 ? 1 : 0)
 
     const textBlock = this.svg.select('.textBlock')
     td(textBlock).tween('text', function() {
@@ -93,7 +92,7 @@ export default class CircleIndicator extends Component {
         </defs>
 
         <g fill="none" strokeWidth="11" transform="translate(100,100)" visibility="hidden"
-           ref={g => this.g = d3.select(g)}>
+           className="g">
           <path d="M 0,-100 A 100,100 0 0,1 86.6,-50" stroke={`url(#redyel${id})`} />
           <path d="M 86.6,-50 A 100,100 0 0,1 86.6,50" stroke={`url(#yelgre${id})`} />
           <path d="M 86.6,50 A 100,100 0 0,1 0,100" stroke={`url(#grecya${id})`} />
@@ -101,8 +100,8 @@ export default class CircleIndicator extends Component {
           <path d="M -86.6,50 A 100,100 0 0,1 -86.6,-50" stroke={`url(#blumag${id})`} />
           <path d="M -86.6,-50 A 100,100 0 0,1 0,-100" stroke={`url(#magred${id})`} />
 
-          <circle ref={circle => this.circle = d3.select(circle)} stroke="red" {...{strokeWidth, r}} />
-          <path ref={path => this.path = d3.select(path)} fill="#1C1C1C" />
+          <circle className="circle" stroke="red" {...{strokeWidth, r}} />
+          <path className="path" fill="#1C1C1C" />
         </g>
       </svg>
       <div styleName="circle-text">

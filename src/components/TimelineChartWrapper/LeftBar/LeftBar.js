@@ -8,11 +8,12 @@ import downloadedSvg from '../../../assets/icons/asset-downloaded.svg'
 
 import './LeftBar.scss'
 
-import CurrentTime from './CurrentTime/CurrentTime'
-import CircleIndicator from './CircleIndicator/CircleIndicator'
+import CurrentTime from './CurrentTime'
+import CircleIndicator from './CircleIndicator'
 import ShareButtons from '../../common/ShareButtons/ShareButtons'
 
-const Icon = ({children: __html}) => <span dangerouslySetInnerHTML={{__html}}/>
+
+const Icon = ({children: __html}) => <span dangerouslySetInnerHTML={{__html}} />
 
 class LeftBar extends Component {
   static defaultProps = {events: []}
@@ -136,14 +137,14 @@ class LeftBar extends Component {
       <div />
       <div styleName="circle-stats-block">
         <div styleName="circle-block">
-          <CircleIndicator percent={currentEvent.networkSuperiority}/>
+          <CircleIndicator percent={currentEvent.networkSuperiority} />
         </div>
 
         <div styleName="stats-block">
           <ShareButtons data={currentEvent.compromisedAssets}
-                        type={props.isToggled ? 'vertical-black' : ''}/>
+                        type={props.isToggled ? 'vertical-black' : ''} />
           <div styleName="buttoned-item">
-            <span styleName="icon" dangerouslySetInnerHTML={{__html: downloadedSvg}}/>
+            <span styleName="icon" dangerouslySetInnerHTML={{__html: downloadedSvg}} />
             <span>
                 {currentEvent.compromisedDataGB}
               <small>GB</small>
