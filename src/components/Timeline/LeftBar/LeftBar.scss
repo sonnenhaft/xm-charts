@@ -1,0 +1,261 @@
+@import "../../../assets/Colors";
+
+.timeline-control-block.is-toggled {
+  height: 100px;
+  .play-action-button {
+    height: 50px;
+  }
+  .circle-stats-block {
+    .stats-block {
+      display: flex;
+      flex-direction: row;
+      width: 110px;
+      .buttoned-item {
+        min-width: initial;
+        flex-direction: column-reverse;
+        > span, > span:hover {
+          background: none;
+        }
+      }
+    }
+    .circle-block {
+      width: 50px;
+      height: 50px;
+      font-size: 15px;
+    }
+    .black-buttons {
+      margin-top: 3px;
+      .play-action-button {
+        height: 25px;
+      }
+    }
+    height: 50px;
+  }
+
+}
+
+.timeline-control-block {
+  .circle-block {
+    font-size: 20px;
+  }
+  border-right: 1px solid $buttonGrey;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .circle-stats-block {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: 150px;
+    &.stats-hidden {
+      display: none;
+    }
+    & > span {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+    }
+
+    .circle-block {
+      text-align: center;
+      width: 75px;
+      height: 75px;
+    }
+
+    .stats-block {
+      margin-right: 6px;
+      white-space: nowrap;
+
+      .buttoned-item {
+        display: flex;
+        margin: 5px 0;
+        min-width: 87px;
+        align-items: stretch;
+        border-radius: 4px;
+        overflow: hidden;
+
+        & > span {
+          align-items: center;
+          background: $buttonGrey;
+          cursor: pointer;
+          display: flex;
+          padding: 5px;
+          &:hover {
+            background: #4a4a4b;
+          }
+        }
+        > span:last-of-type {
+          width: 100%;
+        }
+
+        .icon {
+          margin-right: 2px;
+          padding: 0;
+          padding-left: 7px;
+          padding-right: 5px;
+          svg {
+            height: 17px;
+            width: 12px;
+          }
+
+          path {
+            stroke: $white;
+            fill: $white;
+          }
+        }
+      }
+    }
+  }
+}
+
+.day-icon {
+  display: flex;
+  align-content: space-between;
+  justify-content: space-around;
+  font-family: geogrotesque, serif;
+  font-weight: bold;
+  font-size: 10px;
+  width: 82px;
+  margin: auto;
+}
+
+.day-time {
+  font-family: geogrotesque, serif;
+  font-weight: normal;
+  font-size: 18px;
+}
+
+.day-time-wrapper {
+  width: 117px;
+  text-align: center;
+}
+
+.play-buttons-block {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: $buttonGrey;
+}
+
+.left-buttons .play-action-button {
+  border-left: none;
+}
+
+.right-buttons .play-action-button {
+  transform: scale(-1, 1);
+}
+
+.black-buttons .play-action-button {
+  background: none;
+  height: 75px;
+  &:nth-of-type(even) {
+    border-bottom: none;
+  }
+}
+
+.show-zoom-menu {
+  .zoom-menu {
+    display: none;
+  }
+  &:hover {
+    position: relative;
+    .zoom-menu {
+      display: flex;
+      flex-direction: row;
+      position: absolute;
+      top: 0;
+      left: 50px;
+      z-index: 1;
+    }
+  }
+}
+
+.play-action-button {
+  color: white;
+  width: 50px;
+  cursor: pointer;
+  display: flex;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  border: 1px solid #333;
+  border-top: none;
+  background: $buttonGrey;
+  &.blacked {
+    background: black;
+  }
+  &:hover:not(.no-hover), &.active {
+    background: $buttonBlue;
+    &:hover {
+      circle {
+        fill: $white;
+      }
+    }
+  }
+  &:focus {
+    outline: none;
+  }
+  svg {
+    width: 23px;
+  }
+
+  path {
+    stroke: $white;
+    stroke-width: 0;
+    fill: $white;
+  }
+}
+
+.small-circle-block {
+  width: 40px;
+  height: 50px;
+  margin-bottom: -10px;
+}
+
+.toggled-buttons-wrapper {
+  position: relative;
+  background: black;
+  height: 50px;
+  width: 50px;
+  text-align: center;
+  line-height: 47px;
+  border: none;
+  .middle-buttons {
+    display: flex;
+    border: 1px solid #333;
+    border-top: none;
+    .play-action-button {
+      border: none;
+    }
+  }
+  .play-action-button {
+    background: black;
+    border-width: 1px;
+    font-size: 7px;
+    border: none;
+    &:hover {
+      background: $buttonBlue;
+    }
+    width: 25px;
+    height: 25px;
+  }
+  .toggled-buttons {
+    position: absolute;
+    background: black;
+    display: flex;
+    transform: translate(-33.3%, -100%);
+    transition: opacity 0.5s ease-out;
+    opacity: 0;
+  }
+  &:hover {
+    .toggled-buttons {
+      opacity: 1;
+    }
+  }
+}
+
+.toggled-control {
+  width: 370px;
+}
