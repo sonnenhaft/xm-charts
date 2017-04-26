@@ -1,9 +1,9 @@
 import React, {Component, PropTypes as P} from 'react'
 
-import {Timeline} from './../Timeline'
-import {NetworkGrid} from './../NetworkGrid'
+import Timeline from './../Timeline'
+import NetworkGrid from './../NetworkGrid'
 
-class XmChart extends Component {
+export default class XmChart extends Component {
   static defaultProps = {events: [],    nodes: []}
   static propTypes = {events: P.array,    nodes: P.array}
 
@@ -31,6 +31,3 @@ class XmChart extends Component {
     </div>
   }
 }
-export {XmChart}
-
-

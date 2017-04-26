@@ -115,6 +115,3 @@ export default class NetworkGrid extends Component {
     </div>
   }
 }
-
-export {NetworkGrid}
-

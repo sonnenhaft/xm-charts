@@ -38,9 +38,6 @@ rules:
     - error
   react/prop-types:
     - off
-  object-curly-spacing:
-    - error
-    - never
   arrow-spacing:
     - error
   arrow-parens:

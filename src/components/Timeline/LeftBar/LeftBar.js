@@ -1,10 +1,10 @@
 import React, {Component, PropTypes as P} from 'react'
 
-import playSvg from '../../../assets/icons/play.svg'
-import nextFlagSvg from '../../../assets/icons/next-flag.svg'
-import nextStorySvg from '../../../assets/icons/next-story.svg'
-import circleButtonSvgIcon from '../../../assets/icons/circle-button.svg'
-import downloadedSvg from '../../../assets/icons/asset-downloaded.svg'
+import playSvg from 'assets/icons/play.svg'
+import nextFlagSvg from 'assets/icons/next-flag.svg'
+import nextStorySvg from 'assets/icons/next-story.svg'
+import circleButtonSvgIcon from 'assets/icons/circle-button.svg'
+import downloadedSvg from 'assets/icons/asset-downloaded.svg'
 
 import './LeftBar.scss'
 
@@ -15,7 +15,7 @@ import ShareButtons from '../common/ShareButtons/ShareButtons'
 
 const Icon = ({children: __html}) => <span dangerouslySetInnerHTML={{__html}} />
 
-class LeftBar extends Component {
+export default class LeftBar extends Component {
   static defaultProps = {events: []}
   static propTypes = {
     currentTime: P.number.isRequired,
@@ -226,5 +226,3 @@ class LeftBar extends Component {
     </div>
   }
 }
-
-export {LeftBar}

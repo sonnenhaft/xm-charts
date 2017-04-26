@@ -2,9 +2,8 @@ import React, {Component, PropTypes as P} from 'react'
 
 import './TimeLine.scss'
 import TimelineChart from './TimelineChart/TimelineChart'
-import {RightBar} from './RightBar'
-import {LeftBar} from './LeftBar'
-
+import RightBar from './RightBar'
+import LeftBar from './LeftBar'
 
 // chrome was crashing with higher value with higher value
 const MAX_ZOOM = Math.min(Math.pow(10, 5) * 5)
@@ -75,5 +74,3 @@ export default class Timeline extends Component {
     </div>
   }
 }
-
-export {Timeline}

@@ -1,9 +1,9 @@
 import React, {Component, PropTypes} from 'react'
 
 import styles from './ShareButtons.scss'
-import saveSvgIcon from '../../../../assets/icons/asset-data.svg'
-import deviceSvgIcon from '../../../../assets/icons/asset-device.svg'
-import networkSvgIcon from '../../../../assets/icons/asset-network.svg'
+import saveSvgIcon from 'assets//icons/asset-data.svg'
+import deviceSvgIcon from 'assets//icons/asset-device.svg'
+import networkSvgIcon from 'assets//icons/asset-network.svg'
 
 const Icon = ({children: __html}) => <span className={styles['icon']} dangerouslySetInnerHTML={{__html}} />
 

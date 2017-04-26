@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {XmChart} from './../components/XmChart'
+import XmChart from './../components/XmChart'
 import generateDemoData from './generateDemoData'
 import styles from './Demo.scss'
 
