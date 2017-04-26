@@ -1,8 +1,8 @@
-import React, {PropTypes, Component} from 'react'
+import React, { PropTypes, Component } from 'react'
 import * as d3 from 'd3'
 import styles from './BrushCircleGroup.scss'
 
-const translate = (x, y = 0) => ({transform: `translate(${x}, ${y})`})
+const translate = (x, y = 0) => ({ transform: `translate(${x}, ${y})` })
 const middleValue = (min, middle, max) => Math.min(Math.max(min, middle), max)
 
 const ScaleObjectFunction = PropTypes.func.isRequired
@@ -37,7 +37,7 @@ export default class BrushCircleGroup extends Component {
   move(time) {
     const props = this.props
     let td = x => x
-    if (props.isPlaying) {
+    if ( props.isPlaying ) {
       td = x => x.transition().ease(d3.easeLinear).duration(400 / props.currentSpeed)
     }
     td(this.whiteLine).attrs(translate(props.xScale(time)))
@@ -56,10 +56,10 @@ export default class BrushCircleGroup extends Component {
     let y = -(height + 50)
     let x = props.xScale(props.currentTime)
     const visibility = x < 0 || x > width ? 'hidden' : 'visible'
-    const whiteLineAttrs = {height: -(y + 13), y, visibility}
+    const whiteLineAttrs = { height: -(y + 13), y, visibility }
 
-    if (props.isToggled) {
-      Object.assign(whiteLineAttrs, {height: 15, y: y + 30})
+    if ( props.isToggled ) {
+      Object.assign(whiteLineAttrs, { height: 15, y: y + 30 })
     }
 
     return <g>

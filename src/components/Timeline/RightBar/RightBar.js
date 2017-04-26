@@ -1,12 +1,12 @@
 import React from 'react'
-import {onlyUpdateForKeys} from 'recompose'
+import { onlyUpdateForKeys } from 'recompose'
 
 import overviewSvgIcon from 'assets/icons/overview.svg'
 import triangleSvgIcon from 'assets/icons/asset-downloaded.svg'
 import customArrowTop from 'assets/icons/custom-arrow-top.svg'
 import './RightBar.scss'
 
-const Icon = ({children: __html}) => <span dangerouslySetInnerHTML={{__html}} />
+const Icon = ({ children: __html }) => <span dangerouslySetInnerHTML={{ __html }} />
 
 const RightBar = ({
                     onToggledChanged, isToggled,

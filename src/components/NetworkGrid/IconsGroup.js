@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 
 export const Desktop = () => <path d="M6.95783003,7.99180014 L23.04217,7.99180014
     C23.333668,7.99180014 23.5714286,8.22887271 23.5714286,8.52105874 L23.5707405,18.6066107
@@ -66,13 +66,13 @@ export const Snow = () => <path d="M12.8605616,16.7548215 L11.5166318,17.42723
      15.9819429,15.5413486 15.9819429,15 C15.9819429,14.4585054 15.5413486,14.0180571 15,14.0180571 Z" />
 
 export default class IconsGroup extends Component {
-  shouldComponentUpdate({k, fill}) {
+  shouldComponentUpdate({ k, fill }) {
     const props = this.props
     return props.k !== k || props.fill !== fill
   }
 
   render() {
-    const {k, fill} = this.props
+    const { k, fill } = this.props
     const isZoomTooSmall = k < 0.65
     const isNormalZoom = !isZoomTooSmall
     return <g transform={`scale(${k}, ${k})`} fill={fill}>

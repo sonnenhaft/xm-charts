@@ -2,7 +2,7 @@ import 'babel-polyfill'
 
 import React from 'react'
 import ReactDom from 'react-dom'
-import {AppContainer} from 'react-hot-loader'
+import { AppContainer } from 'react-hot-loader'
 import App from './App'
 
 
@@ -17,7 +17,7 @@ const render = Component => {
 
 render(App)
 
-if (module.hot) {
+if ( module.hot ) {
   module.hot.accept('./App', () => {
     render(App)
   })

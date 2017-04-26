@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import * as d3 from 'd3'
 import IconsGroup from './IconsGroup'
 
@@ -23,26 +23,26 @@ export default class NetworkGrid extends Component {
     this.componentWillReceiveProps(props)
   }
 
-  shouldComponentUpdate({currentTime, events, nodes}) {
+  shouldComponentUpdate({ currentTime, events, nodes }) {
     const props = this.props
     return props.currentTime !== currentTime
       || props.events !== events
       || props.nodes !== nodes
   }
 
-  componentWillReceiveProps({events, nodes, currentTime}) {
+  componentWillReceiveProps({ events, nodes, currentTime }) {
     const gridSize = Math.ceil(Math.sqrt(nodes.length))
-    this.nodeColors = nodes.reduce((map, {agentId}) => {
+    this.nodeColors = nodes.reduce((map, { agentId }) => {
       map[agentId] = 'white'
       return map
     }, {})
     events
-      .filter(({date}) => currentTime > date)
+      .filter(({ date }) => currentTime > date)
       .forEach(item => {
-        const {compromized, nodeId} = item
+        const { compromized, nodeId } = item
         const red = 'rgb(242, 30, 39)'
         const blue = 'rgb(70, 96, 223)'
-        if (this.nodeColors[nodeId] !== red) {
+        if ( this.nodeColors[nodeId] !== red ) {
           this.nodeColors[nodeId] = compromized ? red : blue
         }
       })
@@ -51,7 +51,7 @@ export default class NetworkGrid extends Component {
     let lines = [[]]
 
     nodes.forEach(item => {
-      if (count === Math.round(gridSize * 1.5)) {
+      if ( count === Math.round(gridSize * 1.5) ) {
         lines.push([])
         count = 0
       }
@@ -92,25 +92,25 @@ export default class NetworkGrid extends Component {
     }
 
     return <div>
-      <div style={{fontWeight: 'bold', textTransform: 'uppercase', fontFamily: 'sans-serif', padding: '0 5px'}}>
+      <div style={{ fontWeight: 'bold', textTransform: 'uppercase', fontFamily: 'sans-serif', padding: '0 5px' }}>
         {this.props.children}
       </div>
-      <svg {...{width, height}} ref={this.setSvg}>
+      <svg {...{ width, height }} ref={this.setSvg}>
         {this.lines.map((data, xCoord) => {
           return <g key={xCoord}>
-            {data.map(({agentId}, yCoord) => {
+            {data.map(({ agentId }, yCoord) => {
               const fill = this.nodeColors[agentId]
               const isWhite = fill === 'white'
               return <g key={`${xCoord} ${yCoord}`}
                         transform={`translate(${xScale(xCoord)},${yScale(yCoord)})`}>
-                <rect {...{...attrs, fill}} />
-                <IconsGroup {...{k, fill: isWhite ? 'black' : 'white'}} />
+                <rect {...{ ...attrs, fill }} />
+                <IconsGroup {...{ k, fill: isWhite ? 'black' : 'white' }} />
               </g>
             })}
           </g>
         })}
-        <rect className={'zoomRect'} fill="black" opacity={0} cursor="move"
-              {...{width, height}} ref={this.setZoomRect} />
+        <rect className="zoomRect" fill="black" opacity={0} cursor="move"
+              {...{ width, height }} ref={this.setZoomRect} />
       </svg>
     </div>
   }

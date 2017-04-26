@@ -1,10 +1,10 @@
 import React from 'react'
-import {utcFormat as formatTime} from 'd3'
-import {onlyUpdateForKeys} from 'recompose'
+import { utcFormat as formatTime } from 'd3'
+import { onlyUpdateForKeys } from 'recompose'
 
 import './CurrentTime.scss'
 
-const CurrentTime = ({time}) => {
+const CurrentTime = ({ time }) => {
   const days = Math.floor(time / 1000 / 60 / 60 / 24)
 
   return <div styleName="current-time">
@@ -20,5 +20,4 @@ const CurrentTime = ({time}) => {
   </div>
 }
 
-const OptimizedCurrentTimer = onlyUpdateForKeys(['time'])(CurrentTime)
-export default OptimizedCurrentTimer
+export default onlyUpdateForKeys(['time'])(CurrentTime)

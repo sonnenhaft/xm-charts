@@ -19,10 +19,10 @@ const methods = {
     const mouseEvents = ['mouseover', 'mouseout', 'click']
     Object.keys(object).forEach(key => {
       const value = object[key]
-      if (key === 'text') {
+      if ( key === 'text' ) {
         this.text(value)
-      } else if (mouseEvents.includes(key)) {
-        if (!noEvents) {
+      } else if ( mouseEvents.includes(key) ) {
+        if ( !noEvents ) {
           this.on(key, value)
         }
       } else {
@@ -34,7 +34,7 @@ const methods = {
   bindData: function(tagAndClass, data, opt_attrs, duration) {
     const [tag, className] = tagAndClass.split('.')
     const selector = className ? `${tag}.${className}` : tag
-    const enteredSelection = this.selectAll(selector).data(data, ({id}) => id)
+    const enteredSelection = this.selectAll(selector).data(data, ({ id }) => id)
     enteredSelection.exit().remove()
     const mergedSelection = enteredSelection.enter().append(tag)
       .attr('class', className)

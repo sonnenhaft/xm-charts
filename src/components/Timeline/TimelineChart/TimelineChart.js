@@ -1,8 +1,8 @@
 import * as d3 from 'd3'
-import '../common/d3.shims'
+import './d3.shims'
 import styles from './TimelineChart.scss'
 import React, {PropTypes, Component} from 'react'
-import TooltipContentBlock from '../common/TooltipContent/TooltipContent'
+import TooltipContentBlock from './TooltipContent'
 import {composeCircles, renderCircles, renderPath} from './TimelineChartUtils'
 import WindowDependable from './WindowDependable'
 import BrushCircleGroup from './BrushCircleGroup/BrushCircleGroup'
@@ -217,12 +217,12 @@ export default class TimelineChart extends Component {
     const marginTop = getMarginTop(this.props)
     const marginLeft = getMarginLeft(this.props)
     const {x: zoomPosition, k: zoomFactor} = this.zoom
-    const backgroundClass = isToggled ? styles['toggled-background'] : styles['black-background']
     const visibility = isToggled ? 'hidden' : 'visible'
     return <WindowDependable refCb={setD3Node} style={{position: 'relative', width: '100%'}}
                              {...{onDimensionsChanged}}>
-      <svg className={`${(isToggled ? styles['toggled'] : '')} ${styles['timeline-chart']}`}>
-        <rect width="100%" height="100%" className={backgroundClass} />
+      <svg styleName={`${(isToggled ? 'toggled' : '')} timeline-chart`}>
+        <rect width="100%" height="100%"
+              styleName={isToggled ? 'toggled-background' : 'black-background'} />
         <g className="brushLineGroup">
           <rect height="50" fill="#252525" width="100%" visibility={visibility} />
           <rect className="brushLine" pointerEvents="none" height="5" rx="3" ry="3" fill="#141414"
@@ -230,7 +230,7 @@ export default class TimelineChart extends Component {
         </g>
         <g fill="white" className="mainGroup">
           <Axes {...{xScale, yScale, xScaleMini, isToggled, realHeight, zoomFactor}}>
-            <path className={`linePath ${styles['line-path']}`} />
+            <path className="linePath" styleName="line-path" />
           </Axes>
           <ZoomRect {...{xScale, yScale, isToggled, zoomFactor, marginTop, onZoomFactorChangedAndMoved, zoomPosition}} />
           <g className="smalRects" transform="translate(0, -5)" />
@@ -241,10 +241,10 @@ export default class TimelineChart extends Component {
 
       </svg>
 
-      <div className={`tooltipBlock ${styles['tooltip']}`}>
-        <div className={styles['triangle-wrapper']}>
-          <div className={styles['triangle']}>
-            <div className={`${styles['triangle']  } ${  styles['triangle-content']}`} />
+      <div className="tooltipBlock" styleName="tooltip">
+        <div styleName="triangle-wrapper">
+          <div styleName="triangle">
+            <div styleName="triangle triangle-content" />
           </div>
         </div>
         <TooltipContentBlock tooltipData={tooltipData} />

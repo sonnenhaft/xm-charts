@@ -1,8 +1,8 @@
-import '../common/d3.shims'
-import React, {PropTypes, Component} from 'react'
+import './d3.shims'
+import React, { PropTypes, Component } from 'react'
 
 export default class WindowDependable extends Component {
-  static propTypes = {onDimensionsChanged: PropTypes.func.isRequired}
+  static propTypes = { onDimensionsChanged: PropTypes.func.isRequired }
 
   componentDidMount() {
     window.addEventListener('resize', this.onDimensionsChanged)
@@ -17,7 +17,7 @@ export default class WindowDependable extends Component {
   }
 
   render() {
-    const {children, style, refCb: ref} = this.props
-    return <div {...{style, ref}}>{children}</div>
+    const { children, style, refCb: ref } = this.props
+    return <div {...{ style, ref }}>{children}</div>
   }
 }

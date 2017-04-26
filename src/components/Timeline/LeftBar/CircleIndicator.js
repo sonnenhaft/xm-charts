@@ -1,11 +1,11 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 
-import {arc, select, interpolate, interpolateRound} from 'd3'
-import '../common/d3.shims'
+import { arc, select, interpolate, interpolateRound } from 'd3'
+import '../TimelineChart/d3.shims'
 import './CircleIndicator.scss'
 import between from 'airbnb-prop-types/build/between'
 
-const d3 = {arc, select, interpolate, interpolateRound}
+const d3 = { arc, select, interpolate, interpolateRound }
 
 let counter = 0
 
@@ -14,16 +14,16 @@ const WIDTH = 14
 
 const td = selection => selection.transition().duration(150)
 
-const Gradient = ({startColor, stopColor, x1, x2, y1, y2, id}) => {
-  return <linearGradient gradientUnits="objectBoundingBox" {...{x1, x2, y1, y2, id}}>
+const Gradient = ({ startColor, stopColor, x1, x2, y1, y2, id }) => {
+  return <linearGradient gradientUnits="objectBoundingBox" {...{ x1, x2, y1, y2, id }}>
     <stop offset="0%" stopColor={startColor} />
     <stop offset="100%" stopColor={stopColor} />
   </linearGradient>
 }
 
 export default class CircleIndicator extends Component {
-  static defaultProps = {percent: 0}
-  static propTypes = {percent: between({gte: 0, lte: 100})}
+  static defaultProps = { percent: 0 }
+  static propTypes = { percent: between({ gte: 0, lte: 100 }) }
 
   constructor(props) {
     super(props)
@@ -45,11 +45,11 @@ export default class CircleIndicator extends Component {
 
   componentDidMount() {
     const endAngle = -(2 * Math.PI)
-    this.root.select('.path').datum({endAngle}).attr('d', this.arc)
+    this.root.select('.path').datum({ endAngle }).attr('d', this.arc)
     setTimeout(() => this.componentDidUpdate())
   }
 
-  shouldComponentUpdate({percent}) {
+  shouldComponentUpdate({ percent }) {
     return this.props.percent !== percent
   }
 
@@ -66,7 +66,7 @@ export default class CircleIndicator extends Component {
       const i = d3.interpolate(this.textContent - 0, percent * 10)
       return t => {
         let percentTime = i(t) / 10
-        if (percentTime > 10) {
+        if ( percentTime > 10 ) {
           percentTime = Math.round(percentTime)
         } else {
           percentTime = percentTime.toFixed(1)
@@ -101,7 +101,7 @@ export default class CircleIndicator extends Component {
           <path d="M -86.6,50 A 100,100 0 0,1 -86.6,-50" stroke={`url(#blumag${id})`} />
           <path d="M -86.6,-50 A 100,100 0 0,1 0,-100" stroke={`url(#magred${id})`} />
 
-          <circle className="circle" stroke="red" {...{strokeWidth, r}} />
+          <circle className="circle" stroke="red" {...{ strokeWidth, r }} />
           <path className="path" fill="#1C1C1C" />
         </g>
       </svg>

@@ -1,4 +1,4 @@
-import React, {Component, PropTypes as P} from 'react'
+import React, { Component, PropTypes as P } from 'react'
 
 import './TimeLine.scss'
 import TimelineChart from './TimelineChart/TimelineChart'
@@ -29,18 +29,18 @@ export default class Timeline extends Component {
     nodes: P.array,
   }
 
-  onCurrentSpeedChanged = (currentSpeed, cb) => this.setState({currentSpeed}, cb)
-  onToggledChanged = isToggled => this.setState({isToggled})
-  onPlayingIntervalChanged = (playingInterval, cb) => this.setState({playingInterval}, cb) // necessary to disable animation
+  onCurrentSpeedChanged = (currentSpeed, cb) => this.setState({ currentSpeed }, cb)
+  onToggledChanged = isToggled => this.setState({ isToggled })
+  onPlayingIntervalChanged = (playingInterval, cb) => this.setState({ playingInterval }, cb) // necessary to disable animation
 
-  onZoomFactorChangedAndMoved = ({zoomFactor, zoomPosition}) => {
+  onZoomFactorChangedAndMoved = ({ zoomFactor, zoomPosition }) => {
     const safeZoom = Math.min(MAX_ZOOM, Math.max(zoomFactor, MIN_ZOOM))
-    this.setState({zoomPosition, zoomFactor: safeZoom})
+    this.setState({ zoomPosition, zoomFactor: safeZoom })
   }
 
   onZoomFactorChanged = zoomFactor => {
     const zoomPosition = zoomFactor === 1 ? 0 : this.state.zoomPosition
-    this.onZoomFactorChangedAndMoved({zoomFactor, zoomPosition})
+    this.onZoomFactorChangedAndMoved({ zoomFactor, zoomPosition })
   }
 
   render() {
@@ -50,8 +50,8 @@ export default class Timeline extends Component {
       onCurrentSpeedChanged, onPlayingIntervalChanged,
     } = this
 
-    const {currentTime, onCurrentTimeChanged, events, nodes} = this.props
-    const {isToggled, zoomFactor, zoomPosition, currentSpeed, playingInterval} = this.state
+    const { currentTime, onCurrentTimeChanged, events, nodes } = this.props
+    const { isToggled, zoomFactor, zoomPosition, currentSpeed, playingInterval } = this.state
 
     return <div>
       <div styleName="timeline-chart-wrapper">

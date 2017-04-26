@@ -1,6 +1,6 @@
-import React, {PropTypes, Component} from 'react'
+import React, { PropTypes, Component } from 'react'
 import * as d3 from 'd3'
-import {zoomTransform} from 'd3-zoom'
+import { zoomTransform } from 'd3-zoom'
 
 const ScaleObjectFunction = PropTypes.func.isRequired
 export default class ZoomRect extends Component {
@@ -9,9 +9,10 @@ export default class ZoomRect extends Component {
     yScale: ScaleObjectFunction,
     isToggled: PropTypes.bool,
     marginTop: PropTypes.number.isRequired,
-    onZoomFactorChangedAndMoved: PropTypes.func.isRequired,
+
     zoomFactor: PropTypes.number,
     zoomPosition: PropTypes.number,
+    onZoomFactorChangedAndMoved: PropTypes.func.isRequired,
   }
 
   getWidth = () => this.props.xScale.range()[1]
@@ -22,16 +23,16 @@ export default class ZoomRect extends Component {
   }
 
   onZoomFactorChangedAndMoved = () => {
-    if (this.isDisabled) {
+    if ( this.isDisabled ) {
       return
     }
-    const {sourceEvent} = d3.event
-    if (!sourceEvent || sourceEvent.type === 'brush') {
+    const { sourceEvent } = d3.event
+    if ( !sourceEvent || sourceEvent.type === 'brush' ) {
       return
     }
     const currentZoom = this.getCurrentZoom()
-    const {k, x} = currentZoom
-    if (k !== this.props.zoomFactor || x !== this.props.zoomPosition) {
+    const { k, x } = currentZoom
+    if ( k !== this.props.zoomFactor || x !== this.props.zoomPosition ) {
       this.props.onZoomFactorChangedAndMoved(currentZoom)
     }
   }
@@ -44,10 +45,10 @@ export default class ZoomRect extends Component {
     this.setZoom(props)
   }
 
-  setZoom({zoomFactor, zoomPosition}) {
+  setZoom({ zoomFactor, zoomPosition }) {
     const currentZoom = this.getCurrentZoom()
-    const {k, x, y} = currentZoom
-    if (k !== zoomFactor || x !== zoomPosition) {
+    const { k, x, y } = currentZoom
+    if ( k !== zoomFactor || x !== zoomPosition ) {
       this.isDisabled = true
       this.zoom.transform(this.zoomRect, new zoomTransform(zoomFactor, zoomPosition, y))
       this.isDisabled = false
@@ -66,7 +67,7 @@ export default class ZoomRect extends Component {
     this.zoom.translateExtent([[0, 0], [width, height]]).extent([[0, 0], [width, height]])
 
     const marginTop = this.props.marginTop
-    const attrs = {width, height: height + marginTop, y: -marginTop}
+    const attrs = { width, height: height + marginTop, y: -marginTop }
 
     return <rect ref={this.refZoomRect}  {...attrs}
                  cursor="move" pointerEvents="all" fill="none" />

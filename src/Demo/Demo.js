@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import XmChart from './../components/XmChart'
 import generateDemoData from './generateDemoData'
 import styles from './Demo.scss'
@@ -12,8 +12,8 @@ class Demo extends Component {
   }
 
   addSomeValues = () => {
-    this.demoDataArray = this.demoDataArray.map(data => ({...data}))
-    this.demoDataArray.forEach(({events}) => {
+    this.demoDataArray = this.demoDataArray.map(data => ({ ...data }))
+    this.demoDataArray.forEach(({ events }) => {
       const lastevent = events[events.length - 1]
       const event = Object.assign({}, lastevent)
       event.date += (lastevent.date - events[0].date) / events.length
@@ -37,8 +37,8 @@ class Demo extends Component {
   }
 
   render() {
-    const {interval, demoDataArray} = this
-    const {addSomeValues} = this
+    const { interval, demoDataArray } = this
+    const { addSomeValues } = this
     const generatorFn = interval ? this.stopInterval : this.startInterval
 
     return <div>
@@ -51,9 +51,9 @@ class Demo extends Component {
         </button>
       </div>
 
-      {demoDataArray.map(({events, nodes}, index) =>
+      {demoDataArray.map(({ events, nodes }, index) =>
         <div key={index}>
-          <XmChart {...{events, nodes}} />
+          <XmChart {...{ events, nodes }} />
           <br />
         </div>)}
 

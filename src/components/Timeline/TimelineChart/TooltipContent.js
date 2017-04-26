@@ -1,7 +1,7 @@
-import {timeFormat} from 'd3'
-import React, {Component, PropTypes} from 'react'
+import { timeFormat } from 'd3'
+import React, { Component, PropTypes } from 'react'
 import styles from './TooltipContent.scss'
-import ShareButtons from '../ShareButtons/ShareButtons'
+import ShareButtons from '../common/ShareButtons'
 
 const string = React.PropTypes.string
 export default class TooltipContent extends Component {
@@ -14,10 +14,10 @@ export default class TooltipContent extends Component {
       value: PropTypes.number,
     }),
   }
-  static defaultProps = {tooltipData: {}};
+  static defaultProps = { tooltipData: {} };
 
   render() {
-    const {type, source, method, date} = this.props.tooltipData
+    const { type, source, method, date } = this.props.tooltipData
     return <div className={styles['tooltip-content']}>
       {type && <div>
         <div>

@@ -1,4 +1,4 @@
-import React, {Component, PropTypes as P} from 'react'
+import React, { Component, PropTypes as P } from 'react'
 
 import playSvg from 'assets/icons/play.svg'
 import nextFlagSvg from 'assets/icons/next-flag.svg'
@@ -10,13 +10,12 @@ import './LeftBar.scss'
 
 import CurrentTime from './CurrentTime'
 import CircleIndicator from './CircleIndicator'
-import ShareButtons from '../common/ShareButtons/ShareButtons'
+import ShareButtons from '../common/ShareButtons'
 
-
-const Icon = ({children: __html}) => <span dangerouslySetInnerHTML={{__html}} />
+const Icon = ({ children: __html }) => <span dangerouslySetInnerHTML={{ __html }} />
 
 export default class LeftBar extends Component {
-  static defaultProps = {events: []}
+  static defaultProps = { events: [] }
   static propTypes = {
     currentTime: P.number.isRequired,
     onCurrentTimeChanged: P.func.isRequired,
@@ -45,7 +44,7 @@ export default class LeftBar extends Component {
 
   tabListener = () => {
     const isTabHidden = window.document.hidden
-    if (!isTabHidden) {
+    if ( !isTabHidden ) {
       this.onPaused()
     }
   }
@@ -56,10 +55,10 @@ export default class LeftBar extends Component {
   }
 
   onPlayStarted = () => {
-    if (this.props.playingInterval) { return }
+    if ( this.props.playingInterval ) { return }
     const playingInterval = setInterval(() => {
       const props = this.props
-      if (props.currentTime === props.events[props.events.length - 1].date) {
+      if ( props.currentTime === props.events[props.events.length - 1].date ) {
         this.onPaused()
       } else {
         this.onNext()
@@ -69,7 +68,7 @@ export default class LeftBar extends Component {
   }
 
   onPaused = cb => {
-    if (!this.props.playingInterval) { return }
+    if ( !this.props.playingInterval ) { return }
     clearTimeout(this.props.playingInterval)
     this.props.onPlayingIntervalChanged(null, cb)
   }
@@ -77,7 +76,7 @@ export default class LeftBar extends Component {
   onSpeedUpdated = currentSpeed => this.props.onCurrentSpeedChanged(currentSpeed)
 
   onPlay = () => {
-    if (this.props.playingInterval) {
+    if ( this.props.playingInterval ) {
       this.onPaused()
     } else {
       this.onPlayStarted()
@@ -86,25 +85,25 @@ export default class LeftBar extends Component {
 
   onRecordButtonClicked = () => console.log('TODO: add on record like button pressed action')
 
-  setCurrentEvent({events, currentTime}){
+  setCurrentEvent({ events, currentTime }) {
     const lastDate = events[events.length - 1].date
     let selectedEventIndex
-    if (currentTime >= lastDate) {
+    if ( currentTime >= lastDate ) {
       selectedEventIndex = events.length - 1
-    } else if (currentTime < events[0].date) {
+    } else if ( currentTime < events[0].date ) {
       selectedEventIndex = 0
     } else {
-      selectedEventIndex = Math.max(events.findIndex(({date}) => date > currentTime), 1) - 1
+      selectedEventIndex = Math.max(events.findIndex(({ date }) => date > currentTime), 1) - 1
     }
-    this.setState({selectedEventIndex})
+    this.setState({ selectedEventIndex })
   }
 
-  componentWillReceiveProps({currentTime, playingInterval, currentSpeed, events}) {
-    if (this.props.currentTime !== currentTime) {
-      this.setCurrentEvent({events, currentTime})
+  componentWillReceiveProps({ currentTime, playingInterval, currentSpeed, events }) {
+    if ( this.props.currentTime !== currentTime ) {
+      this.setCurrentEvent({ events, currentTime })
     }
 
-    if (this.props.currentSpeed !== currentSpeed && playingInterval) {
+    if ( this.props.currentSpeed !== currentSpeed && playingInterval ) {
       this.onPaused(this.onPlayStarted)
     }
   }
@@ -113,10 +112,10 @@ export default class LeftBar extends Component {
   onPrev = () => this.jumpToOffset(-1)
 
   jumpToOffset(eventIndexOffset) {
-    const {state, props} = this
+    const { state, props } = this
     let newIndex = state.selectedEventIndex + eventIndexOffset
     const lastIndex = props.events.length - 1
-    if (newIndex > lastIndex || newIndex < 0) {
+    if ( newIndex > lastIndex || newIndex < 0 ) {
       return
     }
     this.props.onCurrentTimeChanged(props.events[newIndex].date)
@@ -130,17 +129,17 @@ export default class LeftBar extends Component {
     // only "special" events in here
     // find instead of  findIndex because we loose order
     const nextEvent = props.events
-      .filter(({firstInSubnet, lastInSubnet}) => firstInSubnet || lastInSubnet)
-      .find(({date}) => forward ? date > props.currentTime : date < props.currentTime)
+      .filter(({ firstInSubnet, lastInSubnet }) => firstInSubnet || lastInSubnet)
+      .find(({ date }) => forward ? date > props.currentTime : date < props.currentTime)
 
-    if (nextEvent) {
+    if ( nextEvent ) {
       const idx = props.events.indexOf(nextEvent)
       this.jumpToOffset(idx - this.state.selectedEventIndex)
     }
   }
 
   render() {
-    const {state, props} = this
+    const { state, props } = this
     const currentEvent = props.events[state.selectedEventIndex]
     const time = props.currentTime - props.events[0].date
 
@@ -155,7 +154,7 @@ export default class LeftBar extends Component {
           <ShareButtons data={currentEvent.compromisedAssets}
                         type={props.isToggled ? 'vertical-black' : ''} />
           <div styleName="buttoned-item">
-            <span styleName="icon" dangerouslySetInnerHTML={{__html: downloadedSvg}} />
+            <span styleName="icon" dangerouslySetInnerHTML={{ __html: downloadedSvg }} />
             <span>
                 {currentEvent.compromisedDataGB}
               <small>GB</small>
@@ -194,7 +193,7 @@ export default class LeftBar extends Component {
         <button onClick={this.onRecordButtonClicked} styleName="play-action-button">
           <Icon>{circleButtonSvgIcon}</Icon>
         </button>
-        <CurrentTime {...{time}} />
+        <CurrentTime {...{ time }} />
 
         <button onClick={this.onPlay}
                 styleName="play-action-button"

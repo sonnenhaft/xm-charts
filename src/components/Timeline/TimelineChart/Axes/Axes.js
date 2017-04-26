@@ -1,4 +1,4 @@
-import React, {PropTypes, Component} from 'react'
+import React, { PropTypes, Component } from 'react'
 import * as d3 from 'd3'
 import styles from './Axes.scss'
 
@@ -32,10 +32,10 @@ export default class Axes extends Component {
 
     const translateY = (y1, y2) => {
       const y = realHeight - (props.isToggled ? y1 : y2)
-      return {transform: `translate(0, ${y})`}
+      return { transform: `translate(0, ${y})` }
     }
 
-    this.xAxis.attrs({...translateY(125, 85), visibility}).call(d3.axisBottom(props.xScale))
+    this.xAxis.attrs({ ...translateY(125, 85), visibility }).call(d3.axisBottom(props.xScale))
     this.miniMap.attrs(translateY(realHeight - 3, 57)).call(d3.axisBottom(props.xScaleMini))
 
     const width = props.xScale.range()[1]
