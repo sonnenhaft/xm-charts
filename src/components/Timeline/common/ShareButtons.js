@@ -5,7 +5,7 @@ import saveSvgIcon from 'assets//icons/asset-data.svg'
 import deviceSvgIcon from 'assets//icons/asset-device.svg'
 import networkSvgIcon from 'assets//icons/asset-network.svg'
 
-const Icon = ({ children: __html }) => <span styleName="icon" dangerouslySetInnerHTML={{ __html }}/>
+const Icon = ({ children: __html }) => <span styleName="icon" dangerouslySetInnerHTML={{ __html }} />
 
 const ShareButtons = ({ type = '', data: { data, device, network } = {}, children }) => {
   return <div styleName={`share-buttons ${type}`}>
@@ -30,7 +30,7 @@ const ShareButtons = ({ type = '', data: { data, device, network } = {}, childre
 ShareButtons.propTypes = {
   type: PropTypes.oneOf(['vertical', 'dark-icons', '', 'vertical-black']),
   data: PropTypes.object,
-  children: PropTypes.any
+  children: PropTypes.any,
 }
 
 export default ShareButtons

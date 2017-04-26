@@ -10,9 +10,8 @@ export default class XmChart extends Component {
   constructor(props) {
     super(props)
     let currentTime = 0
-    const events = props.events
-    if ( events ) {
-      currentTime = events[events.length - 1].date
+    if ( props.events.length ) {
+      currentTime = props.events[props.events.length - 1].date
     }
     this.state = { currentTime }
   }
@@ -24,9 +23,7 @@ export default class XmChart extends Component {
     const { currentTime } = this.state
     const { onCurrentTimeChanged } = this
     return <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <NetworkGrid {...{ events, nodes, currentTime }}>Marketing</NetworkGrid>
-      </div>
+      <NetworkGrid {...{ events, nodes, currentTime }}>Marketing</NetworkGrid>
       <Timeline {...{ events, nodes, currentTime, onCurrentTimeChanged }} />
     </div>
   }

@@ -1,17 +1,18 @@
-import React, {PropTypes, Component} from 'react'
+import React, { PropTypes, Component } from 'react'
 import * as d3 from 'd3'
-import {zoomTransform} from 'd3-zoom'
+import { zoomTransform } from 'd3-zoom'
 
 const ScaleObjectFunction = PropTypes.func.isRequired
 export default class BrushGroup extends Component {
-  static defaultProps = {isToggled: false, width: 0}
+  static defaultProps = { isToggled: false, width: 0 }
   static propTypes = {
     xScale: ScaleObjectFunction,
     yScale: ScaleObjectFunction,
-    onBrushed: PropTypes.func.isRequired,
+    isToggled: PropTypes.bool,
+
     zoomFactor: PropTypes.number.isRequired,
     zoomPosition: PropTypes.number.isRequired,
-    isToggled: PropTypes.bool,
+    onZoomFactorChangedAndMoved: PropTypes.func.isRequired,
   }
 
   setBrushGroup = brushGroup => this.brushGroup = d3.select(brushGroup)
@@ -20,15 +21,15 @@ export default class BrushGroup extends Component {
   getHeight = () => this.props.yScale.range()[0]
 
   _centralizeBrush = center => {
-    if (this.isDisabled) {
+    if ( this.isDisabled ) {
       return
     }
     let brusherWidth = this.brusher.select('.selection').attr('width') * 1
     const width = this.getWidth()
-    if (brusherWidth === width) {
+    if ( brusherWidth === width ) {
       brusherWidth /= 2
     }
-    const halfWidth = brusherWidth/2
+    const halfWidth = brusherWidth / 2
     center = Math.max(halfWidth, Math.min(center, width - halfWidth))
     this._onBrushed([center - halfWidth, center + halfWidth])
   }
@@ -48,46 +49,45 @@ export default class BrushGroup extends Component {
       .on('mousedown touchstart', clickedInsideTheBrush)
   }
 
-  setZoom({zoomFactor: k, zoomPosition: x}) {
-    Object.assign(this.zoom, {k, x})
+  setZoom({ zoomFactor: k, zoomPosition: x }) {
+    Object.assign(this.zoom, { k, x })
   }
 
   onBrushed = () => {
-    if (this.isDisabled) {
+    if ( this.isDisabled ) {
       return
     }
-    const {sourceEvent} = d3.event
-    if (!sourceEvent || sourceEvent.type === 'zoom') {
+    const { sourceEvent } = d3.event
+    if ( !sourceEvent || sourceEvent.type === 'zoom' ) {
       return
     }
     this._onBrushed(d3.event.selection || [])
   }
 
   _onBrushed([min, max]) {
-    if (!min && !max) {
+    if ( !min && !max ) {
       return
     }
 
     const width = this.getWidth()
-    if (min + max === width) {
+    if ( min + max === width ) {
       max = max / 2
     }
     this.prevBrush = null
     const zoomPosition = d3.zoomIdentity.scale(width / (max - min)).translate(-min, 0)
 
-    const {k, x} = zoomPosition
-    if (this.zoom.x !== x || this.zoom.k !== k) {
-      this.setZoom({k, x})
-      this.props.onBrushed({k, x})
+    const { k, x } = zoomPosition
+    if ( this.zoom.x !== x || this.zoom.k !== k ) {
+      this.setZoom({ k, x })
+      this.props.onZoomFactorChangedAndMoved({
+        zoomFactor: k,
+        zoomPosition: x,
+      })
     }
   }
 
-  // componentWillReceiveProps(props) {
-  //   const {zoomPosition: x, zoomFactor: k} = props
-  // }
-
   componentDidUpdate() {
-    const {isToggled, xScale} = this.props
+    const { isToggled, xScale } = this.props
     const zoom = this.zoom
     const [width, height] = [this.getWidth(), this.getHeight()]
     this.brush.extent([[0, 0], [width, Math.max(100, height)]])

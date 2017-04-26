@@ -1,5 +1,5 @@
 import * as d3 from 'd3'
-import './d3.shims'
+import '../../../common/d3.shims'
 import styles from './TimelineChart.scss'
 
 export const composeCircles = (data, width, groupWidth) => {
