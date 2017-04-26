@@ -31,10 +31,10 @@ const RightBar = ({
       </div>
       { !isToggled &&
       <div>
-        <button onClick={() => console.log('TODO: add overview action')} styleName={`${styleName} active`}>
+        <button onClick={() => console.warn('TODO: add overview action')} styleName={`${styleName} active`}>
           <Icon>{ overviewSvgIcon }</Icon>
         </button>
-        <button onClick={() => console.log('TODO: add triangle action')} styleName="square-button">
+        <button onClick={() => console.warn('TODO: add triangle action')} styleName="square-button">
           <Icon>{ triangleSvgIcon }</Icon>
         </button>
       </div>
@@ -48,6 +48,6 @@ const RightBar = ({
   </div>
 }
 
-const OptomizedRightBar = onlyUpdateForKeys(['zoomFactor', 'isToggled'])(RightBar)
-export {OptomizedRightBar as RightBar}
+const OptimizedRightBar = onlyUpdateForKeys(['zoomFactor', 'isToggled'])(RightBar)
+export {OptimizedRightBar as RightBar}
 

@@ -40,6 +40,7 @@ class LeftBar extends Component {
 
   componentDidMount() {
     window.document.addEventListener('visibilitychange', this.tabListener)
+    this.setCurrentEvent(this.props)
   }
 
   tabListener = () => {
@@ -85,12 +86,22 @@ class LeftBar extends Component {
 
   onRecordButtonClicked = () => console.log('TODO: add on record like button pressed action')
 
-  componentWillReceiveProps({currentTime, playingInterval, currentSpeed}) {
+  setCurrentEvent({events, currentTime}){
+    const lastDate = events[events.length - 1].date
+    let selectedEventIndex
+    if (currentTime >= lastDate) {
+      selectedEventIndex = events.length - 1
+    } else if (currentTime < events[0].date) {
+      selectedEventIndex = 0
+    } else {
+      selectedEventIndex = Math.max(events.findIndex(({date}) => date > currentTime), 1) - 1
+    }
+    this.setState({selectedEventIndex})
+  }
+
+  componentWillReceiveProps({currentTime, playingInterval, currentSpeed, events}) {
     if (this.props.currentTime !== currentTime) {
-      const events = this.props.events
-      const safeTime = Math.min(currentTime, events[events.length - 1].date)
-      const selectedEventIndex = Math.max(events.findIndex(({date}) => date > safeTime), 1) - 1
-      this.setState({selectedEventIndex})
+      this.setCurrentEvent({events, currentTime})
     }
 
     if (this.props.currentSpeed !== currentSpeed && playingInterval) {
