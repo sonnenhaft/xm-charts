@@ -11,7 +11,7 @@ export default class BrushCircleGroup extends Component {
     xScale: ScaleObjectFunction,
     yScale: ScaleObjectFunction,
     xScaleMini: ScaleObjectFunction,
-    onTimeChanged: PropTypes.func.isRequired,
+    onCurrentTimeChanged: PropTypes.func.isRequired,
     currentSpeed: PropTypes.number.isRequired,
     isToggled: PropTypes.bool.isRequired,
     isPlaying: PropTypes.bool.isRequired,
@@ -31,7 +31,7 @@ export default class BrushCircleGroup extends Component {
     const currentDate = props.xScaleMini.invert(middleValue(0, d3.event.x, this.getWidth()))
     const time = currentDate.getTime()
     this.move(time)
-    props.onTimeChanged(time)
+    props.onCurrentTimeChanged(time)
   })
 
   move(time) {

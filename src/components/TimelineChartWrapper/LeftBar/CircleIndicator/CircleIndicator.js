@@ -13,14 +13,6 @@ const WIDTH = 14
 
 const td = selection => selection.transition().duration(150)
 
-const arcTween = newAngle => d => {
-  const interpolate = d3.interpolate(d.endAngle, newAngle)
-  return function(t) {
-    d.endAngle = interpolate(t)
-    return arc(d)
-  }
-}
-
 class Gradient extends Component {
   shouldComponentUpdate() {return false}
 
@@ -40,22 +32,23 @@ export default class CircleIndicator extends Component {
   constructor(props) {
     super(props)
     this.id = uniqueIdsCounter++
-    this.arc = d3.arc()
-      .innerRadius(RADIUS - WIDTH)
-      .outerRadius(RADIUS)
-      .startAngle(0)
-      .cornerRadius(-10)
+
   }
 
   setSvg = svg => this.svg = d3.select(svg)
 
   componentDidMount() {
     const endAngle = -(2 * Math.PI)
-    this.path.datum({endAngle}).attr('d', this.arc)
+    this.svg.select('.path').datum({endAngle}).attr('d', d3.arc()
+      .innerRadius(RADIUS - WIDTH)
+      .outerRadius(RADIUS)
+      .startAngle(0)
+      .cornerRadius(-10))
     setTimeout(() => this.paintArc())
   }
 
   shouldComponentUpdate({percent}) {
+    console.log(percent)
     return this.props.percent !== percent
   }
 
@@ -69,7 +62,15 @@ export default class CircleIndicator extends Component {
     const percentNumbered = percent / 100
 
     const textBlock = this.svg.select('.textBlock')
-    td(this.svg.select('.path')).attrTween('d', arcTween((percentNumbered - 1) * 2 * Math.PI))
+    const arcTween = newAngle => d => {
+      const interpolate = d3.interpolate(d.endAngle, newAngle)
+      return function(t) {
+        d.endAngle = interpolate(t)
+        return arc(d)
+      }
+    }
+    const angle = (percentNumbered - 1) * 2 * Math.PI
+    // td(this.svg.select('.path')).attrTween('d', arcTween(angle))
     td(this.svg.select('.circle')).attr('opacity', percent > 80 ? 1 : 0)
     td(textBlock).tween('text', function() {
       const i = d3.interpolate(this.textContent - 0, percent * 10)

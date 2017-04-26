@@ -11,14 +11,14 @@ export default class NetworkGrid extends Component {
     d3.select(zoomRect).call(this.zoom)
   }
 
-  onZoomChanged = () => {
+  onZoomFactorChanged = () => {
     this.currentZoom = d3.zoomTransform(this.zoomRect)
     this.forceUpdate()
   }
 
   constructor(props) {
     super(props)
-    this.zoom = d3.zoom().scaleExtent([0.001, 1000]).on('zoom', this.onZoomChanged)
+    this.zoom = d3.zoom().scaleExtent([0.001, 1000]).on('zoom', this.onZoomFactorChanged)
     this.currentZoom = d3.zoomIdentity
     this.componentWillReceiveProps(props)
   }

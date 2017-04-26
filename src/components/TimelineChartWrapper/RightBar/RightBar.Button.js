@@ -7,7 +7,7 @@ export class Button extends Component {
 
   static propTypes = {
     className: P.string,
-    onClick: P.func.isRequired,
+    onClick: P.func,
   }
 
   static defaultProps = {className: ''}

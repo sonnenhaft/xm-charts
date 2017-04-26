@@ -9,7 +9,7 @@ import {Button} from './RightBar.Button'
 class RightBar extends Component {
   static propTypes = {
     zoomFactor: P.number.isRequired,
-    onZoomChanged: P.func.isRequired,
+    onZoomFactorChanged: P.func.isRequired,
 
     isToggled: P.bool.isRequired,
     onToggledChanged: P.func.isRequired,
@@ -25,12 +25,12 @@ class RightBar extends Component {
   onZoomOut = () => this.multiplyZoom(0.5)
 
   multiplyZoom(zoomMultiplier) {
-    this.props.onZoomChanged(this.props.zoomFactor * zoomMultiplier)
+    this.props.onZoomFactorChanged(this.props.zoomFactor * zoomMultiplier)
   }
 
   onZoomReset = e => {
     e.preventDefault()
-    this.props.onZoomChanged(1)
+    this.props.onZoomFactorChanged(1)
   }
 
   getToggledButtonClassName() {

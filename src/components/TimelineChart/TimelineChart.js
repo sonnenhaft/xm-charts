@@ -27,7 +27,7 @@ export default class TimelineChart extends Component {
     zoomPosition: PropTypes.number.isRequired,
     isToggled: PropTypes.bool.isRequired,
     chartData: PropTypes.object.isRequired,
-    onZoomed: PropTypes.func.isRequired,
+    onZoomFactorChangedAndMoved: PropTypes.func.isRequired,
   }
 
   componentWillMount() {
@@ -170,7 +170,7 @@ export default class TimelineChart extends Component {
     }
 
     let dataClick = ({date}) => {
-      this.props.onTimeChanged(date)
+      this.props.onCurrentTimeChanged(date)
       d3.event.stopPropagation()
     }
     const attrs = {x, y, ...lineAttrs, opacity, click: dataClick}
@@ -203,14 +203,14 @@ export default class TimelineChart extends Component {
     }, 0)
   }
 
-  onBrushed = zoomPosition => this.onZoomed(zoomPosition)
-  onZoomed = ({k, x}) => this.props.onZoomed({zoomFactor: k, zoomPosition: x})
+  onBrushed = zoomPosition => this.onZoomFactorChangedAndMoved(zoomPosition)
+  onZoomFactorChangedAndMoved = ({k, x}) => this.props.onZoomFactorChangedAndMoved({zoomFactor: k, zoomPosition: x})
 
   render() {
     const {
-      props: {isToggled, onTimeChanged, currentTime, isPlaying, currentSpeed}, state: {tooltipData = {}},
+      props: {isToggled, onCurrentTimeChanged, currentTime, isPlaying, currentSpeed}, state: {tooltipData = {}},
       onDimensionsChanged, setD3Node, xScale, yScale, xScaleMini, realHeight,
-      onBrushed, onZoomed,
+      onBrushed, onZoomFactorChangedAndMoved,
     } = this
     const marginTop = getMarginTop(this.props)
     const marginLeft = getMarginLeft(this.props)
@@ -230,11 +230,11 @@ export default class TimelineChart extends Component {
           <Axes {...{xScale, yScale, xScaleMini, isToggled, realHeight, zoomFactor}}>
             <path className={`linePath ${styles['line-path']}`} />
           </Axes>
-          <ZoomRect {...{xScale, yScale, isToggled, zoomFactor, marginTop, onZoomed, zoomPosition}} />
+          <ZoomRect {...{xScale, yScale, isToggled, zoomFactor, marginTop, onZoomFactorChangedAndMoved, zoomPosition}} />
           <g className="smalRects" transform="translate(0, -5)" />
         </g>
         <BrushGroup {...{xScale, yScale, zoomFactor, zoomPosition, isToggled, onBrushed, marginLeft}}>
-          <BrushCircleGroup {...{xScale, yScale, xScaleMini, isToggled, onTimeChanged, currentTime, currentSpeed, isPlaying}} />
+          <BrushCircleGroup {...{xScale, yScale, xScaleMini, isToggled, onCurrentTimeChanged, currentTime, currentSpeed, isPlaying}} />
         </BrushGroup>
 
       </svg>
