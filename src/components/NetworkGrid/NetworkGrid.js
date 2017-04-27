@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 import * as d3 from 'd3'
-import IconsGroup from './IconsGroup'
+import 'common/d3.shims'
+import { Snow, Desktop, Diskette } from './IconsGroup'
 
 export default class NetworkGrid extends Component {
-  setSvg = svg => this.svg = svg;
-  setZoomRect = zoomRect => {
-    this.zoomRect = zoomRect
-    d3.select(zoomRect).call(this.zoom)
+  setSvg = svg => {
+    this.svg = d3.select(svg);
+    this.svg.select('.zoomRect').call(this.zoom)
   }
 
   onZoomFactorChanged = () => {
-    this.currentZoom = d3.zoomTransform(this.zoomRect)
+    this.currentZoom = d3.zoomTransform(this.svg.select('.zoomRect').node())
     this.forceUpdate()
   }
 
@@ -58,57 +58,103 @@ export default class NetworkGrid extends Component {
     })
 
     this.lines = lines
+    const data = this.data = []
+    lines.forEach((items, x) => {
+      items.forEach((item, y) => {
+        data.push({ x, y, item })
+      })
+    })
+    this.data = data
   }
 
-  render() {
+  componentDidUpdate() {
+    this.setClickAction();
+  }
+
+  componentDidMount() {
+    this.setClickAction()
+  }
+
+  setClickAction() {
     let size = this.lines.length
 
     let width = 800
     let height = 400
+
+    this.svg.attrs({ width, height })
+    this.svg.select('.zoomRect').attrs({ width, height })
 
     const w = 40
     const h = w * 2
 
     this.zoom.translateExtent([[0, 0], [width, height]]).extent([[0, 0], [width, height]])
     const xScale = d3.scaleLinear().domain([0, size]).range([0, this.gridSize * w * 2])
-    const yScale = d3.scaleLinear().domain([0, size]).range([0, h * size])
+    const yScale = d3.scaleLinear().domain([0, size]).range([0, h * size * 0.9])
     xScale.domain(this.currentZoom.rescaleX(xScale).domain())
     yScale.domain(this.currentZoom.rescaleY(yScale).domain())
     const k = this.currentZoom.k
 
-    const FILLED_SPACE = 0.8
+    const FILLED_SPACE = 0.7
     const MAX_STROKE = 2
     const strokeWidth = Math.min(MAX_STROKE, Math.max(MAX_STROKE * k, MAX_STROKE / 4))
     const rx = strokeWidth * 3
-    const attrs = {
+    const simpleRectAttrs = {
       rx,
       ry: rx,
       strokeWidth,
       stroke: 'black',
       height: h * FILLED_SPACE * k,
       width: w * FILLED_SPACE * k,
+      cursor: 'pointer',
+      click: ({ item }) => console.log(item),
+      fill: ({ item: { agentId } }) => this.nodeColors[agentId]
     }
 
+    const enteredSelection = this.svg.select('.grid').selectAll('.singleRectGroup')
+      .data(this.data, ({ item: { _id: id } }) => id)
+    enteredSelection.exit().remove()
+
+    const mergedSelection = enteredSelection.enter().append('g')
+      .attr('class', 'singleRectGroup').html(({ value }) => `<g>
+        <rect class="simpleRect"></rect>
+        <g class="iconsGroup">
+          <g>
+            <g transform="translate(4,3)  scale(0.7, 0.7)">
+              ${Desktop} <circle cx="15" cy="13" r="8"></circle>
+              <g transform="translate(0, 23)">
+                ${Diskette}<circle cx="15" cy="13" r="8"></circle>
+              </g>
+              <g transform="translate(0, 45)">
+                ${Snow}<circle cx="15" cy="13" r="8"></circle>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>`)
+
+    const allElements = mergedSelection.merge(enteredSelection)
+    allElements.attrs({ transform: ({ x, y }) => `translate(${xScale(x)},${yScale(y)})` })
+    allElements.select('.simpleRect').attrs(simpleRectAttrs);
+
+    const iconsGroup = allElements.select('.iconsGroup');
+    iconsGroup.attrs({
+      transform: `scale(${k}, ${k})`,
+      fill: ({ item: { agentId } }) => this.nodeColors[agentId] === 'white' ? 'black' : 'white',
+    });
+    const isTooSmall = k < 1.4
+    const selectAll = iconsGroup.selectAll('path');
+    selectAll.attrs({ visibility: !isTooSmall ? 'visible' : 'hidden' })
+    iconsGroup.selectAll('circle').attrs({ visibility: isTooSmall ? 'visible' : 'hidden' })
+  }
+
+  render() {
     return <div>
       <div style={{ fontWeight: 'bold', textTransform: 'uppercase', fontFamily: 'sans-serif', padding: '0 5px' }}>
         {this.props.children}
       </div>
-      <svg {...{ width, height }} ref={this.setSvg}>
-        {this.lines.map((data, xCoord) => {
-          return <g key={xCoord}>
-            {data.map(({ agentId }, yCoord) => {
-              const fill = this.nodeColors[agentId]
-              const isWhite = fill === 'white'
-              return <g key={`${xCoord} ${yCoord}`}
-                        transform={`translate(${xScale(xCoord)},${yScale(yCoord)})`}>
-                <rect {...{ ...attrs, fill }} />
-                <IconsGroup {...{ k, fill: isWhite ? 'black' : 'white' }} />
-              </g>
-            })}
-          </g>
-        })}
-        <rect className="zoomRect" fill="black" opacity={0} cursor="move"
-              {...{ width, height }} ref={this.setZoomRect} />
+      <svg ref={this.setSvg}>
+        <rect className="zoomRect" fill="black" opacity={0} cursor="move"/>
+        <g className="grid"/>
       </svg>
     </div>
   }
