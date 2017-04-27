@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import * as d3 from 'd3'
 import 'common/d3.shims'
 import { Snow, Desktop, Diskette } from './IconsGroup'
+import './NetworkGrid.scss'
 
 export default class NetworkGrid extends Component {
   setSvg = svg => {
@@ -101,14 +102,17 @@ export default class NetworkGrid extends Component {
     const FILLED_SPACE = 0.7
     const MAX_STROKE = 2
     const strokeWidth = Math.min(MAX_STROKE, Math.max(MAX_STROKE * k, MAX_STROKE / 4))
-    const rx = strokeWidth * 3
+    const offset = strokeWidth * 3 * 1.1
+    const rx = offset
+    const hh = h * FILLED_SPACE * k
+    const ww = w * FILLED_SPACE * k
     const simpleRectAttrs = {
       rx,
       ry: rx,
       strokeWidth,
       stroke: 'black',
-      height: h * FILLED_SPACE * k,
-      width: w * FILLED_SPACE * k,
+      height: hh,
+      width: ww,
     }
 
     const enteredSelection = this.svg.select('.grid').selectAll('.singleRectGroup')
@@ -117,8 +121,7 @@ export default class NetworkGrid extends Component {
 
     const mergedSelection = enteredSelection.enter().append('g')
       .attr('class', 'singleRectGroup').html(() => `<g>
-        <rect class="wrapperRect" transform="scale(1.2,1.09) translate(-2.3, -2.4)"
-        visibility="hidden"></rect>
+        <rect class="wrapperRect"></rect>
         <rect class="simpleRect"></rect>
         <g class="iconsGroup">
           <g>
@@ -146,7 +149,11 @@ export default class NetworkGrid extends Component {
     allElements.select('.simpleRect').attrs(simpleRectAttrs)
     allElements.select('.wrapperRect').attrs({
       ...simpleRectAttrs,
-      visibility: ({ index }) => index === this.state.selectedNodeIndex ? 'visible' : 'hidden',
+      fill: 'white',
+      width: ww + offset,
+      height: hh + offset,
+      transform: `translate(${-offset/2}, ${-offset/2})`,
+      stroke: ({index}) => index === this.state.selectedNodeIndex ? 'black' : 'none',
     })
 
     const iconsGroup = allElements.select('.iconsGroup')
@@ -154,17 +161,28 @@ export default class NetworkGrid extends Component {
       transform: `scale(${k}, ${k})`,
       fill: ({ item: { agentId } }) => this.nodeColors[agentId] === 'white' ? 'black' : 'white',
     })
-    iconsGroup.selectAll('path').attrs({ visibility: k >= 1.4 ? 'visible' : 'hidden' })
-    iconsGroup.selectAll('circle').attrs({ visibility: k < 1.4 ? 'visible' : 'hidden' })
+    iconsGroup.selectAll('path').attrs({ visibility: k >= 1.2 ? 'visible' : 'hidden' })
+    iconsGroup.selectAll('circle').attrs({ visibility: k < 1.2 ? 'visible' : 'hidden' })
   }
 
   render() {
     return <div>
+      <div styleName="grid-tooltip" className="gridTooltip">
+        <div styleName="device-name">Device Name</div>
+        <div>
+          <svg width="100" height="50">
+            <g stroke="black">
+              <line x1="0" y1="50" x2="70" y2="0" strokeWidth="1" />
+              <line x1="70" y1="0" x2="100" y2="0" strokeWidth="2.5" />
+            </g>
+          </svg>
+        </div>
+      </div>
       <div style={{ fontWeight: 'bold', textTransform: 'uppercase', fontFamily: 'sans-serif', padding: '0 5px' }}>
         {this.props.children}
       </div>
       <svg ref={this.setSvg}>
-        <rect className="zoomRect" fill="black" opacity={0} cursor="move" />
+        <rect className="zoomRect" fill="#e5e5e5" cursor="move" />
         <g className="grid" />
       </svg>
     </div>
