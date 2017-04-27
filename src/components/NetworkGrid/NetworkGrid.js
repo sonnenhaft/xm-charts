@@ -5,7 +5,7 @@ import { Snow, Desktop, Diskette } from './IconsGroup'
 
 export default class NetworkGrid extends Component {
   setSvg = svg => {
-    this.svg = d3.select(svg);
+    this.svg = d3.select(svg)
     this.svg.select('.zoomRect').call(this.zoom)
   }
 
@@ -19,13 +19,17 @@ export default class NetworkGrid extends Component {
     this.zoom = d3.zoom().scaleExtent([0.001, 1000]).on('zoom', this.onZoomFactorChanged)
     this.currentZoom = d3.zoomIdentity
     this.componentWillReceiveProps(props)
+    this.state = {
+      selectedNodeIndex: null,
+    }
   }
 
-  shouldComponentUpdate({ currentTime, events, nodes }) {
-    const props = this.props
+  shouldComponentUpdate({ currentTime, events, nodes }, { selectedNodeIndex }) {
+    const { props, state } = this
     return props.currentTime !== currentTime
       || props.events !== events
       || props.nodes !== nodes
+      || state.selectedNodeIndex !== selectedNodeIndex
   }
 
   componentWillReceiveProps({ events, nodes, currentTime }) {
@@ -61,14 +65,14 @@ export default class NetworkGrid extends Component {
     const data = this.data = []
     lines.forEach((items, x) => {
       items.forEach((item, y) => {
-        data.push({ x, y, item })
+        data.push({ x, y, item, index: nodes.indexOf(item) })
       })
     })
     this.data = data
   }
 
   componentDidUpdate() {
-    this.setClickAction();
+    this.setClickAction()
   }
 
   componentDidMount() {
@@ -105,9 +109,6 @@ export default class NetworkGrid extends Component {
       stroke: 'black',
       height: h * FILLED_SPACE * k,
       width: w * FILLED_SPACE * k,
-      cursor: 'pointer',
-      click: ({ item }) => console.log(item),
-      fill: ({ item: { agentId } }) => this.nodeColors[agentId]
     }
 
     const enteredSelection = this.svg.select('.grid').selectAll('.singleRectGroup')
@@ -115,12 +116,14 @@ export default class NetworkGrid extends Component {
     enteredSelection.exit().remove()
 
     const mergedSelection = enteredSelection.enter().append('g')
-      .attr('class', 'singleRectGroup').html(({ value }) => `<g>
+      .attr('class', 'singleRectGroup').html(() => `<g>
+        <rect class="wrapperRect" transform="scale(1.2,1.09) translate(-2.3, -2.4)"
+        visibility="hidden"></rect>
         <rect class="simpleRect"></rect>
         <g class="iconsGroup">
           <g>
             <g transform="translate(4,3)  scale(0.7, 0.7)">
-              ${Desktop} <circle cx="15" cy="13" r="8"></circle>
+              ${Desktop}<circle cx="15" cy="13" r="8"></circle>
               <g transform="translate(0, 23)">
                 ${Diskette}<circle cx="15" cy="13" r="8"></circle>
               </g>
@@ -133,18 +136,26 @@ export default class NetworkGrid extends Component {
       </g>`)
 
     const allElements = mergedSelection.merge(enteredSelection)
-    allElements.attrs({ transform: ({ x, y }) => `translate(${xScale(x)},${yScale(y)})` })
-    allElements.select('.simpleRect').attrs(simpleRectAttrs);
+    allElements.attrs({
+      transform: ({ x, y }) => `translate(${xScale(x)},${yScale(y)})`,
+      cursor: 'pointer',
+      click: ({ index }) => this.setState({ selectedNodeIndex: index }),
+      fill: ({ item: { agentId } }) => this.nodeColors[agentId],
+    })
 
-    const iconsGroup = allElements.select('.iconsGroup');
+    allElements.select('.simpleRect').attrs(simpleRectAttrs)
+    allElements.select('.wrapperRect').attrs({
+      ...simpleRectAttrs,
+      visibility: ({ index }) => index === this.state.selectedNodeIndex ? 'visible' : 'hidden',
+    })
+
+    const iconsGroup = allElements.select('.iconsGroup')
     iconsGroup.attrs({
       transform: `scale(${k}, ${k})`,
       fill: ({ item: { agentId } }) => this.nodeColors[agentId] === 'white' ? 'black' : 'white',
-    });
-    const isTooSmall = k < 1.4
-    const selectAll = iconsGroup.selectAll('path');
-    selectAll.attrs({ visibility: !isTooSmall ? 'visible' : 'hidden' })
-    iconsGroup.selectAll('circle').attrs({ visibility: isTooSmall ? 'visible' : 'hidden' })
+    })
+    iconsGroup.selectAll('path').attrs({ visibility: k >= 1.4 ? 'visible' : 'hidden' })
+    iconsGroup.selectAll('circle').attrs({ visibility: k < 1.4 ? 'visible' : 'hidden' })
   }
 
   render() {
@@ -153,8 +164,8 @@ export default class NetworkGrid extends Component {
         {this.props.children}
       </div>
       <svg ref={this.setSvg}>
-        <rect className="zoomRect" fill="black" opacity={0} cursor="move"/>
-        <g className="grid"/>
+        <rect className="zoomRect" fill="black" opacity={0} cursor="move" />
+        <g className="grid" />
       </svg>
     </div>
   }
