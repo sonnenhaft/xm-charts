@@ -5,8 +5,9 @@ import { Snow, Desktop, Diskette } from './IconsGroup'
 import './NetworkGrid.scss'
 
 export default class NetworkGrid extends Component {
-  setSvg = svg => {
-    this.svg = d3.select(svg)
+  refRootBlock = rootBlock => {
+    this.rootBlock = d3.select(rootBlock)
+    this.svg = this.rootBlock.select('.svg')
     this.svg.select('.zoomRect').call(this.zoom)
   }
 
@@ -73,14 +74,14 @@ export default class NetworkGrid extends Component {
   }
 
   componentDidUpdate() {
-    this.setClickAction()
+    this.renderChart()
   }
 
   componentDidMount() {
-    this.setClickAction()
+    this.renderChart()
   }
 
-  setClickAction() {
+  renderChart() {
     let size = this.lines.length
 
     let width = 800
@@ -142,7 +143,13 @@ export default class NetworkGrid extends Component {
     allElements.attrs({
       transform: ({ x, y }) => `translate(${xScale(x)},${yScale(y)})`,
       cursor: 'pointer',
-      click: ({ index }) => this.setState({ selectedNodeIndex: index }),
+      click: ({ index }) => {
+        const {clientX: left, clientY: top} = d3.event
+
+        const rect = this.rootBlock.select('.gridTooltip')
+        rect.style('top', top - 50).style('left', left).style('display', 'block')
+        this.setState({ selectedNodeIndex: index })
+      },
       fill: ({ item: { agentId } }) => this.nodeColors[agentId],
     })
 
@@ -152,8 +159,8 @@ export default class NetworkGrid extends Component {
       fill: 'white',
       width: ww + offset,
       height: hh + offset,
-      transform: `translate(${-offset/2}, ${-offset/2})`,
-      stroke: ({index}) => index === this.state.selectedNodeIndex ? 'black' : 'none',
+      transform: `translate(${-offset / 2}, ${-offset / 2})`,
+      stroke: ({ index }) => index === this.state.selectedNodeIndex ? 'black' : 'none',
     })
 
     const iconsGroup = allElements.select('.iconsGroup')
@@ -166,9 +173,12 @@ export default class NetworkGrid extends Component {
   }
 
   render() {
-    return <div>
+    const selectedItem = this.props.nodes[this.state.selectedNodeIndex]
+    const { name } = selectedItem || {}
+
+    return <div ref={this.refRootBlock}>
       <div styleName="grid-tooltip" className="gridTooltip">
-        <div styleName="device-name">Device Name</div>
+        <div styleName="device-name">{name}</div>
         <div>
           <svg width="100" height="50">
             <g stroke="black">
@@ -181,9 +191,11 @@ export default class NetworkGrid extends Component {
       <div style={{ fontWeight: 'bold', textTransform: 'uppercase', fontFamily: 'sans-serif', padding: '0 5px' }}>
         {this.props.children}
       </div>
-      <svg ref={this.setSvg}>
+      <svg className="svg">
         <rect className="zoomRect" fill="#e5e5e5" cursor="move" />
-        <g className="grid" />
+        <g transform="translate(10, 10)">
+          <g className="grid" />
+        </g>
       </svg>
     </div>
   }

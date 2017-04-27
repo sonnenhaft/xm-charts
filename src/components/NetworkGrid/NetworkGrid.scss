@@ -1,8 +1,12 @@
 .grid-tooltip {
-
+  position: fixed;
+  pointer-events: none;
+  display: none;
 }
 
 .device-name {
+  pointer-events: all;
+  background: white;
   border: solid black 1.5px;
   border-radius: 4px;
   padding: 4px;
