@@ -3,6 +3,7 @@ import * as d3 from 'd3'
 import 'common/d3.shims'
 import { Snow, Desktop, Diskette } from './IconsGroup'
 import './NetworkGrid.scss'
+import { zoomTransform } from 'd3-zoom'
 
 export default class NetworkGrid extends Component {
   refRootBlock = rootBlock => {
@@ -20,6 +21,7 @@ export default class NetworkGrid extends Component {
     super(props)
     this.zoom = d3.zoom().scaleExtent([0.001, 1000]).on('zoom', this.onZoomFactorChanged)
     this.currentZoom = d3.zoomIdentity
+    this.heightZoom = new zoomTransform(1, 0, 0)
     this.componentWillReceiveProps(props)
     this.state = {
       selectedNodeIndex: null,
@@ -98,8 +100,13 @@ export default class NetworkGrid extends Component {
     const yScale = d3.scaleLinear().domain([0, size]).range([0, h * size * 0.9])
     xScale.domain(this.currentZoom.rescaleX(xScale).domain())
     yScale.domain(this.currentZoom.rescaleY(yScale).domain())
-    const k = this.currentZoom.k
 
+    const kk = height / (h * this.gridSize) * 2
+    this.heightZoom.k = kk
+    xScale.domain(this.heightZoom.rescaleX(xScale).domain())
+    yScale.domain(this.heightZoom.rescaleY(yScale).domain())
+
+    const k = this.currentZoom.k * kk
     const FILLED_SPACE = 0.7
     const MAX_STROKE = 2
     const strokeWidth = Math.min(MAX_STROKE, Math.max(MAX_STROKE * k, MAX_STROKE / 4))
@@ -144,7 +151,7 @@ export default class NetworkGrid extends Component {
       transform: ({ x, y }) => `translate(${xScale(x)},${yScale(y)})`,
       cursor: 'pointer',
       click: ({ index }) => {
-        const {clientX: left, clientY: top} = d3.event
+        const { clientX: left, clientY: top } = d3.event
 
         const rect = this.rootBlock.select('.gridTooltip')
         rect.style('top', top - 50).style('left', left).style('display', 'block')
