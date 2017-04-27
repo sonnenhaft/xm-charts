@@ -11,7 +11,7 @@ export default class ZoomRect extends Component {
 
     isToggled: PropTypes.bool,
     marginTop: PropTypes.number,
-
+    minimalZoom: PropTypes.number,
     zoomFactor: PropTypes.number,
     zoomPosition: PropTypes.number,
     onZoomFactorChangedAndMoved: PropTypes.func.isRequired,
@@ -19,6 +19,7 @@ export default class ZoomRect extends Component {
 
   static defaultProps = {
     marginTop: 0,
+    minimalZoom: 0,
     isToggled: false,
   }
 
@@ -26,7 +27,8 @@ export default class ZoomRect extends Component {
   getHeight = () => this.props.yScale.range()[0]
 
   componentWillMount() {
-    this.zoom = d3.zoom().scaleExtent([1, 1000 * 1000 * 1000]).on('zoom', this.onZoomFactorChangedAndMoved)
+    this.zoom = d3.zoom().scaleExtent([this.props.minimalZoom, 1000 * 1000 * 1000])
+      .on('zoom', this.onZoomFactorChangedAndMoved)
   }
 
   onZoomFactorChangedAndMoved = () => {
