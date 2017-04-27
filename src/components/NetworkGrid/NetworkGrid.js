@@ -19,7 +19,7 @@ export default class NetworkGrid extends Component {
 
   constructor(props) {
     super(props)
-    this.zoom = d3.zoom().scaleExtent([0.001, 1000]).on('zoom', this.onZoomFactorChanged)
+    this.zoom = d3.zoom().scaleExtent([1, 1000]).on('zoom', this.onZoomFactorChanged)
     this.currentZoom = d3.zoomIdentity
     this.heightZoom = new zoomTransform(1, 0, 0)
     this.componentWillReceiveProps(props)
@@ -86,8 +86,8 @@ export default class NetworkGrid extends Component {
   renderChart() {
     let size = this.lines.length
 
-    let width = 800
-    let height = 400
+    let width = this.rootBlock.node().clientWidth
+    let height = width / 2
 
     this.svg.attrs({ width, height })
     this.svg.select('.zoomRect').attrs({ width, height })
@@ -101,7 +101,7 @@ export default class NetworkGrid extends Component {
     xScale.domain(this.currentZoom.rescaleX(xScale).domain())
     yScale.domain(this.currentZoom.rescaleY(yScale).domain())
 
-    const kk = height / (h * this.gridSize) * 2
+    let kk = Math.min(height / (h * this.gridSize) * 2, (width - 10) / (w * this.gridSize) / 2)
     this.heightZoom.k = kk
     xScale.domain(this.heightZoom.rescaleX(xScale).domain())
     yScale.domain(this.heightZoom.rescaleY(yScale).domain())
