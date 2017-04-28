@@ -118,7 +118,6 @@ export default class LeftBar extends Component {
   onPrev = () => this.jumpToOffset(-1)
 
   getEventPossibleEvent(indexOffset) {
-    console.log(indexOffset)
     const { state, props } = this
     let newIndex = state.selectedEventIndex + indexOffset
     const lastIndex = props.events.length - 1

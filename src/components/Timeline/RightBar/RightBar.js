@@ -11,7 +11,9 @@ const Icon = ({ children: __html }) => <span dangerouslySetInnerHTML={{ __html }
 const RightBar = ({
                     onToggledChanged, isToggled,
                     onZoomFactorChanged, zoomFactor,
+                   maxZoom, minZoom,
                   }) => {
+  console.log(minZoom, maxZoom, zoomFactor)
   const toggledClass = isToggled ? 'is-toggled' : ''
   const styleName = 'square-button'
   return <div styleName="right-bar">
@@ -22,11 +24,15 @@ const RightBar = ({
         onZoomFactorChanged(1)
       }}>
 
-        <button styleName="square-button" onClick={() => onZoomFactorChanged(zoomFactor * 2)}>
-          +
+        <button styleName="square-button"
+                disabled={zoomFactor >= maxZoom}
+                onClick={() => onZoomFactorChanged(zoomFactor * 2)}>
+          <span>+</span>
         </button>
-        <button styleName="square-button" onClick={() => onZoomFactorChanged(zoomFactor * 0.5)}>
-          -
+        <button styleName="square-button"
+                disabled={zoomFactor <= minZoom}
+                onClick={() => onZoomFactorChanged(zoomFactor * 0.5)}>
+          <span>-</span>
         </button>
       </div>
       { !isToggled &&

@@ -70,6 +70,7 @@ export default class Timeline extends Component {
         <RightBar {...{
           zoomFactor, onZoomFactorChanged,
           isToggled, onToggledChanged,
+          maxZoom: MAX_ZOOM, minZoom: MIN_ZOOM,
         }} />
       </div>
     </div>
