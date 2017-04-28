@@ -13,7 +13,6 @@ const RightBar = ({
                     onZoomFactorChanged, zoomFactor,
                    maxZoom, minZoom,
                   }) => {
-  console.log(minZoom, maxZoom, zoomFactor)
   const toggledClass = isToggled ? 'is-toggled' : ''
   const styleName = 'square-button'
   return <div styleName="right-bar">

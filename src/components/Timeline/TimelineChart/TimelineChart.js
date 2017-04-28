@@ -131,6 +131,10 @@ export default class TimelineChart extends Component {
     g.attrs(translate(getMarginLeft(this.props), getMarginTop({ isToggled })))
     td(this.find('.brushLineGroup')).attr('transform', `translate(0,${  height + 40  })`)
     this.find('.brushLine').attrs({ width })
+    this.find('.clickableArea').on('click', () => {
+      const x = d3.event.offsetX - getMarginLeft(isToggled)
+      this.props.onCurrentTimeChanged(this.xScale.invert(x).getTime())
+    })
 
     const svgNode = this.find('svg')
     td(svgNode).attrs({ height: this.realHeight })
@@ -231,10 +235,12 @@ export default class TimelineChart extends Component {
           <Axes {...{ xScale, yScale, xScaleMini, isToggled, realHeight, zoomFactor }}>
             <path className="linePath" styleName="line-path" />
           </Axes>
-          <ZoomRect {...{
-            xScale, yScale, isToggled, marginTop,
-            zoomFactor, zoomPosition, onZoomFactorChangedAndMoved,
-          }} />
+          <g className="clickableArea">
+            <ZoomRect {...{
+              xScale, yScale, isToggled, marginTop,
+              zoomFactor, zoomPosition, onZoomFactorChangedAndMoved,
+            }} />
+          </g>
           <g className="smalRects" transform="translate(0, -5)" />
         </g>
         <BrushGroup {...{
