@@ -34,13 +34,14 @@ export default class Timeline extends Component {
   onPlayingIntervalChanged = (playingInterval, cb) => this.setState({ playingInterval }, cb) // necessary to disable animation
 
   onZoomFactorChangedAndMoved = ({ zoomFactor, zoomPosition }) => {
-    const safeZoom = Math.min(MAX_ZOOM, Math.max(zoomFactor, MIN_ZOOM))
-    this.setState({ zoomPosition, zoomFactor: safeZoom })
+    zoomFactor = Math.min(MAX_ZOOM, Math.max(zoomFactor, MIN_ZOOM))
+    zoomPosition = zoomFactor === 1 ? 0 : zoomPosition
+    this.setState({ zoomPosition, zoomFactor })
   }
 
   onZoomFactorChanged = zoomFactor => {
-    const zoomPosition = zoomFactor === 1 ? 0 : this.state.zoomPosition
-    this.onZoomFactorChangedAndMoved({ zoomFactor, zoomPosition })
+    const zoomPosition = this.state.zoomPosition
+    this.onZoomFactorChangedAndMoved({ zoomFactor, zoomPosition: zoomPosition })
   }
 
   render() {

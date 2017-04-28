@@ -87,7 +87,7 @@ export default class NetworkGrid extends Component {
     let size = this.lines.length
 
     let width = this.rootBlock.node().clientWidth
-    let height = width / 2
+    let height = 150
 
     this.svg.attrs({ width, height })
     this.svg.select('.zoomRect').attrs({ width, height })
