@@ -16,7 +16,6 @@ export default class Timeline extends Component {
     this.state = {
       isToggled: false,
       zoomFactor: 1,
-      zoomPosition: 0,
       playingInterval: null,
       currentSpeed: 1,
     }
@@ -33,26 +32,16 @@ export default class Timeline extends Component {
   onToggledChanged = isToggled => this.setState({ isToggled })
   onPlayingIntervalChanged = (playingInterval, cb) => this.setState({ playingInterval }, cb) // necessary to disable animation
 
-  onZoomFactorChangedAndMoved = ({ zoomFactor, zoomPosition }) => {
-    zoomFactor = Math.min(MAX_ZOOM, Math.max(zoomFactor, MIN_ZOOM))
-    zoomPosition = zoomFactor === 1 ? 0 : zoomPosition
-    this.setState({ zoomPosition, zoomFactor })
-  }
-
-  onZoomFactorChanged = zoomFactor => {
-    const zoomPosition = this.state.zoomPosition
-    this.onZoomFactorChangedAndMoved({ zoomFactor, zoomPosition: zoomPosition })
-  }
+  onZoomFactorChanged = zoomFactor =>   this.setState({ zoomFactor })
 
   render() {
     const {
-      onZoomFactorChangedAndMoved,
       onZoomFactorChanged, onToggledChanged,
       onCurrentSpeedChanged, onPlayingIntervalChanged,
     } = this
 
     const { currentTime, onCurrentTimeChanged, events, nodes } = this.props
-    const { isToggled, zoomFactor, zoomPosition, currentSpeed, playingInterval } = this.state
+    const { isToggled, zoomFactor, currentSpeed, playingInterval } = this.state
 
     return <div>
       <div styleName="timeline-chart-wrapper">
@@ -64,7 +53,7 @@ export default class Timeline extends Component {
         }} />
         <TimelineChart {...{
           currentTime, onCurrentTimeChanged,
-          zoomFactor, zoomPosition, onZoomFactorChangedAndMoved,
+          zoomFactor, onZoomFactorChanged,
           isToggled, currentSpeed, events, nodes, isPlaying: !!playingInterval,
         }} />
         <RightBar {...{

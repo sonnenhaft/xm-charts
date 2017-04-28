@@ -11,6 +11,9 @@ import BrushGroup from './BrushGroup'
 import Axes from './Axes/Axes'
 import { zoomTransform } from 'd3-zoom'
 
+const MAX_ZOOM = Math.min(Math.pow(10, 5) * 5)
+const MIN_ZOOM = 1
+
 const translate = (x, y = 0) => ({ transform: `translate(${x}, ${y})` })
 const margin = { top: 30, right: 10, bottom: 60, left: 30 }
 const getMarginLeft = ({ isToggled }) => {
@@ -24,11 +27,10 @@ const getMarginTop = ({ isToggled }) => {
 export default class TimelineChart extends Component {
   static propTypes = {
     zoomFactor: PropTypes.number.isRequired,
-    zoomPosition: PropTypes.number.isRequired,
     isToggled: PropTypes.bool.isRequired,
     events: PropTypes.array.isRequired,
     nodes: PropTypes.array.isRequired,
-    onZoomFactorChangedAndMoved: PropTypes.func.isRequired,
+    onZoomFactorChanged: PropTypes.func.isRequired,
   }
 
   constructor(props) {
@@ -38,7 +40,6 @@ export default class TimelineChart extends Component {
     this.xScaleMini = d3.scaleTime()
     this.yScale = d3.scaleLinear().domain([0, 1])
     this.state = { noDuration: true }
-    this.setZoom(props)
     this.setEvents(props)
   }
 
@@ -50,13 +51,7 @@ export default class TimelineChart extends Component {
     this.domain = [minValue, maxValue]
   }
 
-  setZoom(props) {
-    const { zoomFactor: k, zoomPosition: x } = props
-    Object.assign(this.zoom, { k, x })
-  }
-
   componentWillReceiveProps(props) {
-    this.setZoom(props)
     if ( props.events !== this.props.events ) {
       this.setEvents(props)
     }
@@ -101,7 +96,7 @@ export default class TimelineChart extends Component {
 
   setD3Node = node => this.d3rootNode = d3.select(node)
 
-  componentWillUpdate({ isToggled }) {
+  componentWillUpdate({ isToggled, zoomFactor }) {
     const { clientWidth: realWidth } = this.d3rootNode.node()
     const realHeight = isToggled ? 100 : 200
     const width = Math.max(realWidth - getMarginLeft({ isToggled }) - margin.right, 0)
@@ -109,10 +104,25 @@ export default class TimelineChart extends Component {
     Object.assign(this, { width, height, realWidth, realHeight })
 
     this.xScale.domain(this.domain).rangeRound([0, width])
-    this.xScale.domain(this.zoom.rescaleX(this.xScale).domain())
     this.yScale.rangeRound([height, 0])
 
-    this.xScaleMini.domain(this.domain).rangeRound([0, width])
+    const k1 = this.zoom.k
+    const k2 = zoomFactor
+    if (k1 !== k2) {
+      this.xScaleMini.domain(this.domain).rangeRound([0, width])
+      this.zoom.k = k2
+      if (this.zoom.k === 1) {
+        this.zoom.x = 0
+      } else {
+        // const delta = this.zoom.x - this.xScale.range()[0];
+        const pos = (k2 - k1) * width / 2
+        this.zoom.x-=  pos
+      }
+      this.xScale.domain(this.zoom.rescaleX(this.xScale).domain())
+    } else {
+      this.xScaleMini.domain(this.domain).rangeRound([0, width])
+      this.xScale.domain(this.zoom.rescaleX(this.xScale).domain())
+    }
   }
 
   componentDidUpdate() {
@@ -209,15 +219,25 @@ export default class TimelineChart extends Component {
     }, 0)
   }
 
+  onZoomFactorChangedAndMoved = ({ zoomFactor, zoomPosition }) => {
+    zoomFactor = Math.min(MAX_ZOOM, Math.max(zoomFactor, MIN_ZOOM))
+    zoomPosition = zoomFactor === 1 ? 0 : zoomPosition
+    this.zoom.x = zoomPosition
+    this.zoom.k = zoomFactor
+    this.props.onZoomFactorChanged(zoomFactor)
+  }
+
   render() {
     const {
       props: {
         currentTime, onCurrentTimeChanged,
-        zoomFactor, zoomPosition, onZoomFactorChangedAndMoved,
+        zoomFactor,
         isToggled, isPlaying, currentSpeed,
       }, state: { tooltipData = {} },
       onDimensionsChanged, setD3Node, xScale, yScale, xScaleMini, realHeight,
     } = this
+    const zoomPosition = this.zoom.x
+    const { onZoomFactorChangedAndMoved } = this
     const marginTop = getMarginTop(this.props)
     const marginLeft = getMarginLeft(this.props)
     const visibility = isToggled ? 'hidden' : 'visible'

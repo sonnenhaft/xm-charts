@@ -8,13 +8,14 @@ import './RightBar.scss'
 
 const Icon = ({ children: __html }) => <span dangerouslySetInnerHTML={{ __html }} />
 
+const styleName = 'square-button'
+const ZOOM_STEP = 2
 const RightBar = ({
                     onToggledChanged, isToggled,
                     onZoomFactorChanged, zoomFactor,
                    maxZoom, minZoom,
                   }) => {
   const toggledClass = isToggled ? 'is-toggled' : ''
-  const styleName = 'square-button'
   return <div styleName="right-bar">
     <div />
     <div styleName={`small-buttons ${ toggledClass }`}>
@@ -25,12 +26,12 @@ const RightBar = ({
 
         <button styleName="square-button"
                 disabled={zoomFactor >= maxZoom}
-                onClick={() => onZoomFactorChanged(zoomFactor * 2)}>
+                onClick={() => onZoomFactorChanged(zoomFactor * ZOOM_STEP)}>
           <span>+</span>
         </button>
         <button styleName="square-button"
                 disabled={zoomFactor <= minZoom}
-                onClick={() => onZoomFactorChanged(zoomFactor * 0.5)}>
+                onClick={() => onZoomFactorChanged(zoomFactor / ZOOM_STEP)}>
           <span>-</span>
         </button>
       </div>
