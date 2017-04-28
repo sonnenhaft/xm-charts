@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes as P } from 'react'
 
 import { arc, select, interpolate, interpolateRound } from 'd3'
 import '../../../common/d3.shims'
@@ -12,8 +12,6 @@ let counter = 0
 const RADIUS = 107
 const WIDTH = 14
 
-const td = selection => selection.transition().duration(150)
-
 const Gradient = ({ startColor, stopColor, x1, x2, y1, y2, id }) => {
   return <linearGradient gradientUnits="objectBoundingBox" {...{ x1, x2, y1, y2, id }}>
     <stop offset="0%" stopColor={startColor} />
@@ -22,8 +20,8 @@ const Gradient = ({ startColor, stopColor, x1, x2, y1, y2, id }) => {
 }
 
 export default class CircleIndicator extends Component {
-  static defaultProps = { percent: 0 }
-  static propTypes = { percent: between({ gte: 0, lte: 100 }) }
+  static defaultProps = { percent: 0, isPlaying: false }
+  static propTypes = { percent: between({ gte: 0, lte: 100 }), isPlaying: P.bool }
 
   constructor(props) {
     super(props)
@@ -58,6 +56,7 @@ export default class CircleIndicator extends Component {
     const percent = this.props.percent
     const percentNumbered = percent / 100
 
+    const td = selection => selection.transition().duration(this.props.isPlaying ? 0 : 150)
     td(this.root.select('.path')).attrTween('d', this.arcTween(-(1 - percentNumbered) * 2 * Math.PI))
     td(this.root.select('.circle')).attr('opacity', percent > 80 ? 1 : 0)
 
