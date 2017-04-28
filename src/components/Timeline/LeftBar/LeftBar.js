@@ -55,7 +55,7 @@ export default class LeftBar extends Component {
     this.onPaused()
   }
 
-  getLast =props => props.events[props.events.length - 1].date
+  getLast = props => props.events[props.events.length - 1].date
 
   onPlayStarted = () => {
     if ( this.props.playingInterval ) { return }
@@ -89,7 +89,7 @@ export default class LeftBar extends Component {
     }
   }
 
-  onRecordButtonClicked = () =>   this.props.onCurrentTimeChanged(this.props.events[0].date)
+  onRecordButtonClicked = () => this.props.onCurrentTimeChanged(this.props.events[0].date)
 
   setCurrentEvent({ events, currentTime }) {
     const lastDate = events[events.length - 1].date
@@ -117,31 +117,39 @@ export default class LeftBar extends Component {
   onNext = () => this.jumpToOffset(1)
   onPrev = () => this.jumpToOffset(-1)
 
-  jumpToOffset(eventIndexOffset) {
+  getEventPossibleEvent(indexOffset) {
+    console.log(indexOffset)
     const { state, props } = this
-    let newIndex = state.selectedEventIndex + eventIndexOffset
+    let newIndex = state.selectedEventIndex + indexOffset
     const lastIndex = props.events.length - 1
     if ( newIndex > lastIndex || newIndex < 0 ) {
       return
     }
-    this.props.onCurrentTimeChanged(props.events[newIndex].date)
+    return props.events[newIndex].date
+  }
+
+  jumpToOffset(offset) {
+    this.props.onCurrentTimeChanged(this.getEventPossibleEvent(offset))
   }
 
   onLongNext = () => this.longJump(true)
   onLongPrev = () => this.longJump(false)
 
   longJump(forward) {
+    const nextEvent = this.getPossibleCircle(forward)
+    if ( nextEvent ) {
+      const idx = this.props.events.indexOf(nextEvent)
+      this.jumpToOffset(idx - this.state.selectedEventIndex)
+    }
+  }
+
+  getPossibleCircle(forward) {
     const props = this.props
     // only "special" events in here
     // find instead of  findIndex because we loose order
-    const nextEvent = props.events
+    return props.events
       .filter(({ firstInSubnet, lastInSubnet }) => firstInSubnet || lastInSubnet)
-      .find(({ date }) => forward ? date > props.currentTime : date < props.currentTime)
-
-    if ( nextEvent ) {
-      const idx = props.events.indexOf(nextEvent)
-      this.jumpToOffset(idx - this.state.selectedEventIndex)
-    }
+      .find(({ date }) => forward ?  date > props.currentTime : date < props.currentTime)
   }
 
   render() {
@@ -149,7 +157,7 @@ export default class LeftBar extends Component {
     const currentEvent = props.events[state.selectedEventIndex]
     const time = props.currentTime - props.events[0].date
 
-    const isPlaying = props.playingInterval;
+    const isPlaying = props.playingInterval
     return <div styleName={`timeline-control-block ${(props.isToggled ? 'is-toggled' : '')}`}>
       <div />
       <div styleName="circle-stats-block">
@@ -171,25 +179,29 @@ export default class LeftBar extends Component {
         <div styleName="right-buttons black-buttons">
           <button onClick={this.onPrev}
                   title="jump to previous event"
-                  styleName="play-action-button">
+                  styleName="play-action-button"
+                  disabled={!this.getEventPossibleEvent(-1)}>
             <Icon>{nextStorySvg}</Icon>
           </button>
 
           <button onClick={this.onLongPrev}
                   title="long jump backward"
-                  styleName="play-action-button">
+                  styleName="play-action-button"
+                  disabled={!this.getPossibleCircle()}>
             <Icon>{nextFlagSvg}</Icon>
           </button>
         </div>
         <div styleName="left-buttons black-buttons">
           <button onClick={this.onNext}
                   title="jump to next event"
-                  styleName="play-action-button">
+                  styleName="play-action-button"
+                  disabled={!this.getEventPossibleEvent(1)}>
             <Icon>{nextStorySvg}</Icon>
           </button>
           <button onClick={this.onLongNext}
                   title="long jump forward"
-                  styleName="play-action-button">
+                  styleName="play-action-button"
+                  disabled={!this.getPossibleCircle(true)}>
             <Icon>{nextFlagSvg}</Icon>
           </button>
         </div>
@@ -217,13 +229,12 @@ export default class LeftBar extends Component {
           <div styleName="zoom-menu">
             {[0.5, 1, 2, 4].map(number => (
               <div key={number}>
-                {number !== props.currentSpeed &&
                 <button onClick={() => this.onSpeedUpdated(number)}
                         title="Change play speed"
-                        styleName="play-action-button">
-                  {number}x
+                        disabled={number === props.currentSpeed}
+                        styleName={`play-action-button ${number === props.currentSpeed ? 'active' : ''}`}>
+                  <span>{number}x</span>
                 </button>
-                }
               </div>
             ))}
           </div>

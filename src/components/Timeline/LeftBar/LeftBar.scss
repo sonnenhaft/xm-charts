@@ -186,7 +186,14 @@
   &.blacked {
     background: black;
   }
-  &:hover:not(.no-hover), &.active {
+  &[disabled]:not(.active) {
+    cursor: not-allowed;
+    background: $disabledButton;
+    span {
+      opacity: 0.5;
+    }
+  }
+  &:hover:not(.no-hover):not([disabled]), &.active {
     background: $buttonBlue;
     &:hover {
       circle {
