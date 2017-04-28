@@ -88,7 +88,7 @@ export default class LeftBar extends Component {
     }
   }
 
-  onRecordButtonClicked = () => console.log('TODO: add on record like button pressed action')
+  onRecordButtonClicked = () =>   this.props.onCurrentTimeChanged(this.props.events[0].date)
 
   setCurrentEvent({ events, currentTime }) {
     const lastDate = events[events.length - 1].date
