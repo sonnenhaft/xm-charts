@@ -1,0 +1,6 @@
+<svg width="23" height="20">
+  <g fill="white" transform="translate(6, 2.5)">
+    <rect width="2" height="15" ></rect>
+    <rect width="2" height="15" transform="translate(11, 0)"></rect>
+  </g>
+</svg>

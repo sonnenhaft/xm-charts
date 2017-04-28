@@ -1,6 +1,7 @@
 import React, { Component, PropTypes as P } from 'react'
 
 import playSvg from 'assets/icons/play.svg'
+import pauseSvg from 'assets/icons/pause.svg'
 import nextFlagSvg from 'assets/icons/next-flag.svg'
 import nextStorySvg from 'assets/icons/next-story.svg'
 import circleButtonSvgIcon from 'assets/icons/circle-button.svg'
@@ -148,11 +149,12 @@ export default class LeftBar extends Component {
     const currentEvent = props.events[state.selectedEventIndex]
     const time = props.currentTime - props.events[0].date
 
+    const isPlaying = props.playingInterval;
     return <div styleName={`timeline-control-block ${(props.isToggled ? 'is-toggled' : '')}`}>
       <div />
       <div styleName="circle-stats-block">
         <div styleName="circle-block">
-          <CircleIndicator percent={currentEvent.networkSuperiority} isPlaying={!!props.playingInterval} />
+          <CircleIndicator percent={currentEvent.networkSuperiority} isPlaying={!!isPlaying} />
         </div>
 
         <div styleName="stats-block">
@@ -202,8 +204,8 @@ export default class LeftBar extends Component {
 
         <button onClick={this.onPlay}
                 styleName="play-action-button"
-                title={props.playingInterval ? 'pause' : 'play'}>
-          <Icon>{playSvg}</Icon>
+                title={isPlaying ? 'pause' : 'play'}>
+          <Icon>{isPlaying ? pauseSvg : playSvg}</Icon>
         </button>
 
         <div styleName="left-buttons show-zoom-menu">
