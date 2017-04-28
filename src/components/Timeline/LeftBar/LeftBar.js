@@ -54,11 +54,13 @@ export default class LeftBar extends Component {
     this.onPaused()
   }
 
+  getLast =props => props.events[props.events.length - 1].date
+
   onPlayStarted = () => {
     if ( this.props.playingInterval ) { return }
     const playingInterval = setInterval(() => {
       const props = this.props
-      if ( props.currentTime === props.events[props.events.length - 1].date ) {
+      if ( props.currentTime === this.getLast(props) ) {
         this.onPaused()
       } else {
         this.onNext()
@@ -79,6 +81,9 @@ export default class LeftBar extends Component {
     if ( this.props.playingInterval ) {
       this.onPaused()
     } else {
+      if ( this.props.currentTime === this.getLast(this.props) ) {
+        this.props.onCurrentTimeChanged(this.props.events[0].date)
+      }
       this.onPlayStarted()
     }
   }
@@ -147,7 +152,7 @@ export default class LeftBar extends Component {
       <div />
       <div styleName="circle-stats-block">
         <div styleName="circle-block">
-          <CircleIndicator percent={currentEvent.networkSuperiority} />
+          <CircleIndicator percent={currentEvent.networkSuperiority} isPlaying={!!props.playingInterval} />
         </div>
 
         <div styleName="stats-block">
@@ -197,7 +202,7 @@ export default class LeftBar extends Component {
 
         <button onClick={this.onPlay}
                 styleName="play-action-button"
-                title={state.playingInterval ? 'pause' : 'play'}>
+                title={props.playingInterval ? 'pause' : 'play'}>
           <Icon>{playSvg}</Icon>
         </button>
 
