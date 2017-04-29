@@ -106,18 +106,19 @@ export default class TimelineChart extends Component {
     this.xScale.domain(this.domain).rangeRound([0, width])
     this.yScale.rangeRound([height, 0])
 
+    zoomFactor = Math.min(MAX_ZOOM, Math.max(zoomFactor, MIN_ZOOM))
+    if ( this.zoom.k === 1 ) {
+      this.zoom.x = 0
+    }
     const k1 = this.zoom.k
     const k2 = zoomFactor
-    if (k1 !== k2) {
+
+    if ( k1 !== k2 ) {
       this.xScaleMini.domain(this.domain).rangeRound([0, width])
       this.zoom.k = k2
-      if (this.zoom.k === 1) {
-        this.zoom.x = 0
-      } else {
-        // const delta = this.zoom.x - this.xScale.range()[0];
-        const pos = (k2 - k1) * width / 2
-        this.zoom.x-=  pos
-      }
+      // const delta = this.zoom.x - this.xScale.range()[0];
+      const pos = (k2 - k1) * width / 2
+      this.zoom.x -= pos
       this.xScale.domain(this.zoom.rescaleX(this.xScale).domain())
     } else {
       this.xScaleMini.domain(this.domain).rangeRound([0, width])
@@ -178,7 +179,7 @@ export default class TimelineChart extends Component {
           d3.event.stopPropagation()
         }
       },
-      mouseover: function(d) {
+      mouseover: function (d) {
         d3.select(this).moveToFront()
         if ( d3.event.target.tagName !== 'rect' ) {
           moveTooltip(d)
@@ -231,12 +232,12 @@ export default class TimelineChart extends Component {
     const {
       props: {
         currentTime, onCurrentTimeChanged,
-        zoomFactor,
         isToggled, isPlaying, currentSpeed,
       }, state: { tooltipData = {} },
       onDimensionsChanged, setD3Node, xScale, yScale, xScaleMini, realHeight,
     } = this
     const zoomPosition = this.zoom.x
+    const zoomFactor = this.zoom.k
     const { onZoomFactorChangedAndMoved } = this
     const marginTop = getMarginTop(this.props)
     const marginLeft = getMarginLeft(this.props)
@@ -245,15 +246,15 @@ export default class TimelineChart extends Component {
                              {...{ onDimensionsChanged }}>
       <svg styleName={`${(isToggled ? 'toggled' : '')} timeline-chart`}>
         <rect width="100%" height="100%"
-              styleName={isToggled ? 'toggled-background' : 'black-background'} />
+              styleName={isToggled ? 'toggled-background' : 'black-background'}/>
         <g className="brushLineGroup">
-          <rect height="50" fill="#252525" width="100%" visibility={visibility} />
+          <rect height="50" fill="#252525" width="100%" visibility={visibility}/>
           <rect className="brushLine" pointerEvents="none" height="5" rx="3" ry="3" fill="#141414"
-                transform={`translate(${marginLeft},${isToggled ? 26 : 15})`} />
+                transform={`translate(${marginLeft},${isToggled ? 26 : 15})`}/>
         </g>
         <g fill="white" className="mainGroup">
           <Axes {...{ xScale, yScale, xScaleMini, isToggled, realHeight, zoomFactor }}>
-            <path className="linePath" styleName="line-path" />
+            <path className="linePath" styleName="line-path"/>
           </Axes>
           <g className="clickableArea">
             <ZoomRect {...{
@@ -261,7 +262,7 @@ export default class TimelineChart extends Component {
               zoomFactor, zoomPosition, onZoomFactorChangedAndMoved,
             }} />
           </g>
-          <g className="smalRects" transform="translate(0, -5)" />
+          <g className="smalRects" transform="translate(0, -5)"/>
         </g>
         <BrushGroup {...{
           xScale: xScaleMini, yScale, isToggled, marginLeft,
@@ -278,10 +279,10 @@ export default class TimelineChart extends Component {
       <div className="tooltipBlock" styleName="tooltip">
         <div styleName="triangle-wrapper">
           <div styleName="triangle">
-            <div styleName="triangle triangle-content" />
+            <div styleName="triangle triangle-content"/>
           </div>
         </div>
-        <TooltipContentBlock tooltipData={tooltipData} />
+        <TooltipContentBlock tooltipData={tooltipData}/>
       </div>
     </WindowDependable>
   }
