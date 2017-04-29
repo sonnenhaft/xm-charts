@@ -9,7 +9,7 @@ import BrushCircleGroup from './BrushCircleGroup/BrushCircleGroup'
 import ZoomRect from '../../../common/ZoomRect'
 import BrushGroup from './BrushGroup'
 import Axes from './Axes/Axes'
-import { zoomTransform } from 'd3-zoom'
+import { Transform as zoomTransform } from 'd3-zoom/src/transform'
 
 const MAX_ZOOM = Math.min(Math.pow(10, 5) * 5)
 const MIN_ZOOM = 1
@@ -264,7 +264,7 @@ export default class TimelineChart extends Component {
           <g className="smalRects" transform="translate(0, -5)" />
         </g>
         <BrushGroup {...{
-          xScale, yScale, isToggled, marginLeft,
+          xScale: xScaleMini, yScale, isToggled, marginLeft,
           zoomFactor, zoomPosition, onZoomFactorChangedAndMoved,
         }}>
           <BrushCircleGroup {...{

@@ -3,7 +3,7 @@ import * as d3 from 'd3'
 import 'common/d3.shims'
 import { Snow, Desktop, Diskette } from './IconsGroup'
 import './NetworkGrid.scss'
-import { zoomTransform } from 'd3-zoom'
+import { Transform } from 'd3-zoom/src/transform'
 
 export default class NetworkGrid extends Component {
   refRootBlock = rootBlock => {
@@ -21,7 +21,7 @@ export default class NetworkGrid extends Component {
     super(props)
     this.zoom = d3.zoom().scaleExtent([1, 1000]).on('zoom', this.onZoomFactorChanged)
     this.currentZoom = d3.zoomIdentity
-    this.heightZoom = new zoomTransform(1, 0, 0)
+    this.heightZoom = new Transform(1, 0, 0)
     this.componentWillReceiveProps(props)
     this.state = {
       selectedNodeIndex: null,

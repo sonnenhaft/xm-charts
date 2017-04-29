@@ -1,6 +1,6 @@
 {
   "name": "xm-charts",
-  "version": "1.0.118",
+  "version": "1.0.121",
   "scripts": {
     "start": "webpack-dashboard --port 9001 --minimal -- npm run dev",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open",
@@ -19,7 +19,7 @@
     "babel-plugin-react-css-modules": "^2.2.0",
     "babel-polyfill": "^6.23.0",
     "chance": "^1.0.6",
-    "d3": "^4.7.3",
+    "d3": "^4.8.0",
     "lorem-ipsum": "^1.0.3",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",

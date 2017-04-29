@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react'
 import * as d3 from 'd3'
-import { zoomTransform } from 'd3-zoom'
+import { Transform  } from 'd3-zoom/src/transform'
 
 const ScaleObjectFunction = PropTypes.func.isRequired
 export default class BrushGroup extends Component {
@@ -36,7 +36,7 @@ export default class BrushGroup extends Component {
 
   componentDidMount() {
     this.brush = d3.brushX().on('brush end', this.onBrushed)
-    this.zoom = new zoomTransform(1, 0, 0)
+    this.zoom = new Transform(1, 0, 0)
     this.setZoom(this.props)
     this.brusher.call(this.brush)
     const centralizeBrush = this._centralizeBrush
@@ -78,7 +78,6 @@ export default class BrushGroup extends Component {
 
     const { k, x } = zoomPosition
     if ( this.zoom.x !== x || this.zoom.k !== k ) {
-      this.setZoom({ k, x })
       this.props.onZoomFactorChangedAndMoved({
         zoomFactor: k,
         zoomPosition: x,
@@ -87,13 +86,13 @@ export default class BrushGroup extends Component {
   }
 
   componentDidUpdate() {
-    const { isToggled, xScale } = this.props
     const zoom = this.zoom
+    this.setZoom(this.props)
     const [width, height] = [this.getWidth(), this.getHeight()]
     this.brush.extent([[0, 0], [width, Math.max(100, height)]])
     this.isDisabled = true
     this.brusher.call(this.brush)
-    this.brusher.call(this.brush.move, xScale.range().map(zoom.invertX, zoom))
+    this.brusher.call(this.brush.move, this.props.xScale.range().map(zoom.invertX, zoom))
     this.isDisabled = false
     const brusherSelection = this.brusher.select('.selection')
     const brusherWidth = brusherSelection.attr('width') * 1
@@ -104,7 +103,7 @@ export default class BrushGroup extends Component {
     brusherSelection.attrs({
       width: tooSmall ? MIN_WIDTH : brusherWidth,
       stroke: 'none',
-      transform: `translate(${tooSmall ? (brusherWidth - MIN_WIDTH) / 2 : 0}, ${isToggled ? -4 : 0})`,
+      transform: `translate(${tooSmall ? (brusherWidth - MIN_WIDTH) / 2 : 0}, ${this.props.isToggled ? -4 : 0})`,
       'fill-opacity': 0.3,
       'pointer-events': tooBig ? 'none' : 'all',
     })
