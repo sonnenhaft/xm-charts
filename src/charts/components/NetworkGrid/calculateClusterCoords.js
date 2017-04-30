@@ -2,7 +2,7 @@ import { groupBy, transform, values }  from 'lodash'
 import pack from 'bin-pack'
 
 const MARGIN = 0.25
-const LAYOUT_MARGIN_TOP = MARGIN
+const LAYOUT_MARGIN_TOP = MARGIN * 2
 const LAYOUT_MARGIN_BOTTOM = MARGIN/4
 const LAYOUT_MARGIN_LEFT = MARGIN/4
 const PADDING_W = MARGIN

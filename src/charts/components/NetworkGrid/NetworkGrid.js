@@ -96,10 +96,10 @@ export default class NetworkGrid extends Component {
     yScale.domain(this.heightZoom.rescaleY(yScale).domain())
 
     const k = this.currentZoom.k * kk
-    const FILLED_SPACE = 0.8
+    const FILLED_SPACE = 0.73
     const MAX_STROKE = 2
-    const strokeWidth = Math.min(MAX_STROKE, Math.max(MAX_STROKE * k, MAX_STROKE / 10))
-    const offset = strokeWidth * 3 * 1.1
+    const strokeWidth = Math.min(MAX_STROKE, Math.max(MAX_STROKE * k, 1))
+    const offset = strokeWidth * 2 * 1.1
     const rx = offset
     const scaledNodeHeight = nodeHeight * FILLED_SPACE * k
 
