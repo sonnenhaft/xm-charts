@@ -59,3 +59,68 @@
   margin: 4px;
   border: dashed 0.5px #b4b4b4;
 }
+
+
+
+@font-face {
+  font-family: 'GeogRg';
+  src: url('../../../assets/fonts/Geogtq-Rg.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'GeogMd';
+  src: url('../../../assets/fonts/Emtype Foundry - Geogrotesque Medium.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'GeogLg';
+  src: url('../../../assets/fonts/Geogtq-Lg.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'GeogLt';
+  src: url('../../../assets/fonts/Emtype Foundry - Geogrotesque Light.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'GeogSb';
+  src: url('../../../assets/fonts/geogrotesque-semibold-webfont.ttf') format('opentype');
+}
+
+@font-face {
+  font-family: 'PT Mono Bold';
+  src: url('../../../assets/fonts/PT Mono Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Inconsolata';
+  src: url('../../../assets/fonts/Inconsolata.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Gilroy-Black';
+  src: url('../../../assets/fonts/Radomir Tinkov - Gilroy-Black.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Gilroy-Bold';
+  src: url('../../../assets/fonts/Radomir Tinkov - Gilroy-Bold.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Gilroy-SemiBold';
+  src: url('../../../assets/fonts/Radomir Tinkov - Gilroy-SemiBold.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Gilroy-Light';
+  src: url('../../../assets/fonts/Radomir Tinkov - Gilroy-Light.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Gilroy-Medium';
+  src: url('../../../assets/fonts/Radomir Tinkov - Gilroy-Medium.otf') format('opentype');
+}
+
+@import url('https://fonts.googleapis.com/css?family=PT+Mono');
+@import url('https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono');
