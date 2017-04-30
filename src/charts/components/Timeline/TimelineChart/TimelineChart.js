@@ -150,7 +150,15 @@ export default class TimelineChart extends Component {
     let filterVisible = ({ date }) => min <= date && date <= max
     const data = events.filter(filterVisible)
 
-    const fill = ({ compromized }) => compromized ? '#4660DF' : ' #EB001E'
+    const fill = ({ type }) => {
+      if (type === 'nodeMarkAsRed') {
+        return '#EB001E'
+      } else if (type === 'newDiscoveredNode') {
+        return '#4660DF'
+      } else {
+        return 'none'
+      }
+    }
     const lineAttrs = { width: 2, height: 10, fill }
     const x = ({ date }) => xScale(date)
     const y = ({ networkSuperiority }) => yScale(networkSuperiority / 100)

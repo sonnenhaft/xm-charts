@@ -289,7 +289,7 @@
   {
     "id": "58ee5432b9dbde17888d550c",
     "timestamp": "2017-04-12T16:22:10.862Z",
-    "type": "newDiscoveredNode",
+    "type": "startingPoint",
     "networkSuperiority": 3.0434782608695654,
     "compromisedAssets": {
       "data": 0,
@@ -744,7 +744,7 @@
   {
     "id": "58ee5447b9dbde17888d5553",
     "timestamp": "2017-04-12T16:22:31.913Z",
-    "type": "nodeMarkAsRed",
+    "type": "assetCompromised",
     "networkSuperiority": 6.521739130434782,
     "compromisedAssets": {
       "data": 0,
@@ -878,7 +878,7 @@
   {
     "id": "58ee544db9dbde17888d556e",
     "timestamp": "2017-04-12T16:22:37.925Z",
-    "type": "newDiscoveredNode",
+    "type": "assetCompromised",
     "networkSuperiority": 7.826086956521739,
     "compromisedAssets": {
       "data": 0,

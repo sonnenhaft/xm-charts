@@ -47,11 +47,15 @@ export default class NetworkGrid extends Component {
     events
       .filter(({ date }) => currentTime > date)
       .forEach(item => {
-        const { compromized, nodeId } = item
+        const { type, nodeId } = item
         const red = 'rgb(242, 30, 39)'
         const blue = 'rgb(70, 96, 223)'
         if ( this.nodeColors[nodeId] !== red ) {
-          this.nodeColors[nodeId] = compromized ? red : blue
+          if (type === 'nodeMarkAsRed') {
+            this.nodeColors[nodeId] = red
+          } else if (type === 'newDiscoveredNode') {
+            this.nodeColors[nodeId] = blue
+          }
         }
       })
 
