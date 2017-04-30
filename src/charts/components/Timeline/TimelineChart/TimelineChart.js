@@ -56,13 +56,16 @@ export default class TimelineChart extends Component {
     }
   }
 
-  highlightCampaign(_campainId) {
-    this.campainSelected = _campainId !== null
-    this.events
-      .forEach(event => event.isEventSelected = false)
-    this.events
-      .filter(({ campainId }) => campainId === _campainId)
-      .forEach(event => event.isEventSelected = true)
+  highlightCampaign( ) {
+  // highlightCampaign(_campainId) {
+  //   return
+    // TODO: rollback logic when we will know what means campain
+    // this.campainSelected = _campainId !== null
+    // this.events
+    //   .forEach(event => event.isEventSelected = false)
+    // this.events
+    //   .filter(({ campainId }) => campainId === _campainId)
+    //   .forEach(event => event.isEventSelected = true)
   }
 
   closeTooltip = () => {

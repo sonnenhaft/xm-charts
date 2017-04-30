@@ -4,7 +4,7 @@ import { Snow, Desktop, Diskette } from './IconsGroup'
 import './NetworkGrid.scss'
 import { Transform } from 'd3-zoom/src/transform'
 import WindowDependable from '../common/WindowDependable'
-const calculateClusterCoords = require('./calculateClusterCoords')
+import calculateClusterCoords from './calculateClusterCoords'
 
 const CHART_PADDING = 0
 export default class NetworkGrid extends Component {
@@ -112,11 +112,15 @@ export default class NetworkGrid extends Component {
       width: scaledNodeHeight / 2,
     }
 
-    this.svg.select('.cluster-labels').bindData('g.clusterLabel', cachedClusters.coordinatedClusters, {
+    this.svg.select('.cluster-labels').bindData('text.clusterLabel', cachedClusters.coordinatedClusters, {
       fill: 'black',
-      transform: ({ x, y }) => `translate(${xScale(x)}, ${yScale(y)})`,
-      html: ({cluster}) => `<g class="label"><text font-size="33" font-family="sans-serif" dy="18" dx="18">${cluster}</text></g>`,
-    }).select('.label').attr('transform', `scale(${k}, ${k})`)
+      'font-size': 33,
+      'font-family': 'sans-serif',
+      dx: 18,
+      dy: 18,
+      transform: ({ x, y }) => `translate(${xScale(x)}, ${yScale(y)}) scale(${k}, ${k})`,
+      text: ({cluster}) => cluster,
+    })
 
     const enteredSelection = this.svg.select('.grid').selectAll('.singleRectGroup')
       .data(cachedClusters.coordinatedNodes, ({ node: { _id: id } }) => id)

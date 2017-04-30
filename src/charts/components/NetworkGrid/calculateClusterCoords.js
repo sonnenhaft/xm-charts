@@ -1,11 +1,14 @@
-const { groupBy, transform, values } = require('lodash')
-const pack = require('bin-pack')
+import { groupBy, transform, values }  from 'lodash'
+import pack from 'bin-pack'
 
 const MARGIN = 0.25
-const LAYOUT_MARGIN = MARGIN
+const LAYOUT_MARGIN_TOP = MARGIN
+const LAYOUT_MARGIN_BOTTOM = MARGIN/4
+const LAYOUT_MARGIN_LEFT = MARGIN/4
 const PADDING_W = MARGIN
 const PADDING_H = MARGIN * 2
-module.exports = function(computers) {
+
+export default  function (computers) {
   let clusters = transform(groupBy(computers, 'cluster'), (result, nodesObject, clusterId) => {
     const size = nodesObject.length
     const width = Math.ceil(Math.sqrt(size))
@@ -32,7 +35,7 @@ module.exports = function(computers) {
     return nodes.concat(nodesObject.map((node, index) => {
       return ({
         node,
-        y: index / height + (1 - index % (height))/height + y,
+        y: index / height + (1 - index % (height)) / height + y,
         x: index % (width ) + x,
       })
     }))
@@ -41,6 +44,7 @@ module.exports = function(computers) {
   const coordinatedClusters = items.reduce((clusters, { width, height, x, y, item: { clusterId: cluster } }) => {
     clusters.push({
       cluster,
+      id: cluster,
       width: PADDING_W * 2 + width,
       height: PADDING_H * 2 + height,
       x: x - PADDING_W,
@@ -50,13 +54,13 @@ module.exports = function(computers) {
   }, [])
 
   coordinatedClusters.concat(coordinatedNodes).forEach(item => {
-    item.x += LAYOUT_MARGIN
-    item.y += LAYOUT_MARGIN
+    item.x += LAYOUT_MARGIN_LEFT
+    item.y += LAYOUT_MARGIN_TOP
   })
 
   return {
-    totalWidth: totalWidth + LAYOUT_MARGIN * 2,
-    totalHeight: totalHeight + LAYOUT_MARGIN * 2,
+    totalWidth: totalWidth + LAYOUT_MARGIN_LEFT * 2,
+    totalHeight: totalHeight + LAYOUT_MARGIN_TOP + LAYOUT_MARGIN_BOTTOM,
     coordinatedClusters,
     coordinatedNodes,
   }
