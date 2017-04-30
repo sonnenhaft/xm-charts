@@ -8,7 +8,7 @@ import './SimulationChart.scss'
 
 const SimulationChart = ({events = [], nodes = [], className = '', currentTime, onCurrentTimeChanged}) => (
   <div className={className} styleName="root">
-    <NetworkGrid styleName="network" {...{ events, nodes, currentTime }}></NetworkGrid>
+    <NetworkGrid styleName="network" {...{ events, nodes, currentTime }}/>
     <Timeline styleName="timeline" {...{ events, nodes, currentTime, onCurrentTimeChanged }} />
   </div>
 )

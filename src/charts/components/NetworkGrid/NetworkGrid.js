@@ -4,12 +4,15 @@ import { Snow, Desktop, Diskette } from './IconsGroup'
 import './NetworkGrid.scss'
 import { Transform } from 'd3-zoom/src/transform'
 import WindowDependable from '../common/WindowDependable'
+const calculateClusterCoords = require('./calculateClusterCoords')
 
+const CHART_PADDING = 0
 export default class NetworkGrid extends Component {
   refRootBlock = rootBlock => {
     this.rootBlock = d3.select(rootBlock)
     this.svg = this.rootBlock.select('.svg')
     this.svg.select('.zoomRect').call(this.zoom)
+    this.forceUpdate()
   }
 
   onZoomFactorChanged = () => {
@@ -19,7 +22,7 @@ export default class NetworkGrid extends Component {
 
   constructor(props) {
     super(props)
-    this.zoom = d3.zoom().scaleExtent([1, 1000]).on('zoom', this.onZoomFactorChanged)
+    this.zoom = d3.zoom().scaleExtent([0.01, 1000]).on('zoom', this.onZoomFactorChanged)
     this.currentZoom = d3.zoomIdentity
     this.heightZoom = new Transform(1, 0, 0)
     this.componentWillReceiveProps(props)
@@ -37,8 +40,6 @@ export default class NetworkGrid extends Component {
   }
 
   componentWillReceiveProps({ events, nodes, currentTime }) {
-    const gridSize = this.gridSize = Math.ceil(Math.sqrt(nodes.length))
-
     this.nodeColors = nodes.reduce((map, { agentId }) => {
       map[agentId] = 'white'
       return map
@@ -54,26 +55,7 @@ export default class NetworkGrid extends Component {
         }
       })
 
-    let count = 0
-    let lines = [[]]
-
-    nodes.forEach(item => {
-      if ( count === Math.round(gridSize * 0.5) ) {
-        lines.push([])
-        count = 0
-      }
-      lines[lines.length - 1].push(item)
-      count += 1
-    })
-
-    this.lines = lines
-    const data = this.data = []
-    lines.forEach((items, x) => {
-      items.forEach((item, y) => {
-        data.push({ x, y, item, index: nodes.indexOf(item) })
-      })
-    })
-    this.data = data
+    this.cachedClusters = calculateClusterCoords(nodes)
   }
 
   componentDidUpdate() {
@@ -86,37 +68,36 @@ export default class NetworkGrid extends Component {
 
   renderChart() {
     const refNode = this.rootBlock.node()
-    let size = this.lines.length
-
-    let width = refNode.clientWidth
-    let height =  refNode.clientHeight
+    const width = refNode.clientWidth
+    const height = refNode.clientHeight
+    const cachedClusters = this.cachedClusters
 
     this.svg.attrs({ width, height })
     this.svg.select('.zoomRect').attrs({ width, height })
 
     const nodeWidth = 40
-    const nodeHeight = nodeWidth * 2
+    const nodeHeight = nodeWidth
 
     this.zoom.translateExtent([[0, 0], [width, height]]).extent([[0, 0], [width, height]])
-    const xScale = d3.scaleLinear().domain([0, size]).range([0, this.gridSize * nodeWidth * 2])
-    const yScale = d3.scaleLinear().domain([0, size]).range([0, nodeHeight * size * 0.9])
+
+    const xScale = d3.scaleLinear().domain([0, 1]).range([0, nodeWidth])
+    const yScale = d3.scaleLinear().domain([0, 1]).range([0, nodeHeight])
     xScale.domain(this.currentZoom.rescaleX(xScale).domain())
     yScale.domain(this.currentZoom.rescaleY(yScale).domain())
 
-    let kk = Math.min(height / (nodeHeight * this.gridSize) * 2, (width - 10) / (nodeWidth * this.gridSize) / 2)
+    let kk = Math.min(height / (nodeHeight * cachedClusters.totalHeight), (width) / (nodeWidth * cachedClusters.totalWidth))
     this.heightZoom.k = kk
 
     xScale.domain(this.heightZoom.rescaleX(xScale).domain())
     yScale.domain(this.heightZoom.rescaleY(yScale).domain())
 
     const k = this.currentZoom.k * kk
-    const FILLED_SPACE = 0.7
+    const FILLED_SPACE = 0.8
     const MAX_STROKE = 2
-    const strokeWidth = Math.min(MAX_STROKE, Math.max(MAX_STROKE * k, MAX_STROKE / 4))
+    const strokeWidth = Math.min(MAX_STROKE, Math.max(MAX_STROKE * k, MAX_STROKE / 10))
     const offset = strokeWidth * 3 * 1.1
     const rx = offset
     const scaledNodeHeight = nodeHeight * FILLED_SPACE * k
-    const scaledNodeWidth = nodeWidth * FILLED_SPACE * k
 
     const simpleRectAttrs = {
       rx,
@@ -124,11 +105,18 @@ export default class NetworkGrid extends Component {
       strokeWidth,
       stroke: 'black',
       height: scaledNodeHeight,
-      width: scaledNodeWidth,
+      width: scaledNodeHeight / 2,
     }
 
+    this.svg.select('.clusters').bindData('rect.clusters', cachedClusters.coordinatedClusters, {
+      width: ({ width }) => nodeWidth * k * width,
+      height: ({ height }) => nodeWidth * k * height,
+      transform: ({ x, y }) => `translate(${xScale(x)}, ${yScale(y)})`,
+      'stroke-width': strokeWidth,
+    },)
+
     const enteredSelection = this.svg.select('.grid').selectAll('.singleRectGroup')
-      .data(this.data, ({ item: { _id: id } }) => id)
+      .data(cachedClusters.coordinatedNodes, ({ node: { _id: id } }) => id)
 
     enteredSelection.exit().remove()
 
@@ -153,7 +141,7 @@ export default class NetworkGrid extends Component {
 
     const allElements = mergedSelection.merge(enteredSelection)
     allElements.attrs({
-      transform: ({ x, y }) => `translate(${xScale(x)},${yScale(y)})`,
+      transform: ({ x, y }) => `translate(${xScale(x + 0.5 - (1 - FILLED_SPACE))},${yScale(y + (1 - FILLED_SPACE) / 2)})`,
       cursor: 'pointer',
       click: ({ index }) => {
         const { clientX: left, clientY: top } = d3.event
@@ -162,14 +150,14 @@ export default class NetworkGrid extends Component {
         rect.style('top', top - 50).style('left', left).style('display', 'block')
         this.setState({ selectedNodeIndex: index })
       },
-      fill: ({ item: { agentId } }) => this.nodeColors[agentId],
+      fill: ({ node: { agentId } }) => this.nodeColors[agentId],
     })
 
     allElements.select('.simpleRect').attrs(simpleRectAttrs)
     allElements.select('.wrapperRect').attrs({
       ...simpleRectAttrs,
       fill: 'white',
-      width: scaledNodeWidth + offset,
+      width: scaledNodeHeight / 2 + offset,
       height: scaledNodeHeight + offset,
       transform: `translate(${-offset / 2}, ${-offset / 2})`,
       stroke: ({ index }) => index === this.state.selectedNodeIndex ? 'black' : 'none',
@@ -177,15 +165,15 @@ export default class NetworkGrid extends Component {
 
     const iconsGroup = allElements.select('.iconsGroup')
     iconsGroup.attrs({
-      transform: `scale(${k}, ${k})`,
-      fill: ({ item: { agentId } }) => this.nodeColors[agentId] === 'white' ? 'black' : 'white',
+      transform: `scale(${k / 2}, ${k / 2})`,
+      fill: ({ node: { agentId } }) => this.nodeColors[agentId] === 'white' ? 'black' : 'white',
     })
     iconsGroup.selectAll('path').attrs({ visibility: k >= 1.2 ? 'visible' : 'hidden' })
     iconsGroup.selectAll('circle').attrs({ visibility: k < 1.2 ? 'visible' : 'hidden' })
   }
 
   render() {
-    const {className, nodes} = this.props
+    const { className, nodes } = this.props
     const selectedItem = nodes[this.state.selectedNodeIndex]
     const { name } = selectedItem || {}
 
@@ -203,10 +191,11 @@ export default class NetworkGrid extends Component {
           </div>
         </div>
         <svg className="svg">
-          <g transform="translate(10, 10)">
+          <g transform={`translate(${CHART_PADDING}, ${CHART_PADDING})`}>
+            <g className="clusters" fill="#e5e5e5" stroke="black"/>
             <g className="grid"/>
           </g>
-          <rect className="zoomRect" fill="#e5e5e5" opacity={0.1} cursor="move"/>
+          <rect className="zoomRect" fill="#e5e5e5" opacity={0} cursor="move"/>
         </svg>
       </WindowDependable>
     )

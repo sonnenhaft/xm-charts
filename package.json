@@ -1,6 +1,6 @@
 {
   "name": "xm-charts",
-  "version": "1.0.126",
+  "version": "1.0.129",
   "scripts": {
     "start": "webpack-dashboard --port 9001 --minimal -- npm run dev",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open",
@@ -12,7 +12,8 @@
     "test:coverage": "jest --coverage",
     "build:bitballoon": "npm --no-git-tag-version version patch && npm run prod && node bitballoon",
     "bitballoon": "node bitballoon.js",
-    "bump": "npm version patch --no-git-tag-version && git add package.json"
+    "bump": "npm version patch --no-git-tag-version && git add package.json",
+    "nodemon": "nodemon src/charts/components/NetworkGrid/calculateClustersSample.js"
   },
   "dependencies": {
     "airbnb-prop-types": "^2.5.2",

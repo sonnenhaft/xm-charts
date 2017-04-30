@@ -6,7 +6,7 @@ const CleanPlugin = require('clean-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const DashboardPlugin = require('webpack-dashboard/plugin')
 
-const devServerPort = process.env.PORT || 8087
+const devServerPort = process.env.PORT || 8086
 
 const pkg = require('./package.json')
 const vendorPackages = Object.keys(pkg.dependencies)

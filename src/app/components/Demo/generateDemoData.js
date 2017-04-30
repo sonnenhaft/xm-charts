@@ -1,5 +1,9 @@
-import nodes from './demo-nodes.json'
+import N from './demo-nodes.json'
 import events from './demo-events.json'
+
+const Chance = require('chance')
+const chance = new Chance()
+const nodes = N.map(node => Object.assign(node, { cluster: chance.weighted(['a', 'b', 'c', 'd', undefined], [1, 2, 3, 4, 2]) }))
 
 events.forEach(event => {
   let {
