@@ -1,0 +1,29 @@
+@import "../../../../assets/colors";
+
+.circle-indicator {
+  position: relative;
+  padding: 3px;
+
+  .circle-text {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    transform: translateY(50%)
+  }
+
+  .circle-text-wrapper {
+    transform: translate(4%, -56%);
+    color: white;
+    small {
+      font-size: 70%;
+    }
+  }
+  .circle-text-number {
+    display: inline-block;
+    vertical-align: sub;
+    padding-right: 1px;
+  }
+}

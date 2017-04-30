@@ -1,0 +1,11 @@
+<svg width="34px" height="55px" viewBox="292 0 34 55" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 42 (36781) - http://www.bohemiancoding.com/sketch -->
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="assets/Not-Flagged" stroke="none" fill="none" transform="translate(292.000000, 0.000000)" fill-rule="evenodd">
+        <polygon id="Rectangle" fill="#F0F0F0" points="0 0 34 0 34 55 17 47.6666667 0 55"></polygon>
+        <g id="flag-active" stroke-width="1" transform="translate(3.695652, 13.200000)" fill="#D3D3D3">
+            <path d="M17.9993173,12.8882907 L21.2869565,10.2322939 L12.7420156,6.52046866 L12.9099846,6.15993175 C13.0556151,5.84472186 12.9099846,5.47586807 12.5860751,5.33489689 C12.2621655,5.19350987 11.8794023,5.33489689 11.7333423,5.64802756 L11.5658029,6.00898031 L11.3239446,5.90335589 L8.17248486,12.7028242 L8.41434308,12.8084486 L5.37844255,19.3596579 C5.23238253,19.6748678 5.37844255,20.0437215 5.70235213,20.1851086 C5.7878402,20.2221187 5.87676498,20.24 5.96611935,20.24 C6.21270303,20.24 6.44768783,20.1036031 6.55508491,19.8715621 L9.59055585,13.3203528 L18.1354967,17.0305146 L17.9993173,12.8882907 Z" id="shape"></path>
+        </g>
+    </g>
+</svg>

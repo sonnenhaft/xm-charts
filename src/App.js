@@ -1,7 +1,7 @@
 import React from 'react'
 import Router from 'react-router-dom/HashRouter'
 import { Route } from 'react-router-dom'
-import Demo from './Demo/Demo'
+import Demo from './app/components/Demo'
 
 const App = () => (
   <Router>
