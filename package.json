@@ -1,6 +1,6 @@
 {
   "name": "xm-charts",
-  "version": "1.0.129",
+  "version": "1.0.130",
   "scripts": {
     "start": "webpack-dashboard --port 9001 --minimal -- npm run dev",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open",
@@ -28,9 +28,6 @@
     "recompose": "^0.22.0",
     "throttle-debounce": "^1.0.1"
   },
-  "pre-commit": [
-    "bump"
-  ],
   "devDependencies": {
     "autoprefixer": "^6.7.5",
     "babel-core": "^6.23.1",
@@ -66,7 +63,6 @@
     "node-sass": "^4.5.0",
     "postcss-inline-comment": "^3.0.0",
     "postcss-scss": "^0.4.1",
-    "pre-commit": "^1.2.2",
     "raw-loader": "^0.5.1",
     "react-addons-test-utils": "^15.4.2",
     "react-hot-loader": "3.0.0-beta.6",

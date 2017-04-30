@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
 import SimulationChart from 'charts/components/SimulationChart'
-import generateDemoData from './generateDemoData'
+import getDemoData from './getDemoData'
 import './Demo.scss'
 
-const data = generateDemoData()
+const data = getDemoData()
 const version = `${process.env.npm_package_name} v${process.env.npm_package_version}`
 
 const Bar = ({className}) => (<div className={className}>Toolbar here ({version})</div>)

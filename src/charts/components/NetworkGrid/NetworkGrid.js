@@ -22,7 +22,7 @@ export default class NetworkGrid extends Component {
 
   constructor(props) {
     super(props)
-    this.zoom = d3.zoom().scaleExtent([0.01, 1000]).on('zoom', this.onZoomFactorChanged)
+    this.zoom = d3.zoom().scaleExtent([1, 1000]).on('zoom', this.onZoomFactorChanged)
     this.currentZoom = d3.zoomIdentity
     this.heightZoom = new Transform(1, 0, 0)
     this.componentWillReceiveProps(props)
@@ -108,12 +108,11 @@ export default class NetworkGrid extends Component {
       width: scaledNodeHeight / 2,
     }
 
-    this.svg.select('.clusters').bindData('rect.clusters', cachedClusters.coordinatedClusters, {
-      width: ({ width }) => nodeWidth * k * width,
-      height: ({ height }) => nodeWidth * k * height,
+    this.svg.select('.cluster-labels').bindData('g.clusterLabel', cachedClusters.coordinatedClusters, {
+      fill: 'black',
       transform: ({ x, y }) => `translate(${xScale(x)}, ${yScale(y)})`,
-      'stroke-width': strokeWidth,
-    },)
+      html: ({cluster}) => `<g class="label"><text font-size="33" font-family="sans-serif" dy="18" dx="18">${cluster}</text></g>`,
+    }).select('.label').attr('transform', `scale(${k}, ${k})`)
 
     const enteredSelection = this.svg.select('.grid').selectAll('.singleRectGroup')
       .data(cachedClusters.coordinatedNodes, ({ node: { _id: id } }) => id)
@@ -192,7 +191,8 @@ export default class NetworkGrid extends Component {
         </div>
         <svg className="svg">
           <g transform={`translate(${CHART_PADDING}, ${CHART_PADDING})`}>
-            <g className="clusters" fill="#e5e5e5" stroke="black"/>
+            <g className="clusters" opacity={0}/>
+            <g className="cluster-labels"/>
             <g className="grid"/>
           </g>
           <rect className="zoomRect" fill="#e5e5e5" opacity={0} cursor="move"/>

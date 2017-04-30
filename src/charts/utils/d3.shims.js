@@ -16,7 +16,11 @@ const methods = {
     const mouseEvents = ['mouseover', 'mouseout', 'click']
     Object.keys(object).forEach(key => {
       const value = object[key]
-      if ( key === 'text' ) {
+      if (key === 'html') {
+        if ( !noEvents ) {
+          this.html(value)
+        }
+      } else if ( key === 'text' ) {
         this.text(value)
       } else if ( mouseEvents.includes(key) ) {
         if ( !noEvents ) {
