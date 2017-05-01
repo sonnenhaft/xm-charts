@@ -7,7 +7,9 @@ import WindowDependable from '../common/WindowDependable'
 import calculateClusterCoords from './calculateClusterCoords'
 
 const CHART_PADDING = 0
+
 export default class NetworkGrid extends Component {
+
   refRootBlock = rootBlock => {
     this.rootBlock = d3.select(rootBlock)
     this.svg = this.rootBlock.select('.svg')
@@ -40,10 +42,16 @@ export default class NetworkGrid extends Component {
   }
 
   componentWillReceiveProps({ events, nodes, currentTime }) {
-    this.nodeColors = nodes.reduce((map, { agentId }) => {
-      map[agentId] = 'white'
-      return map
-    }, {})
+
+    if(nodes === this.props.nodes) { //!this.cachedClusters
+      this.cachedClusters = calculateClusterCoords(nodes)
+
+      this.nodeColors = nodes.reduce((map, { agentId }) => {
+        map[agentId] = 'white'
+        return map
+      }, {})
+    }
+
     events
       .filter(({ date }) => currentTime > date)
       .forEach(item => {
@@ -59,7 +67,8 @@ export default class NetworkGrid extends Component {
         }
       })
 
-    this.cachedClusters = calculateClusterCoords(nodes)
+
+
   }
 
   componentDidUpdate() {
