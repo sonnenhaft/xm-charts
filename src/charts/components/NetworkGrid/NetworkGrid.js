@@ -210,11 +210,13 @@ export default class NetworkGrid extends Component {
     })
     allElements.select('.wrapperRect').attrs({
       ...simpleRectAttrs,
+      rx: offset + 2,
+      ry: offset + 2,
       fill: 'white',
       'stroke-width': 1,
       width: nodeHeight / 2 + offset,
       height: nodeHeight + offset,
-      transform: `translate(${-offset / 2}, ${-offset / 2}) scale(${FILLED_SPACE * k})`,
+      transform: `translate(${-offset * k * FILLED_SPACE / 2}, ${-offset * k * FILLED_SPACE/ 2}) scale(${FILLED_SPACE * k})`,
       stroke: (ignored, index) => index === this.state.selectedNodeIndex ? 'black' : 'none',
     })
 
