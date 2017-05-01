@@ -11,8 +11,9 @@ const CHART_PADDING = 0
 export default class NetworkGrid extends Component {
 
   state = {
-    selectedNodeIndex: null,
+    hoveredNodeIndex: null,
     canShowChart: false,
+    selectedNodeIndex: null,
   }
 
   refRootBlock = rootBlock => {
@@ -35,11 +36,12 @@ export default class NetworkGrid extends Component {
     this.heightZoom = new Transform(1, 0, 0)
   }
 
-  shouldComponentUpdate({ currentTime, events, nodes }, { selectedNodeIndex, canShowChart }) {
+  shouldComponentUpdate({ currentTime, events, nodes }, { hoveredNodeIndex, selectedNodeIndex, canShowChart }) {
     const { props, state } = this
     return props.currentTime !== currentTime
       || props.events !== events
       || props.nodes !== nodes
+      || state.hoveredNodeIndex !== hoveredNodeIndex
       || state.selectedNodeIndex !== selectedNodeIndex
       || state.canShowChart !== canShowChart
   }
@@ -94,7 +96,6 @@ export default class NetworkGrid extends Component {
   }
 
   renderChart() {
-    console.log('trying to render')
     const {nodes} = this.props
     if (!nodes.length) {
       return
@@ -118,22 +119,29 @@ export default class NetworkGrid extends Component {
     xScale.domain(this.currentZoom.rescaleX(xScale).domain())
     yScale.domain(this.currentZoom.rescaleY(yScale).domain())
 
-    this.svg.select('.zoomRect').on('mousemove', ( ) => {
-      const y = yScale.invert(d3.event.offsetY)
-      const x = xScale.invert(d3.event.offsetX)
-      const selectedNodeIndex = cachedClusters.coordinatedNodes.findIndex(({x: _x, y: _y}) => {
-        _y = _y + 1
-        return _x < x && y < _y && _x + 1 > x && _y + 1 >= y
+    const gee = ({offsetX, offsetY}) => {
+      const x = xScale.invert(offsetX)
+      const y = yScale.invert(offsetY)
+      return cachedClusters.coordinatedNodes.findIndex(({x: _x, y: _y}) => {
+        return _x - 0.5 < x && _y <  y && _x + 0.5 > x && _y + 0.8 >= y
       })
+    }
 
+    this.svg.select('.zoomRect').on('mousemove', ( ) => {
+      const hoveredNodeIndex = gee(d3.event)
+
+      console.log(hoveredNodeIndex)
       const rect = this.rootBlock.select('.gridTooltip')
-      if (selectedNodeIndex !== -1 && this.state.selectedNodeIndex !== selectedNodeIndex) {
-        const {x: _x, y: _y} = cachedClusters.coordinatedNodes[selectedNodeIndex]
-        rect.style('top', yScale(_y + 1)  + 25).style('left', xScale(_x) + 10).style('display', 'block')
-        this.setState({ selectedNodeIndex })
-      } else if (selectedNodeIndex === -1) {
+      if (hoveredNodeIndex !== -1 && this.state.hoveredNodeIndex !== hoveredNodeIndex) {
+        const {x: _x, y: _y} = cachedClusters.coordinatedNodes[hoveredNodeIndex]
+        rect.style('top', yScale(_y + 0.4)  + 37).style('left', xScale(_x + 0.20)).style('display', 'block')
+        this.setState({ hoveredNodeIndex })
+      } else if (hoveredNodeIndex === -1) {
         rect.style('display', 'none')
       }
+    }).on('click', () => {
+      const selectedNodeIndex = gee(d3.event)
+      this.setState({ selectedNodeIndex })
     })
 
 
@@ -164,8 +172,8 @@ export default class NetworkGrid extends Component {
       fill: 'black',
       'font-size': 33,
       'font-family': 'sans-serif',
-      dx: 18,
-      dy: 18,
+      dx: 0,
+      dy: 14,
       transform: ({ x, y }) => `translate(${xScale(x)}, ${yScale(y)}) scale(${k}, ${k})`,
       text: ({cluster}) => cluster,
     })
@@ -196,15 +204,8 @@ export default class NetworkGrid extends Component {
 
     const allElements = mergedSelection.merge(enteredSelection)
     allElements.attrs({
-      transform: ({ x, y }) => `translate(${xScale(x + 0.5 - (1 - FILLED_SPACE))},${yScale(y + (1 - FILLED_SPACE) / 2)})`,
+      transform: ({ x, y }) => `translate(${xScale(x)},${yScale(y)})`,
       cursor: 'pointer',
-      click: ({ index }) => {
-        const { clientX: left, clientY: top } = d3.event
-
-        const rect = this.rootBlock.select('.gridTooltip')
-        rect.style('top', top - 50).style('left', left).style('display', 'block')
-        this.setState({ selectedNodeIndex: index })
-      },
       fill: ({ node: { agentId } }) => this.nodeColors[agentId],
     })
 
@@ -212,10 +213,11 @@ export default class NetworkGrid extends Component {
     allElements.select('.wrapperRect').attrs({
       ...simpleRectAttrs,
       fill: 'white',
+      'stroke-width': 1,
       width: scaledNodeHeight / 2 + offset,
       height: scaledNodeHeight + offset,
       transform: `translate(${-offset / 2}, ${-offset / 2})`,
-      stroke: ({ index }) => index === this.state.selectedNodeIndex ? 'black' : 'none',
+      stroke: (ignored, index) => index === this.state.selectedNodeIndex ? 'black' : 'none',
     })
 
     const iconsGroup = allElements.select('.iconsGroup')
@@ -230,7 +232,7 @@ export default class NetworkGrid extends Component {
   render() {
     const  {canShowChart} = this.state
     const { className, nodes } = this.props
-    const selectedItem = nodes[this.state.selectedNodeIndex]
+    const selectedItem = nodes[this.state.hoveredNodeIndex]
     const { name } = selectedItem || {}
 
     return (
