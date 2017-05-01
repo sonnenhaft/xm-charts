@@ -22,6 +22,7 @@
   path {
     stroke: $white;
     fill: $white;
+    transform: translate(-5px, -4px) scale(0.8);
   }
 
   &.vertical,
@@ -57,7 +58,7 @@
   &.vertical {
     flex-direction: row;
     .icon {
-      padding: 0;
+      padding: 0 2px;
     }
   }
   &.vertical .icon + span {
