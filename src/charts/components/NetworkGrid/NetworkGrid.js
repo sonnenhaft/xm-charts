@@ -155,7 +155,7 @@ export default class NetworkGrid extends Component {
     const offset = 4.4
 
     const simpleRectAttrs = {
-      rx: offset
+      rx: offset,
       ry: offset,
       strokeWidth: 2,
       stroke: 'black',
