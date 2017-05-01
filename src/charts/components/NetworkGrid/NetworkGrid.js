@@ -157,15 +157,14 @@ export default class NetworkGrid extends Component {
     const strokeWidth = Math.min(MAX_STROKE, Math.max(MAX_STROKE * k, 1))
     const offset = strokeWidth * 2 * 1.1
     const rx = offset
-    const scaledNodeHeight = nodeHeight * FILLED_SPACE * k
 
     const simpleRectAttrs = {
       rx,
       ry: rx,
       strokeWidth,
       stroke: 'black',
-      height: scaledNodeHeight,
-      width: scaledNodeHeight / 2,
+      height: nodeHeight,
+      width: nodeHeight / 2,
     }
 
     this.svg.select('.cluster-labels').bindData('text.clusterLabel', cachedClusters.coordinatedClusters, {
@@ -209,14 +208,17 @@ export default class NetworkGrid extends Component {
       fill: ({ node: { agentId } }) => this.nodeColors[agentId],
     })
 
-    allElements.select('.simpleRect').attrs(simpleRectAttrs)
+    allElements.select('.simpleRect').attrs({
+      ...simpleRectAttrs,
+      transform: `scale(${FILLED_SPACE * k})`,
+    })
     allElements.select('.wrapperRect').attrs({
       ...simpleRectAttrs,
       fill: 'white',
       'stroke-width': 1,
-      width: scaledNodeHeight / 2 + offset,
-      height: scaledNodeHeight + offset,
-      transform: `translate(${-offset / 2}, ${-offset / 2})`,
+      width: nodeHeight / 2 + offset,
+      height: nodeHeight + offset,
+      transform: `translate(${-offset / 2}, ${-offset / 2}) scale(${FILLED_SPACE * k})`,
       stroke: (ignored, index) => index === this.state.selectedNodeIndex ? 'black' : 'none',
     })
 
