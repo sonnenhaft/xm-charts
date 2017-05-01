@@ -16,7 +16,7 @@ const SimulationChart = ({events = [], nodes = [], className = '', currentTime, 
 
 const enhance = compose(
   withPropsOnChange(['nodes', 'events'], ({nodes, events}) => eventsAndNodesAdapter({events, nodes})),
-  withState('currentTime', 'onCurrentTimeChanged', ({events}) => events.length && new Date(events[events.length - 1].timestamp).getTime())
+  withState('currentTime', 'onCurrentTimeChanged', ({events}) => events.length && events[events.length - 1].date)
 )
 
 export default enhance(SimulationChart)
