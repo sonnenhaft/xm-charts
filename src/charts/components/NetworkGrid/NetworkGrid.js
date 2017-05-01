@@ -58,7 +58,9 @@ export default class NetworkGrid extends Component {
   }
 
   calculateEvents({ events, nodes, currentTime }) {
-    if (!nodes.length || !events.length) return
+    if (!nodes.length || !events.length) {
+      return
+    }
 
     this.cachedClusters = calculateClusterCoords(nodes)
 
@@ -85,7 +87,9 @@ export default class NetworkGrid extends Component {
 
   renderChart() {
     const {nodes, events} = this.props
-    if (!nodes.length || !events.length) return
+    if (!nodes.length || !events.length) {
+      return
+    }
 
     const refNode = this.rootBlock.node()
     const width = refNode.clientWidth
