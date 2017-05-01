@@ -58,7 +58,7 @@ export default class NetworkGrid extends Component {
   }
 
   calculateEvents({ events, nodes, currentTime }) {
-    if (!nodes.length || !events.length) {
+    if (!nodes.length) {
       return
     }
 
@@ -86,8 +86,8 @@ export default class NetworkGrid extends Component {
   }
 
   renderChart() {
-    const {nodes, events} = this.props
-    if (!nodes.length || !events.length) {
+    const {nodes} = this.props
+    if (!nodes.length) {
       return
     }
 
