@@ -103,7 +103,8 @@ export default class NetworkGrid extends Component {
 
     const refNode = this.rootBlock.node()
     const width = refNode.clientWidth
-    const height = Math.max(refNode.clientHeight, 400)
+    const h = refNode.clientHeight;
+    const height = Math.max(h, 100)
     const cachedClusters = this.cachedClusters
 
     this.svg.attrs({ width, height })
@@ -130,7 +131,6 @@ export default class NetworkGrid extends Component {
     this.svg.select('.zoomRect').on('mousemove', ( ) => {
       const hoveredNodeIndex = gee(d3.event)
 
-      console.log(hoveredNodeIndex)
       const rect = this.rootBlock.select('.gridTooltip')
       if (hoveredNodeIndex !== -1 && this.state.hoveredNodeIndex !== hoveredNodeIndex) {
         const {x: _x, y: _y} = cachedClusters.coordinatedNodes[hoveredNodeIndex]
