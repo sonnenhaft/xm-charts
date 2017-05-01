@@ -32,7 +32,6 @@ export default class NetworkGrid extends Component {
     this.zoom = d3.zoom().scaleExtent([1, 1000]).on('zoom', this.onZoomFactorChanged)
     this.currentZoom = d3.zoomIdentity
     this.heightZoom = new Transform(1, 0, 0)
-    this.componentWillReceiveProps(props)
   }
 
   shouldComponentUpdate({ currentTime, events, nodes }, { selectedNodeIndex, canShowChart }) {
@@ -42,19 +41,31 @@ export default class NetworkGrid extends Component {
       || props.nodes !== nodes
       || state.selectedNodeIndex !== selectedNodeIndex
       || state.canShowChart !== canShowChart
-
   }
 
-  componentWillReceiveProps({ events, nodes, currentTime }) {
+  componentWillReceiveProps(nextProps) {
+    this.calculateEvents(nextProps)
+  }
 
-    if(nodes === this.props.nodes) { //!this.cachedClusters
-      this.cachedClusters = calculateClusterCoords(nodes)
+  componentDidUpdate() {
+    this.setState({canShowChart: true}, () => {
+      setTimeout(() => this.renderChart(), 250)
+    })
+  }
 
-      this.nodeColors = nodes.reduce((map, { agentId }) => {
-        map[agentId] = 'white'
-        return map
-      }, {})
-    }
+  componentDidMount() {
+    this.calculateEvents(this.props)
+  }
+
+  calculateEvents({ events, nodes, currentTime }) {
+    if (!nodes.length || !events.length) return
+
+    this.cachedClusters = calculateClusterCoords(nodes)
+
+    this.nodeColors = nodes.reduce((map, { agentId }) => {
+      map[agentId] = 'white'
+      return map
+    }, {})
 
     events
       .filter(({ date }) => currentTime > date)
@@ -70,27 +81,15 @@ export default class NetworkGrid extends Component {
           }
         }
       })
-
-
-
-  }
-
-  componentDidUpdate() {
-    this.renderChart()
-  }
-
-  componentDidMount() {
-    setTimeout(() => {
-      this.setState({canShowChart: true})
-    }, 250)
-
-
   }
 
   renderChart() {
+    const {nodes, events} = this.props
+    if (!nodes.length || !events.length) return
+
     const refNode = this.rootBlock.node()
     const width = refNode.clientWidth
-    const height = refNode.clientHeight
+    const height = Math.max(refNode.clientHeight, 400)
     const cachedClusters = this.cachedClusters
 
     this.svg.attrs({ width, height })

@@ -22,33 +22,29 @@ const Bar = ({className, value, ...rest}) => (
 
 class Demo extends Component {
   state = {
-    events: [],
     nodes: [],
+    events: [],
     option: options[0].value,
   }
 
   componentDidMount() {
-    this.onLoadData(this.state.option)
+    this.onLoadData()
   }
 
-  onLoadData(value) {
+  onLoadData(value = this.state.option) {
     const events = require(`./events${value}.json`)
     const nodes = require(`./nodes${value}.json`)
 
     this.setState({option: value, events, nodes})
   }
 
-  // onOptionChange = (value) => {
-  //   this.setState({option: value}, () => this.onLoadData(value))
-  // }
-
   render() {
     const {option, events, nodes} = this.state
 
     return (
       <div styleName="root">
-        <Bar styleName="toolbar" value={option} onChange={(event) => this.onLoadData(event.target.value)} />
-        <SimulationChart styleName="simulation-chart" events={events} nodes={nodes}/>
+        <Bar styleName="toolbar" value={option} onChange={event => this.onLoadData(event.target.value)} />
+        <SimulationChart styleName="simulation-chart" events={events} nodes={nodes} />
       </div>
     )
   }

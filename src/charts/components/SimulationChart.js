@@ -12,7 +12,12 @@ class SimulationChart extends React.Component {
 
   onCurrentTimeChanged = currentTime => this.setState({currentTime})
 
-  componentWillReceiveProps({nodes, events}){
+  componentDidMount() {
+    const {events} = this.props
+    this.setState({currentTime: events.length && events[events.length - 1].date})
+  }
+
+  componentWillReceiveProps({nodes, events}) {
     if(nodes !== this.props.nodes || events !== this.props.events){
       this.setState({currentTime: events.length && events[events.length - 1].date})
     }
