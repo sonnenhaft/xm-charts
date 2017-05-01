@@ -51,8 +51,8 @@ export default class NetworkGrid extends Component {
   }
 
   componentDidUpdate() {
-    this.setState({canShowChart: true}, () => {
-      if (this.isUpdating) {
+    this.setState({ canShowChart: true }, () => {
+      if ( this.isUpdating ) {
         return
       }
       this.isUpdating = true
@@ -68,7 +68,7 @@ export default class NetworkGrid extends Component {
   }
 
   calculateEvents({ events, nodes, currentTime }) {
-    if (!nodes.length) {
+    if ( !nodes.length ) {
       return
     }
 
@@ -86,9 +86,9 @@ export default class NetworkGrid extends Component {
         const red = 'rgb(242, 30, 39)'
         const blue = 'rgb(70, 96, 223)'
         if ( this.nodeColors[nodeId] !== red ) {
-          if (type === 'nodeMarkAsRed') {
+          if ( type === 'nodeMarkAsRed' ) {
             this.nodeColors[nodeId] = red
-          } else if (type === 'newDiscoveredNode') {
+          } else if ( type === 'newDiscoveredNode' ) {
             this.nodeColors[nodeId] = blue
           }
         }
@@ -96,15 +96,15 @@ export default class NetworkGrid extends Component {
   }
 
   renderChart() {
-    const {nodes} = this.props
-    if (!nodes.length) {
+    const { nodes } = this.props
+    if ( !nodes.length ) {
       return
     }
 
     const refNode = this.rootBlock.node()
     const width = refNode.clientWidth
-    const h = refNode.clientHeight;
-    const height = Math.max(h, 100)
+    const h = refNode.clientHeight
+    const height = Math.max(h, 300)
     const cachedClusters = this.cachedClusters
 
     this.svg.attrs({ width, height })
@@ -120,23 +120,23 @@ export default class NetworkGrid extends Component {
     xScale.domain(this.currentZoom.rescaleX(xScale).domain())
     yScale.domain(this.currentZoom.rescaleY(yScale).domain())
 
-    const gee = ({offsetX, offsetY}) => {
+    const gee = ({ offsetX, offsetY }) => {
       const x = xScale.invert(offsetX)
       const y = yScale.invert(offsetY)
-      return cachedClusters.coordinatedNodes.findIndex(({x: _x, y: _y}) => {
-        return _x - 0.5 < x && _y <  y && _x + 0.5 > x && _y + 0.8 >= y
+      return cachedClusters.coordinatedNodes.findIndex(({ x: _x, y: _y }) => {
+        return _x - 0.5 < x && _y < y && _x + 0.5 > x && _y + 0.8 >= y
       })
     }
 
-    this.svg.select('.zoomRect').on('mousemove', ( ) => {
+    this.svg.select('.zoomRect').on('mousemove', () => {
       const hoveredNodeIndex = gee(d3.event)
 
       const rect = this.rootBlock.select('.gridTooltip')
-      if (hoveredNodeIndex !== -1 && this.state.hoveredNodeIndex !== hoveredNodeIndex) {
-        const {x: _x, y: _y} = cachedClusters.coordinatedNodes[hoveredNodeIndex]
-        rect.style('top', yScale(_y + 0.4)  + 37).style('left', xScale(_x + 0.20)).style('display', 'block')
+      if ( hoveredNodeIndex !== -1 && this.state.hoveredNodeIndex !== hoveredNodeIndex ) {
+        const { x: _x, y: _y } = cachedClusters.coordinatedNodes[hoveredNodeIndex]
+        rect.style('top', yScale(_y + 0.4) + 37).style('left', xScale(_x + 0.20)).style('display', 'block')
         this.setState({ hoveredNodeIndex })
-      } else if (hoveredNodeIndex === -1) {
+      } else if ( hoveredNodeIndex === -1 ) {
         rect.style('display', 'none')
       }
     }).on('click', () => {
@@ -158,19 +158,23 @@ export default class NetworkGrid extends Component {
       rx: offset,
       ry: offset,
       strokeWidth: 2,
-      stroke: 'black',
       height: nodeHeight,
       width: nodeHeight / 2,
+      stroke: ({ node: { agentId } }) => this.nodeColors[agentId] === 'white' ? 'black' : this.nodeColors[agentId],
     }
 
-    this.svg.select('.cluster-labels').bindData('text.clusterLabel', cachedClusters.coordinatedClusters, {
-      fill: 'black',
-      'font-size': 33,
-      'font-family': 'sans-serif',
-      dx: 0,
-      dy: 14,
+    const clasters = cachedClusters.coordinatedClusters
+    this.svg.select('.clusters').bindData('rect.clusterBlock', clasters, {
+      rx: 3,
+      ry: 3,
+      transform: ({ x, y }) => `translate(${xScale(x)}, ${yScale(y)})`,
+      width: ({ width }) => Math.abs(xScale(width) - xScale(0)),
+      height: ({ height }) =>  Math.abs(xScale(height) - xScale(0)),
+    })
+
+    this.svg.select('.cluster-labels').bindData('text.clusterLabel', clasters, {
       transform: ({ x, y }) => `translate(${xScale(x)}, ${yScale(y)}) scale(${k}, ${k})`,
-      text: ({cluster}) => cluster,
+      text: ({ cluster }) => cluster,
     })
 
     const enteredSelection = this.svg.select('.grid').selectAll('.singleRectGroup')
@@ -213,30 +217,31 @@ export default class NetworkGrid extends Component {
       rx: offset + 2,
       ry: offset + 2,
       fill: 'white',
-      'stroke-width': 1,
+      'stroke-width': (ignored, index) => index === this.state.selectedNodeIndex ? 2 : 0,
       width: nodeHeight / 2 + offset,
       height: nodeHeight + offset,
       transform: `translate(${-offset * k * FILLED_SPACE / 2}, ${-offset * k * FILLED_SPACE/ 2}) scale(${FILLED_SPACE * k})`,
-      stroke: (ignored, index) => index === this.state.selectedNodeIndex ? 'black' : 'none',
+      stroke: ({ node: { agentId } }) => this.nodeColors[agentId] === 'white' ? 'black' : this.nodeColors[agentId],
     })
 
     const iconsGroup = allElements.select('.iconsGroup')
     iconsGroup.attrs({
       transform: `scale(${k / 2}, ${k / 2})`,
       fill: ({ node: { agentId } }) => this.nodeColors[agentId] === 'white' ? 'black' : 'white',
+      opacity: ({ node: { agentId } }) => this.nodeColors[agentId] === 'white' ? 1 : 0.5,
     })
     iconsGroup.selectAll('path').attrs({ visibility: k >= 1.2 ? 'visible' : 'hidden' })
     iconsGroup.selectAll('circle').attrs({ visibility: k < 1.2 ? 'visible' : 'hidden' })
   }
 
   render() {
-    const  {canShowChart} = this.state
+    const { canShowChart } = this.state
     const { className, nodes } = this.props
     const selectedItem = nodes[this.state.hoveredNodeIndex]
     const { name } = selectedItem || {}
 
     return (
-      <WindowDependable onDimensionsChanged={() => this.forceUpdate()} style={{opacity: canShowChart ? 1 : 0}} refCb={this.refRootBlock} className={className}>
+      <WindowDependable onDimensionsChanged={() => this.forceUpdate()} style={{ opacity: canShowChart ? 1 : 0 }} refCb={this.refRootBlock} className={className}>
         <div styleName="grid-tooltip" className="gridTooltip">
           <div styleName="device-name">{name}</div>
           <div>
@@ -250,8 +255,9 @@ export default class NetworkGrid extends Component {
         </div>
         <svg className="svg">
           <g transform={`translate(${CHART_PADDING}, ${CHART_PADDING})`}>
-            <g className="clusters" opacity={0}/>
-            <g className="cluster-labels"/>
+            <g className="clusters" fill="none" stroke="#efefef" strokeWidth="1"/>
+            <g className="cluster-labels" fill="black" fontSize="33" fontFamily="sans-serif"
+               transform="translate(0, -5)"/>
             <g className="grid"/>
           </g>
           <rect className="zoomRect" fill="#e5e5e5" opacity={0} cursor="move"/>

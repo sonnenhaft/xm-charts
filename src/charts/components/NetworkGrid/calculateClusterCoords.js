@@ -1,12 +1,14 @@
 import { groupBy, transform, values }  from 'lodash'
 import pack from 'bin-pack'
 
-const MARGIN = 0.25
+const MARGIN = 0.5
+const MARGIN_TOP = 1
 const LAYOUT_MARGIN_TOP = MARGIN * 2
 const LAYOUT_MARGIN_BOTTOM = MARGIN/4
 const LAYOUT_MARGIN_LEFT = MARGIN/4
-const PADDING_W = MARGIN
-const PADDING_H = MARGIN * 2
+const PADDING_RIGHT = 0
+const PADDING_LEFT = MARGIN
+const PADDING_H = MARGIN
 
 export default  function(computers) {
   let clusters = transform(groupBy(computers, 'cluster'), (result, nodesObject, clusterId) => {
@@ -16,8 +18,8 @@ export default  function(computers) {
     // const height =  Math.ceil(size/width)
     result[clusterId] = {
       clusterId,
-      width: width + PADDING_W * 2 + MARGIN * 2,
-      height: height + PADDING_H * 2 + MARGIN * 2,
+      width: width + PADDING_RIGHT + PADDING_LEFT + MARGIN * 2,
+      height: height + PADDING_H * 2 + MARGIN + MARGIN_TOP,
       nodesObject,
     }
   })
@@ -25,10 +27,10 @@ export default  function(computers) {
   let { width: totalWidth, height: totalHeight, items } = pack(values(clusters), { inPlace: false })
 
   items.forEach(item => {
-    item.width -= MARGIN * 2 + PADDING_W * 2
-    item.height -= MARGIN * 2 + PADDING_H * 2
-    item.x += MARGIN + PADDING_W
-    item.y += MARGIN + PADDING_H // ??
+    item.width -= MARGIN * 2 + PADDING_RIGHT + PADDING_LEFT
+    item.height -= MARGIN + MARGIN_TOP + PADDING_H * 2
+    item.x += MARGIN + PADDING_LEFT
+    item.y += MARGIN_TOP + PADDING_H // ??
   })
 
   const coordinatedNodes = items.reduce((nodes, { width, height, x, y, item: { nodesObject } }) => {
@@ -45,9 +47,9 @@ export default  function(computers) {
     clusters.push({
       cluster,
       id: cluster,
-      width: PADDING_W * 2 + width,
+      width: PADDING_RIGHT + PADDING_LEFT + width,
       height: PADDING_H * 2 + height,
-      x: x - PADDING_W,
+      x: x - PADDING_LEFT,
       y: y - PADDING_H,
     })
     return clusters
