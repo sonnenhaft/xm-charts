@@ -23,6 +23,7 @@ export default class NetworkGrid extends Component {
   }
 
   onZoomFactorChanged = () => {
+    this.rootBlock.select('.gridTooltip').style('display', 'none')
     this.currentZoom = d3.zoomTransform(this.svg.select('.zoomRect').node())
     this.forceUpdate()
   }
@@ -49,7 +50,14 @@ export default class NetworkGrid extends Component {
 
   componentDidUpdate() {
     this.setState({canShowChart: true}, () => {
-      setTimeout(() => this.renderChart(), 250)
+      if (this.isUpdating) {
+        return
+      }
+      this.isUpdating = true
+      setTimeout(() => {
+        this.renderChart()
+        this.isUpdating = false
+      }, 50)
     })
   }
 
@@ -86,6 +94,7 @@ export default class NetworkGrid extends Component {
   }
 
   renderChart() {
+    console.log('trying to render')
     const {nodes} = this.props
     if (!nodes.length) {
       return
@@ -108,6 +117,25 @@ export default class NetworkGrid extends Component {
     const yScale = d3.scaleLinear().domain([0, 1]).range([0, nodeHeight])
     xScale.domain(this.currentZoom.rescaleX(xScale).domain())
     yScale.domain(this.currentZoom.rescaleY(yScale).domain())
+
+    this.svg.select('.zoomRect').on('mousemove', ( ) => {
+      const y = yScale.invert(d3.event.offsetY)
+      const x = xScale.invert(d3.event.offsetX)
+      const selectedNodeIndex = cachedClusters.coordinatedNodes.findIndex(({x: _x, y: _y}) => {
+        _y = _y + 1
+        return _x < x && y < _y && _x + 1 > x && _y + 1 >= y
+      })
+
+      const rect = this.rootBlock.select('.gridTooltip')
+      if (selectedNodeIndex !== -1 && this.state.selectedNodeIndex !== selectedNodeIndex) {
+        const {x: _x, y: _y} = cachedClusters.coordinatedNodes[selectedNodeIndex]
+        rect.style('top', yScale(_y + 1)  + 25).style('left', xScale(_x) + 10).style('display', 'block')
+        this.setState({ selectedNodeIndex })
+      } else if (selectedNodeIndex === -1) {
+        rect.style('display', 'none')
+      }
+    })
+
 
     let kk = Math.min(height / (nodeHeight * cachedClusters.totalHeight), (width) / (nodeWidth * cachedClusters.totalWidth))
     this.heightZoom.k = kk
