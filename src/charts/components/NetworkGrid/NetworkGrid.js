@@ -10,6 +10,11 @@ const CHART_PADDING = 0
 
 export default class NetworkGrid extends Component {
 
+  state = {
+    selectedNodeIndex: null,
+    canShowChart: false,
+  }
+
   refRootBlock = rootBlock => {
     this.rootBlock = d3.select(rootBlock)
     this.svg = this.rootBlock.select('.svg')
@@ -28,17 +33,16 @@ export default class NetworkGrid extends Component {
     this.currentZoom = d3.zoomIdentity
     this.heightZoom = new Transform(1, 0, 0)
     this.componentWillReceiveProps(props)
-    this.state = {
-      selectedNodeIndex: null,
-    }
   }
 
-  shouldComponentUpdate({ currentTime, events, nodes }, { selectedNodeIndex }) {
+  shouldComponentUpdate({ currentTime, events, nodes }, { selectedNodeIndex, canShowChart }) {
     const { props, state } = this
     return props.currentTime !== currentTime
       || props.events !== events
       || props.nodes !== nodes
       || state.selectedNodeIndex !== selectedNodeIndex
+      || state.canShowChart !== canShowChart
+
   }
 
   componentWillReceiveProps({ events, nodes, currentTime }) {
@@ -76,7 +80,11 @@ export default class NetworkGrid extends Component {
   }
 
   componentDidMount() {
-    this.renderChart()
+    setTimeout(() => {
+      this.setState({canShowChart: true})
+    }, 250)
+
+
   }
 
   renderChart() {
@@ -189,12 +197,13 @@ export default class NetworkGrid extends Component {
   }
 
   render() {
+    const  {canShowChart} = this.state
     const { className, nodes } = this.props
     const selectedItem = nodes[this.state.selectedNodeIndex]
     const { name } = selectedItem || {}
 
     return (
-      <WindowDependable onDimensionsChanged={() => this.forceUpdate()} refCb={this.refRootBlock} className={className}>
+      <WindowDependable onDimensionsChanged={() => this.forceUpdate()} style={{opacity: canShowChart ? 1 : 0}} refCb={this.refRootBlock} className={className}>
         <div styleName="grid-tooltip" className="gridTooltip">
           <div styleName="device-name">{name}</div>
           <div>
