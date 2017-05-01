@@ -2,8 +2,8 @@ import React, {Component} from 'react'
 import SimulationChart from 'charts/components/SimulationChart'
 import './Demo.scss'
 
-import nodes from './demo-nodes.json'
-import events from './demo-events.json'
+import nodes from './nodes1.json'
+import events from './events1.json'
 
 
 const version = `${process.env.npm_package_name} v${process.env.npm_package_version}`

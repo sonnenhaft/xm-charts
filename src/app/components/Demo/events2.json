@@ -1,0 +1,590 @@
+[
+  {
+    "id": "58ff3211aab6690ae348ebde",
+    "timestamp": "2017-04-25T11:25:05.831Z",
+    "type": "newStartingPointNode",
+    "networkSuperiority": 0,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {},
+    "node": {
+      "id": "12300000000"
+    }
+  },
+  {
+    "id": "58ff3211aab6690ae348ebe1",
+    "timestamp": "2017-04-25T11:25:05.865Z",
+    "type": "newStartingPointNode",
+    "networkSuperiority": 0.43478260869565216,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {},
+    "node": {
+      "id": "12300000010"
+    }
+  },
+  {
+    "id": "58ff3211aab6690ae348ebe4",
+    "timestamp": "2017-04-25T11:25:05.899Z",
+    "type": "newStartingPointNode",
+    "networkSuperiority": 0.8695652173913043,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {},
+    "node": {
+      "id": "12300000020"
+    }
+  },
+  {
+    "id": "58ff3211aab6690ae348ebe7",
+    "timestamp": "2017-04-25T11:25:05.938Z",
+    "type": "newStartingPointNode",
+    "networkSuperiority": 1.3043478260869565,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {},
+    "node": {
+      "id": "12300000030"
+    }
+  },
+  {
+    "id": "58ff3213aab6690ae348ebec",
+    "timestamp": "2017-04-25T11:25:07.502Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 1.7391304347826086,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000030"
+      }
+    },
+    "node": {
+      "id": "12300000040"
+    }
+  },
+  {
+    "id": "58ff3213aab6690ae348ebed",
+    "timestamp": "2017-04-25T11:25:07.814Z",
+    "type": "newAsset",
+    "networkSuperiority": 1.7391304347826086,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "device": true,
+      "network": false,
+      "data": false
+    },
+    "node": {
+      "id": "12300000101"
+    }
+  },
+  {
+    "id": "58ff3213aab6690ae348ebef",
+    "timestamp": "2017-04-25T11:25:07.821Z",
+    "type": "newAsset",
+    "networkSuperiority": 1.7391304347826086,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "device": true,
+      "network": false,
+      "data": false
+    },
+    "node": {
+      "id": "12300000102"
+    }
+  },
+  {
+    "id": "58ff3213aab6690ae348ebf1",
+    "timestamp": "2017-04-25T11:25:07.837Z",
+    "type": "newAsset",
+    "networkSuperiority": 1.7391304347826086,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "device": true,
+      "network": false,
+      "data": false
+    },
+    "node": {
+      "id": "12300000103"
+    }
+  },
+  {
+    "id": "58ff3213aab6690ae348ebf3",
+    "timestamp": "2017-04-25T11:25:07.845Z",
+    "type": "newAsset",
+    "networkSuperiority": 1.7391304347826086,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "device": true,
+      "network": false,
+      "data": false
+    },
+    "node": {
+      "id": "12300000104"
+    }
+  },
+  {
+    "id": "58ff3213aab6690ae348ebf5",
+    "timestamp": "2017-04-25T11:25:07.862Z",
+    "type": "newAsset",
+    "networkSuperiority": 1.7391304347826086,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "device": true,
+      "network": false,
+      "data": false
+    },
+    "node": {
+      "id": "12300000105"
+    }
+  },
+  {
+    "id": "58ff3213aab6690ae348ebf7",
+    "timestamp": "2017-04-25T11:25:07.875Z",
+    "type": "newAsset",
+    "networkSuperiority": 1.7391304347826086,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "device": true,
+      "network": false,
+      "data": false
+    },
+    "node": {
+      "id": "12300000106"
+    }
+  },
+  {
+    "id": "58ff3213aab6690ae348ebf9",
+    "timestamp": "2017-04-25T11:25:07.889Z",
+    "type": "newAsset",
+    "networkSuperiority": 1.7391304347826086,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "device": true,
+      "network": false,
+      "data": false
+    },
+    "node": {
+      "id": "12300000107"
+    }
+  },
+  {
+    "id": "58ff3213aab6690ae348ebfb",
+    "timestamp": "2017-04-25T11:25:07.899Z",
+    "type": "newAsset",
+    "networkSuperiority": 1.7391304347826086,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "device": true,
+      "network": false,
+      "data": false
+    },
+    "node": {
+      "id": "12300000100"
+    }
+  },
+  {
+    "id": "58ff3213aab6690ae348ebfc",
+    "timestamp": "2017-04-25T11:25:07.900Z",
+    "type": "newAsset",
+    "networkSuperiority": 1.7391304347826086,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "device": true,
+      "network": false,
+      "data": false
+    },
+    "node": {
+      "id": "12300000108"
+    }
+  },
+  {
+    "id": "58ff3213aab6690ae348ebff",
+    "timestamp": "2017-04-25T11:25:07.915Z",
+    "type": "newAsset",
+    "networkSuperiority": 1.7391304347826086,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "device": true,
+      "network": false,
+      "data": false
+    },
+    "node": {
+      "id": "12300000109"
+    }
+  },
+  {
+    "id": "58ff3214aab6690ae348ec05",
+    "timestamp": "2017-04-25T11:25:08.517Z",
+    "type": "nodeMarkAsRed",
+    "networkSuperiority": 2.1739130434782608,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000020"
+      },
+      "localRank": "100%",
+      "globalRank": "100%"
+    },
+    "node": {
+      "id": "12300000040"
+    }
+  },
+  {
+    "id": "58ff3214aab6690ae348ec08",
+    "timestamp": "2017-04-25T11:25:08.565Z",
+    "type": "newAsset",
+    "networkSuperiority": 2.1739130434782608,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "device": false,
+      "network": false,
+      "data": true
+    },
+    "node": {
+      "id": "12300000003"
+    }
+  },
+  {
+    "id": "58ff3214aab6690ae348ec0a",
+    "timestamp": "2017-04-25T11:25:08.588Z",
+    "type": "newAsset",
+    "networkSuperiority": 2.1739130434782608,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "device": false,
+      "network": false,
+      "data": true
+    },
+    "node": {
+      "id": "12300000003"
+    }
+  },
+  {
+    "id": "58ff3214aab6690ae348ec0c",
+    "timestamp": "2017-04-25T11:25:08.760Z",
+    "type": "newAsset",
+    "networkSuperiority": 2.1739130434782608,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "device": false,
+      "network": false,
+      "data": true
+    },
+    "node": {
+      "id": "12300000030"
+    }
+  },
+  {
+    "id": "58ff3214aab6690ae348ec0e",
+    "timestamp": "2017-04-25T11:25:08.771Z",
+    "type": "newAsset",
+    "networkSuperiority": 2.1739130434782608,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "device": false,
+      "network": false,
+      "data": true
+    },
+    "node": {
+      "id": "12300000031"
+    }
+  },
+  {
+    "id": "58ff3214aab6690ae348ec10",
+    "timestamp": "2017-04-25T11:25:08.777Z",
+    "type": "newAsset",
+    "networkSuperiority": 2.1739130434782608,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "device": false,
+      "network": false,
+      "data": true
+    },
+    "node": {
+      "id": "12300000030"
+    }
+  },
+  {
+    "id": "58ff3214aab6690ae348ec12",
+    "timestamp": "2017-04-25T11:25:08.788Z",
+    "type": "newAsset",
+    "networkSuperiority": 2.1739130434782608,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "device": false,
+      "network": false,
+      "data": true
+    },
+    "node": {
+      "id": "12300000032"
+    }
+  },
+  {
+    "id": "58ff3214aab6690ae348ec14",
+    "timestamp": "2017-04-25T11:25:08.796Z",
+    "type": "newAsset",
+    "networkSuperiority": 2.1739130434782608,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "device": false,
+      "network": false,
+      "data": true
+    },
+    "node": {
+      "id": "12300000031"
+    }
+  },
+  {
+    "id": "58ff3214aab6690ae348ec16",
+    "timestamp": "2017-04-25T11:25:08.805Z",
+    "type": "newAsset",
+    "networkSuperiority": 2.1739130434782608,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "device": false,
+      "network": false,
+      "data": true
+    },
+    "node": {
+      "id": "12300000033"
+    }
+  },
+  {
+    "id": "58ff3214aab6690ae348ec18",
+    "timestamp": "2017-04-25T11:25:08.814Z",
+    "type": "newAsset",
+    "networkSuperiority": 2.1739130434782608,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "device": false,
+      "network": false,
+      "data": true
+    },
+    "node": {
+      "id": "12300000032"
+    }
+  },
+  {
+    "id": "58ff3214aab6690ae348ec1a",
+    "timestamp": "2017-04-25T11:25:08.820Z",
+    "type": "newAsset",
+    "networkSuperiority": 2.1739130434782608,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "device": false,
+      "network": false,
+      "data": true
+    },
+    "node": {
+      "id": "12300000034"
+    }
+  },
+  {
+    "id": "58ff3214aab6690ae348ec1c",
+    "timestamp": "2017-04-25T11:25:08.832Z",
+    "type": "newAsset",
+    "networkSuperiority": 2.1739130434782608,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "device": false,
+      "network": false,
+      "data": true
+    },
+    "node": {
+      "id": "12300000033"
+    }
+  },
+  {
+    "id": "58ff3214aab6690ae348ec1e",
+    "timestamp": "2017-04-25T11:25:08.844Z",
+    "type": "newAsset",
+    "networkSuperiority": 2.1739130434782608,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "device": false,
+      "network": false,
+      "data": true
+    },
+    "node": {
+      "id": "12300000035"
+    }
+  },
+  {
+    "id": "58ff3214aab6690ae348ec20",
+    "timestamp": "2017-04-25T11:25:08.854Z",
+    "type": "newAsset",
+    "networkSuperiority": 2.1739130434782608,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "device": false,
+      "network": false,
+      "data": true
+    },
+    "node": {
+      "id": "12300000034"
+    }
+  },
+  {
+    "id": "58ff3214aab6690ae348ec21",
+    "timestamp": "2017-04-25T11:25:08.855Z",
+    "type": "newAsset",
+    "networkSuperiority": 2.1739130434782608,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {
+      "device": false,
+      "network": false,
+      "data": true
+    },
+    "node": {
+      "id": "12300000036"
+    }
+  }
+]
