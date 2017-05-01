@@ -144,7 +144,6 @@ export default class NetworkGrid extends Component {
       this.setState({ selectedNodeIndex })
     })
 
-
     let kk = Math.min(height / (nodeHeight * cachedClusters.totalHeight), (width) / (nodeWidth * cachedClusters.totalWidth))
     this.heightZoom.k = kk
 
@@ -153,15 +152,12 @@ export default class NetworkGrid extends Component {
 
     const k = this.currentZoom.k * kk
     const FILLED_SPACE = 0.73
-    const MAX_STROKE = 2
-    const strokeWidth = Math.min(MAX_STROKE, Math.max(MAX_STROKE * k, 1))
-    const offset = strokeWidth * 2 * 1.1
-    const rx = offset
+    const offset = 4.4
 
     const simpleRectAttrs = {
-      rx,
-      ry: rx,
-      strokeWidth,
+      rx: offset
+      ry: offset,
+      strokeWidth: 2,
       stroke: 'black',
       height: nodeHeight,
       width: nodeHeight / 2,
