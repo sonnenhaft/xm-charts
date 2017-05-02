@@ -1,4 +1,4 @@
-import { timeFormat } from 'd3'
+import d3 from 'charts/utils/decorated.d3.v4'
 import React, { Component, PropTypes } from 'react'
 import styles from './TooltipContent.scss'
 import ShareButtons from '../common/ShareButtons'
@@ -10,7 +10,7 @@ export default class TooltipContent extends Component {
       type: string,
       method: string,
       source: string,
-      date: PropTypes.number, // date number, line Date.now()
+      date: PropTypes.number,
       value: PropTypes.number,
     }),
   }
@@ -23,7 +23,7 @@ export default class TooltipContent extends Component {
         <div>
           <div className={styles['title']}>{type}</div>
           <div className={styles['tooltip-event-icons']}>
-            <ShareButtons type="vertical" />
+            <ShareButtons type="vertical"/>
           </div>
           <div className={styles['content']}>
             {method && <div>
@@ -36,14 +36,14 @@ export default class TooltipContent extends Component {
             </div>}
           </div>
           <div>
-            <b>{timeFormat('%H:%M:%S')(date)}</b>
+            <b>{d3.timeFormat('%H:%M:%S')(date)}</b>
           </div>
         </div>
       </div>}
       {!type && <div>
-        <ShareButtons type="dark-icons" />
+        <ShareButtons type="dark-icons"/>
         {/*<div>count {value}</div>*/}
-        <b>{timeFormat('%H:%M:%S')(date)}</b>
+        <b>{d3.timeFormat('%H:%M:%S')(date)}</b>
       </div>}
     </div>
   }

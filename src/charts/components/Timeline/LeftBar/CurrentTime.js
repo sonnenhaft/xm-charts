@@ -1,8 +1,10 @@
 import React from 'react'
-import { utcFormat as formatTime } from 'd3'
+import d3 from 'charts/utils/decorated.d3.v4'
 import { onlyUpdateForKeys } from 'recompose'
 
 import './CurrentTime.scss'
+
+const { utcFormat: formatTime } = d3
 
 const CurrentTime = ({ time }) => {
   const days = Math.floor(time / 1000 / 60 / 60 / 24)

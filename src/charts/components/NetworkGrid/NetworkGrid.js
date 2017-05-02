@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import d3 from '../../utils/d3.shims'
+import d3, {Transform}  from 'charts/utils/decorated.d3.v4'
 import { Snow, Desktop, Diskette } from './IconsGroup'
 import './NetworkGrid.scss'
-import { Transform } from 'd3-zoom/src/transform'
 import WindowDependable from '../common/WindowDependable'
 import _calculateClusterCoords from './calculateClusterCoords'
 import {memoize} from 'lodash'
@@ -124,7 +123,7 @@ export default class NetworkGrid extends Component {
     const cachedClusters = this.cachedClusters
 
     this.svg.attrs({ width, height })
-    // this.svg.select('.zoomRect').attrs({ width, height })
+    this.svg.select('.zoomRect').attrs({ width, height })
 
     const singleSquareWidth = 40
     this.zoom.translateExtent([[0, 0], [width, height]]).extent([[0, 0], [width, height]])
@@ -285,8 +284,7 @@ export default class NetworkGrid extends Component {
             <g className="grid"/>
           </g>
           {/*Please, even if I use % in here, don't rely on % in d3 much*/}
-          <rect className="zoomRect" fill="#e5e5e5" opacity="0"
-                width="100%" height="100%" cursor="move"/>
+          <rect className="zoomRect" fill="#e5e5e5" opacity="0" cursor="move"/>
         </svg>
       </WindowDependable>
     )

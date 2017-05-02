@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react'
-import d3 from '../../../utils/d3.shims'
+import d3, { Transform }  from 'charts/utils/decorated.d3.v4'
 import styles from './TimelineChart.scss'
 import TooltipContentBlock from './TooltipContent'
 import { composeCircles, renderCircles, renderPath } from './TimelineChartUtils'
@@ -8,7 +8,6 @@ import BrushCircleGroup from './BrushCircleGroup/BrushCircleGroup'
 import ZoomRect from '../../common/ZoomRect'
 import BrushGroup from './BrushGroup'
 import Axes from './Axes/Axes'
-import { Transform as zoomTransform } from 'd3-zoom/src/transform'
 
 const MAX_ZOOM = Math.min(Math.pow(10, 5) * 5)
 const MIN_ZOOM = 1
@@ -34,7 +33,7 @@ export default class TimelineChart extends Component {
 
   constructor(props) {
     super(props)
-    this.zoom = new zoomTransform(1, 0, 0)
+    this.zoom = new Transform(1, 0, 0)
     this.xScale = d3.scaleTime()
     this.xScaleMini = d3.scaleTime()
     this.yScale = d3.scaleLinear().domain([0, 1])
@@ -56,9 +55,9 @@ export default class TimelineChart extends Component {
     }
   }
 
-  highlightCampaign( ) {
-  // highlightCampaign(_campainId) {
-  //   return
+  highlightCampaign() {
+    // highlightCampaign(_campainId) {
+    //   return
     // TODO: rollback logic when we will know what means campain
     // this.campainSelected = _campainId !== null
     // this.events
@@ -154,9 +153,9 @@ export default class TimelineChart extends Component {
     const data = events.filter(filterVisible)
 
     const fill = ({ type }) => {
-      if (type === 'nodeMarkAsRed') {
+      if ( type === 'nodeMarkAsRed' ) {
         return '#EB001E'
-      } else if (type === 'newDiscoveredNode') {
+      } else if ( type === 'newDiscoveredNode' ) {
         return '#4660DF'
       } else {
         return 'none'
@@ -251,15 +250,15 @@ export default class TimelineChart extends Component {
                              {...{ onDimensionsChanged }}>
       <svg styleName={`${(isToggled ? 'toggled' : '')} timeline-chart`}>
         <rect width="100%" height="100%"
-              styleName={isToggled ? 'toggled-background' : 'black-background'} />
+              styleName={isToggled ? 'toggled-background' : 'black-background'}/>
         <g className="brushLineGroup">
-          <rect height="50" fill="#252525" width="100%" visibility={visibility} />
+          <rect height="50" fill="#252525" width="100%" visibility={visibility}/>
           <rect className="brushLine" pointerEvents="none" height="5" rx="3" ry="3" fill="#141414"
-                transform={`translate(${marginLeft},${isToggled ? 26 : 15})`} />
+                transform={`translate(${marginLeft},${isToggled ? 26 : 15})`}/>
         </g>
         <g fill="white" className="mainGroup">
           <Axes {...{ xScale, yScale, xScaleMini, isToggled, realHeight, zoomFactor }}>
-            <path className="linePath" styleName="line-path" />
+            <path className="linePath" styleName="line-path"/>
           </Axes>
           <g className="clickableArea">
             <ZoomRect {...{
@@ -267,7 +266,7 @@ export default class TimelineChart extends Component {
               zoomFactor, zoomPosition, onZoomFactorChangedAndMoved,
             }} />
           </g>
-          <g className="smalRects" transform="translate(0, -5)" />
+          <g className="smalRects" transform="translate(0, -5)"/>
         </g>
         <BrushGroup {...{
           xScale: xScaleMini, yScale, isToggled, marginLeft,
@@ -284,10 +283,10 @@ export default class TimelineChart extends Component {
       <div className="tooltipBlock" styleName="tooltip">
         <div styleName="triangle-wrapper">
           <div styleName="triangle">
-            <div styleName="triangle triangle-content" />
+            <div styleName="triangle triangle-content"/>
           </div>
         </div>
-        <TooltipContentBlock tooltipData={tooltipData} />
+        <TooltipContentBlock tooltipData={tooltipData}/>
       </div>
     </WindowDependable>
   }

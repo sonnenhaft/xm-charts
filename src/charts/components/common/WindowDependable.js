@@ -1,4 +1,3 @@
-import '../../utils/d3.shims'
 import React, { PropTypes, Component } from 'react'
 
 export default class WindowDependable extends Component {
