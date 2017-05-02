@@ -4,8 +4,8 @@ import pack from 'bin-pack'
 const MARGIN = 0.5
 const MARGIN_TOP = 1
 const LAYOUT_MARGIN_TOP = MARGIN * 2
-const LAYOUT_MARGIN_BOTTOM = MARGIN/4
-const LAYOUT_MARGIN_LEFT = MARGIN/4
+const LAYOUT_MARGIN_BOTTOM = MARGIN / 4
+const LAYOUT_MARGIN_LEFT = MARGIN / 4
 const PADDING_RIGHT = 0
 const PADDING_LEFT = MARGIN
 const PADDING_H = MARGIN
@@ -14,8 +14,7 @@ export default  function(computers) {
   let clusters = transform(groupBy(computers, 'cluster'), (result, nodesObject, clusterId) => {
     const size = nodesObject.length
     const width = Math.ceil(Math.sqrt(size))
-    const height = width
-    // const height =  Math.ceil(size/width)
+    const height = Math.ceil(size / width)
     result[clusterId] = {
       clusterId,
       width: width + PADDING_RIGHT + PADDING_LEFT + MARGIN * 2,
@@ -33,12 +32,13 @@ export default  function(computers) {
     item.y += MARGIN_TOP + PADDING_H // ??
   })
 
-  const coordinatedNodes = items.reduce((nodes, { width, height, x, y, item: { nodesObject } }) => {
+  const coordinatedNodes = items.reduce((nodes, { width, x, y, item: { nodesObject } }) => {
     return nodes.concat(nodesObject.map((node, index) => {
       return ({
         node,
-        y: index / height + (1 - index % (height)) / height + y,
-        x: index % (width ) + x,
+        x: index % width + x,
+        // yes, in here u see width too, hard to explain, is just works)
+        y: (index - index % width) / width + y,
       })
     }))
   }, [])

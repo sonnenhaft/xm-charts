@@ -101,7 +101,6 @@ export default class NetworkGrid extends Component {
     const cachedClusters = this.cachedClusters
 
     this.svg.attrs({ width, height })
-    // this.svg.select('.zoomRect').attrs({ width, height })
 
     const singleSquareWidth = 40
     this.zoom.translateExtent([[0, 0], [width, height]]).extent([[0, 0], [width, height]])
