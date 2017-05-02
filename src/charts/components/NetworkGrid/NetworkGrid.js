@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import d3 from '../../utils/d3.shims'
-import { Snow, Desktop, Diskette } from './IconsGroup'
+import { Snow, Desktop, Diskette, Circle } from './IconsGroup'
 import './NetworkGrid.scss'
 import { Transform } from 'd3-zoom/src/transform'
 import WindowDependable from '../common/WindowDependable'
@@ -10,6 +10,28 @@ import {memoize} from 'lodash'
 const calculateClusterCoords = memoize(_calculateClusterCoords)
 
 const CHART_PADDING = 0
+
+
+const NodeHtml = `<g>
+      <rect class="wrapperRect"></rect>
+      <rect class="simpleRect"></rect>
+      <g class="iconsGroup">
+        <g>
+          <g transform="translate(4,3)  scale(0.7, 0.7)">
+            <g>
+            ${Desktop}${Circle}
+            </g>
+            <g transform="translate(0, 23)">
+              ${Diskette}${Circle}
+            </g>
+            <g transform="translate(0, 45)">
+              ${Snow}${Circle}
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>`
+
 
 export default class NetworkGrid extends Component {
 
@@ -76,6 +98,7 @@ export default class NetworkGrid extends Component {
     }
 
     this.cachedClusters = calculateClusterCoords(nodes)
+    this.cachedNodeEventData =
 
     this.nodeColors = nodes.reduce((map, { agentId }) => {
       map[agentId] = 'white'
@@ -186,25 +209,10 @@ export default class NetworkGrid extends Component {
     enteredSelection.exit().remove()
 
     const mergedSelection = enteredSelection.enter().append('g')
-      .attr('class', 'singleRectGroup').html(() => `<g>
-        <rect class="wrapperRect"></rect>
-        <rect class="simpleRect"></rect>
-        <g class="iconsGroup">
-          <g>
-            <g transform="translate(4,3)  scale(0.7, 0.7)">
-              ${Desktop}<circle cx="15" cy="13" r="8"></circle>
-              <g transform="translate(0, 23)">
-                ${Diskette}<circle cx="15" cy="13" r="8"></circle>
-              </g>
-              <g transform="translate(0, 45)">
-                ${Snow}<circle cx="15" cy="13" r="8"></circle>
-              </g>
-            </g>
-          </g>
-        </g>
-      </g>`)
+      .attr('class', 'singleRectGroup').html(() => NodeHtml)
 
     const allElements = mergedSelection.merge(enteredSelection)
+
     allElements.attrs({
       transform: ({ x, y }) => `translate(${xScale(x)},${yScale(y)})`,
       cursor: 'pointer',
