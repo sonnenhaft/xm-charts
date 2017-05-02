@@ -11,6 +11,13 @@ const calculateClusterCoords = memoize(_calculateClusterCoords)
 
 const CHART_PADDING = 0
 
+const RED = 'rgb(242, 30, 39)'
+const BLUE = 'rgb(70, 96, 223)'
+const GRAY = '#E6E6E6'
+const GRAY_LIGHT = 'rgba(230, 230, 230, 0.4)'
+const WHITE = 'white'
+const BLACK = 'black'
+
 export default class NetworkGrid extends Component {
   state = {
     hoveredNodeIndex: null,
@@ -67,31 +74,47 @@ export default class NetworkGrid extends Component {
       return
     }
 
-    this.cachedClusters = calculateClusterCoords(nodes)
+    this.cachedClusters = calculateClusterCoords(nodes, currentTime)
 
-    this.nodeColors = nodes.reduce((map, { agentId }) => {
-      map[agentId] = 'white'
+    this.nodeColors = nodes.reduce((map, {agentId}) => {
+      map[agentId] = WHITE
       return map
     }, {})
 
+    this.compromisedAssets = nodes.reduce((map, {agentId}) => {
+      map[agentId] = {
+        data: 0,
+        device: 0,
+        network: 0,
+     }
+     return map
+    }, {})
+
     events
-      .filter(({ date }) => currentTime > date)
+      .filter(({date}) => currentTime >= date)
       .forEach(item => {
-        const { type, nodeId } = item
-        const red = 'rgb(242, 30, 39)'
-        const blue = 'rgb(70, 96, 223)'
-        if ( this.nodeColors[nodeId] !== red ) {
-          if ( type === 'nodeMarkAsRed' ) {
-            this.nodeColors[nodeId] = red
-          } else if ( type === 'newDiscoveredNode' ) {
-            this.nodeColors[nodeId] = blue
+        const {type, nodeId, assets} = item
+        if (this.nodeColors[nodeId] !== RED) {
+          if (type === 'nodeMarkAsRed') {
+            this.nodeColors[nodeId] = RED
+          } else if (['newStartingPointNode', 'newDiscoveredNode'].includes(type)) {
+            this.nodeColors[nodeId] = BLUE
           }
         }
+
+        this.compromisedAssets[nodeId] = assets
+                                          .filter(({date}) => currentTime >= date)
+                                          .reduce((compromised, {compromisedAssets}) => {
+                                            ['data', 'device', 'network'].forEach(type => {
+                                              compromised[type] += compromisedAssets[type]
+                                            })
+                                            return compromised
+                                          }, this.compromisedAssets[nodeId])
       })
   }
 
   renderChart() {
-    const { nodes } = this.props
+    const {nodes} = this.props
     const {clientWidth: width, clientHeight: height} = this.rootBlock.node()
 
     if ( !nodes.length || !height ) { // we just can calculate anything with 0 height
@@ -148,10 +171,10 @@ export default class NetworkGrid extends Component {
     const simpleRectAttrs = {
       rx: offset,
       ry: offset,
-      strokeWidth: 2,
+      strokeWidth: 1,
       height: singleSquareWidth,
       width: singleSquareWidth / 2,
-      stroke: ({ node: { agentId } }) => this.nodeColors[agentId] === 'white' ? 'black' : this.nodeColors[agentId],
+      stroke: ({ node: { agentId } }) => this.nodeColors[agentId] === WHITE ? BLACK : this.nodeColors[agentId],
     }
 
     const clasters = cachedClusters.coordinatedClusters
@@ -179,12 +202,14 @@ export default class NetworkGrid extends Component {
         <rect class="simpleRect"></rect>
         <g class="iconsGroup">
           <g>
-            <g transform="translate(4,3)  scale(0.7, 0.7)">
+            <g transform="translate(4,3) scale(0.7, 0.7)">
+              <g transform="translate(0, 0)" class="device">
               ${Desktop}<circle cx="15" cy="13" r="8"></circle>
-              <g transform="translate(0, 23)">
+              </g>
+              <g transform="translate(0, 23)" class="data">
                 ${Diskette}<circle cx="15" cy="13" r="8"></circle>
               </g>
-              <g transform="translate(0, 45)">
+              <g transform="translate(0, 45)" class="network">
                 ${Snow}<circle cx="15" cy="13" r="8"></circle>
               </g>
             </g>
@@ -206,22 +231,32 @@ export default class NetworkGrid extends Component {
       ...simpleRectAttrs,
       rx: offset + 2,
       ry: offset + 2,
-      fill: 'white',
-      'stroke-width': (ignored, index) => index === this.state.selectedNodeIndex ? 2 : 0,
+      fill: WHITE,
+      'stroke-width': (ignored, index) => index === this.state.selectedNodeIndex ? simpleRectAttrs.strokeWidth : 0,
       width: singleSquareWidth / 2 + offset,
       height: singleSquareWidth + offset,
       transform: `translate(${-offset * k * FILLED_SPACE / 2}, ${-offset * k * FILLED_SPACE/ 2}) scale(${FILLED_SPACE * k})`,
-      stroke: ({ node: { agentId } }) => this.nodeColors[agentId] === 'white' ? 'black' : this.nodeColors[agentId],
+      stroke: ({ node: { agentId } }) => this.nodeColors[agentId] === WHITE ? BLACK : this.nodeColors[agentId],
     })
 
     const iconsGroup = allElements.select('.iconsGroup')
-    iconsGroup.attrs({
-      transform: `scale(${k / 2}, ${k / 2})`,
-      fill: ({ node: { agentId } }) => this.nodeColors[agentId] === 'white' ? 'black' : 'white',
-      opacity: ({ node: { agentId } }) => this.nodeColors[agentId] === 'white' ? 1 : 0.5,
+    iconsGroup.attrs({transform: `scale(${k / 2}, ${k / 2})`})
+    iconsGroup.selectAll('path').attrs({visibility: k >= 1.2 ? 'visible' : 'hidden'})
+    iconsGroup.selectAll('circle').attrs({visibility: k < 1.2 ? 'visible' : 'hidden'})
+
+    const types = ['data', 'device', 'network']
+
+    types.forEach(type => {
+      iconsGroup.select(`.${type}`).attrs({
+        fill: ({ node: { agentId } }) => {
+          if (this.nodeColors[agentId] === WHITE) {
+            return this.compromisedAssets[agentId][type] ? BLACK : GRAY
+          }
+
+          return this.compromisedAssets[agentId][type] ? WHITE : GRAY_LIGHT        
+        },
+      })
     })
-    iconsGroup.selectAll('path').attrs({ visibility: k >= 1.2 ? 'visible' : 'hidden' })
-    iconsGroup.selectAll('circle').attrs({ visibility: k < 1.2 ? 'visible' : 'hidden' })
   }
 
   render() {

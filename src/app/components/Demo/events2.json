@@ -513,9 +513,9 @@
     "type": "newAsset",
     "networkSuperiority": 2.1739130434782608,
     "compromisedAssets": {
-      "data": 0,
+      "data": 1,
       "device": 0,
-      "network": 0
+      "network": 1
     },
     "compromisedDataGB": 0,
     "data": {
