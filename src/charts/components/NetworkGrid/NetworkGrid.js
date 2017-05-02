@@ -4,7 +4,10 @@ import { Snow, Desktop, Diskette } from './IconsGroup'
 import './NetworkGrid.scss'
 import { Transform } from 'd3-zoom/src/transform'
 import WindowDependable from '../common/WindowDependable'
-import calculateClusterCoords from './calculateClusterCoords'
+import _calculateClusterCoords from './calculateClusterCoords'
+import {memoize} from 'lodash'
+
+const calculateClusterCoords = memoize(_calculateClusterCoords)
 
 const CHART_PADDING = 0
 
