@@ -29,13 +29,7 @@ This should start the server on port 8087.
 
 ### TODO List:
 
-1. Add jump to exact time.
-2. Add play functionality.
-
-Questions: 
-1. What are doing circles with triangles and squares inside, when to display them?
-2. Where can I find custom button icons? May be you can share me the designs tool?
-3. What is the logic of switching data from % to gigabytes (shield button)?
-4. What triangle below toggle button is doing?
-5. What triangle near circle near gigabytes is doing?
-
+1. Update move on zoomed network grid - now broken if zoomed - move overs too early
+2. Network should appear in the center of the page.
+3. We have custom logic for icons - when they are sliver and when not.
+4. Import d3 js from d3.shims, and not from node_modules

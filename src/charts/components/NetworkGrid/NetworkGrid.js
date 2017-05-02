@@ -101,6 +101,7 @@ export default class NetworkGrid extends Component {
     const cachedClusters = this.cachedClusters
 
     this.svg.attrs({ width, height })
+    this.svg.select('.zoomRect').attrs({ width, height })
 
     const singleSquareWidth = 40
     this.zoom.translateExtent([[0, 0], [width, height]]).extent([[0, 0], [width, height]])
@@ -249,8 +250,7 @@ export default class NetworkGrid extends Component {
             <g className="grid"/>
           </g>
           {/*Please, even if I use % in here, don't rely on % in d3 much*/}
-          <rect className="zoomRect" fill="#e5e5e5" opacity="0"
-                width="100%" height="100%" cursor="move"/>
+          <rect className="zoomRect" fill="#e5e5e5" opacity="0" cursor="move"/>
         </svg>
       </WindowDependable>
     )
