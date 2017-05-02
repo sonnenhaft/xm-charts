@@ -7,7 +7,7 @@ const STUB_CLUSTER_NAMES = [
   'Testing AB',
   'Archive',
   'Production ',
-  'Undefined',
+  '',
 ]
 
 export default ({nodes, events}) => ({
