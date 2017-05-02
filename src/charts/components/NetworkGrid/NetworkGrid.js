@@ -259,14 +259,17 @@ export default class NetworkGrid extends Component {
   }
 
   render() {
-    const { className, nodes } = this.props
+    const {className, nodes} = this.props
     const selectedItem = nodes[this.state.hoveredNodeIndex]
-    const { name } = selectedItem || {}
+    const {name, agentId} = selectedItem || {}
 
     return (
       <WindowDependable onDimensionsChanged={() => this.forceUpdate()} refCb={this.refRootBlock} className={className}>
         <div styleName="grid-tooltip" className="gridTooltip">
-          <div styleName="device-name">{name}</div>
+          <div styleName="device-name">
+            <div>Name: {name}</div>
+            <div>Node ID: {agentId}</div>
+          </div>
           <div>
             <svg width="100" height="50">
               <g stroke="black">
