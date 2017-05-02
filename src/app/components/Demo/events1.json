@@ -749,7 +749,7 @@
     "compromisedAssets": {
       "data": 0,
       "device": 0,
-      "network": 0
+      "network": 1
     },
     "compromisedDataGB": 0,
     "data": {
@@ -881,7 +881,7 @@
     "type": "assetCompromised",
     "networkSuperiority": 7.826086956521739,
     "compromisedAssets": {
-      "data": 0,
+      "data": 1,
       "device": 0,
       "network": 0
     },
