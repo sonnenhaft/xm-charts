@@ -1,11 +1,8 @@
 import React, { Component, PropTypes as P } from 'react'
 
-import { arc, select, interpolate, interpolateRound } from 'd3'
-import '../../../utils/d3.shims'
+import d3 from 'charts/utils/decorated.d3.v4'
 import './CircleIndicator.scss'
 import between from 'airbnb-prop-types/build/between'
-
-const d3 = { arc, select, interpolate, interpolateRound }
 
 let counter = 0
 

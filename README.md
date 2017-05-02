@@ -29,7 +29,7 @@ This should start the server on port 8087.
 
 ### TODO List:
 
+0. Make hover state on selected node element to look more like on design.
 1. Update move on zoomed network grid - now broken if zoomed - move overs too early
 2. Network should appear in the center of the page.
 3. We have custom logic for icons - when they are sliver and when not.
-4. Import d3 js from d3.shims, and not from node_modules
