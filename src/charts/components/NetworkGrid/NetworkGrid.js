@@ -12,10 +12,8 @@ const calculateClusterCoords = memoize(_calculateClusterCoords)
 const CHART_PADDING = 0
 
 export default class NetworkGrid extends Component {
-
   state = {
     hoveredNodeIndex: null,
-    canShowChart: false,
     selectedNodeIndex: null,
   }
 
@@ -23,7 +21,11 @@ export default class NetworkGrid extends Component {
     this.rootBlock = d3.select(rootBlock)
     this.svg = this.rootBlock.select('.svg')
     this.svg.select('.zoomRect').call(this.zoom)
-    this.forceUpdate()
+
+    setTimeout(() => {
+      // think that better to remember height in here and on window changed
+      this.forceUpdate()
+    }, 800)
   }
 
   onZoomFactorChanged = () => {
@@ -39,14 +41,13 @@ export default class NetworkGrid extends Component {
     this.heightZoom = new Transform(1, 0, 0)
   }
 
-  shouldComponentUpdate({ currentTime, events, nodes }, { hoveredNodeIndex, selectedNodeIndex, canShowChart }) {
+  shouldComponentUpdate({ currentTime, events, nodes }, { hoveredNodeIndex, selectedNodeIndex }) {
     const { props, state } = this
     return props.currentTime !== currentTime
       || props.events !== events
       || props.nodes !== nodes
       || state.hoveredNodeIndex !== hoveredNodeIndex
       || state.selectedNodeIndex !== selectedNodeIndex
-      || state.canShowChart !== canShowChart
   }
 
   componentWillReceiveProps(nextProps) {
@@ -54,16 +55,7 @@ export default class NetworkGrid extends Component {
   }
 
   componentDidUpdate() {
-    this.setState({ canShowChart: true }, () => {
-      if ( this.isUpdating ) {
-        return
-      }
-      this.isUpdating = true
-      setTimeout(() => {
-        this.renderChart()
-        this.isUpdating = false
-      }, 50)
-    })
+      this.renderChart()
   }
 
   componentDidMount() {
@@ -100,26 +92,22 @@ export default class NetworkGrid extends Component {
 
   renderChart() {
     const { nodes } = this.props
-    if ( !nodes.length ) {
+    const {clientWidth: width, clientHeight: height} = this.rootBlock.node()
+
+    if ( !nodes.length || !height ) { // we just can calculate anything with 0 height
       return
     }
 
-    const refNode = this.rootBlock.node()
-    const width = refNode.clientWidth
-    const h = refNode.clientHeight
-    const height = Math.max(h, 300)
     const cachedClusters = this.cachedClusters
 
     this.svg.attrs({ width, height })
-    this.svg.select('.zoomRect').attrs({ width, height })
+    // this.svg.select('.zoomRect').attrs({ width, height })
 
-    const nodeWidth = 40
-    const nodeHeight = nodeWidth
-
+    const singleSquareWidth = 40
     this.zoom.translateExtent([[0, 0], [width, height]]).extent([[0, 0], [width, height]])
 
-    const xScale = d3.scaleLinear().domain([0, 1]).range([0, nodeWidth])
-    const yScale = d3.scaleLinear().domain([0, 1]).range([0, nodeHeight])
+    const xScale = d3.scaleLinear().domain([0, 1]).range([0, singleSquareWidth])
+    const yScale = d3.scaleLinear().domain([0, 1]).range([0, singleSquareWidth])
     xScale.domain(this.currentZoom.rescaleX(xScale).domain())
     yScale.domain(this.currentZoom.rescaleY(yScale).domain())
 
@@ -147,7 +135,7 @@ export default class NetworkGrid extends Component {
       this.setState({ selectedNodeIndex })
     })
 
-    let kk = Math.min(height / (nodeHeight * cachedClusters.totalHeight), (width) / (nodeWidth * cachedClusters.totalWidth))
+    let kk = Math.min(height / (singleSquareWidth * cachedClusters.totalHeight), (width) / (singleSquareWidth * cachedClusters.totalWidth))
     this.heightZoom.k = kk
 
     xScale.domain(this.heightZoom.rescaleX(xScale).domain())
@@ -161,8 +149,8 @@ export default class NetworkGrid extends Component {
       rx: offset,
       ry: offset,
       strokeWidth: 2,
-      height: nodeHeight,
-      width: nodeHeight / 2,
+      height: singleSquareWidth,
+      width: singleSquareWidth / 2,
       stroke: ({ node: { agentId } }) => this.nodeColors[agentId] === 'white' ? 'black' : this.nodeColors[agentId],
     }
 
@@ -186,7 +174,7 @@ export default class NetworkGrid extends Component {
     enteredSelection.exit().remove()
 
     const mergedSelection = enteredSelection.enter().append('g')
-      .attr('class', 'singleRectGroup').html(() => `<g>
+      .attr('class', 'singleRectGroup').html(() => `<g cursor="pointer">
         <rect class="wrapperRect"></rect>
         <rect class="simpleRect"></rect>
         <g class="iconsGroup">
@@ -207,7 +195,6 @@ export default class NetworkGrid extends Component {
     const allElements = mergedSelection.merge(enteredSelection)
     allElements.attrs({
       transform: ({ x, y }) => `translate(${xScale(x)},${yScale(y)})`,
-      cursor: 'pointer',
       fill: ({ node: { agentId } }) => this.nodeColors[agentId],
     })
 
@@ -221,8 +208,8 @@ export default class NetworkGrid extends Component {
       ry: offset + 2,
       fill: 'white',
       'stroke-width': (ignored, index) => index === this.state.selectedNodeIndex ? 2 : 0,
-      width: nodeHeight / 2 + offset,
-      height: nodeHeight + offset,
+      width: singleSquareWidth / 2 + offset,
+      height: singleSquareWidth + offset,
       transform: `translate(${-offset * k * FILLED_SPACE / 2}, ${-offset * k * FILLED_SPACE/ 2}) scale(${FILLED_SPACE * k})`,
       stroke: ({ node: { agentId } }) => this.nodeColors[agentId] === 'white' ? 'black' : this.nodeColors[agentId],
     })
@@ -238,13 +225,12 @@ export default class NetworkGrid extends Component {
   }
 
   render() {
-    const { canShowChart } = this.state
     const { className, nodes } = this.props
     const selectedItem = nodes[this.state.hoveredNodeIndex]
     const { name } = selectedItem || {}
 
     return (
-      <WindowDependable onDimensionsChanged={() => this.forceUpdate()} style={{ opacity: canShowChart ? 1 : 0 }} refCb={this.refRootBlock} className={className}>
+      <WindowDependable onDimensionsChanged={() => this.forceUpdate()} refCb={this.refRootBlock} className={className}>
         <div styleName="grid-tooltip" className="gridTooltip">
           <div styleName="device-name">{name}</div>
           <div>
@@ -263,7 +249,9 @@ export default class NetworkGrid extends Component {
                transform="translate(0, -5)"/>
             <g className="grid"/>
           </g>
-          <rect className="zoomRect" fill="#e5e5e5" opacity={0} cursor="move"/>
+          {/*Please, even if I use % in here, don't rely on % in d3 much*/}
+          <rect className="zoomRect" fill="#e5e5e5" opacity="0"
+                width="100%" height="100%" cursor="move"/>
         </svg>
       </WindowDependable>
     )
