@@ -1,3 +1,10 @@
+$white: #fff;
+$black: #000;
+$red: rgb(242, 30, 39);
+$blue: rgb(70, 96, 223);
+$grey: #E6E6E6;
+$grey-light: rgba(230, 230, 230, 0.4);
+
 .grid-tooltip {
   position: fixed;
   pointer-events: none;
@@ -6,8 +13,8 @@
 
 .device-name {
   pointer-events: all;
-  background: white;
-  border: solid black 1.5px;
+  background: $white;
+  border: solid$black 1.5px;
   border-radius: 4px;
   padding: 4px;
   padding-bottom: 6px;
@@ -18,11 +25,115 @@
   font-size: 10px;
 }
 
-
 :global {
-  svg  .grid {
-    .iconsGroup {
-      fill: red;
+  .cluster {
+    rx: 3px;
+    ry: 3px;
+  }
+
+  .node {
+    fill: $white;
+
+    .icons {
+      fill: $grey;
+    }
+
+    .wrapper {
+      stroke: $white;
+      
+       &.is-selected {
+        stroke: $black
+      }
+    }
+
+    .content {
+      stroke: $black;
+    }
+
+    &.is-data-discovered {
+      .icons .data {
+        fill: $black;
+      }
+    }
+
+    &.is-device-discovered {
+      .icons .device {
+        fill: $black;
+      }
+    }
+
+    &.is-network-discovered {
+      .icons .network {
+        fill: $black;
+      }
+    }
+
+    &.is-discovered {
+      fill: $blue;
+
+      .content {
+        stroke: $blue;
+      }
+    }
+
+    &.is-compromised {
+      fill: $red;
+
+      .content {
+        stroke: $red;
+      }
+    }
+
+    &.is-discovered,
+    &.is-compromised {
+      .icons {
+        fill: $grey-light;
+      }
+
+      &.is-data-discovered {
+        .icons .data {
+          fill: $white;
+        }
+      }
+
+      &.is-device-discovered {
+        .icons .device {
+          fill: $white;
+        }
+      }
+
+      &.is-network-discovered {
+        .icons .network {
+          fill: $white;
+        }
+      }
+    }
+  }
+
+  .content {
+    stroke-width: 1;
+  }
+
+  .wrapper {
+    stroke-width: 0;
+    fill: #fff;
+
+    &.is-selected {
+      stroke-width: 1;
+    }
+  }
+
+  .icons {
+    &.is-icon {
+      path {
+        visibility: hidden;
+      }
+    }
+
+    &.is-dot {
+      circle {
+        visibility: hidden;
+      }
     }
   }
 

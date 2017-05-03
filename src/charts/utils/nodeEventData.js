@@ -1,63 +1,41 @@
-import {
-  findKey,
-} from 'lodash'
+const DEFAULT_STATE = {
+  state: 'undiscovered', // undiscovered, discovered, compromised
+  device: 'undiscovered',
+  data: 'undiscovered',
+  network: 'undiscovered',
+  isStartingPoint: false,
+}
 
-
-
-function addEventData(existing, {type, data}) {
+function getStateFromEvent({type, data, compromisedAssets}) {
   switch (type) {
-    case 'newDiscoveredNode': {
-      if (!existing.state === 'undiscovered') {
-        existing.state = 'discovered'
-      }
-      break
-    }
-    case 'nodeMarkAsRed': {
-      existing.state = 'compromised'
-    }
-      break
-    case 'assetCompromised': {
-      existing[data.asset.ruleGroup] = 'compromised'
-    }
-      break
+    case 'newDiscoveredNode':
+      return {state: 'discovered'}
+    case 'nodeMarkAsRed':
+      return {state: 'compromised'}
+    case 'assetCompromised':
+      return Object
+              .entries(compromisedAssets)
+              .filter(([_, value]) => value)
+              .reduce((result, [key]) => ({...result, [key]: 'compromised'}), {})
     case 'startingPoint':
-    case 'newStartingPointNode': {
-      existing.isStartingPoint = true
-    }
-      break
-    case 'newAsset': {
-      existing[findKey(data)] = 'discovered'
-    }
-      break
+    case 'newStartingPointNode':
+      return {isStartingPoint: true}
+    case 'newAsset':
+      return Object
+        .entries(data)
+        .filter(([_, value]) => value)
+        .reduce((result, [key]) => ({...result, [key]: 'discovered'}), {})
   }
-
 }
 
-export function getNodesEventsDataMap(events, date) {
-
+export function getNodesEventsDataMap(events, datetime) {
   return events
-    .filter(e => e.date <= date)
-    .reduce((nodeMap, e) => {
-      const nodeId = e.node.id
-      nodeMap[nodeId] = nodeMap[nodeId] ||
-        {
-          state: 'undiscovered', // undiscovered, discovered, compromised
-          device: 'undiscovered',
-          data: 'undiscovered',
-          network: 'undiscovered',
-          isStartingPoint: false,
-        }
-      addEventData(nodeMap[nodeId], e)
-
-    }, {})
-
+          .filter(({date}) => datetime >= date)
+          .reduce((result, event) => ({
+            ...result,
+            [event.node.id]: {
+              ...(result[event.node.id] || {...DEFAULT_STATE}),
+              ...getStateFromEvent(event),
+            }
+          }), {})
 }
-
-
-/*
-
- {
- assets: {}
- }
-
- */

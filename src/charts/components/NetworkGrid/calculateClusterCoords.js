@@ -10,7 +10,7 @@ const PADDING_RIGHT = 0
 const PADDING_LEFT = MARGIN
 const PADDING_H = MARGIN
 
-export default  function(computers, currentTime) {
+export default  function(computers) {
   let clusters = transform(groupBy(computers, 'cluster'), (result, nodesObject, clusterId) => {
     const size = nodesObject.length
     const width = Math.ceil(Math.sqrt(size))

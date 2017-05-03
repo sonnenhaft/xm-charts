@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import d3, {Transform} from '../../utils/decorated.d3.v4'
+import {getNodesEventsDataMap} from '../../utils/nodeEventData'
 import { Snow, Desktop, Diskette, Circle } from './IconsGroup'
 import './NetworkGrid.scss'
 import WindowDependable from '../common/WindowDependable'
@@ -9,33 +10,41 @@ import {memoize} from 'lodash'
 const calculateClusterCoords = memoize(_calculateClusterCoords)
 
 const CHART_PADDING = 0
-const RED = 'rgb(242, 30, 39)'
-const BLUE = 'rgb(70, 96, 223)'
-const GRAY = '#E6E6E6'
-const GRAY_LIGHT = 'rgba(230, 230, 230, 0.4)'
-const WHITE = 'white'
-const BLACK = 'black'
 
-
-const NodeHtml = `<g>
-      <rect class="wrapperRect"></rect>
-      <rect class="simpleRect"></rect>
-      <g class="iconsGroup">
-        <g>
-          <g transform="translate(4,3)  scale(0.7, 0.7)">
-            <g>
-            ${Desktop}${Circle}
-            </g>
-            <g transform="translate(0, 23)">
-              ${Diskette}${Circle}
-            </g>
-            <g transform="translate(0, 45)">
-              ${Snow}${Circle}
-            </g>
+const NodeHtml = (
+  `<g>
+    <rect 
+      class="wrapper"
+      rx="6.4"
+      ry="6.4"
+      width="24.4"
+      height="44.4"
+    ></rect>
+    <rect
+      class="content"
+      rx="4.4"
+      ry="4.4"
+      width="20"
+      height="40"
+    >
+    </rect>
+    <g class="icons">
+      <g>
+        <g transform="translate(4,3) scale(0.7, 0.7)">
+          <g class="device">
+          ${Desktop}${Circle}
+          </g>
+          <g class="data" transform="translate(0, 23)">
+            ${Diskette}${Circle}
+          </g>
+          <g class="network" transform="translate(0, 45)">
+            ${Snow}${Circle}
           </g>
         </g>
       </g>
-    </g>`
+    </g>
+  </g>`
+)
 
 export default class NetworkGrid extends Component {
   state = {
@@ -81,100 +90,62 @@ export default class NetworkGrid extends Component {
   }
 
   componentDidUpdate() {
-      this.renderChart()
+    this.renderChart()
   }
 
   componentDidMount() {
     this.calculateEvents(this.props)
   }
 
-  calculateEvents({ events, nodes, currentTime }) {
-    if ( !nodes.length ) {
+  calculateEvents({nodes}) {
+    if (!nodes.length) {
       return
     }
 
     this.cachedClusters = calculateClusterCoords(nodes)
-
-    this.nodeColors = nodes.reduce((map, {agentId}) => {
-      map[agentId] = WHITE
-      return map
-    }, {})
-
-    this.compromisedAssets = nodes.reduce((map, {agentId}) => {
-      map[agentId] = {
-        data: 0,
-        device: 0,
-        network: 0,
-     }
-     return map
-    }, {})
-
-    events
-      .filter(({date}) => currentTime >= date)
-      .forEach(item => {
-        const {type, nodeId, assets} = item
-        if (this.nodeColors[nodeId] !== RED) {
-          if (type === 'nodeMarkAsRed') {
-            this.nodeColors[nodeId] = RED
-          } else if (['newStartingPointNode', 'newDiscoveredNode'].includes(type)) {
-            this.nodeColors[nodeId] = BLUE
-          }
-        }
-
-        this.compromisedAssets[nodeId] = assets
-                                          .filter(({date}) => currentTime >= date)
-                                          .reduce((compromised, {compromisedAssets}) => {
-                                            ['data', 'device', 'network'].forEach(type => {
-                                              compromised[type] += compromisedAssets[type]
-                                            })
-                                            return compromised
-                                          }, this.compromisedAssets[nodeId])
-      })
   }
 
   renderChart() {
-    const {nodes} = this.props
+    const {nodes, events, currentTime} = this.props
+    const status = getNodesEventsDataMap(events, currentTime)
     const {clientWidth: width, clientHeight: height} = this.rootBlock.node()
+    const singleSquareWidth = 40
+    const cachedClusters = this.cachedClusters
+    const xScale = d3.scaleLinear().domain([0, 1]).range([0, singleSquareWidth])
+    const yScale = d3.scaleLinear().domain([0, 1]).range([0, singleSquareWidth])
 
     if ( !nodes.length || !height ) { // we just can calculate anything with 0 height
       return
     }
-
-    const cachedClusters = this.cachedClusters
-
+    
     this.svg.attrs({ width, height })
-    this.svg.select('.zoomRect').attrs({ width, height })
-
-    const singleSquareWidth = 40
+    this.svg.select('.zoomRect').attrs({width, height})
     this.zoom.translateExtent([[0, 0], [width, height]]).extent([[0, 0], [width, height]])
-
-    const xScale = d3.scaleLinear().domain([0, 1]).range([0, singleSquareWidth])
-    const yScale = d3.scaleLinear().domain([0, 1]).range([0, singleSquareWidth])
     xScale.domain(this.currentZoom.rescaleX(xScale).domain())
     yScale.domain(this.currentZoom.rescaleY(yScale).domain())
 
-    const gee = ({ offsetX, offsetY }) => {
+    const gee = ({offsetX, offsetY}) => {
       const x = xScale.invert(offsetX)
       const y = yScale.invert(offsetY)
-      return cachedClusters.coordinatedNodes.findIndex(({ x: _x, y: _y }) => {
-        return _x - 0.5 < x && _y < y && _x + 0.5 > x && _y + 0.8 >= y
-      })
+      return cachedClusters.coordinatedNodes.findIndex(({ x: _x, y: _y }) =>
+        _x - 0.5 < x && _y < y && _x + 0.5 > x && _y + 0.8 >= y
+      )
     }
 
     this.svg.select('.zoomRect').on('mousemove', () => {
       const hoveredNodeIndex = gee(d3.event)
-
       const rect = this.rootBlock.select('.gridTooltip')
-      if ( hoveredNodeIndex !== -1 && this.state.hoveredNodeIndex !== hoveredNodeIndex ) {
-        const { x: _x, y: _y } = cachedClusters.coordinatedNodes[hoveredNodeIndex]
+
+      if (hoveredNodeIndex !== -1 && this.state.hoveredNodeIndex !== hoveredNodeIndex) {
+        const {x: _x, y: _y} = cachedClusters.coordinatedNodes[hoveredNodeIndex]
         rect.style('top', yScale(_y + 0.4) + 37).style('left', xScale(_x + 0.20)).style('display', 'block')
-        this.setState({ hoveredNodeIndex })
-      } else if ( hoveredNodeIndex === -1 ) {
+        this.setState({hoveredNodeIndex})
+      } else if (hoveredNodeIndex === -1) {
         rect.style('display', 'none')
       }
     }).on('click', () => {
       const selectedNodeIndex = gee(d3.event)
-      this.setState({ selectedNodeIndex })
+      this.setState({selectedNodeIndex})
     })
 
     let kk = Math.min(height / (singleSquareWidth * cachedClusters.totalHeight), (width) / (singleSquareWidth * cachedClusters.totalWidth))
@@ -187,78 +158,61 @@ export default class NetworkGrid extends Component {
     const FILLED_SPACE = 0.73
     const offset = 4.4
 
-    const simpleRectAttrs = {
-      rx: offset,
-      ry: offset,
-      strokeWidth: 1,
-      height: singleSquareWidth,
-      width: singleSquareWidth / 2,
-      stroke: ({ node: { agentId } }) => this.nodeColors[agentId] === WHITE ? BLACK : this.nodeColors[agentId],
-    }
-
     const clasters = cachedClusters.coordinatedClusters
-    this.svg.select('.clusters').bindData('rect.clusterBlock', clasters, {
-      rx: 3,
-      ry: 3,
-      transform: ({ x, y }) => `translate(${xScale(x)}, ${yScale(y)})`,
-      width: ({ width }) => Math.abs(xScale(width) - xScale(0)),
-      height: ({ height }) =>  Math.abs(xScale(height) - xScale(0)),
+    this.svg.select('.clusters').bindData('rect.cluster', clasters, {
+      transform: ({x, y}) => `translate(${xScale(x)}, ${yScale(y)})`,
+      width: ({width}) => Math.abs(xScale(width) - xScale(0)),
+      height: ({height}) =>  Math.abs(xScale(height) - xScale(0)),
     })
 
     this.svg.select('.cluster-labels').bindData('text.clusterLabel', clasters, {
-      transform: ({ x, y }) => `translate(${xScale(x)}, ${yScale(y)}) scale(${k}, ${k})`,
-      text: ({ cluster }) => cluster,
+      transform: ({x, y}) => `translate(${xScale(x)}, ${yScale(y)}) scale(${k}, ${k})`,
+      text: ({cluster}) => cluster,
     })
 
-    const enteredSelection = this.svg.select('.grid').selectAll('.singleRectGroup')
+    const enteredSelection = this.svg.select('.grid').selectAll('.node')
       .data(cachedClusters.coordinatedNodes, ({ node: { _id: id } }) => id)
 
     enteredSelection.exit().remove()
 
-    const mergedSelection = enteredSelection.enter().append('g')
-      .attr('class', 'singleRectGroup').html(() => NodeHtml)
+    const mergedSelection = enteredSelection
+                              .enter()
+                              .append('g')
+                              .attr('class', 'node')
+                              .html(() => NodeHtml)
 
     const allElements = mergedSelection.merge(enteredSelection)
 
-    allElements.attrs({
-      transform: ({ x, y }) => `translate(${xScale(x)},${yScale(y)})`,
-      fill: ({ node: { agentId } }) => this.nodeColors[agentId],
-    })
+    allElements
+      .attrs({
+        transform: ({x, y}) => `translate(${xScale(x)},${yScale(y)})`,
+      })
+      .classed('is-compromised', ({node: {agentId}}) => status[agentId] && status[agentId].state === 'compromised')
+      .classed('is-undiscovered', ({node: {agentId}}) => status[agentId] && status[agentId].state === 'undiscovered')
+      .classed('is-discovered', ({node: {agentId}}) => status[agentId] && status[agentId].state === 'discovered')
+      .classed('is-data-discovered', ({node: {agentId}}) => status[agentId] && status[agentId].data === 'discovered')
+      .classed('is-data-discovered', ({node: {agentId}}) => status[agentId] && status[agentId].data === 'compromised')
+      .classed('is-device-discovered', ({node: {agentId}}) => status[agentId] && status[agentId].device === 'discovered')
+      .classed('is-device-discovered', ({node: {agentId}}) => status[agentId] && status[agentId].device === 'compromised')
+      .classed('is-network-discovered', ({node: {agentId}}) => status[agentId] && status[agentId].network === 'discovered')
+      .classed('is-network-discovered', ({node: {agentId}}) => status[agentId] && status[agentId].network === 'compromised')
 
-    allElements.select('.simpleRect').attrs({
-      ...simpleRectAttrs,
+    allElements.select('.content').attrs({
       transform: `scale(${FILLED_SPACE * k})`,
     })
-    allElements.select('.wrapperRect').attrs({
-      ...simpleRectAttrs,
-      rx: offset + 2,
-      ry: offset + 2,
-      fill: WHITE,
-      'stroke-width': (ignored, index) => index === this.state.selectedNodeIndex ? simpleRectAttrs.strokeWidth : 0,
-      width: singleSquareWidth / 2 + offset,
-      height: singleSquareWidth + offset,
-      transform: `translate(${-offset * k * FILLED_SPACE / 2}, ${-offset * k * FILLED_SPACE/ 2}) scale(${FILLED_SPACE * k})`,
-      stroke: ({ node: { agentId } }) => this.nodeColors[agentId] === WHITE ? BLACK : this.nodeColors[agentId],
-    })
 
-    const iconsGroup = allElements.select('.iconsGroup')
-    iconsGroup.attrs({transform: `scale(${k / 2}, ${k / 2})`})
-    iconsGroup.selectAll('path').attrs({visibility: k >= 1.2 ? 'visible' : 'hidden'})
-    iconsGroup.selectAll('circle').attrs({visibility: k < 1.2 ? 'visible' : 'hidden'})
-
-    const types = ['data', 'device', 'network']
-
-    types.forEach(type => {
-      iconsGroup.select(`.${type}`).attrs({
-        fill: ({ node: { agentId } }) => {
-          if (this.nodeColors[agentId] === WHITE) {
-            return this.compromisedAssets[agentId][type] ? BLACK : GRAY
-          }
-
-          return this.compromisedAssets[agentId][type] ? WHITE : GRAY_LIGHT        
-        },
+    allElements.select('.wrapper')
+      .classed('is-selected', (_, index) => index === this.state.selectedNodeIndex)
+      .attrs({
+        transform: `translate(${-offset * k * FILLED_SPACE / 2}, ${-offset * k * FILLED_SPACE/ 2}) scale(${FILLED_SPACE * k})`
       })
-    })
+
+    const icons = allElements.select('.icons')
+
+    icons
+      .attrs({transform: `scale(${k / 2}, ${k / 2})`})
+      .classed('is-icon', () => k < 1.2)
+      .classed('is-dot', () => k >= 1.2)
   }
 
   render() {
