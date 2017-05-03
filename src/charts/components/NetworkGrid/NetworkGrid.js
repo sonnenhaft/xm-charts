@@ -4,8 +4,8 @@ import { Snow, Desktop, Diskette } from './IconsGroup'
 import './NetworkGrid.scss'
 import WindowDependable from '../common/WindowDependable'
 import _calculateClusterCoords from './calculateClusterCoords'
-import {memoize} from 'lodash'
 
+import {memoize} from 'lodash'
 const calculateClusterCoords = memoize(_calculateClusterCoords)
 
 const CHART_PADDING = 0
@@ -73,7 +73,7 @@ export default class NetworkGrid extends Component {
       return
     }
 
-    this.cachedClusters = calculateClusterCoords(nodes, currentTime)
+    this.cachedClusters = calculateClusterCoords(nodes, 1)
 
     this.nodeColors = nodes.reduce((map, {agentId}) => {
       map[agentId] = WHITE
@@ -120,6 +120,8 @@ export default class NetworkGrid extends Component {
       return
     }
 
+    // uncomment to see optimal feeling of empty space in action
+    // this.cachedClusters = _calculateClusterCoords(nodes, height/width) // memoize eats one arg
     const cachedClusters = this.cachedClusters
 
     this.svg.attrs({ width, height })
@@ -252,7 +254,7 @@ export default class NetworkGrid extends Component {
             return this.compromisedAssets[agentId][type] ? BLACK : GRAY
           }
 
-          return this.compromisedAssets[agentId][type] ? WHITE : GRAY_LIGHT        
+          return this.compromisedAssets[agentId][type] ? WHITE : GRAY_LIGHT
         },
       })
     })
