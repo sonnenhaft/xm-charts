@@ -27,8 +27,6 @@ $grey-light: rgba(230, 230, 230, 0.4);
 
 :global {
   .cluster {
-    rx: 3px;
-    ry: 3px;
   }
 
   .node {
@@ -110,16 +108,12 @@ $grey-light: rgba(230, 230, 230, 0.4);
     }
   }
 
-  .content {
-    stroke-width: 1;
-  }
-
   .wrapper {
-    stroke-width: 0;
-    fill: #fff;
+    stroke: $white;
+    fill: $white;
 
     &.is-selected {
-      stroke-width: 1;
+      stroke: $black
     }
   }
 

@@ -17,6 +17,7 @@ const NodeHtml = (
       class="wrapper"
       rx="6.4"
       ry="6.4"
+      stroke-width="1"
       width="24.4"
       height="44.4"
     ></rect>
@@ -24,6 +25,7 @@ const NodeHtml = (
       class="content"
       rx="4.4"
       ry="4.4"
+      stroke-width="1"
       width="20"
       height="40"
     >
@@ -163,6 +165,8 @@ export default class NetworkGrid extends Component {
 
     const clasters = cachedClusters.coordinatedClusters
     this.svg.select('.clusters').bindData('rect.cluster', clasters, {
+      rx: 3,
+      ry: 3,
       transform: ({x, y}) => `translate(${xScale(x)}, ${yScale(y)})`,
       width: ({width}) => Math.abs(xScale(width) - xScale(0)),
       height: ({height}) =>  Math.abs(xScale(height) - xScale(0)),
