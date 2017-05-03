@@ -11,12 +11,14 @@ const options = [
 
 const Bar = ({className, value, ...rest}) => (
   <div className={className}>
-    <select value={value} {...rest}>
-      {options.map(({value, title}) => 
-        <option key={value} value={value}>{title}</option>
-      )}
-    </select>
-    Toolbar here ({version})
+    <div styleName="toolbar-header">
+      Toolbar here ({version})
+      <select value={value} {...rest} styleName="section">
+        {options.map(({value, title}) =>
+          <option key={value} value={value}>Data set #{title}</option>
+        )}
+      </select>
+    </div>
   </div>
 )
 

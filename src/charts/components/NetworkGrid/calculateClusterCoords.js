@@ -10,7 +10,7 @@ const PADDING_RIGHT = 0
 const PADDING_LEFT = MARGIN
 const PADDING_H = MARGIN
 
-export default  function(computers) {
+export default  function(computers, ratio = 1) {
   let clusters = transform(groupBy(computers, 'cluster'), (result, nodesObject, clusterId) => {
     const size = nodesObject.length
     const width = Math.ceil(Math.sqrt(size))
@@ -23,7 +23,16 @@ export default  function(computers) {
     }
   })
 
+  values(clusters).forEach(item => {
+    item.width *= ratio
+  })
+
   let { width: totalWidth, height: totalHeight, items } = pack(values(clusters), { inPlace: false })
+  totalWidth /= ratio
+  items.forEach(item => {
+    item.width /= ratio
+    item.x /= ratio
+  })
 
   items.forEach(item => {
     item.width -= MARGIN * 2 + PADDING_RIGHT + PADDING_LEFT
@@ -67,5 +76,3 @@ export default  function(computers) {
     coordinatedNodes,
   }
 }
-
-

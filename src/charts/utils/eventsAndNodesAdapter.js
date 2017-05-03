@@ -36,8 +36,8 @@ export default ({nodes, events}) => ({
       ...point,
       assets: assets.filter(asset => asset.node.id === point.nodeId).map(asset => ({
         ...asset,
-        date: new Date(asset.timestamp).getTime()
-      }))
+        date: new Date(asset.timestamp).getTime(), 
+      })),
     }))
   })(),
 })

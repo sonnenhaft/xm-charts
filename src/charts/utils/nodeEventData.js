@@ -15,7 +15,7 @@ function getStateFromEvent({type, data, compromisedAssets}) {
     case 'assetCompromised':
       return Object
               .entries(compromisedAssets)
-              .filter(([_, value]) => value)
+              .filter(([_, value]) => value) // eslint-disable-line no-unused-vars
               .reduce((result, [key]) => ({...result, [key]: 'compromised'}), {})
     case 'startingPoint':
     case 'newStartingPointNode':
@@ -23,7 +23,7 @@ function getStateFromEvent({type, data, compromisedAssets}) {
     case 'newAsset':
       return Object
         .entries(data)
-        .filter(([_, value]) => value)
+        .filter(([_, value]) => value) // eslint-disable-line no-unused-vars
         .reduce((result, [key]) => ({...result, [key]: 'discovered'}), {})
   }
 }
@@ -36,6 +36,6 @@ export function getNodesEventsDataMap(events, datetime) {
             [event.node.id]: {
               ...(result[event.node.id] || {...DEFAULT_STATE}),
               ...getStateFromEvent(event),
-            }
+            },
           }), {})
 }

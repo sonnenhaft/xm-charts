@@ -5,8 +5,8 @@ import { Snow, Desktop, Diskette, Circle } from './IconsGroup'
 import './NetworkGrid.scss'
 import WindowDependable from '../common/WindowDependable'
 import _calculateClusterCoords from './calculateClusterCoords'
-import {memoize} from 'lodash'
 
+import {memoize} from 'lodash'
 const calculateClusterCoords = memoize(_calculateClusterCoords)
 
 const CHART_PADDING = 0
@@ -110,14 +110,17 @@ export default class NetworkGrid extends Component {
     const status = getNodesEventsDataMap(events, currentTime)
     const {clientWidth: width, clientHeight: height} = this.rootBlock.node()
     const singleSquareWidth = 40
-    const cachedClusters = this.cachedClusters
     const xScale = d3.scaleLinear().domain([0, 1]).range([0, singleSquareWidth])
     const yScale = d3.scaleLinear().domain([0, 1]).range([0, singleSquareWidth])
 
     if ( !nodes.length || !height ) { // we just can calculate anything with 0 height
       return
     }
-    
+
+    // uncomment to see optimal feeling of empty space in action
+    // this.cachedClusters = _calculateClusterCoords(nodes, height/width) // memoize eats one arg
+    const cachedClusters = this.cachedClusters
+
     this.svg.attrs({ width, height })
     this.svg.select('.zoomRect').attrs({width, height})
     this.zoom.translateExtent([[0, 0], [width, height]]).extent([[0, 0], [width, height]])
@@ -204,7 +207,7 @@ export default class NetworkGrid extends Component {
     allElements.select('.wrapper')
       .classed('is-selected', (_, index) => index === this.state.selectedNodeIndex)
       .attrs({
-        transform: `translate(${-offset * k * FILLED_SPACE / 2}, ${-offset * k * FILLED_SPACE/ 2}) scale(${FILLED_SPACE * k})`
+        transform: `translate(${-offset * k * FILLED_SPACE / 2}, ${-offset * k * FILLED_SPACE/ 2}) scale(${FILLED_SPACE * k})`,
       })
 
     const icons = allElements.select('.icons')

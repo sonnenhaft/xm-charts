@@ -22,14 +22,9 @@
   align-items: center;
 }
 
-
 .simulation-chart {
   flex: 1;
 }
-
-
-
-
 
 .version {
   display: block;
@@ -59,8 +54,6 @@
   margin: 4px;
   border: dashed 0.5px #b4b4b4;
 }
-
-
 
 @font-face {
   font-family: 'GeogRg';
@@ -124,3 +117,15 @@
 
 @import url('https://fonts.googleapis.com/css?family=PT+Mono');
 @import url('https://fonts.googleapis.com/css?family=Roboto|Roboto+Mono');
+
+.section,
+.toolbar-header {
+  font-family: 'Gilroy-Medium';
+  margin-left: 20px;
+}
+
+.section {
+  vertical-align: middle;
+  line-height: 23px;
+  font-size: 14px;
+}
