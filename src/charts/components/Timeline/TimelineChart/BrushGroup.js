@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from 'react'
-import * as d3 from 'd3'
-import { Transform  } from 'd3-zoom/src/transform'
+import d3, {Transform} from 'charts/utils/decorated.d3.v4'
 
 const ScaleObjectFunction = PropTypes.func.isRequired
 export default class BrushGroup extends Component {

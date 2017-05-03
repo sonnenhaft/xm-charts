@@ -1,4 +1,6 @@
 import * as d3 from 'd3'
+export { Transform } from 'd3-zoom/src/transform'
+
 
 const methods = {
   styles: function(stylesAsObject) {
@@ -16,7 +18,7 @@ const methods = {
     const mouseEvents = ['mouseover', 'mouseout', 'click']
     Object.keys(object).forEach(key => {
       const value = object[key]
-      if (key === 'html') {
+      if ( key === 'html' ) {
         if ( !noEvents ) {
           this.html(value)
         }

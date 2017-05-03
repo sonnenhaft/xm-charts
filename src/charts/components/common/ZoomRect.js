@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from 'react'
-import d3 from '../../utils/d3.shims'
-import { Transform } from 'd3-zoom/src/transform'
+import d3, { Transform }  from 'charts/utils/decorated.d3.v4'
 
 const ScaleObjectFunction = PropTypes.func.isRequired
 export default class ZoomRect extends Component {
@@ -83,6 +82,6 @@ export default class ZoomRect extends Component {
   }
 
   render() {
-    return <rect ref={this.refZoomRect} cursor="move" pointerEvents="all" fill="none" />
+    return <rect ref={this.refZoomRect} cursor="move" pointerEvents="all" fill="none"/>
   }
 }

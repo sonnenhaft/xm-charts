@@ -15,17 +15,29 @@ export default ({nodes, events}) => ({
     ...node,
     cluster: chance.weighted(STUB_CLUSTER_NAMES, [1, 2, 3, 4, 2]),
   })),
-  events: events.filter(({ type }) => type !== 'newAsset').map(event => {
-    const data = event.data || {}
-    return {
-      ...event,
-      date: new Date(event.timestamp).getTime(),
-      source: (data.sourceNode || {}).id,
-      method: data.method,
-      nodeId: event.node.id,
-      lastInSubnet: event.type === 'assetCompromised',
-      firstInSubnet: event.type === 'startingPoint',
-      campainId: 1,
-    }
-  }),
+  events: (() => {
+    const points = events.filter(({ type }) => type !== 'newAsset').map(event => {
+      const data = event.data || {}
+      return {
+        ...event,
+        date: new Date(event.timestamp).getTime(),
+        source: (data.sourceNode || {}).id,
+        method: data.method,
+        nodeId: event.node.id,
+        lastInSubnet: ['assetCompromised', 'newAsset'].includes(event.type),
+        firstInSubnet: ['newStartingPointNode', 'newDiscoveredNode'].includes(event.type),
+        campainId: 1,
+      }
+    })
+
+    const assets = events.filter(({ type }) => ['assetCompromised', 'newAsset'].includes(type))
+
+    return points.map(point => ({
+      ...point,
+      assets: assets.filter(asset => asset.node.id === point.nodeId).map(asset => ({
+        ...asset,
+        date: new Date(asset.timestamp).getTime() 
+      }))
+    }))
+  })(),
 })

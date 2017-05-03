@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react'
-import * as d3 from 'd3'
+import d3 from 'charts/utils/decorated.d3.v4'
 import styles from './BrushCircleGroup.scss'
 
 const translate = (x, y = 0) => ({ transform: `translate(${x}, ${y})` })

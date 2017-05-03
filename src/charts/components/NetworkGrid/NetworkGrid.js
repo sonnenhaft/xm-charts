@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import d3 from '../../utils/d3.shims'
+import d3, {Transform} from '../../utils/decorated.d3.v4'
 import { Snow, Desktop, Diskette, Circle } from './IconsGroup'
 import './NetworkGrid.scss'
-import { Transform } from 'd3-zoom/src/transform'
 import WindowDependable from '../common/WindowDependable'
 import _calculateClusterCoords from './calculateClusterCoords'
 import {memoize} from 'lodash'
@@ -10,6 +9,12 @@ import {memoize} from 'lodash'
 const calculateClusterCoords = memoize(_calculateClusterCoords)
 
 const CHART_PADDING = 0
+const RED = 'rgb(242, 30, 39)'
+const BLUE = 'rgb(70, 96, 223)'
+const GRAY = '#E6E6E6'
+const GRAY_LIGHT = 'rgba(230, 230, 230, 0.4)'
+const WHITE = 'white'
+const BLACK = 'black'
 
 
 const NodeHtml = `<g>
@@ -32,12 +37,9 @@ const NodeHtml = `<g>
       </g>
     </g>`
 
-
 export default class NetworkGrid extends Component {
-
   state = {
     hoveredNodeIndex: null,
-    canShowChart: false,
     selectedNodeIndex: null,
   }
 
@@ -45,7 +47,11 @@ export default class NetworkGrid extends Component {
     this.rootBlock = d3.select(rootBlock)
     this.svg = this.rootBlock.select('.svg')
     this.svg.select('.zoomRect').call(this.zoom)
-    this.forceUpdate()
+
+    setTimeout(() => {
+      // think that better to remember height in here and on window changed
+      this.forceUpdate()
+    }, 800)
   }
 
   onZoomFactorChanged = () => {
@@ -61,14 +67,13 @@ export default class NetworkGrid extends Component {
     this.heightZoom = new Transform(1, 0, 0)
   }
 
-  shouldComponentUpdate({ currentTime, events, nodes }, { hoveredNodeIndex, selectedNodeIndex, canShowChart }) {
+  shouldComponentUpdate({ currentTime, events, nodes }, { hoveredNodeIndex, selectedNodeIndex }) {
     const { props, state } = this
     return props.currentTime !== currentTime
       || props.events !== events
       || props.nodes !== nodes
       || state.hoveredNodeIndex !== hoveredNodeIndex
       || state.selectedNodeIndex !== selectedNodeIndex
-      || state.canShowChart !== canShowChart
   }
 
   componentWillReceiveProps(nextProps) {
@@ -76,16 +81,7 @@ export default class NetworkGrid extends Component {
   }
 
   componentDidUpdate() {
-    this.setState({ canShowChart: true }, () => {
-      if ( this.isUpdating ) {
-        return
-      }
-      this.isUpdating = true
-      setTimeout(() => {
-        this.renderChart()
-        this.isUpdating = false
-      }, 50)
-    })
+      this.renderChart()
   }
 
   componentDidMount() {
@@ -98,51 +94,62 @@ export default class NetworkGrid extends Component {
     }
 
     this.cachedClusters = calculateClusterCoords(nodes)
-    this.cachedNodeEventData =
 
-    this.nodeColors = nodes.reduce((map, { agentId }) => {
-      map[agentId] = 'white'
+    this.nodeColors = nodes.reduce((map, {agentId}) => {
+      map[agentId] = WHITE
       return map
     }, {})
 
+    this.compromisedAssets = nodes.reduce((map, {agentId}) => {
+      map[agentId] = {
+        data: 0,
+        device: 0,
+        network: 0,
+     }
+     return map
+    }, {})
+
     events
-      .filter(({ date }) => currentTime > date)
+      .filter(({date}) => currentTime >= date)
       .forEach(item => {
-        const { type, nodeId } = item
-        const red = 'rgb(242, 30, 39)'
-        const blue = 'rgb(70, 96, 223)'
-        if ( this.nodeColors[nodeId] !== red ) {
-          if ( type === 'nodeMarkAsRed' ) {
-            this.nodeColors[nodeId] = red
-          } else if ( type === 'newDiscoveredNode' ) {
-            this.nodeColors[nodeId] = blue
+        const {type, nodeId, assets} = item
+        if (this.nodeColors[nodeId] !== RED) {
+          if (type === 'nodeMarkAsRed') {
+            this.nodeColors[nodeId] = RED
+          } else if (['newStartingPointNode', 'newDiscoveredNode'].includes(type)) {
+            this.nodeColors[nodeId] = BLUE
           }
         }
+
+        this.compromisedAssets[nodeId] = assets
+                                          .filter(({date}) => currentTime >= date)
+                                          .reduce((compromised, {compromisedAssets}) => {
+                                            ['data', 'device', 'network'].forEach(type => {
+                                              compromised[type] += compromisedAssets[type]
+                                            })
+                                            return compromised
+                                          }, this.compromisedAssets[nodeId])
       })
   }
 
   renderChart() {
-    const { nodes } = this.props
-    if ( !nodes.length ) {
+    const {nodes} = this.props
+    const {clientWidth: width, clientHeight: height} = this.rootBlock.node()
+
+    if ( !nodes.length || !height ) { // we just can calculate anything with 0 height
       return
     }
 
-    const refNode = this.rootBlock.node()
-    const width = refNode.clientWidth
-    const h = refNode.clientHeight
-    const height = Math.max(h, 300)
     const cachedClusters = this.cachedClusters
 
     this.svg.attrs({ width, height })
     this.svg.select('.zoomRect').attrs({ width, height })
 
-    const nodeWidth = 40
-    const nodeHeight = nodeWidth
-
+    const singleSquareWidth = 40
     this.zoom.translateExtent([[0, 0], [width, height]]).extent([[0, 0], [width, height]])
 
-    const xScale = d3.scaleLinear().domain([0, 1]).range([0, nodeWidth])
-    const yScale = d3.scaleLinear().domain([0, 1]).range([0, nodeHeight])
+    const xScale = d3.scaleLinear().domain([0, 1]).range([0, singleSquareWidth])
+    const yScale = d3.scaleLinear().domain([0, 1]).range([0, singleSquareWidth])
     xScale.domain(this.currentZoom.rescaleX(xScale).domain())
     yScale.domain(this.currentZoom.rescaleY(yScale).domain())
 
@@ -170,7 +177,7 @@ export default class NetworkGrid extends Component {
       this.setState({ selectedNodeIndex })
     })
 
-    let kk = Math.min(height / (nodeHeight * cachedClusters.totalHeight), (width) / (nodeWidth * cachedClusters.totalWidth))
+    let kk = Math.min(height / (singleSquareWidth * cachedClusters.totalHeight), (width) / (singleSquareWidth * cachedClusters.totalWidth))
     this.heightZoom.k = kk
 
     xScale.domain(this.heightZoom.rescaleX(xScale).domain())
@@ -183,10 +190,10 @@ export default class NetworkGrid extends Component {
     const simpleRectAttrs = {
       rx: offset,
       ry: offset,
-      strokeWidth: 2,
-      height: nodeHeight,
-      width: nodeHeight / 2,
-      stroke: ({ node: { agentId } }) => this.nodeColors[agentId] === 'white' ? 'black' : this.nodeColors[agentId],
+      strokeWidth: 1,
+      height: singleSquareWidth,
+      width: singleSquareWidth / 2,
+      stroke: ({ node: { agentId } }) => this.nodeColors[agentId] === WHITE ? BLACK : this.nodeColors[agentId],
     }
 
     const clasters = cachedClusters.coordinatedClusters
@@ -215,7 +222,6 @@ export default class NetworkGrid extends Component {
 
     allElements.attrs({
       transform: ({ x, y }) => `translate(${xScale(x)},${yScale(y)})`,
-      cursor: 'pointer',
       fill: ({ node: { agentId } }) => this.nodeColors[agentId],
     })
 
@@ -227,34 +233,46 @@ export default class NetworkGrid extends Component {
       ...simpleRectAttrs,
       rx: offset + 2,
       ry: offset + 2,
-      fill: 'white',
-      'stroke-width': (ignored, index) => index === this.state.selectedNodeIndex ? 2 : 0,
-      width: nodeHeight / 2 + offset,
-      height: nodeHeight + offset,
+      fill: WHITE,
+      'stroke-width': (ignored, index) => index === this.state.selectedNodeIndex ? simpleRectAttrs.strokeWidth : 0,
+      width: singleSquareWidth / 2 + offset,
+      height: singleSquareWidth + offset,
       transform: `translate(${-offset * k * FILLED_SPACE / 2}, ${-offset * k * FILLED_SPACE/ 2}) scale(${FILLED_SPACE * k})`,
-      stroke: ({ node: { agentId } }) => this.nodeColors[agentId] === 'white' ? 'black' : this.nodeColors[agentId],
+      stroke: ({ node: { agentId } }) => this.nodeColors[agentId] === WHITE ? BLACK : this.nodeColors[agentId],
     })
 
     const iconsGroup = allElements.select('.iconsGroup')
-    iconsGroup.attrs({
-      transform: `scale(${k / 2}, ${k / 2})`,
-      fill: ({ node: { agentId } }) => this.nodeColors[agentId] === 'white' ? 'black' : 'white',
-      opacity: ({ node: { agentId } }) => this.nodeColors[agentId] === 'white' ? 1 : 0.5,
+    iconsGroup.attrs({transform: `scale(${k / 2}, ${k / 2})`})
+    iconsGroup.selectAll('path').attrs({visibility: k >= 1.2 ? 'visible' : 'hidden'})
+    iconsGroup.selectAll('circle').attrs({visibility: k < 1.2 ? 'visible' : 'hidden'})
+
+    const types = ['data', 'device', 'network']
+
+    types.forEach(type => {
+      iconsGroup.select(`.${type}`).attrs({
+        fill: ({ node: { agentId } }) => {
+          if (this.nodeColors[agentId] === WHITE) {
+            return this.compromisedAssets[agentId][type] ? BLACK : GRAY
+          }
+
+          return this.compromisedAssets[agentId][type] ? WHITE : GRAY_LIGHT        
+        },
+      })
     })
-    iconsGroup.selectAll('path').attrs({ visibility: k >= 1.2 ? 'visible' : 'hidden' })
-    iconsGroup.selectAll('circle').attrs({ visibility: k < 1.2 ? 'visible' : 'hidden' })
   }
 
   render() {
-    const { canShowChart } = this.state
-    const { className, nodes } = this.props
+    const {className, nodes} = this.props
     const selectedItem = nodes[this.state.hoveredNodeIndex]
-    const { name } = selectedItem || {}
+    const {name, agentId} = selectedItem || {}
 
     return (
-      <WindowDependable onDimensionsChanged={() => this.forceUpdate()} style={{ opacity: canShowChart ? 1 : 0 }} refCb={this.refRootBlock} className={className}>
+      <WindowDependable onDimensionsChanged={() => this.forceUpdate()} refCb={this.refRootBlock} className={className}>
         <div styleName="grid-tooltip" className="gridTooltip">
-          <div styleName="device-name">{name}</div>
+          <div styleName="device-name">
+            <div>Name: {name}</div>
+            <div>Node ID: {agentId}</div>
+          </div>
           <div>
             <svg width="100" height="50">
               <g stroke="black">
@@ -271,7 +289,8 @@ export default class NetworkGrid extends Component {
                transform="translate(0, -5)"/>
             <g className="grid"/>
           </g>
-          <rect className="zoomRect" fill="#e5e5e5" opacity={0} cursor="move"/>
+          {/*Please, even if I use % in here, don't rely on % in d3 much*/}
+          <rect className="zoomRect" fill="#e5e5e5" opacity="0" cursor="move"/>
         </svg>
       </WindowDependable>
     )

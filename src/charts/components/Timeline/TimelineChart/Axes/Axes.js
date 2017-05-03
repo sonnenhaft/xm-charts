@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from 'react'
-import * as d3 from 'd3'
+import d3 from 'charts/utils/decorated.d3.v4'
 import styles from './Axes.scss'
 
 const ScaleObjectFunction = PropTypes.func.isRequired
@@ -49,10 +49,10 @@ export default class Axes extends Component {
 
   render() {
     return <g>
-      <g className={`miniMap ${styles['axis']} ${styles['axis--x']}`} ref={this.refMiniMap} />
+      <g className={`miniMap ${styles['axis']} ${styles['axis--x']}`} ref={this.refMiniMap}/>
       <g visibility={this.props.isToggled ? 'hidden' : 'visible'}>
-        <g className={`xAxis ${styles['axis']} ${styles['axis--x']}`} ref={this.refXaxis} />
-        <g className={`yAxis ${styles['axis']} ${styles['axis--y']}`} ref={this.refYaxis} />
+        <g className={`xAxis ${styles['axis']} ${styles['axis--x']}`} ref={this.refXaxis}/>
+        <g className={`yAxis ${styles['axis']} ${styles['axis--y']}`} ref={this.refYaxis}/>
         {this.props.children}
       </g>
     </g>
