@@ -214,9 +214,7 @@ export default class NetworkGrid extends Component {
         transform: `translate(${-offset * k * FILLED_SPACE / 2}, ${-offset * k * FILLED_SPACE/ 2}) scale(${FILLED_SPACE * k})`,
       })
 
-    const icons = allElements.select('.icons')
-
-    icons
+    allElements.select('.icons')
       .attrs({transform: `scale(${k / 2}, ${k / 2})`})
       .classed('is-icon', () => k < 1.2)
       .classed('is-dot', () => k >= 1.2)
