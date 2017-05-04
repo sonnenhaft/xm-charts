@@ -30,14 +30,12 @@ export default class NetworkGrid extends Component {
 
   onZoomFactorChanged = () => {
     this.rootBlock.select('.gridTooltip').style('display', 'none')
-    this.currentZoom = d3.zoomTransform(this.svg.select('.zoomRect').node())
     this.forceUpdate()
   }
 
   constructor(props) {
     super(props)
     this.zoom = d3.zoom().scaleExtent([1, 1000]).on('zoom', this.onZoomFactorChanged)
-    this.currentZoom = d3.zoomIdentity
   }
 
   shouldComponentUpdate({ currentTime, events, nodes }, { hoveredNodeIndex, selectedNodeIndex }) {
@@ -69,6 +67,21 @@ export default class NetworkGrid extends Component {
     this.cachedClusters = calculateClusterCoords(nodes)
   }
 
+  getCurrentZoom() {
+    const { clientWidth: width, clientHeight: height } = this.rootBlock.node()
+    const centralizeZoomFactor = Math.min(
+      height / (NODE_WIDTH * this.cachedClusters.totalHeight),
+      width / (NODE_WIDTH * this.cachedClusters.totalWidth)
+    )
+
+    const { k, x, y } = d3.zoomTransform(this.svg.select('.zoomRect').node())
+    return new Transform(
+      centralizeZoomFactor * k,
+      x,
+      y
+    )
+  }
+
   renderChart() {
     const { nodes, events, currentTime } = this.props
     const { clientWidth: width, clientHeight: height } = this.rootBlock.node()
@@ -86,11 +99,12 @@ export default class NetworkGrid extends Component {
 
     this.svg.attrs({ width, height })
     this.svg.select('.zoomRect').attrs({ width, height })
-    this.zoom
-      .translateExtent([[0, 0], [width * this.currentZoom.k, height * this.currentZoom.k]])
-      .extent([[0, 0], [width, height]])
-    xScale.domain(this.currentZoom.rescaleX(xScale).domain())
-    yScale.domain(this.currentZoom.rescaleY(yScale).domain())
+    this.zoom.translateExtent([[0, 0], [width, height]]).extent([[0, 0], [width, height]])
+
+    const currentZoom = this.getCurrentZoom()
+    this.svg.select('.zoom-scale').attr('transform', currentZoom.toString())
+    xScale.domain(currentZoom.rescaleX(xScale).domain())
+    yScale.domain(currentZoom.rescaleY(yScale).domain())
 
     const findNodeByMouse = ({ offsetX, offsetY }) => {
       const x = xScale.invert(offsetX)
@@ -116,28 +130,13 @@ export default class NetworkGrid extends Component {
       click: () => this.setState({ selectedNodeIndex: findNodeByMouse(d3.event) }),
     })
 
-    const centralizeZoomFactor = Math.min(
-      height / (NODE_WIDTH * cachedClusters.totalHeight),
-      width / (NODE_WIDTH * cachedClusters.totalWidth)
-    )
-
-    const zoomFactor = this.currentZoom.k * centralizeZoomFactor
-    const heightZoom = new Transform(centralizeZoomFactor, 0, 0)
-
-    // centralize chart position
-    // heightZoom.x = (width - cachedClusters.totalWidth * NODE_WIDTH * zoomFactor) / 2
-
-    xScale.domain(heightZoom.rescaleX(xScale).domain())
-    yScale.domain(heightZoom.rescaleY(yScale).domain())
-    this.svg.select('.nodes-chart').attr('transform', this.currentZoom.toString())
-    this.svg.select('.full-screen-zoom').attr('transform', heightZoom.toString())
-
     const status = getNodesEventsDataMap(events, currentTime)
     const allElements = this.paintAndReturnNodes(this.cachedClusters, status)
 
     allElements.select('.wrapper').classed('is-selected', (_, index) => index === this.state.selectedNodeIndex)
-    allElements.select('.icons').classed('is-icon', () => zoomFactor < 1.2)
-      .classed('is-dot', () => zoomFactor >= 1.2)
+    allElements.select('.icons')
+      .classed('is-icon', () => currentZoom.k < 1.2)
+      .classed('is-dot', () => currentZoom.k >= 1.2)
   }
 
   paintAndReturnNodes({ coordinatedClusters: clusters, coordinatedNodes: nodes }, status) {
@@ -204,13 +203,11 @@ export default class NetworkGrid extends Component {
           </div>
         </div>
         <svg className="svg">
-          <g className="full-screen-zoom">
-            <g className="nodes-chart">
-              <g className="clusters" fill="none" stroke="#efefef" strokeWidth="1"/>
-              <g className="cluster-labels" fill="black" fontSize="33" fontFamily="sans-serif"
-                 transform="translate(0, -5)"/>
-              <g className="grid"/>
-            </g>
+          <g className="zoom-scale">
+            <g className="clusters" fill="none" stroke="#efefef" strokeWidth="1"/>
+            <g className="cluster-labels" fill="black" fontSize="33" fontFamily="sans-serif"
+               transform="translate(0, -5)"/>
+            <g className="grid"/>
           </g>
           {/*Please, even if I use % in here, don't rely on % in d3 much*/}
           <rect className="zoomRect" fill="#e5e5e5" opacity="0" cursor="move"/>
