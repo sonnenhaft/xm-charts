@@ -212,7 +212,6 @@ export default class NetworkGrid extends Component {
               <g className="grid"/>
             </g>
           </g>
-          {/*Please, even if I use % in here, don't rely on % in d3 much*/}
           <rect className="zoomRect" fill="#e5e5e5" opacity="0" cursor="move"/>
         </svg>
       </WindowDependable>
