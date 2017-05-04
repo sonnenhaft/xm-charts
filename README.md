@@ -29,6 +29,6 @@ This should start the server on port 8087.
 
 ### TODO List:
 
-0. Make hover state on selected node element to look more like on design.
-1. Network should appear in the center of the page.
-3. Update move on zoomed network grid - now broken if zoomed - move overs too early
+1. When network width is smaller than network height, tooltip positioning is bad.
+2. Make hover state on selected node element to look more like on design.
+3. Arrows
