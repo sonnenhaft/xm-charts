@@ -9,23 +9,7 @@ import _calculateClusterCoords from './calculateClusterCoords'
 import { memoize } from 'lodash'
 const calculateClusterCoords = memoize(_calculateClusterCoords)
 
-const CHART_PADDING = 0
 const NODE_WIDTH = 40
-
-const NODE_HTML = `<g>
- <rect class="wrapper" rx="6.4" ry="6.4" stroke-width="1" width="24.4" height="44.4"></rect> 
- <rect class="content" rx="4.4" ry="4.4" stroke-width="1" width="20" height="40"></rect>
-  <g class="icons">
-    <g>
-      <g transform="translate(4,3) scale(0.7, 0.7)">
-        <g class="device">${Desktop}${Circle}</g>
-        <g class="data" transform="translate(0, 23)">${Diskette}${Circle}
-        </g>
-        <g class="network" transform="translate(0, 45)">${Snow}${Circle}</g>
-      </g>
-    </g>
-  </g>
-</g>`
 
 export default class NetworkGrid extends Component {
   state = {
@@ -87,7 +71,6 @@ export default class NetworkGrid extends Component {
 
   renderChart() {
     const { nodes, events, currentTime } = this.props
-    const status = getNodesEventsDataMap(events, currentTime)
     const { clientWidth: width, clientHeight: height } = this.rootBlock.node()
     const xScale = d3.scaleLinear().domain([0, 1]).range([0, NODE_WIDTH])
     const yScale = d3.scaleLinear().domain([0, 1]).range([0, NODE_WIDTH])
@@ -99,12 +82,13 @@ export default class NetworkGrid extends Component {
     // uncomment to see optimal feeling of empty space in action
     // this.cachedClusters = _calculateClusterCoords(nodes, height/width) // memoize eats one arg
     const cachedClusters = this.cachedClusters
-    const coordinatedClusters = cachedClusters.coordinatedClusters
     const coordinatedNodes = cachedClusters.coordinatedNodes
 
     this.svg.attrs({ width, height })
     this.svg.select('.zoomRect').attrs({ width, height })
-    this.zoom.translateExtent([[0, 0], [width * this.currentZoom.k, height * this.currentZoom.k]]).extent([[0, 0], [width, height]])
+    this.zoom
+      .translateExtent([[0, 0], [width * this.currentZoom.k, height * this.currentZoom.k]])
+      .extent([[0, 0], [width, height]])
     xScale.domain(this.currentZoom.rescaleX(xScale).domain())
     yScale.domain(this.currentZoom.rescaleY(yScale).domain())
 
@@ -141,59 +125,61 @@ export default class NetworkGrid extends Component {
     const heightZoom = new Transform(centralizeZoomFactor, 0, 0)
 
     // centralize chart position
-    heightZoom.x = (width - cachedClusters.totalWidth * NODE_WIDTH * zoomFactor) / 2
+    // heightZoom.x = (width - cachedClusters.totalWidth * NODE_WIDTH * zoomFactor) / 2
 
     xScale.domain(heightZoom.rescaleX(xScale).domain())
     yScale.domain(heightZoom.rescaleY(yScale).domain())
+    this.svg.select('.nodes-chart').attr('transform', this.currentZoom.toString())
+    this.svg.select('.full-screen-zoom').attr('transform', heightZoom.toString())
 
-    const FILLED_SPACE = 0.73
-    const offset = 4.4
+    const status = getNodesEventsDataMap(events, currentTime)
+    const allElements = this.paintAndReturnNodes(this.cachedClusters, status)
 
-    this.svg.select('.clusters').bindData('rect.cluster', coordinatedClusters, {
+    allElements.select('.wrapper').classed('is-selected', (_, index) => index === this.state.selectedNodeIndex)
+    allElements.select('.icons').classed('is-icon', () => zoomFactor < 1.2)
+      .classed('is-dot', () => zoomFactor >= 1.2)
+  }
+
+  paintAndReturnNodes({ coordinatedClusters: clusters, coordinatedNodes: nodes }, status) {
+    const scale = x => x * NODE_WIDTH
+
+    this.svg.select('.clusters').bindData('rect.cluster', clusters, {
       rx: 3,
       ry: 3,
-      transform: ({ x, y }) => `translate(${xScale(x)}, ${yScale(y)})`,
-      width: ({ width }) => Math.abs(xScale(width) - xScale(0)),
-      height: ({ height }) => Math.abs(xScale(height) - xScale(0)),
+      transform: ({ x, y }) => `translate(${scale(x)}, ${scale(y)})`,
+      width: ({ width }) => scale(width),
+      height: ({ height }) => scale(height),
     })
 
-    this.svg.select('.cluster-labels').bindData('text.clusterLabel', coordinatedClusters, {
-      transform: ({ x, y }) => `translate(${xScale(x)}, ${yScale(y)}) scale(${zoomFactor}, ${zoomFactor})`,
+    this.svg.select('.cluster-labels').bindData('text.clusterLabel', clusters, {
+      transform: ({ x, y }) => `translate(${scale(x)}, ${scale(y)})`,
       text: ({ cluster }) => cluster,
     })
-
-
-    const enteredSelection = this.svg.select('.grid').selectAll('.node').data(coordinatedNodes, ({ node: { _id: id } }) => id)
-    enteredSelection.exit().remove()
-    const mergedSelection = enteredSelection.enter().append('g').attr('class', 'node').html(NODE_HTML)
-    const allElements = mergedSelection.merge(enteredSelection)
 
     const hasStatus = (key, val1, val2) => ({ node: { agentId } }) => {
       return status[agentId] && status[agentId][key] === val1 && (!val2 || status[agentId][key] === val2 )
     }
 
-    allElements
-      .attrs({ transform: ({ x, y }) => `translate(${xScale(x)},${yScale(y)})` })
+    const enteredSelection = this.svg.select('.grid').selectAll('.node').data(nodes, ({ node: { _id: id } }) => id)
+    enteredSelection.exit().remove()
+
+    return enteredSelection.enter().append('g').attr('class', 'node').html(`<g>
+      <rect class="wrapper" stroke-width="0.73" width="17.8" height="32.41"
+        rx="4.7" ry="4.7" x="-1.6" y="-1.6"></rect> 
+      <rect class="content" rx="3.2" ry="3.2" stroke-width="0.73" width="14.6" height="29.2"></rect>
+      <g class="icons" transform="translate(2,1.5) scale(0.35, 0.35)">
+        <g class="device">${Desktop}${Circle}</g>
+        <g class="data" transform="translate(0, 23)">${Diskette}${Circle}</g>
+        <g class="network" transform="translate(0, 45)">${Snow}${Circle}</g>
+      </g>
+    </g>`).merge(enteredSelection)
+      .attrs({ transform: ({ x, y }) => `translate(${scale(x)},${scale(y)})` })
       .classed('is-compromised', hasStatus('state', 'compromised'))
       .classed('is-undiscovered', hasStatus('state', 'undiscovered'))
       .classed('is-discovered', hasStatus('state', 'discovered'))
       .classed('is-data-discovered', hasStatus('data', 'discovered', 'compromised'))
       .classed('is-device-discovered', hasStatus('device', 'discovered', 'compromised'))
       .classed('is-network-discovered', hasStatus('network', 'discovered', 'compromised'))
-
-    allElements.select('.content').attr('transform', `scale(${FILLED_SPACE * zoomFactor})`)
-
-    allElements.select('.wrapper')
-      .classed('is-selected', (_, index) => index === this.state.selectedNodeIndex)
-      .attr('transform', `translate(
-          ${-offset * zoomFactor * FILLED_SPACE / 2}, ${-offset * zoomFactor * FILLED_SPACE / 2}) 
-          scale(${FILLED_SPACE * zoomFactor})
-       `)
-
-    allElements.select('.icons')
-      .attrs({ transform: `scale(${zoomFactor / 2}, ${zoomFactor / 2})` })
-      .classed('is-icon', () => zoomFactor < 1.2)
-      .classed('is-dot', () => zoomFactor >= 1.2)
   }
 
   render() {
@@ -218,11 +204,13 @@ export default class NetworkGrid extends Component {
           </div>
         </div>
         <svg className="svg">
-          <g transform={`translate(${CHART_PADDING}, ${CHART_PADDING})`}>
-            <g className="clusters" fill="none" stroke="#efefef" strokeWidth="1"/>
-            <g className="cluster-labels" fill="black" fontSize="33" fontFamily="sans-serif"
-               transform="translate(0, -5)"/>
-            <g className="grid"/>
+          <g className="full-screen-zoom">
+            <g className="nodes-chart">
+              <g className="clusters" fill="none" stroke="#efefef" strokeWidth="1"/>
+              <g className="cluster-labels" fill="black" fontSize="33" fontFamily="sans-serif"
+                 transform="translate(0, -5)"/>
+              <g className="grid"/>
+            </g>
           </g>
           {/*Please, even if I use % in here, don't rely on % in d3 much*/}
           <rect className="zoomRect" fill="#e5e5e5" opacity="0" cursor="move"/>
