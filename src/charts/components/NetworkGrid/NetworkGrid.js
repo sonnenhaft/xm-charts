@@ -29,7 +29,7 @@ export default class NetworkGrid extends Component {
   }
 
   onZoomFactorChanged = () => {
-    this.rootBlock.select('.gridTooltip').style('display', 'none')
+    this.rootBlock.select('.nodeTooltip').style('display', 'none')
     this.forceUpdate()
   }
 
@@ -114,18 +114,18 @@ export default class NetworkGrid extends Component {
     this.svg.select('.zoomRect').attrs({
       mousemove: () => {
         const hoveredNodeIndex = findNodeByMouse(d3.event)
-        const rect = this.rootBlock.select('.gridTooltip')
+        const rect = this.rootBlock.select('.nodeTooltip')
 
         if ( hoveredNodeIndex !== -1 && this.state.hoveredNodeIndex !== hoveredNodeIndex ) {
           const { x: _x, y: _y } = coordinatedNodes[hoveredNodeIndex]
           rect.styles({
-            top: yScale(_y + 0.4) + 27 + shiftY,
+            top: yScale(_y + 0.4) - 80 + shiftY,
             left: xScale(_x + 0.20) + shiftX,
             display: 'block',
           })
           this.setState({ hoveredNodeIndex })
         } else if ( hoveredNodeIndex === -1 ) {
-          rect.style('display', 'none')
+          // rect.style('display', 'none')
         }
       },
       click: () => this.setState({ selectedNodeIndex: findNodeByMouse(d3.event) }),
@@ -189,31 +189,35 @@ export default class NetworkGrid extends Component {
 
     return (
       <WindowDependable onDimensionsChanged={() => this.forceUpdate()} refCb={this.refRootBlock} className={className}>
-        <div styleName="grid-tooltip" className="gridTooltip">
-          <div styleName="device-name">
-            <div>Name: {name}</div>
-            <div>Node ID: {agentId}</div>
+        <div styleName="inner-content">
+          <div styleName="node-tooltip" className="nodeTooltip">
+            <div styleName="node-information">
+              <div>Name: {name}</div>
+              <div>Node ID: {agentId}</div>
+            </div>
+            <div>
+              <svg width="100" height="50">
+                <g stroke="#7c7c7c">
+                  <line x1="0" y1="50" x2="70" y2="0" strokeWidth="1"/>
+                  <line x1="70" y1="0" x2="100" y2="0" strokeWidth="2.5"/>
+                </g>
+              </svg>
+            </div>
           </div>
-          <div>
-            <svg width="100" height="50">
-              <g stroke="black">
-                <line x1="0" y1="50" x2="70" y2="0" strokeWidth="1"/>
-                <line x1="70" y1="0" x2="100" y2="0" strokeWidth="2.5"/>
+          <div styleName="grid-overflow-wrapper">
+            <svg className="svg">
+              <g className="grid-shifter">
+                <g className="zoom-scale">
+                  <g className="clusters" fill="none" stroke="#efefef" strokeWidth="1"/>
+                  <g className="cluster-labels" fill="black" fontSize="33" fontFamily="sans-serif"
+                     transform="translate(0, -5)"/>
+                  <g className="grid"/>
+                </g>
               </g>
+              <rect className="zoomRect" fill="#e5e5e5" opacity="0" cursor="move"/>
             </svg>
           </div>
         </div>
-        <svg className="svg">
-          <g className="grid-shifter">
-            <g className="zoom-scale">
-              <g className="clusters" fill="none" stroke="#efefef" strokeWidth="1"/>
-              <g className="cluster-labels" fill="black" fontSize="33" fontFamily="sans-serif"
-                 transform="translate(0, -5)"/>
-              <g className="grid"/>
-            </g>
-          </g>
-          <rect className="zoomRect" fill="#e5e5e5" opacity="0" cursor="move"/>
-        </svg>
       </WindowDependable>
     )
   }

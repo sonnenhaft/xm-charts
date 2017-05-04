@@ -5,13 +5,18 @@ $blue: rgb(70, 96, 223);
 $grey: #E6E6E6;
 $grey-light: rgba(230, 230, 230, 0.4);
 
-.grid-tooltip {
-  position: fixed;
-  pointer-events: none;
-  display: none;
+.inner-content {
+  position: relative
 }
 
-.device-name {
+.node-tooltip {
+  position: absolute;
+  pointer-events: none;
+  display: none;
+  z-index: 10;
+}
+
+.node-information {
   pointer-events: all;
   background: $white;
   border: solid$black 1.5px;
@@ -23,6 +28,11 @@ $grey-light: rgba(230, 230, 230, 0.4);
   margin-bottom: -13px;
   font-family: sans-serif;
   font-size: 10px;
+}
+
+.grid-overflow-wrapper {
+  position: relative;
+  overflow: hidden
 }
 
 :global {
@@ -38,7 +48,7 @@ $grey-light: rgba(230, 230, 230, 0.4);
 
     .wrapper {
       stroke: $white;
-      
+
        &.is-selected {
         stroke: $black
       }
@@ -130,5 +140,4 @@ $grey-light: rgba(230, 230, 230, 0.4);
       }
     }
   }
-
 }
