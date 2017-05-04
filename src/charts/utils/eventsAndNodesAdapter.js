@@ -25,7 +25,7 @@ export default ({nodes, events}) => ({
         method: data.method,
         nodeId: event.node.id,
         lastInSubnet: ['assetCompromised', 'newAsset'].includes(event.type),
-        firstInSubnet: ['newStartingPointNode', 'newDiscoveredNode'].includes(event.type),
+        firstInSubnet: ['newStartingPointNode'].includes(event.type),
         campainId: 1,
       }
     })
@@ -36,7 +36,7 @@ export default ({nodes, events}) => ({
       ...point,
       assets: assets.filter(asset => asset.node.id === point.nodeId).map(asset => ({
         ...asset,
-        date: new Date(asset.timestamp).getTime(), 
+        date: new Date(asset.timestamp).getTime(),
       })),
     }))
   })(),
