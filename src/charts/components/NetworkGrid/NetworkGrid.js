@@ -125,7 +125,7 @@ export default class NetworkGrid extends Component {
           })
           this.setState({ hoveredNodeIndex })
         } else if ( hoveredNodeIndex === -1 ) {
-          // rect.style('display', 'none')
+          rect.style('display', 'none')
         }
       },
       click: () => this.setState({ selectedNodeIndex: findNodeByMouse(d3.event) }),
