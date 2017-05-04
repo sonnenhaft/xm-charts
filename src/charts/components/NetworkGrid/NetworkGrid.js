@@ -67,21 +67,6 @@ export default class NetworkGrid extends Component {
     this.cachedClusters = calculateClusterCoords(nodes)
   }
 
-  getCurrentZoom() {
-    const { clientWidth: width, clientHeight: height } = this.rootBlock.node()
-    const centralizeZoomFactor = Math.min(
-      height / (NODE_WIDTH * this.cachedClusters.totalHeight),
-      width / (NODE_WIDTH * this.cachedClusters.totalWidth)
-    )
-
-    const { k, x, y } = d3.zoomTransform(this.svg.select('.zoomRect').node())
-    return new Transform(
-      centralizeZoomFactor * k,
-      x,
-      y
-    )
-  }
-
   renderChart() {
     const { nodes, events, currentTime } = this.props
     const { clientWidth: width, clientHeight: height } = this.rootBlock.node()
@@ -99,16 +84,28 @@ export default class NetworkGrid extends Component {
 
     this.svg.attrs({ width, height })
     this.svg.select('.zoomRect').attrs({ width, height })
+
+
+    const centralizeZoomFactor = Math.min(
+      height / (NODE_WIDTH * this.cachedClusters.totalHeight),
+      width / (NODE_WIDTH * this.cachedClusters.totalWidth)
+    )
+    const { k, x, y } = d3.zoomTransform(this.svg.select('.zoomRect').node())
+    const shiftX = (width - this.cachedClusters.totalWidth * NODE_WIDTH * centralizeZoomFactor ) * k / 2
+    const shiftY = (height - this.cachedClusters.totalHeight * NODE_WIDTH * centralizeZoomFactor ) * k / 2
+    this.svg.select('.grid-shifter').attr('transform', `translate(${shiftX}, ${shiftY})`)
+
+    const currentZoom = new Transform(centralizeZoomFactor * k, x, y)
     this.zoom.translateExtent([[0, 0], [width, height]]).extent([[0, 0], [width, height]])
 
-    const currentZoom = this.getCurrentZoom()
+
     this.svg.select('.zoom-scale').attr('transform', currentZoom.toString())
     xScale.domain(currentZoom.rescaleX(xScale).domain())
     yScale.domain(currentZoom.rescaleY(yScale).domain())
 
     const findNodeByMouse = ({ offsetX, offsetY }) => {
-      const x = xScale.invert(offsetX)
-      const y = yScale.invert(offsetY)
+      const x = xScale.invert(offsetX - shiftX)
+      const y = yScale.invert(offsetY - shiftY)
       return coordinatedNodes.findIndex(({ x: _x, y: _y }) =>
         _x - 0.5 < x && _y < y && _x + 0.5 > x && _y + 0.8 >= y
       )
@@ -121,7 +118,11 @@ export default class NetworkGrid extends Component {
 
         if ( hoveredNodeIndex !== -1 && this.state.hoveredNodeIndex !== hoveredNodeIndex ) {
           const { x: _x, y: _y } = coordinatedNodes[hoveredNodeIndex]
-          rect.style('top', yScale(_y + 0.4) + 27).style('left', xScale(_x + 0.20)).style('display', 'block')
+          rect.styles({
+            top: yScale(_y + 0.4) + 27 + shiftY,
+            left: xScale(_x + 0.20) + shiftX,
+            display: 'block',
+          })
           this.setState({ hoveredNodeIndex })
         } else if ( hoveredNodeIndex === -1 ) {
           rect.style('display', 'none')
@@ -203,11 +204,13 @@ export default class NetworkGrid extends Component {
           </div>
         </div>
         <svg className="svg">
-          <g className="zoom-scale">
-            <g className="clusters" fill="none" stroke="#efefef" strokeWidth="1"/>
-            <g className="cluster-labels" fill="black" fontSize="33" fontFamily="sans-serif"
-               transform="translate(0, -5)"/>
-            <g className="grid"/>
+          <g className="grid-shifter">
+            <g className="zoom-scale">
+              <g className="clusters" fill="none" stroke="#efefef" strokeWidth="1"/>
+              <g className="cluster-labels" fill="black" fontSize="33" fontFamily="sans-serif"
+                 transform="translate(0, -5)"/>
+              <g className="grid"/>
+            </g>
           </g>
           {/*Please, even if I use % in here, don't rely on % in d3 much*/}
           <rect className="zoomRect" fill="#e5e5e5" opacity="0" cursor="move"/>
