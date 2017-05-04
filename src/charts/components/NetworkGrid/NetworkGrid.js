@@ -10,6 +10,7 @@ import { memoize } from 'lodash'
 const calculateClusterCoords = memoize(_calculateClusterCoords)
 
 const NODE_WIDTH = 40
+const ZOOM_CHANGE = 1.2
 
 export default class NetworkGrid extends Component {
   state = {
@@ -132,15 +133,15 @@ export default class NetworkGrid extends Component {
     })
 
     const status = getNodesEventsDataMap(events, currentTime)
-    const allElements = this.paintAndReturnNodes(this.cachedClusters, status)
+    const allElements = this.paintAndReturnNodes(this.cachedClusters, status, currentZoom)
 
     allElements.select('.wrapper').classed('is-selected', (_, index) => index === this.state.selectedNodeIndex)
     allElements.select('.icons')
-      .classed('is-icon', () => currentZoom.k < 1.2)
-      .classed('is-dot', () => currentZoom.k >= 1.2)
+      .classed('is-icon', () => currentZoom.k < ZOOM_CHANGE)
+      .classed('is-dot', () => currentZoom.k >= ZOOM_CHANGE)
   }
 
-  paintAndReturnNodes({ coordinatedClusters: clusters, coordinatedNodes: nodes }, status) {
+  paintAndReturnNodes({ coordinatedClusters: clusters, coordinatedNodes: nodes }, status, currentZoom) {
     const scale = x => x * NODE_WIDTH
 
     this.svg.select('.clusters').bindData('rect.cluster', clusters, {
@@ -164,8 +165,20 @@ export default class NetworkGrid extends Component {
     enteredSelection.exit().remove()
 
     return enteredSelection.enter().append('g').attr('class', 'node').html(`<g>
-      <rect class="wrapper" stroke-width="0.73" width="17.8" height="32.41"
-        rx="4.7" ry="4.7" x="-1.6" y="-1.6"></rect> 
+      <rect class="outerHover visible-large" stroke-width="1" width="21.3" height="35.91"
+        rx="6.35" ry="6.35" x="-3.35" y="-3.35"></rect>
+      <rect class="outerHover visible-small" stroke-width="3" width="27.8" height="42.41"
+        rx="9.61" ry="9.61" x="-6.6" y="-6.6"></rect>
+      <rect class="innerHover visible-large" stroke-width="1.5" width="18.8" height="33.41"
+        rx="5.1" ry="5.1" x="-2.1" y="-2.1"></rect>
+      <rect class="innerHover visible-small" stroke-width="6" width="18.8" height="33.41"
+        rx="5.1" ry="5.1" x="-2.1" y="-2.1"></rect>
+      <g class="wrapper">
+        <rect class="visible-large" stroke-width="0.73" width="17.8" height="32.41"
+          rx="4.7" ry="4.7" x="-1.6" y="-1.6"></rect> 
+        <rect class="visible-small" stroke-width="1.5" width="21.3" height="35.91"
+          rx="6.35" ry="6.35" x="-3.35" y="-3.35"></rect>
+      </g>
       <rect class="content" rx="3.2" ry="3.2" stroke-width="0.73" width="14.6" height="29.2"></rect>
       <g class="icons" transform="translate(2,1.5) scale(0.35, 0.35)">
         <g class="device">${Desktop}${Circle}</g>
@@ -180,6 +193,8 @@ export default class NetworkGrid extends Component {
       .classed('is-data-discovered', hasStatus('data', 'discovered', 'compromised'))
       .classed('is-device-discovered', hasStatus('device', 'discovered', 'compromised'))
       .classed('is-network-discovered', hasStatus('network', 'discovered', 'compromised'))
+      .classed('is-starting-point', hasStatus('isStartingPoint', true))
+      .classed('is-small', () => currentZoom.k < ZOOM_CHANGE)
   }
 
   render() {

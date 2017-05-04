@@ -36,11 +36,8 @@ $grey-light: rgba(230, 230, 230, 0.4);
 }
 
 :global {
-  .cluster {
-  }
-
   .node {
-    fill: $white;
+    fill: transparent;
 
     .icons {
       fill: $grey;
@@ -52,6 +49,28 @@ $grey-light: rgba(230, 230, 230, 0.4);
        &.is-selected {
         stroke: $black
       }
+    }
+
+    .visible-large,
+    .visible-small {
+      visibility: hidden;
+    }
+
+    &.is-small {
+      .visible-small {
+        visibility: visible;
+      }
+    }
+
+    &:not(.is-small) {
+      .visible-large {
+        visibility: visible;
+      }
+    }
+
+    .outerHover,
+    .innerHover {
+      stroke: transparent;
     }
 
     .content {
@@ -77,17 +96,15 @@ $grey-light: rgba(230, 230, 230, 0.4);
     }
 
     &.is-discovered {
-      fill: $blue;
-
       .content {
+        fill: $blue;
         stroke: $blue;
       }
     }
 
     &.is-compromised {
-      fill: $red;
-
       .content {
+        fill: $red;
         stroke: $red;
       }
     }
@@ -115,15 +132,16 @@ $grey-light: rgba(230, 230, 230, 0.4);
           fill: $white;
         }
       }
-    }
-  }
 
-  .wrapper {
-    stroke: $white;
-    fill: $white;
+      &.is-starting-point {
+        .outerHover {
+          stroke: rgba(242, 30, 39, 0.12);
+        }
 
-    &.is-selected {
-      stroke: $black
+        .innerHover {
+          stroke: rgba(242, 30, 39, 0.25);
+        }
+      }
     }
   }
 
