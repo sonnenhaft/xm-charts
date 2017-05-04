@@ -44,10 +44,15 @@ $grey-light: rgba(230, 230, 230, 0.4);
     }
 
     .wrapper {
-      stroke: $white;
+      rect {
+        stroke: $white;
+        fill: $white;
+      }
 
        &.is-selected {
-        stroke: $black
+        rect {
+          stroke: $black;
+        }
       }
     }
 
