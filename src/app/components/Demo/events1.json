@@ -292,9 +292,9 @@
     "type": "startingPoint",
     "networkSuperiority": 3.0434782608695654,
     "compromisedAssets": {
-      "data": 0,
-      "device": 0,
-      "network": 0
+      "data": 1,
+      "device": 1,
+      "network": 1
     },
     "compromisedDataGB": 0,
     "data": {
