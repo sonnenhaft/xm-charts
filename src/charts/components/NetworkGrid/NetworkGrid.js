@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import d3, { Transform } from '../../utils/decorated.d3.v4'
+import d3, { Transform }  from 'charts/utils/decorated.d3.v4'
 import { getNodesEventsDataMap } from '../../utils/nodeEventData'
 import { Snow, Desktop, Diskette, Circle } from './IconsGroup'
 import './NetworkGrid.scss'
