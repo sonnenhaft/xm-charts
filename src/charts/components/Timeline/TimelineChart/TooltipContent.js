@@ -18,20 +18,20 @@ export default class TooltipContent extends Component {
 
   render() {
     const { type, source, method, date } = this.props.tooltipData
-    return <div className={styles['tooltip-content']}>
+    return <div styleName="tooltip-content">
       {type && <div>
         <div>
-          <div className={styles['title']}>{type}</div>
-          <div className={styles['tooltip-event-icons']}>
+          <div styleName="title">{type}</div>
+          <div styleName="tooltip-event-icons">
             <ShareButtons type="vertical"/>
           </div>
-          <div className={styles['content']}>
+          <div styleName="content">
             {method && <div>
-              <span className={styles['title']}>Method: </span>
+              <span styleName="title">Method: </span>
               <span>{method}</span>
             </div>}
             {source && <div>
-              <span className={styles['title']}>Source: </span>
+              <span styleName="title">Source: </span>
               <span>{source}</span>
             </div>}
           </div>
@@ -42,7 +42,6 @@ export default class TooltipContent extends Component {
       </div>}
       {!type && <div>
         <ShareButtons type="dark-icons"/>
-        {/*<div>count {value}</div>*/}
         <b>{d3.timeFormat('%H:%M:%S')(date)}</b>
       </div>}
     </div>
