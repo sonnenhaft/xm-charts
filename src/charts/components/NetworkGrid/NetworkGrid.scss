@@ -10,7 +10,7 @@ $grey-light: rgba(230, 230, 230, 0.4);
 }
 
 .node-tooltip {
-  position: absolute;
+  position: fixed;
   pointer-events: none;
   display: none;
   z-index: 10;
@@ -36,6 +36,11 @@ $grey-light: rgba(230, 230, 230, 0.4);
 }
 
 :global {
+  .test {
+    width: 100px;
+    height: 100px;
+  }
+
   .node {
     fill: transparent;
 
@@ -80,6 +85,7 @@ $grey-light: rgba(230, 230, 230, 0.4);
 
     .content {
       stroke: $black;
+      stroke-width: 0.73
     }
 
     &.is-data-discovered {
@@ -162,5 +168,33 @@ $grey-light: rgba(230, 230, 230, 0.4);
         visibility: hidden;
       }
     }
+  }
+}
+
+.zoom-rect {
+  fill: black;
+  opacity: 0;
+  cursor: move;
+}
+
+.clusters-wrapper {
+  fill: none;
+  stroke: #efefef;
+  stroke-width: 1px;
+}
+
+.cluster-labels {
+  fill: black;
+  font-size: 33px;
+  font-family: sans-serif;
+  transform: translate(0, -5px)
+}
+
+.tooltip-svg {
+  width: 100px;
+  height: 50px;
+  line {
+    stroke: #7c7c7c;
+    stroke-width: 1px;
   }
 }

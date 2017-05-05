@@ -277,7 +277,6 @@ export default class TimelineChart extends Component {
             currentTime, onCurrentTimeChanged,
           }} />
         </BrushGroup>
-
       </svg>
 
       <div className="tooltipBlock" styleName="tooltip">

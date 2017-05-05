@@ -119,9 +119,10 @@ export default class NetworkGrid extends Component {
 
         if ( hoveredNodeIndex !== -1 && this.state.hoveredNodeIndex !== hoveredNodeIndex ) {
           const { x: _x, y: _y } = coordinatedNodes[hoveredNodeIndex]
+          const offsets = this.rootBlock.node().getBoundingClientRect()
           rect.styles({
-            top: yScale(_y + 0.4) - 80 + shiftY,
-            left: xScale(_x + 0.20) + shiftX,
+            top: yScale(_y + 0.4) - 80 + shiftY + offsets.top,
+            left: xScale(_x + 0.20) + shiftX + offsets.left,
             display: 'block',
           })
           this.setState({ hoveredNodeIndex })
@@ -135,7 +136,8 @@ export default class NetworkGrid extends Component {
     const status = getNodesEventsDataMap(events, currentTime)
     const allElements = this.paintAndReturnNodes(this.cachedClusters, status, currentZoom)
 
-    allElements.select('.wrapper').classed('is-selected', (_, index) => index === this.state.selectedNodeIndex)
+    allElements.select('.wrapper')
+      .classed('is-selected', (_, index) => index === this.state.selectedNodeIndex)
     allElements.select('.icons')
       .classed('is-icon', () => currentZoom.k < ZOOM_CHANGE)
       .classed('is-dot', () => currentZoom.k >= ZOOM_CHANGE)
@@ -152,7 +154,7 @@ export default class NetworkGrid extends Component {
       height: ({ height }) => scale(height),
     })
 
-    this.svg.select('.cluster-labels').bindData('text.clusterLabel', clusters, {
+    this.svg.select('.clusterLabels').bindData('text.clusterLabel', clusters, {
       transform: ({ x, y }) => `translate(${scale(x)}, ${scale(y)})`,
       text: ({ cluster }) => cluster,
     })
@@ -179,7 +181,7 @@ export default class NetworkGrid extends Component {
         <rect class="visible-small" stroke-width="1.5" width="21.3" height="35.91"
           rx="6.35" ry="6.35" x="-3.35" y="-3.35"></rect>
       </g>
-      <rect class="content" rx="3.2" ry="3.2" stroke-width="0.73" width="14.6" height="29.2"></rect>
+      <rect class="content" rx="3.2" ry="3.2" width="14.6" height="29.2"></rect>
       <g class="icons" transform="translate(2,1.5) scale(0.35, 0.35)">
         <g class="device">${Desktop}${Circle}</g>
         <g class="data" transform="translate(0, 23)">${Diskette}${Circle}</g>
@@ -203,7 +205,8 @@ export default class NetworkGrid extends Component {
     const { name, agentId } = selectedItem || {}
 
     return (
-      <WindowDependable onDimensionsChanged={() => this.forceUpdate()} refCb={this.refRootBlock} className={className}>
+      <WindowDependable onDimensionsChanged={() => this.forceUpdate()}
+                        refCb={this.refRootBlock} className={className}>
         <div styleName="inner-content">
           <div styleName="node-tooltip" className="nodeTooltip">
             <div styleName="node-information">
@@ -211,11 +214,9 @@ export default class NetworkGrid extends Component {
               <div>Node ID: {agentId}</div>
             </div>
             <div>
-              <svg width="100" height="50">
-                <g stroke="#7c7c7c">
-                  <line x1="0" y1="50" x2="70" y2="0" strokeWidth="1"/>
-                  <line x1="70" y1="0" x2="100" y2="0" strokeWidth="2.5"/>
-                </g>
+              <svg styleName="tooltip-svg">
+                <line x1="0" y1="50" x2="70" y2="0"/>
+                <line x1="70" y1="0" x2="100" y2="0" strokeWidth="2.5"/>
               </svg>
             </div>
           </div>
@@ -223,13 +224,12 @@ export default class NetworkGrid extends Component {
             <svg className="svg">
               <g className="grid-shifter">
                 <g className="zoom-scale">
-                  <g className="clusters" fill="none" stroke="#efefef" strokeWidth="1"/>
-                  <g className="cluster-labels" fill="black" fontSize="33" fontFamily="sans-serif"
-                     transform="translate(0, -5)"/>
+                  <g className="clusters" styleName="clusters-wrapper"/>
+                  <g className="clusterLabels" styleName="cluster-labels"/>
                   <g className="grid"/>
                 </g>
               </g>
-              <rect className="zoomRect" fill="#e5e5e5" opacity="0" cursor="move"/>
+              <rect className="zoomRect" styleName="zoom-rect"/>
             </svg>
           </div>
         </div>
