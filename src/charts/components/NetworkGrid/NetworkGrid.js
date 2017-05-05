@@ -108,7 +108,7 @@ export default class NetworkGrid extends Component {
       const x = xScale.invert(offsetX - shiftX)
       const y = yScale.invert(offsetY - shiftY)
       return coordinatedNodes.findIndex(({ x: _x, y: _y }) =>
-        _x - 0.5 < x && _y < y && _x + 0.5 > x && _y + 0.8 >= y
+        _x  < x && _y < y && _x + 0.5 > x && _y + 0.8 >= y
       )
     }
 
@@ -125,9 +125,11 @@ export default class NetworkGrid extends Component {
             left: xScale(_x + 0.20) + shiftX + offsets.left,
             display: 'block',
           })
+          this.svg.select('.zoomRect').style('cursor', 'pointer')
           this.setState({ hoveredNodeIndex })
         } else if ( hoveredNodeIndex === -1 ) {
           rect.style('display', 'none')
+          this.svg.select('.zoomRect').style('cursor', 'move')
         }
       },
       click: () => this.setState({ selectedNodeIndex: findNodeByMouse(d3.event) }),
