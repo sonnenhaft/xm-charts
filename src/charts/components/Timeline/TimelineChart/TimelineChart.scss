@@ -125,3 +125,29 @@ svg.timeline-chart {
     }
   }
 }
+
+.brush-line {
+  pointer-events: none;
+  fill: #141414;
+}
+
+.small-rects {
+  transform: translate(0, -5px);
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.visible {
+  visibility: visible;
+}
+
+.black-line-between-x-axes {
+  fill: #252525;
+}
+
+.root {
+  position: relative;
+  width: 100%
+}

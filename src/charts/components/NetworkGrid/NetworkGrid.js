@@ -108,7 +108,7 @@ export default class NetworkGrid extends Component {
       const x = xScale.invert(offsetX - shiftX)
       const y = yScale.invert(offsetY - shiftY)
       return coordinatedNodes.findIndex(({ x: _x, y: _y }) =>
-        _x  < x && _y < y && _x + 0.5 > x && _y + 0.8 >= y
+        _x < x && _y < y && _x + 0.5 > x && _y + 0.8 >= y
       )
     }
 
@@ -207,34 +207,28 @@ export default class NetworkGrid extends Component {
     const { name, agentId } = selectedItem || {}
 
     return (
-      <WindowDependable onDimensionsChanged={() => this.forceUpdate()}
-                        refCb={this.refRootBlock} className={className}>
-        <div styleName="inner-content">
-          <div styleName="node-tooltip" className="nodeTooltip">
-            <div styleName="node-information">
-              <div>Name: {name}</div>
-              <div>Node ID: {agentId}</div>
-            </div>
-            <div>
-              <svg styleName="tooltip-svg">
-                <line x1="0" y1="50" x2="70" y2="0"/>
-                <line x1="70" y1="0" x2="100" y2="0" strokeWidth="2.5"/>
-              </svg>
-            </div>
+      <WindowDependable className={className} refCb={this.refRootBlock}
+                        onDimensionsChanged={() => this.forceUpdate()}>
+        <div styleName="node-tooltip" className="nodeTooltip">
+          <div styleName="node-information">
+            <div>Name: {name}</div>
+            <div>Node ID: {agentId}</div>
           </div>
-          <div styleName="grid-overflow-wrapper">
-            <svg className="svg">
-              <g className="grid-shifter">
-                <g className="zoom-scale">
-                  <g className="clusters" styleName="clusters-wrapper"/>
-                  <g className="clusterLabels" styleName="cluster-labels"/>
-                  <g className="grid"/>
-                </g>
-              </g>
-              <rect className="zoomRect" styleName="zoom-rect"/>
-            </svg>
-          </div>
+          <svg styleName="tooltip-svg">
+            <line x1="0" y1="50" x2="70" y2="0"/>
+            <line x1="70" y1="0" x2="100" y2="0" strokeWidth="2.5"/>
+          </svg>
         </div>
+        <svg className="svg">
+          <g className="grid-shifter">
+            <g className="zoom-scale">
+              <g className="clusters" styleName="clusters-wrapper"/>
+              <g className="clusterLabels" styleName="cluster-labels"/>
+              <g className="grid"/>
+            </g>
+          </g>
+          <rect className="zoomRect" styleName="zoom-rect"/>
+        </svg>
       </WindowDependable>
     )
   }

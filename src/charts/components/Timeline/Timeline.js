@@ -5,8 +5,7 @@ import TimelineChart from './TimelineChart'
 import RightBar from './RightBar'
 import LeftBar from './LeftBar'
 
-// chrome was crashing with higher value
-const MAX_ZOOM = Math.min(Math.pow(10, 5) * 5)
+const MAX_ZOOM = Math.pow(10, 5) * 5// higher fails the chrome
 const MIN_ZOOM = 1
 
 export default class Timeline extends Component {
@@ -33,7 +32,7 @@ export default class Timeline extends Component {
   onToggledChanged = isToggled => this.setState({ isToggled })
   onPlayingIntervalChanged = (playingInterval, cb) => this.setState({ playingInterval }, cb) // necessary to disable animation
 
-  onZoomFactorChanged = zoomFactor =>   this.setState({ zoomFactor })
+  onZoomFactorChanged = zoomFactor => this.setState({ zoomFactor })
 
   render() {
     const {
@@ -47,25 +46,26 @@ export default class Timeline extends Component {
 
     return events.length ?
       (
-          <div styleName="root" className={className}>
-            <LeftBar {...{
-              currentTime, onCurrentTimeChanged,
-              currentSpeed, onCurrentSpeedChanged,
-              playingInterval, onPlayingIntervalChanged,
-              isToggled, events,
-            }} />
-            <TimelineChart {...{
-              currentTime, onCurrentTimeChanged,
-              zoomFactor, onZoomFactorChanged,
-              isToggled, currentSpeed, events, nodes, isPlaying: !!playingInterval,
-            }} />
-            <RightBar {...{
-              zoomFactor, onZoomFactorChanged,
-              isToggled, onToggledChanged,
-              maxZoom: MAX_ZOOM, minZoom: MIN_ZOOM,
-            }} />
+        <div styleName="root" className={className}>
+          <LeftBar {...{
+            currentTime, onCurrentTimeChanged,
+            currentSpeed, onCurrentSpeedChanged,
+            playingInterval, onPlayingIntervalChanged,
+            isToggled, events,
+          }} />
+          <TimelineChart {...{
+            currentTime, onCurrentTimeChanged,
+            zoomFactor, onZoomFactorChanged,
+            isToggled, currentSpeed, events, nodes, isPlaying: !!playingInterval,
+            maxZoom: MAX_ZOOM, minZoom: MIN_ZOOM,
+          }} />
+          <RightBar {...{
+            zoomFactor, onZoomFactorChanged,
+            isToggled, onToggledChanged,
+            maxZoom: MAX_ZOOM, minZoom: MIN_ZOOM,
+          }} />
         </div>
-      ): <div styleName="root no-data" className={className}>No events data yet...</div>
+      ) : <div styleName="root no-data" className={className}>No events data yet...</div>
 
   }
 }
