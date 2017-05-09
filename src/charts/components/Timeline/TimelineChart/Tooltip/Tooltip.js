@@ -36,16 +36,21 @@ export default class TooltipContent extends Component {
   componentDidUpdate() {
     const coords = this.props.coords
     const top = coords.top + 22
-    let tooltipHeight = this.rootNode.style('height').replace('px', '') - 0
+    const {clientWidth, clientHeight} = this.rootNode.node()
+    const maxLeft = window.innerWidth - clientWidth/2
     this.rootNode
-      .styles({ left: coords.left, top: `${ top - (tooltipHeight > top ? 0 : 20) }px` })
-      .classed(styles['bottom-triangle'], tooltipHeight <= top)
+      .styles({ left: Math.min(coords.left, maxLeft), top: `${ top - (clientHeight > top ? 0 : 22) }px` })
+      .classed(styles['bottom-triangle'], clientHeight <= top)
+
+    this.rootNode.select('.triangleWrapper').styles({left: Math.max(0, coords.left - maxLeft)})
 
     if ( this.isOpened() ) {
-      this.rootNode.classed(styles['visible-tooltip'], this.isOpened())
+      this.rootNode.classed(styles['visible-tooltip'], true)
     } else {
       setTimeout(() => {
-        this.rootNode.classed(styles['visible-tooltip'], this.isOpened())
+        if (!this.isOpened()) {
+          this.rootNode.classed(styles['visible-tooltip'], false)
+        }
       }, 100)
     }
   }
@@ -57,7 +62,7 @@ export default class TooltipContent extends Component {
   render() {
     const { type, source, method, date } = this.props.data
     return <div className="tooltipBlock" styleName="tooltip" ref={this.refRootNode}>
-      <div styleName="triangle-wrapper">
+      <div styleName="triangle-wrapper" className="triangleWrapper">
         <div styleName="triangle">
           <div styleName="triangle triangle-content"/>
         </div>

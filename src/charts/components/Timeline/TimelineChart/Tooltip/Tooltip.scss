@@ -1,35 +1,37 @@
 @import "../../../../../assets/colors";
 
 .tooltip {
-  left: 0;
-  opacity: 0;
-  pointer-events: none;
-  position: fixed;
-  top: 0;
-  transform: translate(-50%);
-  z-index: 3;
-
-  transition: opacity 0.5s ease-out;
-  &.visible-tooltip {
-    pointer-events: all;
-    opacity: 1;
-  }
-
-  &.bottom-triangle {
-    transform: translate(-50%, -100%);
-    margin-top: -6px;
-  }
-
-  &.bottom-triangle .triangle-wrapper {
-    bottom: -8px;
+    position: fixed;
     left: 0;
-    position: absolute;
-    right: 0;
-    transform: rotate(180deg);
-  }
+    top: 0;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%);
+    z-index: 3;
 
-  .triangle-wrapper {
-    text-align: center;
+    transition: opacity 0.5s ease-out;
+    &.visible-tooltip {
+      pointer-events: all;
+      opacity: 1;
+    }
+
+    &.bottom-triangle {
+      transform: translate(-50%, -100%);
+      margin-top: -6px;
+    }
+
+    &.bottom-triangle .triangle-wrapper {
+      bottom: -8px;
+      left: 0;
+      right: 0;
+      position: absolute;
+      transform: rotate(180deg);
+    }
+
+    .triangle-wrapper {
+      text-align: center;
+    }
+
     .triangle {
       border-color: transparent transparent $buttonGrey transparent;
       position: relative;
@@ -47,7 +49,6 @@
       }
     }
   }
-}
 
 .tooltip-content {
   background: #F2F2F2;
