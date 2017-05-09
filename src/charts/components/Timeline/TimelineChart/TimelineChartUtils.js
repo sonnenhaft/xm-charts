@@ -32,10 +32,10 @@ export const composeCircles = (data, width, groupWidth) => {
   return { bulkLines, firstInSubnet }
 }
 
-export const renderPath = ({ td, min, max, linePath, data, x, y, events }) => {
+export const calculatePath = ({ min, max, data, events }) => {
   if ( data.length ) {
-    let first, last
-    last = first = data[0]
+    let [first] = data
+    let last = first
     if ( data.length > 1 ) {
       last = data[data.length - 1]
     }
@@ -49,8 +49,7 @@ export const renderPath = ({ td, min, max, linePath, data, x, y, events }) => {
     const { networkSuperiority } = events[Math.max(minIdx - 1, 0)]
     data = [{ date: min, networkSuperiority }, { date: max, networkSuperiority }]
   }
-
-  td(linePath).attr('d', d3.line().x(x).y(y).curve(d3.curveBundle.beta(0.97))(data))
+  return data
 }
 
 export const renderCircles = ({ g, data, x, height, duration, bulkLines, firstInSubnet, actions, isToggled, opacity }) => {
@@ -79,11 +78,10 @@ export const renderCircles = ({ g, data, x, height, duration, bulkLines, firstIn
   const allElements = mergedSelection.attrs(opt_attrs).merge(enteredSelection)
   allElements.transition().duration(duration).attrs(opt_attrs, true)
 
-  const td = selection => selection.transition().duration(duration)
   allElements.each(function() {
     const g = d3.select(this)
     const { firstInSubnet } = g.datum()
-    td(g.select('.white-shadow-rect')).attrs({ opacity: firstInSubnet ? 0.2 : 0, height })
-    td(g.select(`.${styles['red-bulk-line']}`)).attrs({ height: height - radius / 2 - 2 })
+    g.select('.white-shadow-rect').attrs({ opacity: firstInSubnet ? 0.2 : 0, height })
+    g.select(`.${styles['red-bulk-line']}`).attrs({ height: height - radius / 2 - 2 })
   })
 }

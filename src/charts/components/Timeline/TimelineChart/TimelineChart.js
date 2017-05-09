@@ -2,7 +2,7 @@ import React, { PropTypes as P, Component } from 'react'
 import d3, { Transform }  from 'charts/utils/decorated.d3.v4'
 import styles from './TimelineChart.scss'
 import TooltipContentBlock from './TooltipContent'
-import { composeCircles, renderCircles, renderPath } from './TimelineChartUtils'
+import { composeCircles, renderCircles, calculatePath } from './TimelineChartUtils'
 import WindowDependable from '../../common/WindowDependable'
 import BrushCircleGroup from './BrushCircleGroup/BrushCircleGroup'
 import ZoomRect from '../../common/ZoomRect'
@@ -100,18 +100,16 @@ export default class TimelineChart extends Component {
     const props = this.props
     const { xScale, yScale, events, campainSelected } = this
     const { width, height } = this
-    const td = d3Selection => d3Selection
 
     const g = this.find('.mainGroup')
-    td(this.find('.brushLineGroup')).attr('transform', `translate(0,${  height + 40  })`)
+    this.find('.brushLineGroup').attr('transform', `translate(0,${  height + 40  })`)
     this.find('.brushLine').attrs({ width })
     this.find('.clickableArea').on('click', () => {
       const x = d3.event.offsetX - getMarginLeft(props.isToggled)
       this.props.onCurrentTimeChanged(this.xScale.invert(x).getTime())
     })
 
-    const svgNode = this.find('svg')
-    td(svgNode).attrs({ height: this.realHeight })
+    this.find('svg').attrs({ height: this.realHeight })
 
     const [min, max] = xScale.domain()
 
@@ -136,7 +134,9 @@ export default class TimelineChart extends Component {
       opacity = ({ isEventSelected }) => isEventSelected ? 1 : 0.3
     }
 
-    renderPath({ td, min, max, linePath: this.find('.linePath'), data, x, y, events })
+    const pathData = calculatePath({ min, max, data, events })
+    this.find('.linePath').attr('d', d3.line().x(x).y(y).curve(d3.curveBundle.beta(0.97))(pathData))
+
     const moveTooltip = this.openTooltip
     this.find('.tooltipBlock').attrs({
       mouseout: this.closeTooltip,
@@ -169,16 +169,11 @@ export default class TimelineChart extends Component {
 
     let { bulkLines, firstInSubnet } = this.composedData
     renderCircles({
-      g,
-      data,
-      x,
-      height,
+      g, data, x, height, actions, opacity,
       duration: 0,
       bulkLines: bulkLines.filter(filterVisible),
       firstInSubnet: firstInSubnet.filter(filterVisible),
-      actions,
       isToggled: props.isToggled,
-      opacity,
     })
   }
 
