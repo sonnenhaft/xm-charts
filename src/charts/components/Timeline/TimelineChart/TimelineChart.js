@@ -1,12 +1,12 @@
 import React, { PropTypes as P, Component } from 'react'
 import d3, { Transform }  from 'charts/utils/decorated.d3.v4'
 import styles from './TimelineChart.scss'
-import TooltipContentBlock from './TooltipContent'
+import Tooltip from './Tooltip/Tooltip'
 import { composeCircles, renderCircles, calculatePath } from './TimelineChartUtils'
 import WindowDependable from '../../common/WindowDependable'
 import BrushCircleGroup from './BrushCircleGroup/BrushCircleGroup'
 import ZoomRect from '../../common/ZoomRect'
-import BrushGroup from './BrushGroup'
+import BrushGroup from './Brush'
 import Axes from './Axes/Axes'
 
 const MARGIN_RIGHT = 10
@@ -26,60 +26,31 @@ export default class TimelineChart extends Component {
     minZoom: P.number.isRequired,
   }
 
-  state = { tooltipData: undefined }
+  state = {
+    tooltipData: undefined,
+    tooltipCoords: undefined,
+    isTooltipOpened: false,
+  }
 
   zoom = new Transform(1, 0, 0)
   xScale = d3.scaleTime()
   xScaleMini = d3.scaleTime()
   yScale = d3.scaleLinear().domain([0, 1])
 
-  setEvents({ events }) {
-    this.events = events
-    this.domain = d3.extent(this.events, ({ date }) => date)
-  }
+  componentDidMount() { setTimeout(() => { this.forceUpdate() }, 0) }
 
-  componentWillReceiveProps(props) {
-    if ( props.events !== this.props.events ) {
-      this.setEvents(props)
-    }
-  }
-
-  closeTooltip = () => {
-    this.tooltipOpened = false
-    setTimeout(() => {
-      if ( this.tooltipOpened ) { return }
-      this.find('.tooltipBlock').classed(styles['visible-tooltip'], false).transition().duration(750).style('opacity', 0)
-    }, 100)
-  }
-  openTooltip = tooltipData => {
-    const svgBounding = this.find('svg').node().getBoundingClientRect()
-    const left = `${this.xScale(tooltipData.date) + svgBounding.left + getMarginLeft(this.props.isToggled)  }px`
-    this.isZoomDisabled = true
-    this.setState({ tooltipData }, () => {
-      this.isZoomDisabled = false
-      this.tooltipOpened = true
-      const TRIANGLE_HEIGHT = 22
-      const top = TRIANGLE_HEIGHT + svgBounding.top
-      let tooltipHeight = this.find('.tooltipBlock').style('height').replace('px', '') - 0
-      this.find('.tooltipBlock')
-        .styles({ left, top: `${ top - (tooltipHeight > top ? 0 : 20) }px` })
-        .classed(styles['bottom-triangle'], tooltipHeight <= top)
-        .classed(styles['visible-tooltip'], true)
-        .transition().duration(100).styles({ opacity: 1 })
-    })
-  }
-
-  setD3Node = node => this.d3rootNode = d3.select(node)
+  refRootNode = node => this.rootNode = d3.select(node)
 
   componentWillUpdate({ isToggled, zoomFactor }) {
-    const { clientWidth: realWidth } = this.d3rootNode.node()
+    const { clientWidth: realWidth } = this.rootNode.node()
     const realHeight = isToggled ? 100 : 200
     const width = Math.max(realWidth - getMarginLeft(isToggled) - MARGIN_RIGHT, 0)
     const height = Math.max(realHeight - getMarginTop(isToggled) - MARGIN_BOTTOM, 0)
     Object.assign(this, { width, height, realWidth, realHeight })
 
-    this.xScale.domain(this.domain).rangeRound([0, width])
-    this.xScaleMini.domain(this.domain).rangeRound([0, width])
+    const minMaxValues = d3.extent(this.props.events, ({ date }) => date)
+    this.xScale.domain(minMaxValues).rangeRound([0, width])
+    this.xScaleMini.domain(minMaxValues).rangeRound([0, width])
     this.yScale.rangeRound([height, 0])
 
     zoomFactor = Math.min(this.props.maxZoom, Math.max(zoomFactor, this.props.minZoom))
@@ -98,7 +69,8 @@ export default class TimelineChart extends Component {
 
   componentDidUpdate() {
     const props = this.props
-    const { xScale, yScale, events, campainSelected } = this
+    const { xScale, yScale, campainSelected } = this
+    const events = props.events
     const { width, height } = this
 
     const g = this.find('.mainGroup')
@@ -137,22 +109,28 @@ export default class TimelineChart extends Component {
     const pathData = calculatePath({ min, max, data, events })
     this.find('.linePath').attr('d', d3.line().x(x).y(y).curve(d3.curveBundle.beta(0.97))(pathData))
 
-    const moveTooltip = this.openTooltip
-    this.find('.tooltipBlock').attrs({
-      mouseout: this.closeTooltip,
-      mouseover: () => this.tooltipOpened = true,
-    })
-
+    const moveTooltip = tooltipData => { // need to keep context in here
+      const svgBounding = this.find('svg').node().getBoundingClientRect()
+      const x = this.xScale(tooltipData.date)
+      this.setState({
+        tooltipData,
+        isTooltipOpened: true,
+        tooltipCoords: {
+          top: svgBounding.top,
+          left: `${x + svgBounding.left + getMarginLeft(props.isToggled)}px`,
+        },
+      })
+    }
     const actions = {
-      mouseout: this.closeTooltip,
+      mouseout: () => this.setState({ isTooltipOpened: false }),
       click: ({ date }) => {
         this.props.onCurrentTimeChanged(date)
         d3.event.stopPropagation()
       },
-      mouseover: function(d) {
+      mouseover: function(tooltipData) {
         d3.select(this).moveToFront()
         if ( d3.event.target.tagName !== 'rect' ) {
-          moveTooltip(d)
+          moveTooltip(tooltipData)
         }
       },
     }
@@ -178,14 +156,7 @@ export default class TimelineChart extends Component {
   }
 
   find(selector) {
-    return this.d3rootNode.select(selector)
-  }
-
-  componentDidMount() {
-    setTimeout(() => {
-      this.setEvents(this.props)
-      this.forceUpdate()
-    }, 0)
+    return this.rootNode.select(selector)
   }
 
   onZoomFactorChangedAndMoved = ({ zoomFactor, zoomPosition }) => {
@@ -198,13 +169,14 @@ export default class TimelineChart extends Component {
   render() {
     const { xScale, yScale, xScaleMini, realHeight, onZoomFactorChangedAndMoved } = this
     const { x: zoomPosition, k: zoomFactor } = this.zoom
+    const state = this.state
     const {
       currentTime, onCurrentTimeChanged,
       isToggled, isPlaying, currentSpeed,
     } = this.props
     const marginTop = getMarginTop(isToggled)
     const marginLeft = getMarginLeft(isToggled)
-    return <WindowDependable className={styles['root']} refCb={this.setD3Node}
+    return <WindowDependable className={styles['root']} refCb={this.refRootNode}
                              onDimensionsChanged={() => this.forceUpdate()}>
       <svg styleName={`${(isToggled ? 'toggled' : '')} timeline-chart`}>
         <rect styleName={isToggled ? 'toggled-background' : 'black-background'}
@@ -238,15 +210,7 @@ export default class TimelineChart extends Component {
           }} />
         </BrushGroup>
       </svg>
-
-      <div className="tooltipBlock" styleName="tooltip">
-        <div styleName="triangle-wrapper">
-          <div styleName="triangle">
-            <div styleName="triangle triangle-content"/>
-          </div>
-        </div>
-        <TooltipContentBlock tooltipData={this.state.tooltipData}/>
-      </div>
+      <Tooltip data={state.tooltipData} coords={state.tooltipCoords} isOpened={state.isTooltipOpened}/>
     </WindowDependable>
   }
 }
