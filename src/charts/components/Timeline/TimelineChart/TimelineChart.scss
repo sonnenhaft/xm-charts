@@ -15,6 +15,19 @@ svg.timeline-chart {
       width: 2px;
       transform: translateY(-4px);
     }
+    .brush-line {
+      transform: translate(15px, 26px);
+    }
+    .black-line-between-x-axes {
+      visibility: hidden;
+    }
+    .black-background {
+      fill: #252525;
+      transform: translateY(50px)
+    }
+    .main-group {
+      transform: translate(15px, 70px);
+    }
   }
 
   .small-line {
@@ -38,11 +51,6 @@ svg.timeline-chart {
 
   .black-background {
     fill: #141414
-  }
-  .toggled-background {
-    fill: #252525;
-    height: 50px;
-    y: 50px;
   }
 
   .red-bulk-circle,
@@ -82,18 +90,20 @@ svg.timeline-chart {
 .brush-line {
   pointer-events: none;
   fill: #141414;
+  transform: translate(30px, 15px);
+}
+
+.brush-line-group {
+  transform: translate(0, 40px);
 }
 
 .small-rects {
   transform: translate(0, -5px);
 }
 
-.hidden {
-  visibility: hidden;
-}
-
-.visible {
-  visibility: visible;
+.main-group {
+  flil: white;
+  transform: translate(30px, 30px);
 }
 
 .black-line-between-x-axes {

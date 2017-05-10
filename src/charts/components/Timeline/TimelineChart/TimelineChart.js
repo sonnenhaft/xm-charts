@@ -69,7 +69,7 @@ export default class TimelineChart extends Component {
 
   componentDidUpdate() {
     const props = this.props
-    const { xScale, yScale, campainSelected } = this
+    const { xScale, yScale } = this
     const events = props.events
     const { width, height } = this
 
@@ -97,41 +97,17 @@ export default class TimelineChart extends Component {
     const x = ({ date }) => xScale(date)
     const y = ({ networkSuperiority }) => yScale(networkSuperiority / 100)
 
-    let opacity = 1
-    if ( campainSelected ) {
-      opacity = ({ isEventSelected }) => isEventSelected ? 1 : 0.3
+    this.rootNode.select('.linePath').attr('d', d3.line().x(x).y(y).curve(
+      d3.curveBundle.beta(0.97))(calculatePath({ min, max, data, events }))
+    )
+
+
+    const onTimeChanged = ({ date }) => {
+      this.props.onCurrentTimeChanged(date)
+      d3.event.stopPropagation()
     }
 
-    const pathData = calculatePath({ min, max, data, events })
-    this.rootNode.select('.linePath').attr('d', d3.line().x(x).y(y).curve(d3.curveBundle.beta(0.97))(pathData))
-
-    const moveTooltip = tooltipData => { // need to keep context in here
-      const fixedOffsets = this.rootNode.select('svg').node().getBoundingClientRect()
-      const x = this.xScale(tooltipData.date)
-      this.setState({
-        tooltipData,
-        isTooltipOpened: true,
-        tooltipCoords: {
-          top: fixedOffsets.top,
-          left: x + fixedOffsets.left + getMarginLeft(props.isToggled),
-        },
-      })
-    }
-    const actions = {
-      mouseout: () => this.setState({ isTooltipOpened: false }),
-      click: ({ date }) => {
-        this.props.onCurrentTimeChanged(date)
-        d3.event.stopPropagation()
-      },
-      mouseover: function(tooltipData) {
-        d3.select(this).moveToFront()
-        if ( d3.event.target.tagName !== 'rect' ) {
-          moveTooltip(tooltipData)
-        }
-      },
-    }
-
-    const attrs = { x, y, ...lineAttrs, opacity, click: actions.click }
+    const attrs = { x, y, ...lineAttrs, click: onTimeChanged }
     g.bindData(`rect.${styles['small-line']}`, data.filter(filterVisible), attrs, 0)
 
     const groupWidth = 25 / this.zoom.k
@@ -142,9 +118,27 @@ export default class TimelineChart extends Component {
     }
 
     let { bulkLines, firstInSubnet } = this.composedData
+    const actions = {
+      click: onTimeChanged,
+      mouseout: () => this.setState({ isTooltipOpened: false }),
+      mouseover: tooltipData => {
+        d3.select(d3.event.target).moveToFront()
+        if ( d3.event.target.tagName !== 'rect' ) {
+          const fixedOffsets = this.rootNode.select('svg').node().getBoundingClientRect()
+          const x = this.xScale(tooltipData.date) + getMarginLeft(props.isToggled)
+          this.setState({
+            tooltipData,
+            isTooltipOpened: true,
+            tooltipCoords: {
+              top: fixedOffsets.top,
+              left: x + fixedOffsets.left,
+            },
+          })
+        }
+      },
+    }
     renderCircles({
-      g, data, x, height, actions, opacity,
-      duration: 0,
+      g, data, x, height, actions,
       bulkLines: bulkLines.filter(filterVisible),
       firstInSubnet: firstInSubnet.filter(filterVisible),
       isToggled: props.isToggled,
@@ -172,16 +166,15 @@ export default class TimelineChart extends Component {
     return <WindowDependable className={styles['root']} refCb={this.refRootNode}
                              onDimensionsChanged={() => this.forceUpdate()}>
       <svg styleName={`${(isToggled ? 'toggled' : '')} timeline-chart`} height={realHeight}>
-        <rect styleName={isToggled ? 'toggled-background' : 'black-background'}
-              width="100%" height="100%"/>
-        <g className="brushLineGroup" transform={`translate(0,${  this.height + 40  })`}>
-          <rect height="50" width="100%"
-                styleName={`black-line-between-x-axes ${isToggled ? 'hidden' : 'visible'}`}/>
-          <rect className="brushLine" width={this.width} styleName="brush-line" height="5" rx="3" ry="3"
-                transform={`translate(${marginLeft},${isToggled ? 26 : 15})`}/>
+        <rect styleName="black-background" width="100%" height="100%"/>
+        <g transform={`translate(0,${ this.height })`}>
+          <g className="brushLineGroup" styleName="brush-line-group">
+            <rect styleName="black-line-between-x-axes" height="50" width="100%"/>
+            <rect className="brushLine" styleName="brush-line"
+                  width={this.width} height="5" rx="3" ry="3"/>
+          </g>
         </g>
-        <g fill="white" className="mainGroup"
-           transform={`translate(${marginLeft}, ${marginTop})`}>
+        <g className="mainGroup" styleName="main-group">
           <Axes {...{ xScale, yScale, xScaleMini, isToggled, realHeight, zoomFactor }}>
             <path className="linePath" styleName="line-path"/>
           </Axes>

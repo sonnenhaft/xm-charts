@@ -52,7 +52,7 @@ export const calculatePath = ({ min, max, data, events }) => {
   return data
 }
 
-export const renderCircles = ({ g, data, x, height, duration, bulkLines, firstInSubnet, actions, isToggled, opacity }) => {
+export const renderCircles = ({ g, data, x, height, bulkLines, firstInSubnet, actions, isToggled }) => {
   const lastInSubnet = data.filter(({ lastInSubnet }) => lastInSubnet)
   const radius = 8
   height = isToggled ? 54 : height + radius * 2
@@ -74,9 +74,9 @@ export const renderCircles = ({ g, data, x, height, duration, bulkLines, firstIn
      <text transform="translate(0, 3.5)" class="${styles['circle-text']}">${value || ''}</text>
   </g>`)
 
-  const opt_attrs = { opacity, transform: d => `translate(${x(d)}, ${-radius * 2 + offset})`, ...actions }
+  const opt_attrs = { transform: d => `translate(${x(d)}, ${-radius * 2 + offset})`, ...actions }
   const allElements = mergedSelection.attrs(opt_attrs).merge(enteredSelection)
-  allElements.transition().duration(duration).attrs(opt_attrs, true)
+  allElements.attrs(opt_attrs, true)
 
   allElements.each(function() {
     const g = d3.select(this)
