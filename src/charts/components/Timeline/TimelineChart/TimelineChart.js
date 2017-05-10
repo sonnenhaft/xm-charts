@@ -80,10 +80,8 @@ export default class TimelineChart extends Component {
     })
 
     const [min, max] = xScale.domain()
-
-    let filterVisible = ({ date }) => min <= date && date <= max
+    const filterVisible = ({ date }) => min <= date && date <= max
     const data = events.filter(filterVisible)
-
     const fill = ({ type }) => {
       if ( type === 'nodeMarkAsRed' ) {
         return '#EB001E'
@@ -100,7 +98,6 @@ export default class TimelineChart extends Component {
     this.rootNode.select('.linePath').attr('d', d3.line().x(x).y(y).curve(
       d3.curveBundle.beta(0.97))(calculatePath({ min, max, data, events }))
     )
-
 
     const onTimeChanged = ({ date }) => {
       this.props.onCurrentTimeChanged(date)
@@ -167,7 +164,7 @@ export default class TimelineChart extends Component {
                              onDimensionsChanged={() => this.forceUpdate()}>
       <svg styleName={`${(isToggled ? 'toggled' : '')} timeline-chart`} height={realHeight}>
         <rect styleName="black-background" width="100%" height="100%"/>
-        <g transform={`translate(0,${ this.height })`}>
+        <g transform={`translate(0,${ this.height || 0 })`}>
           <g className="brushLineGroup" styleName="brush-line-group">
             <rect styleName="black-line-between-x-axes" height="50" width="100%"/>
             <rect className="brushLine" styleName="brush-line"
