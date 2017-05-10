@@ -15,6 +15,9 @@ svg.timeline-chart {
       width: 2px;
       transform: translateY(-4px);
     }
+    .brush-group-wrapper {
+      transform: translate(15px, 73px);
+    }
     .brush-line {
       transform: translate(15px, 26px);
     }
@@ -104,6 +107,10 @@ svg.timeline-chart {
 .main-group {
   flil: white;
   transform: translate(30px, 30px);
+}
+
+.brush-group-wrapper {
+  transform: translate(30px, 55px);
 }
 
 .black-line-between-x-axes {

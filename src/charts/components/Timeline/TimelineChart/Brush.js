@@ -1,8 +1,8 @@
 import React, { PropTypes, Component } from 'react'
-import d3, {Transform} from 'charts/utils/decorated.d3.v4'
+import d3, { Transform } from 'charts/utils/decorated.d3.v4'
 
 const ScaleObjectFunction = PropTypes.func.isRequired
-export default class BrushGroup extends Component {
+export default class Brush extends Component {
   static defaultProps = { isToggled: false, width: 0 }
   static propTypes = {
     xScale: ScaleObjectFunction,
@@ -110,15 +110,11 @@ export default class BrushGroup extends Component {
   }
 
   render() {
-    const height = this.getHeight()
-    const transform = (y1, y2) => `translate(0,${  this.props.isToggled ? y1 : y2  })`
-
     return <g className="brushGroup" ref={this.setBrushGroup}
-              transform={transform(height + 58, height + 40)}>
-      <g transform={`translate(${this.props.marginLeft},15)`}>
-        <g className="brusher" transform={transform(0, -15)} ref={this.setBrusher} />
+              transform={`translate(0, ${this.getHeight()})`}>
+        <g className="brusher" ref={this.setBrusher}
+           transform={`translate(0, ${this.props.isToggled ? 0 : -15})`}/>
         {this.props.children}
-      </g>
     </g>
   }
 }

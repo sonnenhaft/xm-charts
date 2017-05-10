@@ -6,7 +6,7 @@ import { composeCircles, renderCircles, calculatePath } from './TimelineChartUti
 import WindowDependable from '../../common/WindowDependable'
 import BrushCircleGroup from './BrushCircleGroup/BrushCircleGroup'
 import ZoomRect from '../../common/ZoomRect'
-import BrushGroup from './Brush'
+import Brush from './Brush'
 import Axes from './Axes/Axes'
 
 const MARGIN_RIGHT = 10
@@ -108,37 +108,37 @@ export default class TimelineChart extends Component {
     g.bindData(`rect.${styles['small-line']}`, data.filter(filterVisible), attrs, 0)
 
     const groupWidth = 25 / this.zoom.k
-    let prevGroupWidth = width / groupWidth
+    const prevGroupWidth = width / groupWidth
     if ( this.prevGroupWidth !== prevGroupWidth ) {
       this.prevGroupWidth = prevGroupWidth
       this.composedData = composeCircles(events, width, groupWidth)
     }
 
-    let { bulkLines, firstInSubnet } = this.composedData
-    const actions = {
-      click: onTimeChanged,
-      mouseout: () => this.setState({ isTooltipOpened: false }),
-      mouseover: tooltipData => {
-        d3.select(d3.event.target).moveToFront()
-        if ( d3.event.target.tagName !== 'rect' ) {
-          const fixedOffsets = this.rootNode.select('svg').node().getBoundingClientRect()
-          const x = this.xScale(tooltipData.date) + getMarginLeft(props.isToggled)
-          this.setState({
-            tooltipData,
-            isTooltipOpened: true,
-            tooltipCoords: {
-              top: fixedOffsets.top,
-              left: x + fixedOffsets.left,
-            },
-          })
-        }
-      },
-    }
+    const { bulkLines, firstInSubnet } = this.composedData
     renderCircles({
-      g, data, x, height, actions,
+      g, data, x, height,
       bulkLines: bulkLines.filter(filterVisible),
       firstInSubnet: firstInSubnet.filter(filterVisible),
       isToggled: props.isToggled,
+      actions: {
+        click: onTimeChanged,
+        mouseout: () => this.setState({ isTooltipOpened: false }),
+        mouseover: tooltipData => {
+          d3.select(d3.event.target).moveToFront()
+          if ( d3.event.target.tagName !== 'rect' ) {
+            const fixedOffsets = this.rootNode.select('svg').node().getBoundingClientRect()
+            const x = this.xScale(tooltipData.date) + getMarginLeft(props.isToggled)
+            this.setState({
+              tooltipData,
+              isTooltipOpened: true,
+              tooltipCoords: {
+                top: fixedOffsets.top,
+                left: x + fixedOffsets.left,
+              },
+            })
+          }
+        },
+      },
     })
   }
 
@@ -158,7 +158,6 @@ export default class TimelineChart extends Component {
       isToggled, isPlaying, currentSpeed,
     } = this.props
     const marginTop = getMarginTop(isToggled)
-    const marginLeft = getMarginLeft(isToggled)
 
     return <WindowDependable className={styles['root']} refCb={this.refRootNode}
                              onDimensionsChanged={() => this.forceUpdate()}>
@@ -183,15 +182,17 @@ export default class TimelineChart extends Component {
           </g>
           <g className="smalRects" styleName="small-rects"/>
         </g>
-        <BrushGroup {...{
-          xScale: xScaleMini, yScale, isToggled, marginLeft,
-          zoomFactor, zoomPosition, onZoomFactorChangedAndMoved,
-        }}>
-          <BrushCircleGroup {...{
-            xScale, yScale, xScaleMini, isToggled, currentSpeed, isPlaying,
-            currentTime, onCurrentTimeChanged,
-          }} />
-        </BrushGroup>
+        <g styleName="brush-group-wrapper">
+          <Brush {...{
+            xScale: xScaleMini, yScale, isToggled,
+            zoomFactor, zoomPosition, onZoomFactorChangedAndMoved,
+          }}>
+            <BrushCircleGroup {...{
+              xScale, yScale, xScaleMini, isToggled, currentSpeed, isPlaying,
+              currentTime, onCurrentTimeChanged,
+            }} />
+          </Brush>
+        </g>
       </svg>
       <Tooltip data={state.tooltipData} coords={state.tooltipCoords} isOpened={state.isTooltipOpened}/>
     </WindowDependable>
