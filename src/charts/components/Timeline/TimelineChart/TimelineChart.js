@@ -1,8 +1,8 @@
-import React, { PropTypes as P, Component } from 'react'
-import d3, { Transform }  from 'charts/utils/decorated.d3.v4'
+import React, { Component, PropTypes as P } from 'react'
+import d3, { Transform } from 'charts/utils/decorated.d3.v4'
 import styles from './TimelineChart.scss'
 import Tooltip from './Tooltip/Tooltip'
-import { composeCircles, renderCircles, calculatePath } from './TimelineChartUtils'
+import { calculatePath, composeCircles } from './TimelineChartUtils'
 import WindowDependable from '../../common/WindowDependable'
 import BrushCircleGroup from './BrushCircleGroup/BrushCircleGroup'
 import ZoomRect from '../../common/ZoomRect'
@@ -115,31 +115,42 @@ export default class TimelineChart extends Component {
     }
 
     const { bulkLines, firstInSubnet } = this.composedData
-    renderCircles({
-      g, data, x, height,
-      bulkLines: bulkLines.filter(filterVisible),
-      firstInSubnet: firstInSubnet.filter(filterVisible),
-      isToggled: props.isToggled,
-      actions: {
-        click: onTimeChanged,
-        mouseout: () => this.setState({ isTooltipOpened: false }),
-        mouseover: tooltipData => {
-          d3.select(d3.event.target).moveToFront()
-          if ( d3.event.target.tagName !== 'rect' ) {
-            const fixedOffsets = this.rootNode.select('svg').node().getBoundingClientRect()
-            const x = this.xScale(tooltipData.date) + getMarginLeft(props.isToggled)
-            this.setState({
-              tooltipData,
-              isTooltipOpened: true,
-              tooltipCoords: {
-                top: fixedOffsets.top,
-                left: x + fixedOffsets.left,
-              },
-            })
-          }
-        },
-      },
+    const actions = {
+      click: onTimeChanged,
+      mouseout: () => this.setState({ isTooltipOpened: false }),
+      mouseover: this.mouseOverTooltip,
+    }
+
+    const RADIUS = 8
+    const allCirclesData = [
+      ...firstInSubnet.filter(filterVisible),
+      ...data.filter(({ lastInSubnet }) => lastInSubnet),
+      ...bulkLines.filter(filterVisible),
+    ]
+
+    const enteredSelection = g.selectAll('.bulkBlock').data(allCirclesData, ({ id }) => id)
+    enteredSelection.exit().remove()
+    const mergedSelection = enteredSelection.enter().append('g')
+      .attr('class', 'bulkBlock').html(({ value }) => `<g class="${styles['circle-group-wrapper']}">
+     <g>
+      <rect class="whiteShadowRect ${styles['white-shadow-rect']}" width="${(RADIUS + 1) * 2}"></rect>
+      <circle class="${styles['circle-wrapper']} ${value ? '' : styles['no-value']}" r="${RADIUS}"></circle>
+      <rect class="${styles['red-bulk-line']} redBulkLine" width="${RADIUS / 4}"></rect>
+    </g>
+    <g>
+      <circle class="${styles['red-bulk-circle']}" r="${value ? RADIUS : RADIUS / 2}"></circle>
+      <text class="${styles['circle-text']}">${value || ''}</text>     
+    </g>
+</g>`)
+
+    const legHeight = this.props.isToggled ? 54 : height + RADIUS * 2
+    const allElements = mergedSelection.attrs(actions).merge(enteredSelection)
+    allElements.attrs({ transform: d => `translate(${x(d)}, 0)` })
+    allElements.select('.whiteShadowRect').attrs({
+      opacity: ({ firstInSubnet }) => firstInSubnet ? 0.2 : 0,
+      height: legHeight,
     })
+    allElements.select('.redBulkLine').attrs({ height: legHeight - RADIUS / 2 - 2 })
   }
 
   onZoomFactorChangedAndMoved = ({ zoomFactor, zoomPosition }) => {
@@ -147,6 +158,22 @@ export default class TimelineChart extends Component {
     zoomPosition = zoomFactor === 1 ? 0 : zoomPosition
     Object.assign(this.zoom, { x: zoomPosition, k: zoomFactor })
     this.props.onZoomFactorChanged(zoomFactor)
+  }
+
+  mouseOverTooltip = tooltipData => {
+    d3.select(d3.event.target).moveToFront()
+    if ( d3.event.target.tagName !== 'rect' ) {
+      const fixedOffsets = this.rootNode.select('svg').node().getBoundingClientRect()
+      const x = this.xScale(tooltipData.date) + getMarginLeft(this.props.isToggled)
+      this.setState({
+        tooltipData,
+        isTooltipOpened: true,
+        tooltipCoords: {
+          top: fixedOffsets.top,
+          left: x + fixedOffsets.left,
+        },
+      })
+    }
   }
 
   render() {

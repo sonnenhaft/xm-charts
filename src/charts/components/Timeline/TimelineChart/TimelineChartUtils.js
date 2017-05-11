@@ -1,5 +1,4 @@
 import d3 from 'charts/utils/decorated.d3.v4'
-import styles from './TimelineChart.scss'
 
 export const composeCircles = (data, width, groupWidth) => {
   const firstInSubnet = data.filter(({ firstInSubnet }) => firstInSubnet)
@@ -52,37 +51,3 @@ export const calculatePath = ({ min, max, data, events }) => {
   return data
 }
 
-export const renderCircles = ({ g, data, x, height, bulkLines, firstInSubnet, actions, isToggled }) => {
-  const lastInSubnet = data.filter(({ lastInSubnet }) => lastInSubnet)
-  const radius = 8
-  height = isToggled ? 54 : height + radius * 2
-  const offset = isToggled ? -40 : 0
-
-  const allCirclesData = [...firstInSubnet, ...lastInSubnet, ...bulkLines]
-  const enteredSelection = g.selectAll('.bulkBlock').data(allCirclesData, ({ id }) => id)
-  enteredSelection.exit().remove()
-
-  const mergedSelection = enteredSelection.enter().append('g')
-    .attr('class', 'bulkBlock').html(({ value }) => `<g class="${styles['circle-group-wrapper']}">
-     <g>
-      <rect class="whiteShadowRect ${styles['white-shadow-rect']}" width="${(radius + 1) * 2}"></rect>
-      <circle class="${styles['circle-wrapper']} ${value ? '' : styles['no-value']}" r="${radius}"></circle>
-      <rect class="${styles['red-bulk-line']}" width="${radius / 4}"></rect>
-    </g>
-    <g>
-      <circle class="${styles['red-bulk-circle']}" r="${value ? radius : radius / 2}"></circle>
-      <text class="${styles['circle-text']}">${value || ''}</text>     
-    </g>
-</g>`)
-
-  const opt_attrs = { transform: d => `translate(${x(d)}, ${-radius * 2 + offset})`, ...actions }
-  const allElements = mergedSelection.attrs(opt_attrs).merge(enteredSelection)
-  allElements.attrs(opt_attrs, true)
-
-  allElements.each(function () {
-    const g = d3.select(this)
-    const { firstInSubnet } = g.datum()
-    g.select('.whiteShadowRect').attrs({ opacity: firstInSubnet ? 0.2 : 0, height })
-    g.select(`.${styles['red-bulk-line']}`).attrs({ height: height - radius / 2 - 2 })
-  })
-}

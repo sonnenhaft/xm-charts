@@ -1,5 +1,6 @@
 @import "../../../../assets/colors";
 
+$radius: 8px;
 svg.timeline-chart {
   display: block;
   width: 100%;
@@ -10,6 +11,9 @@ svg.timeline-chart {
   }
 
   &.toggled {
+    .circle-group-wrapper {
+      transform: translate(1px, -2*$radius+1px - 40px);
+    }
     .small-line {
       height: 7px;
       width: 2px;
@@ -106,10 +110,8 @@ svg.timeline-chart {
   width: 100%
 }
 
-$radius: 8px;
-
 .circle-group-wrapper {
-  transform: translateX(1px);
+  transform: translate(1px, -2*$radius+1px);
   cursor: pointer;
   .white-shadow-rect {
     fill: #EB001E;

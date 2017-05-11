@@ -45,7 +45,10 @@ export default class TooltipContent extends Component {
     this.rootNode.select('.triangleWrapper').styles({left: Math.max(0, coords.left - maxLeft)})
 
     if ( this.isOpened() ) {
-      this.rootNode.classed(styles['visible-tooltip'], true)
+      this.rootNode.classed(styles['visible-tooltip'], true).classed('no-animate', true)
+      setTimeout(() => {
+        this.rootNode.classed('no-animate', false)
+      }, 100)
     } else {
       setTimeout(() => {
         if (!this.isOpened()) {
