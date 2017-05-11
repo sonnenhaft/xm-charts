@@ -46,25 +46,9 @@ svg.timeline-chart {
       height: 30px;
     }
   }
-  .red-bulk-line {
-    width: 2px;
-    dx: -1px;
-    pointer-events: none;
-  }
 
   .black-background {
-    fill: #141414
-  }
-
-  .red-bulk-circle,
-  .red-bulk-line {
-    fill: $chartRed
-  }
-
-  .circle-text {
-    cursor: pointer;
-    font-size: 11px;
-    text-anchor: middle;
+    fill: $darkBackground
   }
 
   .brush-circle {
@@ -92,7 +76,7 @@ svg.timeline-chart {
 
 .brush-line {
   pointer-events: none;
-  fill: #141414;
+  fill: $darkBackground;
   transform: translate(30px, 15px);
 }
 
@@ -114,10 +98,46 @@ svg.timeline-chart {
 }
 
 .black-line-between-x-axes {
-  fill: #252525;
+  fill: $buttonGrey;
 }
 
 .root {
   position: relative;
   width: 100%
+}
+
+$radius: 8px;
+
+.circle-group-wrapper {
+  transform: translateX(1px);
+  cursor: pointer;
+  .white-shadow-rect {
+    fill: #EB001E;
+    transform: translateX(-$radius + -1px)
+  }
+  .circle-wrapper {
+    fill: #252525;
+    stroke: #EB001E;
+    stroke-opacity: 0.3;
+    stroke-width: 4px;
+    &.no-value {
+      stroke-opacity: 1;
+      stroke-width: 2px;
+    }
+  }
+  .circle-text {
+    cursor: pointer;
+    font-size: 11px;
+    text-anchor: middle;
+    transform: translate(0, 3.5px);
+  }
+  .red-bulk-line {
+    width: 2px;
+    transform: translate(-$radius / 8, $radius - 1px);
+    pointer-events: none;
+  }
+  .red-bulk-circle,
+  .red-bulk-line {
+    fill: $chartRed
+  }
 }

@@ -63,25 +63,26 @@ export const renderCircles = ({ g, data, x, height, bulkLines, firstInSubnet, ac
   enteredSelection.exit().remove()
 
   const mergedSelection = enteredSelection.enter().append('g')
-    .attr('class', 'bulkBlock').html(({ value }) => `<g transform="translate(1, 0)" cursor="pointer">
-    <rect fill="#EB001E" class="white-shadow-rect"
-        transform="translate(${-(radius + 1)})"    width="${(radius + 1) * 2}"></rect>
-     <circle class="circleWrapper" fill="#252525"  stroke-opacity="${value ? 0.3 : 1}"
-        stroke-width="${value ? 4 : 2}"  r="${radius}" stroke="#EB001E"></circle>
-     <circle class="${styles['red-bulk-circle']}" r="${value ? radius : radius / 2}" fill="#EB001E"></circle>
-     <rect class="${styles['red-bulk-line']}" width="${radius / 4}"
-        transform="translate(${-radius / 8}, ${radius - 1})" ></rect>
-     <text transform="translate(0, 3.5)" class="${styles['circle-text']}">${value || ''}</text>
-  </g>`)
+    .attr('class', 'bulkBlock').html(({ value }) => `<g class="${styles['circle-group-wrapper']}">
+     <g>
+      <rect class="whiteShadowRect ${styles['white-shadow-rect']}" width="${(radius + 1) * 2}"></rect>
+      <circle class="${styles['circle-wrapper']} ${value ? '' : styles['no-value']}" r="${radius}"></circle>
+      <rect class="${styles['red-bulk-line']}" width="${radius / 4}"></rect>
+    </g>
+    <g>
+      <circle class="${styles['red-bulk-circle']}" r="${value ? radius : radius / 2}"></circle>
+      <text class="${styles['circle-text']}">${value || ''}</text>     
+    </g>
+</g>`)
 
   const opt_attrs = { transform: d => `translate(${x(d)}, ${-radius * 2 + offset})`, ...actions }
   const allElements = mergedSelection.attrs(opt_attrs).merge(enteredSelection)
   allElements.attrs(opt_attrs, true)
 
-  allElements.each(function() {
+  allElements.each(function () {
     const g = d3.select(this)
     const { firstInSubnet } = g.datum()
-    g.select('.white-shadow-rect').attrs({ opacity: firstInSubnet ? 0.2 : 0, height })
+    g.select('.whiteShadowRect').attrs({ opacity: firstInSubnet ? 0.2 : 0, height })
     g.select(`.${styles['red-bulk-line']}`).attrs({ height: height - radius / 2 - 2 })
   })
 }
