@@ -132,16 +132,12 @@ export default class TimelineChart extends Component {
     enteredSelection.exit().remove()
     const mergedSelection = enteredSelection.enter().append('g')
       .attr('class', 'bulkBlock').html(({ value }) => `<g class="${styles['circle-group-wrapper']}">
-     <g>
       <rect class="whiteShadowRect ${styles['white-shadow-rect']}" width="${(RADIUS + 1) * 2}"></rect>
       <circle class="${styles['circle-wrapper']} ${value ? '' : styles['no-value']}" r="${RADIUS}"></circle>
       <rect class="${styles['red-bulk-line']} redBulkLine" width="${RADIUS / 4}"></rect>
-    </g>
-    <g>
       <circle class="${styles['red-bulk-circle']}" r="${value ? RADIUS : RADIUS / 2}"></circle>
       <text class="${styles['circle-text']}">${value || ''}</text>     
-    </g>
-</g>`)
+    </g>`)
 
     const legHeight = this.props.isToggled ? 54 : height + RADIUS * 2
     const allElements = mergedSelection.attrs(actions).merge(enteredSelection)
@@ -161,7 +157,7 @@ export default class TimelineChart extends Component {
   }
 
   mouseOverTooltip = tooltipData => {
-    d3.select(d3.event.target).moveToFront()
+    // d3.select(d3.event.target).moveToFront()
     if ( d3.event.target.tagName !== 'rect' ) {
       const fixedOffsets = this.rootNode.select('svg').node().getBoundingClientRect()
       const x = this.xScale(tooltipData.date) + getMarginLeft(this.props.isToggled)
