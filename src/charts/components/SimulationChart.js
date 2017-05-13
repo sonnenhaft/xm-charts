@@ -1,42 +1,32 @@
 import React from 'react'
 import Timeline from './Timeline'
 import NetworkGrid from './NetworkGrid'
-import {compose, withPropsOnChange} from 'recompose'
+import { compose, withPropsOnChange, withState } from 'recompose'
 
 import './SimulationChart.scss'
-import eventsAndNodesAdapter from '../utils/eventsAndNodesAdapter'
+import eventsAdapter from '../utils/eventsAdapter'
 
-class SimulationChart extends React.Component {
-
-  state = {currentTime: 0}
-
-  onCurrentTimeChanged = currentTime => this.setState({currentTime})
-
-  componentDidMount() {
-    const {events} = this.props
-    this.setState({currentTime: events.length && events[events.length - 1].date})
-  }
-
-  componentWillReceiveProps({nodes, events}) {
-    if(nodes !== this.props.nodes || events !== this.props.events){
-      this.setState({currentTime: events.length && events[events.length - 1].date})
-    }
-  }
-
-  render(){
-    const {props: {events, nodes, className}, state: {currentTime}, onCurrentTimeChanged } = this
-    return (
-      <div className={className} styleName="root">
-        <NetworkGrid styleName="network" {...{events, nodes, currentTime}}/>
-        <Timeline styleName="timeline" {...{events, nodes, currentTime, onCurrentTimeChanged}} />
-      </div>
-    )
-  }
+const SimulationChart = props => {
+  const { events, nodes, className } = props
+  const { currentTime, onCurrentTimeChanged } = props
+  return (
+    <div className={className} styleName="root">
+      <NetworkGrid styleName="network" {...{ events, nodes, currentTime }}/>
+      <Timeline styleName="timeline" {...{ events, nodes, currentTime, onCurrentTimeChanged }} />
+    </div>
+  )
 }
 
+const getLastDateOrReturnZero = ({ events }) => events.length ? events[events.length - 1].date : 0
 const enhance = compose(
-  withPropsOnChange(['nodes', 'events'], ({nodes, events}) => eventsAndNodesAdapter({events, nodes})),
+  withPropsOnChange(['events'], ({ events }) => ({ events: eventsAdapter(events) })),
+  withState('currentTime', 'onCurrentTimeChanged', getLastDateOrReturnZero),
+  withPropsOnChange(({ events, onCurrentTimeChanged }, newProps) => {
+    if ( newProps.events !== events ) { // to ignore first run when state does not exist
+      onCurrentTimeChanged(getLastDateOrReturnZero(newProps))
+    }
+    return true
+  }, props => props),
 )
 
 export default enhance(SimulationChart)
-
