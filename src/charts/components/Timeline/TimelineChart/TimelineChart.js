@@ -8,6 +8,7 @@ import BrushCircleGroup from './BrushCircleGroup/BrushCircleGroup'
 import ZoomRect from '../../common/ZoomRect'
 import Brush from './Brush'
 import Axes from './Axes/Axes'
+import { isCircle, isFirstInSubnet } from 'charts/utils/EventUtils'
 
 const MARGIN_RIGHT = 10
 const MARGIN_BOTTOM = 60
@@ -124,7 +125,7 @@ export default class TimelineChart extends Component {
     const RADIUS = 8
     const allCirclesData = [
       ...firstInSubnet.filter(filterVisible),
-      ...data.filter(({ lastInSubnet }) => lastInSubnet),
+      ...data.filter(({ type }) => isCircle(type)),
       ...bulkLines.filter(filterVisible),
     ]
 
@@ -143,7 +144,7 @@ export default class TimelineChart extends Component {
     const allElements = mergedSelection.attrs(actions).merge(enteredSelection)
     allElements.attrs({ transform: d => `translate(${x(d)}, 0)` })
     allElements.select('.whiteShadowRect').attrs({
-      opacity: ({ firstInSubnet }) => firstInSubnet ? 0.2 : 0,
+      opacity: ({ type }) => isFirstInSubnet(type) ? 0.2 : 0,
       height: legHeight,
     })
     allElements.select('.redBulkLine').attrs({ height: legHeight - RADIUS / 2 - 2 })

@@ -2,6 +2,7 @@ import d3 from 'charts/utils/decorated.d3.v4'
 import React, { Component, PropTypes as P } from 'react'
 import styles from './Tooltip.scss'
 import ShareButtons from '../../common/ShareButtons'
+import {getEventInfo} from 'charts/utils/EventUtils'
 
 export default class TooltipContent extends Component {
   static propTypes = {
@@ -36,13 +37,13 @@ export default class TooltipContent extends Component {
   componentDidUpdate() {
     const coords = this.props.coords
     const top = coords.top + 22
-    const {clientWidth, clientHeight} = this.rootNode.node()
-    const maxLeft = window.innerWidth - clientWidth/2
+    const { clientWidth, clientHeight } = this.rootNode.node()
+    const maxLeft = window.innerWidth - clientWidth / 2
     this.rootNode
       .styles({ left: Math.min(coords.left, maxLeft), top: `${ top - (clientHeight > top ? 0 : 22) }px` })
       .classed(styles['bottom-triangle'], clientHeight <= top)
 
-    this.rootNode.select('.triangleWrapper').styles({left: Math.max(0, coords.left - maxLeft)})
+    this.rootNode.select('.triangleWrapper').styles({ left: Math.max(0, coords.left - maxLeft) })
 
     if ( this.isOpened() ) {
       this.rootNode.classed(styles['visible-tooltip'], true).classed('no-animate', true)
@@ -51,7 +52,7 @@ export default class TooltipContent extends Component {
       }, 100)
     } else {
       setTimeout(() => {
-        if (!this.isOpened()) {
+        if ( !this.isOpened() ) {
           this.rootNode.classed(styles['visible-tooltip'], false)
         }
       }, 100)
@@ -63,7 +64,10 @@ export default class TooltipContent extends Component {
   }
 
   render() {
-    const { type, source, method, date } = this.props.data
+    const event = this.props.data
+    const { type, date } = event
+    const {method, source} = getEventInfo(event)
+
     return <div className="tooltipBlock" styleName="tooltip" ref={this.refRootNode}>
       <div styleName="triangle-wrapper" className="triangleWrapper">
         <div styleName="triangle">

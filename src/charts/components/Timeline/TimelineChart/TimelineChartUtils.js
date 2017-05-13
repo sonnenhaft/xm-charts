@@ -1,7 +1,8 @@
 import d3 from 'charts/utils/decorated.d3.v4'
+import {isFirstInSubnet} from 'charts/utils/EventUtils'
 
 export const composeCircles = (data, width, groupWidth) => {
-  const firstInSubnet = data.filter(({ firstInSubnet }) => firstInSubnet)
+  const firstInSubnet = data.filter(({ type }) => isFirstInSubnet(type))
   const rounderRange = d3.scaleQuantile()
     .domain([data[0].date, data[data.length - 1].date])
     .range(d3.range(0, width / groupWidth))

@@ -6,6 +6,7 @@ import nextFlagSvg from 'assets/icons/next-flag.svg'
 import nextStorySvg from 'assets/icons/next-story.svg'
 import circleButtonSvgIcon from 'assets/icons/circle-button.svg'
 import downloadedSvg from 'assets/icons/asset-downloaded.svg'
+import {isCircle, isFirstInSubnet} from 'charts/utils/EventUtils'
 
 import './LeftBar.scss'
 
@@ -147,7 +148,7 @@ export default class LeftBar extends Component {
     // only "special" events in here
     // find instead of  findIndex because we loose order
     return props.events
-      .filter(({ firstInSubnet, lastInSubnet }) => firstInSubnet || lastInSubnet)
+      .filter(({ type }) => isFirstInSubnet(type) || isCircle(type))
       .find(({ date }) => forward ?  date > props.currentTime : date < props.currentTime)
   }
 
