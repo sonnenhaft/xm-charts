@@ -22,7 +22,9 @@ const enhance = compose(
   withPropsOnChange(['events'], ({ events }) => ({ events: eventsAdapter(events) })),
   withState('currentTime', 'onCurrentTimeChanged', getLastDateOrReturnZero),
   withPropsOnChange(({ events, onCurrentTimeChanged }, newProps) => {
-    if ( newProps.events !== events ) { // to ignore first run when state does not exist
+    // TODO(Dani): advice how to set state when component was not mounted yet
+    // because current code is breaking for hot reload
+    if ( newProps.events !== events ) {
       onCurrentTimeChanged(getLastDateOrReturnZero(newProps))
     }
     return true

@@ -158,7 +158,7 @@ export default class NetworkGrid extends Component {
 
     this.svg.select('.clusterLabels').bindData('text.clusterLabel', clusters, {
       transform: ({ x, y }) => `translate(${scale(x)}, ${scale(y)})`,
-      text: ({ cluster }) => cluster,
+      text: ({ cluster }) => cluster || 'Unidentified',
     })
 
     const hasStatus = (key, val1, val2) => ({ node: { agentId } }) => {
