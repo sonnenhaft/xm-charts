@@ -35,7 +35,8 @@ const RightBar = ({
           <span>-</span>
         </button>
       </div>
-      { !isToggled &&
+      {/*TODO: unhide switch to gigabytes when logic is defined*/}
+      { !isToggled && false &&
       <div>
         <button onClick={() => console.warn('TODO: add overview action')} styleName={`${styleName} active`}>
           <Icon>{ overviewSvgIcon }</Icon>
