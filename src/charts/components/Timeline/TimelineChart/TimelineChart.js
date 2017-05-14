@@ -159,6 +159,9 @@ export default class TimelineChart extends Component {
 
   mouseOverTooltip = tooltipData => {
     // d3.select(d3.event.target).moveToFront()
+    if (!tooltipData.type) {
+      return
+    }
     if ( d3.event.target.tagName !== 'rect' ) {
       const fixedOffsets = this.rootNode.select('svg').node().getBoundingClientRect()
       const x = this.xScale(tooltipData.date) + getMarginLeft(this.props.isToggled)
