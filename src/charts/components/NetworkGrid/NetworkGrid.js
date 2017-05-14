@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
-import d3, { Transform }  from 'charts/utils/decorated.d3.v4'
+import React, { Component, PropTypes as P } from 'react'
+import d3, { Transform } from 'charts/utils/decorated.d3.v4'
 import { getNodesEventsDataMap } from '../../utils/nodeEventData'
-import { Snow, Desktop, Diskette, Circle } from './IconsGroup'
+import { Circle, Desktop, Diskette, Snow } from './IconsGroup'
 import './NetworkGrid.scss'
 import WindowDependable from '../common/WindowDependable'
 import _calculateClusterCoords from './calculateClusterCoords'
@@ -15,7 +15,14 @@ const ZOOM_CHANGE = 1.2
 export default class NetworkGrid extends Component {
   state = {
     hoveredNodeIndex: null,
-    selectedNodeIndex: null,
+  }
+
+  static propTypes = {
+    events: P.array,
+    nodes: P.array,
+    currentTime: P.number,
+    selectedNodeIndex: P.number,
+    onSelectedNodeIndexChanged: P.func,
   }
 
   refRootBlock = rootBlock => {
@@ -39,13 +46,13 @@ export default class NetworkGrid extends Component {
     this.zoom = d3.zoom().scaleExtent([1, 1000]).on('zoom', this.onZoomFactorChanged)
   }
 
-  shouldComponentUpdate({ currentTime, events, nodes }, { hoveredNodeIndex, selectedNodeIndex }) {
+  shouldComponentUpdate({ currentTime, events, nodes, selectedNodeIndex }, { hoveredNodeIndex }) {
     const { props, state } = this
     return props.currentTime !== currentTime
       || props.events !== events
       || props.nodes !== nodes
       || state.hoveredNodeIndex !== hoveredNodeIndex
-      || state.selectedNodeIndex !== selectedNodeIndex
+      || props.selectedNodeIndex !== selectedNodeIndex
   }
 
   componentWillReceiveProps(nextProps) {
@@ -126,7 +133,7 @@ export default class NetworkGrid extends Component {
             display: 'block',
           })
           this.svg.select('.zoomRect').style('cursor', 'pointer')
-          if (this.state.hoveredNodeIndex !== hoveredNodeIndex) {
+          if ( this.state.hoveredNodeIndex !== hoveredNodeIndex ) {
             this.setState({ hoveredNodeIndex })
           }
         } else if ( hoveredNodeIndex === -1 ) {
@@ -134,14 +141,14 @@ export default class NetworkGrid extends Component {
           this.svg.select('.zoomRect').style('cursor', 'move')
         }
       },
-      click: () => this.setState({ selectedNodeIndex: findNodeByMouse(d3.event) }),
+      click: () => this.props.onSelectedNodeIndexChanged(findNodeByMouse(d3.event)),
     })
 
     const status = getNodesEventsDataMap(events, currentTime)
     const allElements = this.paintAndReturnNodes(this.cachedClusters, status, currentZoom)
 
     allElements.select('.wrapper')
-      .classed('is-selected', (_, index) => index === this.state.selectedNodeIndex)
+      .classed('is-selected', (_, index) => index === this.props.selectedNodeIndex)
     allElements.select('.icons')
       .classed('is-icon', () => currentZoom.k < ZOOM_CHANGE)
       .classed('is-dot', () => currentZoom.k >= ZOOM_CHANGE)
