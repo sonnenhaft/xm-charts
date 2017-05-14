@@ -30,7 +30,6 @@ export default class NetworkGrid extends Component {
   }
 
   onZoomFactorChanged = () => {
-    console.log('changed')
     this.rootBlock.select('.nodeTooltip').style('display', 'none')
     this.forceUpdate()
   }
@@ -119,11 +118,11 @@ export default class NetworkGrid extends Component {
         const rect = this.rootBlock.select('.nodeTooltip')
 
         if ( hoveredNodeIndex !== -1 ) {
-          const { x: _x, y: _y } = coordinatedNodes[hoveredNodeIndex]
+          const { x, y } = coordinatedNodes[hoveredNodeIndex]
           const offsets = this.rootBlock.node().getBoundingClientRect()
           rect.styles({
-            top: yScale(_y + 0.4) - 80 + shiftY + offsets.top,
-            left: xScale(_x + 0.20) + shiftX + offsets.left,
+            top: yScale(y + 0.38) - 74 + shiftY + offsets.top,
+            left: xScale(x + 0.1755) + shiftX + offsets.left,
             display: 'block',
           })
           this.svg.select('.zoomRect').style('cursor', 'pointer')

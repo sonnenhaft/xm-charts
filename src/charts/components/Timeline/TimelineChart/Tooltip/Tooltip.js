@@ -1,8 +1,8 @@
-import d3 from "charts/utils/decorated.d3.v4";
-import React, { Component, PropTypes as P } from "react";
-import styles from "./Tooltip.scss";
-import ShareButtons from "../../common/ShareButtons";
-import { getEventInfo } from "charts/utils/EventUtils";
+import d3 from 'charts/utils/decorated.d3.v4'
+import React, { Component, PropTypes as P } from 'react'
+import styles from './Tooltip.scss'
+import ShareButtons from '../../common/ShareButtons'
+import { getEventInfo } from 'charts/utils/EventUtils'
 
 export default class TooltipContent extends Component {
   static propTypes = {

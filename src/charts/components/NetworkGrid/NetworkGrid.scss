@@ -15,6 +15,7 @@ $grey-light: rgba(230, 230, 230, 0.4);
 .node-information {
   pointer-events: all;
   background: $white;
+  white-space: nowrap;
   border: solid$black 1.5px;
   border-radius: 4px;
   padding: 4px;
