@@ -30,6 +30,7 @@ export default class NetworkGrid extends Component {
   }
 
   onZoomFactorChanged = () => {
+    console.log('changed')
     this.rootBlock.select('.nodeTooltip').style('display', 'none')
     this.forceUpdate()
   }
@@ -108,7 +109,7 @@ export default class NetworkGrid extends Component {
       const x = xScale.invert(offsetX - shiftX)
       const y = yScale.invert(offsetY - shiftY)
       return coordinatedNodes.findIndex(({ x: _x, y: _y }) =>
-        _x < x && _y < y && _x + 0.5 > x && _y + 0.8 >= y
+        _x - 0.1 < x && _y - 0.1 < y && _x + 0.4 > x && _y + 0.8 >= y
       )
     }
 
@@ -117,7 +118,7 @@ export default class NetworkGrid extends Component {
         const hoveredNodeIndex = findNodeByMouse(d3.event)
         const rect = this.rootBlock.select('.nodeTooltip')
 
-        if ( hoveredNodeIndex !== -1 && this.state.hoveredNodeIndex !== hoveredNodeIndex ) {
+        if ( hoveredNodeIndex !== -1 ) {
           const { x: _x, y: _y } = coordinatedNodes[hoveredNodeIndex]
           const offsets = this.rootBlock.node().getBoundingClientRect()
           rect.styles({
@@ -126,7 +127,9 @@ export default class NetworkGrid extends Component {
             display: 'block',
           })
           this.svg.select('.zoomRect').style('cursor', 'pointer')
-          this.setState({ hoveredNodeIndex })
+          if (this.state.hoveredNodeIndex !== hoveredNodeIndex) {
+            this.setState({ hoveredNodeIndex })
+          }
         } else if ( hoveredNodeIndex === -1 ) {
           rect.style('display', 'none')
           this.svg.select('.zoomRect').style('cursor', 'move')
