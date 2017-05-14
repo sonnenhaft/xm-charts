@@ -15,7 +15,7 @@ const STUB_CLUSTER_NAMES = [
 
 const addDemoClusters = node => ({
   ...node,
-  cluster: chance.weighted(STUB_CLUSTER_NAMES, [1, 2, 3, 4, 2]),
+  cluster: chance.weighted(STUB_CLUSTER_NAMES, [1, 2, 3, 4, 0.5]),
 })
 
 const version = `${process.env.npm_package_name} v${process.env.npm_package_version}`

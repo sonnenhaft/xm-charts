@@ -1,4 +1,4 @@
-import { groupBy, transform, values }  from 'lodash'
+import { groupBy, maxBy, transform, values } from 'lodash'
 import pack from 'bin-pack'
 
 const MARGIN = 0.5
@@ -9,6 +9,32 @@ const LAYOUT_MARGIN_LEFT = MARGIN / 4
 const PADDING_RIGHT = 0
 const PADDING_LEFT = MARGIN
 const PADDING_H = MARGIN
+
+function moveToHead(arr, item) {
+  arr[arr.indexOf(item)] = arr[0]
+  arr[0] = item
+}
+
+function moveUnidentifiedCulsterToTopLeft(items) {
+  const unidentifiedCluster = items.find(({ item: { clusterId } }) => !clusterId)
+  if ( !unidentifiedCluster ) {
+    return
+  }
+  const lines = values(groupBy(items, ({ y }) => y))
+  const unidentifiedLine = lines.find(line => line.indexOf(unidentifiedCluster) !== -1)
+  moveToHead(unidentifiedLine, unidentifiedCluster)
+  unidentifiedLine.reduce((sum, item) => {
+    item.x = sum
+    return sum + item.width
+  }, 0)
+
+  const allLines = Object.values(lines)
+  moveToHead(allLines, unidentifiedLine)
+  allLines.reduce((sum, line) => {
+    line.forEach(item => item.y = sum)
+    return sum + maxBy(line, 'height').height
+  }, 0)
+}
 
 export default  function(computers, ratio = 1) {
   let clusters = transform(groupBy(computers, 'cluster'), (result, nodesObject, clusterId) => {
@@ -28,6 +54,8 @@ export default  function(computers, ratio = 1) {
   })
 
   let { width: totalWidth, height: totalHeight, items } = pack(values(clusters), { inPlace: false })
+  moveUnidentifiedCulsterToTopLeft(items)
+
   totalWidth /= ratio
   items.forEach(item => {
     item.width /= ratio
@@ -38,7 +66,7 @@ export default  function(computers, ratio = 1) {
     item.width -= MARGIN * 2 + PADDING_RIGHT + PADDING_LEFT
     item.height -= MARGIN + MARGIN_TOP + PADDING_H * 2
     item.x += MARGIN + PADDING_LEFT
-    item.y += MARGIN_TOP + PADDING_H // ??
+    item.y += MARGIN_TOP + PADDING_H
   })
 
   const coordinatedNodes = items.reduce((nodes, { width, x, y, item: { nodesObject } }) => {
