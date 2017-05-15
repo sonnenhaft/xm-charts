@@ -43,29 +43,26 @@ export default class Timeline extends Component {
     const { currentTime, onCurrentTimeChanged, events, nodes, className } = this.props
     const { isToggled, zoomFactor, currentSpeed, playingInterval } = this.state
 
-
-    return events.length ?
-      (
-        <div styleName="root" className={className}>
-          <LeftBar {...{
-            currentTime, onCurrentTimeChanged,
-            currentSpeed, onCurrentSpeedChanged,
-            playingInterval, onPlayingIntervalChanged,
-            isToggled, events,
-          }} />
-          <TimelineChart {...{
-            currentTime, onCurrentTimeChanged,
-            zoomFactor, onZoomFactorChanged,
-            isToggled, currentSpeed, events, nodes, isPlaying: !!playingInterval,
-            maxZoom: MAX_ZOOM, minZoom: MIN_ZOOM,
-          }} />
-          <RightBar {...{
-            zoomFactor, onZoomFactorChanged,
-            isToggled, onToggledChanged,
-            maxZoom: MAX_ZOOM, minZoom: MIN_ZOOM,
-          }} />
-        </div>
-      ) : <div styleName="root no-data" className={className}>No events data yet...</div>
-
+    return events.length ? (
+      <div styleName="root" className={className}>
+        <LeftBar {...{
+          currentTime, onCurrentTimeChanged,
+          currentSpeed, onCurrentSpeedChanged,
+          playingInterval, onPlayingIntervalChanged,
+          isToggled, events,
+        }} />
+        <TimelineChart {...{
+          currentTime, onCurrentTimeChanged,
+          zoomFactor, onZoomFactorChanged,
+          isToggled, currentSpeed, events, nodes, isPlaying: !!playingInterval,
+          maxZoom: MAX_ZOOM, minZoom: MIN_ZOOM,
+        }} />
+        <RightBar {...{
+          zoomFactor, onZoomFactorChanged,
+          isToggled, onToggledChanged,
+          maxZoom: MAX_ZOOM, minZoom: MIN_ZOOM,
+        }} />
+      </div>
+    ) : <div styleName="root no-data" className={className}>No events data yet...</div>
   }
 }

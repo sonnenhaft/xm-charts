@@ -1,13 +1,13 @@
 import d3 from 'charts/utils/decorated.d3.v4'
-import {isFirstInSubnet} from 'charts/utils/EventUtils'
+import { isSpecial } from 'charts/utils/EventUtils'
 
 export const composeCircles = (data, width, groupWidth) => {
-  const firstInSubnet = data.filter(({ type }) => isFirstInSubnet(type))
+  const nonBulkCircles = data.filter(isSpecial)
   const rounderRange = d3.scaleQuantile()
     .domain([data[0].date, data[data.length - 1].date])
     .range(d3.range(0, width / groupWidth))
 
-  const groupedRedLines = firstInSubnet.reduce((map, item) => {
+  const groupedRedLines = nonBulkCircles.reduce((map, item) => {
     const groupedRedLines = rounderRange(item.date)
     if ( map[groupedRedLines] ) {
       map[groupedRedLines].push(item)
@@ -17,19 +17,19 @@ export const composeCircles = (data, width, groupWidth) => {
     return map
   }, {})
 
-  const bulkLines = Object.keys(groupedRedLines)
+  const bulkCircles = Object.keys(groupedRedLines)
     .map(key => groupedRedLines[key])
     .filter(items => items.length > 1)
     .filter(items => items.length > 2 || items[1].date - items[0].date <= groupWidth)
     .map(items => {
       const date = Math.round(d3.sum(items, ({ date }) => date) / items.length)
       items.forEach(item => {
-        firstInSubnet.splice(firstInSubnet.indexOf(item), 1)
+        nonBulkCircles.splice(nonBulkCircles.indexOf(item), 1)
       })
       return { date, value: items.length, id: date }
     })
 
-  return { bulkLines, firstInSubnet }
+  return { bulkCircles, nonBulkCircles }
 }
 
 export const calculatePath = ({ min, max, data, events }) => {

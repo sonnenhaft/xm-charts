@@ -8,7 +8,7 @@ import BrushCircleGroup from './BrushCircleGroup/BrushCircleGroup'
 import ZoomRect from '../../common/ZoomRect'
 import Brush from './Brush'
 import Axes from './Axes/Axes'
-import { isCircle, isFirstInSubnet } from 'charts/utils/EventUtils'
+import { isTrafficLight, isFirstInSubnet } from 'charts/utils/EventUtils'
 
 const MARGIN_RIGHT = 10
 const MARGIN_BOTTOM = 60
@@ -115,7 +115,7 @@ export default class TimelineChart extends Component {
       this.composedData = composeCircles(events, width, groupWidth)
     }
 
-    const { bulkLines, firstInSubnet } = this.composedData
+    const { bulkCircles, nonBulkCircles } = this.composedData
     const actions = {
       click: onTimeChanged,
       mouseout: () => this.setState({ isTooltipOpened: false }),
@@ -124,20 +124,29 @@ export default class TimelineChart extends Component {
 
     const RADIUS = 8
     const allCirclesData = [
-      ...firstInSubnet.filter(filterVisible),
-      ...data.filter(({ type }) => isCircle(type)),
-      ...bulkLines.filter(filterVisible),
+      ...nonBulkCircles.filter(filterVisible),
+      ...bulkCircles.filter(filterVisible),
     ]
 
     const enteredSelection = g.selectAll('.bulkBlock').data(allCirclesData, ({ id }) => id)
     enteredSelection.exit().remove()
     const mergedSelection = enteredSelection.enter().append('g')
-      .attr('class', 'bulkBlock').html(({ value }) => `<g class="${styles['circle-group-wrapper']}">
-      <rect class="whiteShadowRect ${styles['white-shadow-rect']}" width="${(RADIUS + 1) * 2}"></rect>
-      <circle class="${styles['circle-wrapper']} ${value ? '' : styles['no-value']}" r="${RADIUS}"></circle>
+      .attr('class', 'bulkBlock').html(({ value, type }) => `<g class="${styles['circle-group-wrapper']}">
       <rect class="${styles['red-bulk-line']} redBulkLine" width="${RADIUS / 4}"></rect>
-      <circle class="${styles['red-bulk-circle']}" r="${value ? RADIUS : RADIUS / 2}"></circle>
-      <text class="${styles['circle-text']}">${value || ''}</text>     
+      <g visibility="${value || isFirstInSubnet(type) ? 'visible' : 'hidden'}">
+        <rect class="whiteShadowRect ${styles['white-shadow-rect']}" width="${(RADIUS + 1) * 2}"></rect>
+        <circle class="${styles['circle-wrapper']} ${value ? '' : styles['no-value']}" r="${RADIUS}"></circle>
+        <circle class="${styles['red-bulk-circle']}" r="${value ? RADIUS : RADIUS / 2}"></circle>
+        <text class="${styles['circle-text']}" fill="white">${value || ''}</text>     
+      </g>
+      <g visibility="${isTrafficLight(type) ? 'visible' : 'hidden'}" transform="translate(-5, -10)">
+        <rect fill="red" width="10" height="20" rx="2" ry="2" stroke="white" stroke-width="1"></rect>
+        <g transform="translate(4.8, 4)" opacity="0.5">
+          <circle fill="white" r="2.3"></circle>
+          <circle fill="white" transform="translate(0, 5.5)" r="2.3"></circle>
+          <circle fill="white" transform="translate(0, 11)" r="2.3"></circle>
+        </g>
+      </g>
     </g>`)
 
     const legHeight = this.props.isToggled ? 54 : height + RADIUS * 2

@@ -6,7 +6,7 @@ import nextFlagSvg from 'assets/icons/next-flag.svg'
 import nextStorySvg from 'assets/icons/next-story.svg'
 import circleButtonSvgIcon from 'assets/icons/circle-button.svg'
 import downloadedSvg from 'assets/icons/asset-downloaded.svg'
-import {isCircle, isFirstInSubnet} from 'charts/utils/EventUtils'
+import { isSpecial } from 'charts/utils/EventUtils'
 
 import './LeftBar.scss'
 
@@ -14,7 +14,7 @@ import CurrentTime from './CurrentTime'
 import CircleIndicator from './CircleIndicator'
 import ShareButtons from '../common/ShareButtons'
 
-const Icon = ({ children: __html }) => <span dangerouslySetInnerHTML={{ __html }} />
+const Icon = ({ children: __html }) => <span dangerouslySetInnerHTML={{ __html }}/>
 
 export default class LeftBar extends Component {
   static defaultProps = { events: [] }
@@ -148,8 +148,8 @@ export default class LeftBar extends Component {
     // only "special" events in here
     // find instead of  findIndex because we loose order
     return props.events
-      .filter(({ type }) => isFirstInSubnet(type) || isCircle(type))
-      .find(({ date }) => forward ?  date > props.currentTime : date < props.currentTime)
+      .filter(isSpecial)
+      .find(({ date }) => forward ? date > props.currentTime : date < props.currentTime)
   }
 
   render() {
@@ -162,14 +162,14 @@ export default class LeftBar extends Component {
       <div />
       <div styleName="circle-stats-block">
         <div styleName="circle-block">
-          <CircleIndicator percent={currentEvent.networkSuperiority} isPlaying={!!isPlaying} />
+          <CircleIndicator percent={currentEvent.networkSuperiority} isPlaying={!!isPlaying}/>
         </div>
 
         <div styleName="stats-block">
           <ShareButtons data={currentEvent.compromisedAssets}
-                        type={props.isToggled ? 'vertical-black' : ''} />
+                        type={props.isToggled ? 'vertical-black' : ''}/>
           <div styleName="buttoned-item">
-            <span styleName="icon" dangerouslySetInnerHTML={{ __html: downloadedSvg }} />
+            <span styleName="icon" dangerouslySetInnerHTML={{ __html: downloadedSvg }}/>
             <span>
                 {currentEvent.compromisedDataGB}
               <small>GB</small>

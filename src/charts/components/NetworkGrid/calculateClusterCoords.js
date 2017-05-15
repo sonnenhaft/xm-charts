@@ -1,4 +1,4 @@
-import { groupBy, maxBy, transform, values } from 'lodash'
+import { groupBy, transform, values } from 'lodash'
 import pack from 'bin-pack'
 
 const MARGIN = 0.5
