@@ -4,7 +4,7 @@ import { getNodesEventsDataMap } from '../../utils/nodeEventData'
 import { Circle, Desktop, Diskette, Snow } from './IconsGroup'
 import './NetworkGrid.scss'
 import WindowDependable from '../common/WindowDependable'
-import _calculateClusterCoords from './calculateClusterCoords'
+import _calculateClusterCoords, { getArrows } from './calculateClusterCoords'
 
 import { memoize } from 'lodash'
 const calculateClusterCoords = memoize(_calculateClusterCoords)
@@ -74,6 +74,7 @@ export default class NetworkGrid extends Component {
 
     this.cachedClusters = calculateClusterCoords(nodes)
   }
+
 
   renderChart() {
     const { nodes, events, currentTime } = this.props
@@ -165,9 +166,28 @@ export default class NetworkGrid extends Component {
       height: ({ height }) => scale(height),
     })
 
+    const x = ({ x }) => scale(x + 1 / 6)
+    const y = ({ y }) => scale(y + 1 / 4)
+
+
+    const stroke = ({ event: { type } }) => type === 'newDiscoveredNode' ? 'blue' : 'red'
+    this.svg.select('.arrows').bindData('line.arrow', getArrows(
+      this.props.events,
+      nodes,
+      this.props.currentTime
+    ), {
+      x1: (({ startNode }) => x(startNode)),
+      y1: (({ startNode }) => y(startNode)),
+      x2: (({ endNode }) => x(endNode)),
+      y2: (({ endNode }) => y(endNode)),
+      stroke,
+      'marker-end': line => `url(#${stroke(line)}-arrow)`,
+    })
+
+
     this.svg.select('.clusterLabels').bindData('text.clusterLabel', clusters, {
       transform: ({ x, y }) => `translate(${scale(x)}, ${scale(y)})`,
-      text: ({ cluster }) => cluster === 'undefined' ?  'Unidentified' : cluster,
+      text: ({ cluster }) => cluster === 'undefined' ? 'Unidentified' : cluster,
     })
 
     const hasStatus = (key, val1, val2) => ({ node: { agentId } }) => {
@@ -229,11 +249,24 @@ export default class NetworkGrid extends Component {
           </svg>
         </div>
         <svg className="svg">
+          <defs>
+            <marker id="red-arrow" markerWidth="10" markerHeight="10" refX="10" refY="3" orient="auto" markerUnits="strokeWidth">
+              <g transform="translate(7,0)" strokeWidth="1.2" fill="none">
+                <path d="M 0 0 L 2.5 3 L 0 6" stroke="red"/>
+              </g>
+            </marker>
+            <marker id="blue-arrow" markerWidth="10" markerHeight="10" refX="10" refY="3" orient="auto" markerUnits="strokeWidth">
+              <g transform="translate(7,0)" strokeWidth="1.2" fill="none">
+                <path d="M 0 0 L 2.5 3 L 0 6" stroke="blue"/>
+              </g>
+            </marker>
+          </defs>
           <g className="grid-shifter">
             <g className="zoom-scale">
               <g className="clusters" styleName="clusters-wrapper"/>
               <g className="clusterLabels" styleName="cluster-labels"/>
               <g className="grid"/>
+              <g className="arrows" strokeWidth="2" opacity={0.5}/>
             </g>
           </g>
           <rect className="zoomRect" styleName="zoom-rect"/>

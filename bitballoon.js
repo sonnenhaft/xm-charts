@@ -4,7 +4,7 @@ const bitballoon = require('bitballoon');
 const TRIES_NUMBER = 10;
 const DEPLOY_OPTIONS = {
   access_token: '91bb7995f32826552ee157bc2ab888286c42094ca6bf1bffa430fcd5fcef8ff1',
-  site_id: 'xm-charts.bitballoon.com',
+  site_id: 'xm-charts-arrows.bitballoon.com',
   dir: './dist'
 };
 

@@ -8,6 +8,13 @@
     display: flex;
     margin: 5px 0;
   }
+  .limited-text {
+    max-width: 57px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
   .icon {
     margin-right: 4px;

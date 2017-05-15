@@ -85,3 +85,22 @@ export default  function(nodes, ratio = 1) {
     coordinatedNodes,
   }
 }
+
+export const getArrows = (events, coordinatedNodes, currentTime) => {
+  const nodesMap = coordinatedNodes.reduce((map, calc) => {
+    map[calc.node.agentId] = calc
+    return map
+  }, {})
+  return events
+    .filter(({ date }) => date < currentTime)
+    .filter(({ data = {} }) => data.sourceNode && data.sourceNode.id)
+    .map(event => {
+      const { data: { sourceNode: { id: start } }, node: { id: end } } = event
+      return {
+        event,
+        startNode: nodesMap[start],
+        endNode: nodesMap[end],
+      }
+    })
+  // .filter(({startNode, endNode})=> startNode && endNode)
+}

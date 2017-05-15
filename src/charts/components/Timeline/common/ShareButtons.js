@@ -1,23 +1,23 @@
 import React, { PropTypes } from 'react'
 
 import './ShareButtons.scss'
-import { Snow, Desktop, Diskette } from '../../NetworkGrid/IconsGroup'
+import { Desktop, Diskette, Snow } from '../../NetworkGrid/IconsGroup'
 
-const Icon = ({ children: __html }) => <svg styleName="icon" dangerouslySetInnerHTML={{ __html }} />
+const Icon = ({ children: __html }) => <svg styleName="icon" dangerouslySetInnerHTML={{ __html }}/>
 
 const ShareButtons = ({ type = '', data: { data, device, network } = {}, children }) => {
   return <div styleName={`share-buttons ${type}`}>
     <div styleName="share-button">
       <Icon>{Diskette}</Icon>
-      <span>{data}</span>
+      <span styleName="limited-text" title={data}>{data}</span>
     </div>
     <div styleName="share-button">
       <Icon>{Desktop}</Icon>
-      <span>{device}</span>
+      <span styleName="limited-text" title={device}>{device}</span>
     </div>
     <div styleName="share-button">
       <Icon>{Snow}</Icon>
-      <span>{network}</span>
+      <span styleName="limited-text" title={network}>{network}</span>
     </div>
     {children && <div styleName="share-button">
       {children}
