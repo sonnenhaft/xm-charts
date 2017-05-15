@@ -1,21 +1,9 @@
 import React, { Component } from 'react'
 import SimulationChart from 'charts/components/SimulationChart'
 import './Demo.scss'
-import Chance from 'chance'
-
-const chance = new Chance()
-
-const STUB_CLUSTER_NAMES = [
-  'Testing',
-  'Testing AB',
-  'Archive',
-  'Production ',
-  '',
-]
 
 const addDemoClusters = node => ({
   ...node,
-  cluster: chance.weighted(STUB_CLUSTER_NAMES, [1, 2, 3, 4, 0.5]),
 })
 
 const version = `${process.env.npm_package_name} v${process.env.npm_package_version}`
@@ -51,7 +39,7 @@ class Demo extends Component {
 
   onLoadData(value = this.state.option) {
     const events = require(`./events${value}.json`)
-    const nodes = require(`./nodes${value}.json`)
+    const nodes = require('./nodes.json')
 
     this.setState({ option: value, events, nodes: nodes.map(addDemoClusters) })
   }

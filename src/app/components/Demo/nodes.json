@@ -1,6 +1,6 @@
 [
   {
-    "_id": "58ff30788e027f22e231362a",
+    "_id": "59194db7c56f6146c45fd5b0",
     "agentId": "12300000000",
     "name": "SIM-NODE-0",
     "productType": "Workstation",
@@ -10,11 +10,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.055Z",
-    "startingPoint": true,
-    "startingPointAt": "2017-04-25T11:18:48.189Z",
-    "becameRedAt": "2017-04-25T11:18:48.202Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -46,7 +43,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231362b",
+    "_id": "59194db7c56f6146c45fd5b1",
     "agentId": "12300000001",
     "name": "SIM-NODE-1",
     "productType": "Workstation",
@@ -56,11 +53,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.068Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:58.607Z",
-    "becameRedAt": "2017-04-25T11:21:59.611Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -92,7 +86,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231362c",
+    "_id": "59194db7c56f6146c45fd5b2",
     "agentId": "12300000002",
     "name": "SIM-NODE-2",
     "productType": "Workstation",
@@ -102,11 +96,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.079Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:24:35.812Z",
-    "becameRedAt": "2017-04-25T11:24:37.819Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -138,7 +129,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231362d",
+    "_id": "59194db7c56f6146c45fd5b3",
     "agentId": "12300000003",
     "name": "SIM-NODE-3",
     "productType": "Workstation",
@@ -148,11 +139,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.091Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:44.780Z",
-    "becameRedAt": "2017-04-25T11:21:57.605Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -184,7 +172,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231362e",
+    "_id": "59194db7c56f6146c45fd5b4",
     "agentId": "12300000004",
     "name": "SIM-NODE-4",
     "productType": "Workstation",
@@ -194,11 +182,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.098Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:19.818Z",
-    "becameRedAt": "2017-04-25T11:23:20.821Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -230,7 +215,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231362f",
+    "_id": "59194db7c56f6146c45fd5b5",
     "agentId": "12300000005",
     "name": "SIM-NODE-5",
     "productType": "Workstation",
@@ -240,11 +225,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.106Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:37.709Z",
-    "becameRedAt": "2017-04-25T11:22:38.714Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -276,7 +258,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313630",
+    "_id": "59194db7c56f6146c45fd5b6",
     "agentId": "12300000006",
     "name": "SIM-NODE-6",
     "productType": "Workstation",
@@ -286,11 +268,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.115Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:56.758Z",
-    "becameRedAt": "2017-04-25T11:22:57.759Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -322,7 +301,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313631",
+    "_id": "59194db7c56f6146c45fd5b7",
     "agentId": "12300000007",
     "name": "SIM-NODE-7",
     "productType": "Workstation",
@@ -332,11 +311,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.125Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:45.660Z",
-    "becameRedAt": "2017-04-25T11:19:46.655Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -368,7 +344,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313632",
+    "_id": "59194db7c56f6146c45fd5b8",
     "agentId": "12300000008",
     "name": "SIM-NODE-8",
     "productType": "Workstation",
@@ -378,11 +354,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.133Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:46.687Z",
-    "becameRedAt": "2017-04-25T11:24:17.762Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -414,7 +387,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313633",
+    "_id": "59194db7c56f6146c45fd5b9",
     "agentId": "12300000009",
     "name": "SIM-NODE-9",
     "productType": "Workstation",
@@ -424,8 +397,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:23.140Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -457,7 +430,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313634",
+    "_id": "59194db7c56f6146c45fd5ba",
     "agentId": "12300000010",
     "name": "SIM-NODE-10",
     "productType": "Workstation",
@@ -467,11 +440,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.147Z",
-    "startingPoint": true,
-    "startingPointAt": "2017-04-25T11:18:48.240Z",
-    "becameRedAt": "2017-04-25T11:18:48.252Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -503,7 +473,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313635",
+    "_id": "59194db7c56f6146c45fd5bb",
     "agentId": "12300000011",
     "name": "SIM-NODE-11",
     "productType": "Workstation",
@@ -513,11 +483,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.155Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:04.779Z",
-    "becameRedAt": "2017-04-25T11:23:05.786Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -549,7 +516,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313636",
+    "_id": "59194db7c56f6146c45fd5bc",
     "agentId": "12300000012",
     "name": "SIM-NODE-12",
     "productType": "Workstation",
@@ -559,8 +526,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:23.162Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -592,7 +559,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313637",
+    "_id": "59194db7c56f6146c45fd5bd",
     "agentId": "12300000013",
     "name": "SIM-NODE-13",
     "productType": "Workstation",
@@ -602,8 +569,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:23.170Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -635,7 +602,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313638",
+    "_id": "59194db7c56f6146c45fd5be",
     "agentId": "12300000014",
     "name": "SIM-NODE-14",
     "productType": "Workstation",
@@ -645,11 +612,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.177Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:13.700Z",
-    "becameRedAt": "2017-04-25T11:21:14.704Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -681,7 +645,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313639",
+    "_id": "59194db7c56f6146c45fd5bf",
     "agentId": "12300000015",
     "name": "SIM-NODE-15",
     "productType": "Workstation",
@@ -691,11 +655,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.186Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:24:14.754Z",
-    "becameRedAt": "2017-04-25T11:24:28.793Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -727,7 +688,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231363a",
+    "_id": "59194db7c56f6146c45fd5c0",
     "agentId": "12300000016",
     "name": "SIM-NODE-16",
     "productType": "Workstation",
@@ -737,11 +698,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.195Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:06.788Z",
-    "becameRedAt": "2017-04-25T11:23:08.791Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -773,7 +731,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231363b",
+    "_id": "59194db7c56f6146c45fd5c1",
     "agentId": "12300000017",
     "name": "SIM-NODE-17",
     "productType": "Workstation",
@@ -783,11 +741,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.220Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:54.675Z",
-    "becameRedAt": "2017-04-25T11:19:56.685Z",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -819,7 +773,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231363c",
+    "_id": "59194db7c56f6146c45fd5c2",
     "agentId": "12300000018",
     "name": "SIM-NODE-18",
     "productType": "Workstation",
@@ -829,11 +783,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.228Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:52.643Z",
-    "becameRedAt": "2017-04-25T11:20:56.646Z",
+    "cluster": "Developement",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -865,7 +816,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231363d",
+    "_id": "59194db7c56f6146c45fd5c3",
     "agentId": "12300000019",
     "name": "SIM-NODE-19",
     "productType": "Workstation",
@@ -875,11 +826,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.236Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:23.560Z",
-    "becameRedAt": "2017-04-25T11:20:26.567Z",
+    "cluster": "DMZ",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -911,7 +859,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231363e",
+    "_id": "59194db7c56f6146c45fd5c4",
     "agentId": "12300000020",
     "name": "SIM-NODE-20",
     "productType": "Workstation",
@@ -921,11 +869,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.244Z",
-    "startingPoint": true,
-    "startingPointAt": "2017-04-25T11:18:48.280Z",
-    "becameRedAt": "2017-04-25T11:18:48.292Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -957,7 +902,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231363f",
+    "_id": "59194db7c56f6146c45fd5c5",
     "agentId": "12300000021",
     "name": "SIM-NODE-21",
     "productType": "Workstation",
@@ -967,11 +912,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.251Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:01.697Z",
-    "becameRedAt": "2017-04-25T11:20:07.714Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -1003,7 +945,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313640",
+    "_id": "59194db7c56f6146c45fd5c6",
     "agentId": "12300000022",
     "name": "SIM-NODE-22",
     "productType": "Workstation",
@@ -1013,11 +955,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.261Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:38.669Z",
-    "becameRedAt": "2017-04-25T11:23:52.699Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -1049,7 +988,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313641",
+    "_id": "59194db7c56f6146c45fd5c7",
     "agentId": "12300000023",
     "name": "SIM-NODE-23",
     "productType": "Workstation",
@@ -1059,8 +998,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:23.268Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -1092,7 +1031,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313642",
+    "_id": "59194db7c56f6146c45fd5c8",
     "agentId": "12300000024",
     "name": "SIM-NODE-24",
     "productType": "Workstation",
@@ -1102,11 +1041,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.275Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:34.658Z",
-    "becameRedAt": "2017-04-25T11:24:07.739Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -1138,7 +1074,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313643",
+    "_id": "59194db7c56f6146c45fd5c9",
     "agentId": "12300000025",
     "name": "SIM-NODE-25",
     "productType": "Workstation",
@@ -1149,8 +1085,7 @@
     "__v": 0,
     "cmId": "0009",
     "cluster": "Production",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:23.285Z",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -1182,7 +1117,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313644",
+    "_id": "59194db7c56f6146c45fd5ca",
     "agentId": "12300000026",
     "name": "SIM-NODE-26",
     "productType": "Workstation",
@@ -1192,11 +1127,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.295Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:25.716Z",
-    "becameRedAt": "2017-04-25T11:19:26.718Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -1228,7 +1160,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313645",
+    "_id": "59194db7c56f6146c45fd5cb",
     "agentId": "12300000027",
     "name": "SIM-NODE-27",
     "productType": "Workstation",
@@ -1238,11 +1170,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.306Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:27.722Z",
-    "becameRedAt": "2017-04-25T11:19:33.534Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -1274,7 +1203,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313646",
+    "_id": "59194db7c56f6146c45fd5cc",
     "agentId": "12300000028",
     "name": "SIM-NODE-28",
     "productType": "Workstation",
@@ -1284,11 +1213,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.313Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:04.704Z",
-    "becameRedAt": "2017-04-25T11:20:05.709Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -1320,7 +1246,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313647",
+    "_id": "59194db7c56f6146c45fd5cd",
     "agentId": "12300000029",
     "name": "SIM-NODE-29",
     "productType": "Workstation",
@@ -1330,11 +1256,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.321Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:22.557Z",
-    "becameRedAt": "2017-04-25T11:20:32.583Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -1366,7 +1289,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313648",
+    "_id": "59194db7c56f6146c45fd5ce",
     "agentId": "12300000030",
     "name": "SIM-NODE-30",
     "productType": "Workstation",
@@ -1376,11 +1299,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.327Z",
-    "startingPoint": true,
-    "startingPointAt": "2017-04-25T11:18:48.318Z",
-    "becameRedAt": "2017-04-25T11:18:48.330Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -1412,7 +1332,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313649",
+    "_id": "59194db7c56f6146c45fd5cf",
     "agentId": "12300000031",
     "name": "SIM-NODE-31",
     "productType": "Workstation",
@@ -1422,11 +1342,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.337Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:06.711Z",
-    "becameRedAt": "2017-04-25T11:20:12.732Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -1458,7 +1375,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231364a",
+    "_id": "59194db7c56f6146c45fd5d0",
     "agentId": "12300000032",
     "name": "SIM-NODE-32",
     "productType": "Workstation",
@@ -1468,8 +1385,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:23.344Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -1501,7 +1418,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231364b",
+    "_id": "59194db7c56f6146c45fd5d1",
     "agentId": "12300000033",
     "name": "SIM-NODE-33",
     "productType": "Workstation",
@@ -1511,11 +1428,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.351Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:24.828Z",
-    "becameRedAt": "2017-04-25T11:23:27.642Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -1547,7 +1461,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231364c",
+    "_id": "59194db7c56f6146c45fd5d2",
     "agentId": "12300000034",
     "name": "SIM-NODE-34",
     "productType": "Workstation",
@@ -1557,11 +1471,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.358Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:31.580Z",
-    "becameRedAt": "2017-04-25T11:20:48.625Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -1593,7 +1504,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231364d",
+    "_id": "59194db7c56f6146c45fd5d3",
     "agentId": "12300000035",
     "name": "SIM-NODE-35",
     "productType": "Workstation",
@@ -1603,12 +1514,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "cluster": "DMZ",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.365Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:15.807Z",
-    "becameRedAt": "2017-04-25T11:23:17.814Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -1640,7 +1547,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231364e",
+    "_id": "59194db7c56f6146c45fd5d4",
     "agentId": "12300000036",
     "name": "SIM-NODE-36",
     "productType": "Workstation",
@@ -1650,11 +1557,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.373Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:30.578Z",
-    "becameRedAt": "2017-04-25T11:21:21.721Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -1686,7 +1590,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231364f",
+    "_id": "59194db7c56f6146c45fd5d5",
     "agentId": "12300000037",
     "name": "SIM-NODE-37",
     "productType": "Workstation",
@@ -1696,11 +1600,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.380Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:47.788Z",
-    "becameRedAt": "2017-04-25T11:21:48.793Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -1732,7 +1633,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313650",
+    "_id": "59194db7c56f6146c45fd5d6",
     "agentId": "12300000038",
     "name": "SIM-NODE-38",
     "productType": "Workstation",
@@ -1742,11 +1643,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.388Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:34.539Z",
-    "becameRedAt": "2017-04-25T11:19:36.599Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -1778,7 +1676,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313651",
+    "_id": "59194db7c56f6146c45fd5d7",
     "agentId": "12300000039",
     "name": "SIM-NODE-39",
     "productType": "Workstation",
@@ -1788,11 +1686,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.395Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:53.596Z",
-    "becameRedAt": "2017-04-25T11:22:02.617Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -1824,7 +1719,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313652",
+    "_id": "59194db7c56f6146c45fd5d8",
     "agentId": "12300000040",
     "name": "SIM-NODE-40",
     "productType": "Workstation",
@@ -1834,11 +1729,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.405Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:17.645Z",
-    "becameRedAt": "2017-04-25T11:19:31.731Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -1870,7 +1762,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313653",
+    "_id": "59194db7c56f6146c45fd5d9",
     "agentId": "12300000041",
     "name": "SIM-NODE-41",
     "productType": "Workstation",
@@ -1880,11 +1772,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.413Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:45.682Z",
-    "becameRedAt": "2017-04-25T11:24:05.732Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -1916,7 +1805,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313654",
+    "_id": "59194db7c56f6146c45fd5da",
     "agentId": "12300000042",
     "name": "SIM-NODE-42",
     "productType": "Workstation",
@@ -1926,11 +1815,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.420Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:14.654Z",
-    "becameRedAt": "2017-04-25T11:22:33.702Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -1962,7 +1848,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313655",
+    "_id": "59194db7c56f6146c45fd5db",
     "agentId": "12300000043",
     "name": "SIM-NODE-43",
     "productType": "Workstation",
@@ -1972,11 +1858,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.427Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:04.674Z",
-    "becameRedAt": "2017-04-25T11:21:12.699Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -2008,7 +1891,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313656",
+    "_id": "59194db7c56f6146c45fd5dc",
     "agentId": "12300000044",
     "name": "SIM-NODE-44",
     "productType": "Workstation",
@@ -2018,8 +1901,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:23.435Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -2051,7 +1934,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313657",
+    "_id": "59194db7c56f6146c45fd5dd",
     "agentId": "12300000045",
     "name": "SIM-NODE-45",
     "productType": "Workstation",
@@ -2061,11 +1944,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.443Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:26.682Z",
-    "becameRedAt": "2017-04-25T11:22:31.694Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -2097,7 +1977,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313658",
+    "_id": "59194db7c56f6146c45fd5de",
     "agentId": "12300000046",
     "name": "SIM-NODE-46",
     "productType": "Workstation",
@@ -2107,11 +1987,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.449Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:13.803Z",
-    "becameRedAt": "2017-04-25T11:23:14.808Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -2143,7 +2020,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313659",
+    "_id": "59194db7c56f6146c45fd5df",
     "agentId": "12300000047",
     "name": "SIM-NODE-47",
     "productType": "Workstation",
@@ -2153,11 +2030,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.456Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:18:58.598Z",
-    "becameRedAt": "2017-04-25T11:19:00.371Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -2189,7 +2063,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231365a",
+    "_id": "59194db7c56f6146c45fd5e0",
     "agentId": "12300000048",
     "name": "SIM-NODE-48",
     "productType": "Workstation",
@@ -2199,11 +2073,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.462Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:55.605Z",
-    "becameRedAt": "2017-04-25T11:21:56.603Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -2235,7 +2106,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231365b",
+    "_id": "59194db7c56f6146c45fd5e1",
     "agentId": "12300000049",
     "name": "SIM-NODE-49",
     "productType": "Workstation",
@@ -2245,11 +2116,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.470Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:01.770Z",
-    "becameRedAt": "2017-04-25T11:23:02.776Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -2281,7 +2149,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231365c",
+    "_id": "59194db7c56f6146c45fd5e2",
     "agentId": "12300000050",
     "name": "SIM-NODE-50",
     "productType": "Workstation",
@@ -2291,11 +2159,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.478Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:21.558Z",
-    "becameRedAt": "2017-04-25T11:20:59.659Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -2327,7 +2192,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231365d",
+    "_id": "59194db7c56f6146c45fd5e3",
     "agentId": "12300000051",
     "name": "SIM-NODE-51",
     "productType": "Workstation",
@@ -2337,8 +2202,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:23.485Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -2370,7 +2235,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231365e",
+    "_id": "59194db7c56f6146c45fd5e4",
     "agentId": "12300000052",
     "name": "SIM-NODE-52",
     "productType": "Workstation",
@@ -2380,11 +2245,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.491Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:45.615Z",
-    "becameRedAt": "2017-04-25T11:20:47.621Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -2416,7 +2278,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231365f",
+    "_id": "59194db7c56f6146c45fd5e5",
     "agentId": "12300000053",
     "name": "SIM-NODE-53",
     "productType": "Workstation",
@@ -2426,11 +2288,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.499Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:53.680Z",
-    "becameRedAt": "2017-04-25T11:20:03.701Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -2462,7 +2321,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313660",
+    "_id": "59194db7c56f6146c45fd5e6",
     "agentId": "12300000054",
     "name": "SIM-NODE-54",
     "productType": "Workstation",
@@ -2472,11 +2331,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.506Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:43.777Z",
-    "becameRedAt": "2017-04-25T11:21:45.784Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -2508,7 +2364,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313661",
+    "_id": "59194db7c56f6146c45fd5e7",
     "agentId": "12300000055",
     "name": "SIM-NODE-55",
     "productType": "Workstation",
@@ -2518,11 +2374,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.515Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:30.751Z",
-    "becameRedAt": "2017-04-25T11:21:41.773Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -2554,7 +2407,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313662",
+    "_id": "59194db7c56f6146c45fd5e8",
     "agentId": "12300000056",
     "name": "SIM-NODE-56",
     "productType": "Workstation",
@@ -2564,11 +2417,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.522Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:00.616Z",
-    "becameRedAt": "2017-04-25T11:22:05.629Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -2600,7 +2450,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313663",
+    "_id": "59194db7c56f6146c45fd5e9",
     "agentId": "12300000057",
     "name": "SIM-NODE-57",
     "productType": "Workstation",
@@ -2610,11 +2460,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.529Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:31.753Z",
-    "becameRedAt": "2017-04-25T11:21:34.755Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -2646,7 +2493,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313664",
+    "_id": "59194db7c56f6146c45fd5ea",
     "agentId": "12300000058",
     "name": "SIM-NODE-58",
     "productType": "Workstation",
@@ -2656,11 +2503,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.536Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:29.645Z",
-    "becameRedAt": "2017-04-25T11:23:32.660Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -2692,7 +2536,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313665",
+    "_id": "59194db7c56f6146c45fd5eb",
     "agentId": "12300000059",
     "name": "SIM-NODE-59",
     "productType": "Workstation",
@@ -2702,11 +2546,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.543Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:29.749Z",
-    "becameRedAt": "2017-04-25T11:21:35.758Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -2738,7 +2579,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313666",
+    "_id": "59194db7c56f6146c45fd5ec",
     "agentId": "12300000060",
     "name": "SIM-NODE-60",
     "productType": "Workstation",
@@ -2748,11 +2589,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.549Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:36.594Z",
-    "becameRedAt": "2017-04-25T11:20:55.678Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -2784,7 +2622,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313667",
+    "_id": "59194db7c56f6146c45fd5ed",
     "agentId": "12300000061",
     "name": "SIM-NODE-61",
     "productType": "Workstation",
@@ -2794,11 +2632,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.557Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:16.655Z",
-    "becameRedAt": "2017-04-25T11:19:22.704Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -2830,7 +2665,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313668",
+    "_id": "59194db7c56f6146c45fd5ee",
     "agentId": "12300000062",
     "name": "SIM-NODE-62",
     "productType": "Workstation",
@@ -2840,8 +2675,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:23.563Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -2873,7 +2708,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313669",
+    "_id": "59194db7c56f6146c45fd5ef",
     "agentId": "12300000063",
     "name": "SIM-NODE-63",
     "productType": "Workstation",
@@ -2883,11 +2718,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.570Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:20.722Z",
-    "becameRedAt": "2017-04-25T11:21:28.750Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -2919,7 +2751,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231366a",
+    "_id": "59194db7c56f6146c45fd5f0",
     "agentId": "12300000064",
     "name": "SIM-NODE-64",
     "productType": "Workstation",
@@ -2929,11 +2761,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.583Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:32.732Z",
-    "becameRedAt": "2017-04-25T11:19:38.603Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -2965,7 +2794,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231366b",
+    "_id": "59194db7c56f6146c45fd5f1",
     "agentId": "12300000065",
     "name": "SIM-NODE-65",
     "productType": "Workstation",
@@ -2975,8 +2804,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:23.593Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -3008,7 +2837,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231366c",
+    "_id": "59194db7c56f6146c45fd5f2",
     "agentId": "12300000066",
     "name": "SIM-NODE-66",
     "productType": "Workstation",
@@ -3018,11 +2847,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.601Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:40.611Z",
-    "becameRedAt": "2017-04-25T11:21:07.685Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -3054,7 +2880,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231366d",
+    "_id": "59194db7c56f6146c45fd5f3",
     "agentId": "12300000067",
     "name": "SIM-NODE-67",
     "productType": "Workstation",
@@ -3064,11 +2890,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.607Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:07.841Z",
-    "becameRedAt": "2017-04-25T11:19:09.894Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -3100,7 +2923,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231366e",
+    "_id": "59194db7c56f6146c45fd5f4",
     "agentId": "12300000068",
     "name": "SIM-NODE-68",
     "productType": "Workstation",
@@ -3110,11 +2933,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.615Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:12.699Z",
-    "becameRedAt": "2017-04-25T11:19:14.709Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -3146,7 +2966,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231366f",
+    "_id": "59194db7c56f6146c45fd5f5",
     "agentId": "12300000069",
     "name": "SIM-NODE-69",
     "productType": "Workstation",
@@ -3156,11 +2976,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.622Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:15.861Z",
-    "becameRedAt": "2017-04-25T11:19:21.701Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -3192,7 +3009,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313670",
+    "_id": "59194db7c56f6146c45fd5f6",
     "agentId": "12300000070",
     "name": "SIM-NODE-70",
     "productType": "Workstation",
@@ -3202,11 +3019,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.628Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:27.687Z",
-    "becameRedAt": "2017-04-25T11:22:29.692Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -3238,7 +3052,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313671",
+    "_id": "59194db7c56f6146c45fd5f7",
     "agentId": "12300000071",
     "name": "SIM-NODE-71",
     "productType": "Workstation",
@@ -3248,11 +3062,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.634Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:47.687Z",
-    "becameRedAt": "2017-04-25T11:24:40.826Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -3284,7 +3095,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313672",
+    "_id": "59194db7c56f6146c45fd5f8",
     "agentId": "12300000072",
     "name": "SIM-NODE-72",
     "productType": "Workstation",
@@ -3294,11 +3105,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.640Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:55.678Z",
-    "becameRedAt": "2017-04-25T11:20:00.695Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -3330,7 +3138,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313673",
+    "_id": "59194db7c56f6146c45fd5f9",
     "agentId": "12300000073",
     "name": "SIM-NODE-73",
     "productType": "Workstation",
@@ -3340,11 +3148,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.646Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:24:16.761Z",
-    "becameRedAt": "2017-04-25T11:24:27.790Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -3376,7 +3181,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313674",
+    "_id": "59194db7c56f6146c45fd5fa",
     "agentId": "12300000074",
     "name": "SIM-NODE-74",
     "productType": "Workstation",
@@ -3386,10 +3191,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:23.652Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:24:39.822Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -3421,7 +3224,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313675",
+    "_id": "59194db7c56f6146c45fd5fb",
     "agentId": "12300000075",
     "name": "SIM-NODE-75",
     "productType": "Workstation",
@@ -3431,8 +3234,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:23.659Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -3464,7 +3267,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313676",
+    "_id": "59194db7c56f6146c45fd5fc",
     "agentId": "12300000076",
     "name": "SIM-NODE-76",
     "productType": "Workstation",
@@ -3474,11 +3277,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.665Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:45.735Z",
-    "becameRedAt": "2017-04-25T11:22:48.740Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -3510,7 +3310,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313677",
+    "_id": "59194db7c56f6146c45fd5fd",
     "agentId": "12300000077",
     "name": "SIM-NODE-77",
     "productType": "Workstation",
@@ -3520,8 +3320,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:23.672Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -3553,7 +3353,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313678",
+    "_id": "59194db7c56f6146c45fd5fe",
     "agentId": "12300000078",
     "name": "SIM-NODE-78",
     "productType": "Workstation",
@@ -3563,11 +3363,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.679Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:08.717Z",
-    "becameRedAt": "2017-04-25T11:20:10.727Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -3599,7 +3396,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313679",
+    "_id": "59194db7c56f6146c45fd5ff",
     "agentId": "12300000079",
     "name": "SIM-NODE-79",
     "productType": "Workstation",
@@ -3609,11 +3406,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.697Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:11.695Z",
-    "becameRedAt": "2017-04-25T11:21:16.711Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -3645,7 +3439,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231367a",
+    "_id": "59194db7c56f6146c45fd600",
     "agentId": "12300000080",
     "name": "SIM-NODE-80",
     "productType": "Workstation",
@@ -3655,11 +3449,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.707Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:34.705Z",
-    "becameRedAt": "2017-04-25T11:22:49.743Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -3691,7 +3482,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231367b",
+    "_id": "59194db7c56f6146c45fd601",
     "agentId": "12300000081",
     "name": "SIM-NODE-81",
     "productType": "Workstation",
@@ -3701,11 +3492,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.715Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:25.567Z",
-    "becameRedAt": "2017-04-25T11:20:28.572Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -3737,7 +3525,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231367c",
+    "_id": "59194db7c56f6146c45fd602",
     "agentId": "12300000082",
     "name": "SIM-NODE-82",
     "productType": "Workstation",
@@ -3747,11 +3535,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.731Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:15.656Z",
-    "becameRedAt": "2017-04-25T11:22:19.671Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -3783,7 +3568,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231367d",
+    "_id": "59194db7c56f6146c45fd603",
     "agentId": "12300000083",
     "name": "SIM-NODE-83",
     "productType": "Workstation",
@@ -3793,11 +3578,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.755Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:37.599Z",
-    "becameRedAt": "2017-04-25T11:21:18.717Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -3829,7 +3611,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231367e",
+    "_id": "59194db7c56f6146c45fd604",
     "agentId": "12300000084",
     "name": "SIM-NODE-84",
     "productType": "Workstation",
@@ -3839,11 +3621,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.781Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:23.711Z",
-    "becameRedAt": "2017-04-25T11:19:35.597Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -3875,7 +3654,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231367f",
+    "_id": "59194db7c56f6146c45fd605",
     "agentId": "12300000085",
     "name": "SIM-NODE-85",
     "productType": "Workstation",
@@ -3885,11 +3664,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.810Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:33.584Z",
-    "becameRedAt": "2017-04-25T11:20:57.651Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -3921,7 +3697,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313680",
+    "_id": "59194db7c56f6146c45fd606",
     "agentId": "12300000086",
     "name": "SIM-NODE-86",
     "productType": "Workstation",
@@ -3931,11 +3707,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.837Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:06.719Z",
-    "becameRedAt": "2017-04-25T11:19:08.703Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -3967,7 +3740,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313681",
+    "_id": "59194db7c56f6146c45fd607",
     "agentId": "12300000087",
     "name": "SIM-NODE-87",
     "productType": "Workstation",
@@ -3977,11 +3750,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.863Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:13.654Z",
-    "becameRedAt": "2017-04-25T11:22:18.666Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -4013,7 +3783,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313682",
+    "_id": "59194db7c56f6146c45fd608",
     "agentId": "12300000088",
     "name": "SIM-NODE-88",
     "productType": "Workstation",
@@ -4023,11 +3793,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.894Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:16.744Z",
-    "becameRedAt": "2017-04-25T11:20:19.753Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -4059,7 +3826,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313683",
+    "_id": "59194db7c56f6146c45fd609",
     "agentId": "12300000089",
     "name": "SIM-NODE-89",
     "productType": "Workstation",
@@ -4069,8 +3836,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:23.911Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -4102,7 +3869,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313684",
+    "_id": "59194db7c56f6146c45fd60a",
     "agentId": "12300000090",
     "name": "SIM-NODE-90",
     "productType": "Workstation",
@@ -4112,11 +3879,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.941Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:30.695Z",
-    "becameRedAt": "2017-04-25T11:22:44.733Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -4148,7 +3912,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313685",
+    "_id": "59194db7c56f6146c45fd60b",
     "agentId": "12300000091",
     "name": "SIM-NODE-91",
     "productType": "Workstation",
@@ -4158,11 +3922,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.962Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:24:10.746Z",
-    "becameRedAt": "2017-04-25T11:24:13.755Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -4194,7 +3955,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313686",
+    "_id": "59194db7c56f6146c45fd60c",
     "agentId": "12300000092",
     "name": "SIM-NODE-92",
     "productType": "Workstation",
@@ -4204,11 +3965,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.969Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:28.640Z",
-    "becameRedAt": "2017-04-25T11:23:33.658Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -4240,7 +3998,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313687",
+    "_id": "59194db7c56f6146c45fd60d",
     "agentId": "12300000093",
     "name": "SIM-NODE-93",
     "productType": "Workstation",
@@ -4250,11 +4008,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.975Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:24:04.726Z",
-    "becameRedAt": "2017-04-25T11:24:09.746Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -4286,7 +4041,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313688",
+    "_id": "59194db7c56f6146c45fd60e",
     "agentId": "12300000094",
     "name": "SIM-NODE-94",
     "productType": "Workstation",
@@ -4296,11 +4051,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.981Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:37.765Z",
-    "becameRedAt": "2017-04-25T11:21:40.772Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -4332,7 +4084,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313689",
+    "_id": "59194db7c56f6146c45fd60f",
     "agentId": "12300000095",
     "name": "SIM-NODE-95",
     "productType": "Workstation",
@@ -4342,11 +4094,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:23.988Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:24:23.775Z",
-    "becameRedAt": "2017-04-25T11:24:34.807Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -4378,7 +4127,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231368a",
+    "_id": "59194db7c56f6146c45fd610",
     "agentId": "12300000096",
     "name": "SIM-NODE-96",
     "productType": "Workstation",
@@ -4388,10 +4137,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:23.995Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:50.692Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -4423,7 +4170,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231368b",
+    "_id": "59194db7c56f6146c45fd611",
     "agentId": "12300000097",
     "name": "SIM-NODE-97",
     "productType": "Workstation",
@@ -4433,11 +4180,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.003Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:49.690Z",
-    "becameRedAt": "2017-04-25T11:23:55.704Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -4469,7 +4213,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231368c",
+    "_id": "59194db7c56f6146c45fd612",
     "agentId": "12300000098",
     "name": "SIM-NODE-98",
     "productType": "Workstation",
@@ -4479,11 +4223,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.010Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:19.693Z",
-    "becameRedAt": "2017-04-25T11:19:20.698Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -4515,7 +4256,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231368d",
+    "_id": "59194db7c56f6146c45fd613",
     "agentId": "12300000099",
     "name": "SIM-NODE-99",
     "productType": "Workstation",
@@ -4525,11 +4266,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.017Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:51.743Z",
-    "becameRedAt": "2017-04-25T11:22:55.755Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -4561,7 +4299,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231368e",
+    "_id": "59194db7c56f6146c45fd614",
     "agentId": "12300000100",
     "name": "SIM-NODE-100",
     "productType": "Workstation",
@@ -4571,11 +4309,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.023Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:34.588Z",
-    "becameRedAt": "2017-04-25T11:20:53.645Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -4607,7 +4342,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231368f",
+    "_id": "59194db7c56f6146c45fd615",
     "agentId": "12300000101",
     "name": "SIM-NODE-101",
     "productType": "Workstation",
@@ -4617,11 +4352,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.032Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:41.642Z",
-    "becameRedAt": "2017-04-25T11:19:42.645Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -4653,7 +4385,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313690",
+    "_id": "59194db7c56f6146c45fd616",
     "agentId": "12300000102",
     "name": "SIM-NODE-102",
     "productType": "Workstation",
@@ -4663,11 +4395,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.038Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:24.678Z",
-    "becameRedAt": "2017-04-25T11:22:35.706Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -4699,7 +4428,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313691",
+    "_id": "59194db7c56f6146c45fd617",
     "agentId": "12300000103",
     "name": "SIM-NODE-103",
     "productType": "Workstation",
@@ -4709,11 +4438,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.051Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:24:31.801Z",
-    "becameRedAt": "2017-04-25T11:24:44.880Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -4745,7 +4471,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313692",
+    "_id": "59194db7c56f6146c45fd618",
     "agentId": "12300000104",
     "name": "SIM-NODE-104",
     "productType": "Workstation",
@@ -4755,11 +4481,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.059Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:54.603Z",
-    "becameRedAt": "2017-04-25T11:22:03.621Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -4791,7 +4514,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313693",
+    "_id": "59194db7c56f6146c45fd619",
     "agentId": "12300000105",
     "name": "SIM-NODE-105",
     "productType": "Workstation",
@@ -4801,11 +4524,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.068Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:49.631Z",
-    "becameRedAt": "2017-04-25T11:21:02.668Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -4837,7 +4557,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313694",
+    "_id": "59194db7c56f6146c45fd61a",
     "agentId": "12300000106",
     "name": "SIM-NODE-106",
     "productType": "Workstation",
@@ -4847,11 +4567,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.076Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:24:19.769Z",
-    "becameRedAt": "2017-04-25T11:24:26.788Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -4883,7 +4600,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313695",
+    "_id": "59194db7c56f6146c45fd61b",
     "agentId": "12300000107",
     "name": "SIM-NODE-107",
     "productType": "Workstation",
@@ -4893,11 +4610,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.084Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:12.649Z",
-    "becameRedAt": "2017-04-25T11:22:16.659Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -4929,7 +4643,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313696",
+    "_id": "59194db7c56f6146c45fd61c",
     "agentId": "12300000108",
     "name": "SIM-NODE-108",
     "productType": "Workstation",
@@ -4939,11 +4653,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.092Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:40.719Z",
-    "becameRedAt": "2017-04-25T11:22:41.721Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -4975,7 +4686,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313697",
+    "_id": "59194db7c56f6146c45fd61d",
     "agentId": "12300000109",
     "name": "SIM-NODE-109",
     "productType": "Workstation",
@@ -4985,11 +4696,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.099Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:24:02.722Z",
-    "becameRedAt": "2017-04-25T11:24:21.780Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -5021,7 +4729,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313698",
+    "_id": "59194db7c56f6146c45fd61e",
     "agentId": "12300000110",
     "name": "SIM-NODE-110",
     "productType": "Workstation",
@@ -5031,11 +4739,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.107Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:03.671Z",
-    "becameRedAt": "2017-04-25T11:21:10.692Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -5067,7 +4772,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313699",
+    "_id": "59194db7c56f6146c45fd61f",
     "agentId": "12300000111",
     "name": "SIM-NODE-111",
     "productType": "Workstation",
@@ -5077,11 +4782,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.115Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:20.670Z",
-    "becameRedAt": "2017-04-25T11:22:28.689Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -5113,7 +4815,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231369a",
+    "_id": "59194db7c56f6146c45fd620",
     "agentId": "12300000112",
     "name": "SIM-NODE-112",
     "productType": "Workstation",
@@ -5123,11 +4825,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.123Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:07.632Z",
-    "becameRedAt": "2017-04-25T11:22:08.636Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -5159,7 +4858,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231369b",
+    "_id": "59194db7c56f6146c45fd621",
     "agentId": "12300000113",
     "name": "SIM-NODE-113",
     "productType": "Workstation",
@@ -5169,8 +4868,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.131Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -5202,7 +4901,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231369c",
+    "_id": "59194db7c56f6146c45fd622",
     "agentId": "12300000114",
     "name": "SIM-NODE-114",
     "productType": "Workstation",
@@ -5212,11 +4911,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.139Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:36.708Z",
-    "becameRedAt": "2017-04-25T11:22:39.716Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -5248,7 +4944,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231369d",
+    "_id": "59194db7c56f6146c45fd623",
     "agentId": "12300000115",
     "name": "SIM-NODE-115",
     "productType": "Workstation",
@@ -5258,11 +4954,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.147Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:50.636Z",
-    "becameRedAt": "2017-04-25T11:20:51.635Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -5294,7 +4987,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231369e",
+    "_id": "59194db7c56f6146c45fd624",
     "agentId": "12300000116",
     "name": "SIM-NODE-116",
     "productType": "Workstation",
@@ -5304,11 +4997,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.155Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:15.742Z",
-    "becameRedAt": "2017-04-25T11:20:20.754Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -5340,7 +5030,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231369f",
+    "_id": "59194db7c56f6146c45fd625",
     "agentId": "12300000117",
     "name": "SIM-NODE-117",
     "productType": "Workstation",
@@ -5350,11 +5040,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.163Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:24:01.720Z",
-    "becameRedAt": "2017-04-25T11:24:15.757Z",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -5386,7 +5072,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136a0",
+    "_id": "59194db7c56f6146c45fd626",
     "agentId": "12300000118",
     "name": "SIM-NODE-118",
     "productType": "Workstation",
@@ -5396,11 +5082,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.172Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:01.616Z",
-    "becameRedAt": "2017-04-25T11:22:06.629Z",
+    "cluster": "Developement",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -5432,7 +5115,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136a1",
+    "_id": "59194db7c56f6146c45fd627",
     "agentId": "12300000119",
     "name": "SIM-NODE-119",
     "productType": "Workstation",
@@ -5442,8 +5125,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.180Z",
+    "cluster": "DMZ",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -5475,7 +5158,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136a2",
+    "_id": "59194db7c56f6146c45fd628",
     "agentId": "12300000120",
     "name": "SIM-NODE-120",
     "productType": "Workstation",
@@ -5485,11 +5168,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.188Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:21.822Z",
-    "becameRedAt": "2017-04-25T11:23:23.868Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -5521,7 +5201,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136a3",
+    "_id": "59194db7c56f6146c45fd629",
     "agentId": "12300000121",
     "name": "SIM-NODE-121",
     "productType": "Workstation",
@@ -5531,11 +5211,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.197Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:07.792Z",
-    "becameRedAt": "2017-04-25T11:23:12.802Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -5567,7 +5244,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136a4",
+    "_id": "59194db7c56f6146c45fd62a",
     "agentId": "12300000122",
     "name": "SIM-NODE-122",
     "productType": "Workstation",
@@ -5577,11 +5254,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.205Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:15.708Z",
-    "becameRedAt": "2017-04-25T11:21:24.728Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -5613,7 +5287,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136a5",
+    "_id": "59194db7c56f6146c45fd62b",
     "agentId": "12300000123",
     "name": "SIM-NODE-123",
     "productType": "Workstation",
@@ -5623,11 +5297,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.213Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:13.733Z",
-    "becameRedAt": "2017-04-25T11:20:44.617Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -5659,7 +5330,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136a6",
+    "_id": "59194db7c56f6146c45fd62c",
     "agentId": "12300000124",
     "name": "SIM-NODE-124",
     "productType": "Workstation",
@@ -5669,11 +5340,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.227Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:05.678Z",
-    "becameRedAt": "2017-04-25T11:21:09.691Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -5705,7 +5373,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136a7",
+    "_id": "59194db7c56f6146c45fd62d",
     "agentId": "12300000125",
     "name": "SIM-NODE-125",
     "productType": "Workstation",
@@ -5716,11 +5384,7 @@
     "__v": 0,
     "cmId": "0009",
     "cluster": "Production",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.238Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:38.607Z",
-    "becameRedAt": "2017-04-25T11:20:43.615Z",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -5752,7 +5416,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136a8",
+    "_id": "59194db7c56f6146c45fd62e",
     "agentId": "12300000126",
     "name": "SIM-NODE-126",
     "productType": "Workstation",
@@ -5762,11 +5426,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.246Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:37.600Z",
-    "becameRedAt": "2017-04-25T11:19:39.652Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -5798,7 +5459,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136a9",
+    "_id": "59194db7c56f6146c45fd62f",
     "agentId": "12300000127",
     "name": "SIM-NODE-127",
     "productType": "Workstation",
@@ -5808,11 +5469,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.254Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:39.806Z",
-    "becameRedAt": "2017-04-25T11:20:41.613Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -5844,7 +5502,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136aa",
+    "_id": "59194db7c56f6146c45fd630",
     "agentId": "12300000128",
     "name": "SIM-NODE-128",
     "productType": "Workstation",
@@ -5854,11 +5512,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.267Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:51.667Z",
-    "becameRedAt": "2017-04-25T11:19:52.670Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -5890,7 +5545,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136ab",
+    "_id": "59194db7c56f6146c45fd631",
     "agentId": "12300000129",
     "name": "SIM-NODE-129",
     "productType": "Workstation",
@@ -5900,11 +5555,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.276Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:18:49.502Z",
-    "becameRedAt": "2017-04-25T11:18:50.511Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -5936,7 +5588,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136ac",
+    "_id": "59194db7c56f6146c45fd632",
     "agentId": "12300000130",
     "name": "SIM-NODE-130",
     "productType": "Workstation",
@@ -5946,11 +5598,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.287Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:09.721Z",
-    "becameRedAt": "2017-04-25T11:20:14.738Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -5982,7 +5631,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136ad",
+    "_id": "59194db7c56f6146c45fd633",
     "agentId": "12300000131",
     "name": "SIM-NODE-131",
     "productType": "Workstation",
@@ -5992,11 +5641,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.300Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:51.793Z",
-    "becameRedAt": "2017-04-25T11:21:52.596Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -6028,7 +5674,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136ae",
+    "_id": "59194db7c56f6146c45fd634",
     "agentId": "12300000132",
     "name": "SIM-NODE-132",
     "productType": "Workstation",
@@ -6038,11 +5684,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.326Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:09.795Z",
-    "becameRedAt": "2017-04-25T11:23:11.798Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -6074,7 +5717,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136af",
+    "_id": "59194db7c56f6146c45fd635",
     "agentId": "12300000133",
     "name": "SIM-NODE-133",
     "productType": "Workstation",
@@ -6084,11 +5727,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.335Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:21.674Z",
-    "becameRedAt": "2017-04-25T11:22:22.675Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -6120,7 +5760,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136b0",
+    "_id": "59194db7c56f6146c45fd636",
     "agentId": "12300000134",
     "name": "SIM-NODE-134",
     "productType": "Workstation",
@@ -6130,11 +5770,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.345Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:27.569Z",
-    "becameRedAt": "2017-04-25T11:20:29.576Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -6166,7 +5803,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136b1",
+    "_id": "59194db7c56f6146c45fd637",
     "agentId": "12300000135",
     "name": "SIM-NODE-135",
     "productType": "Workstation",
@@ -6176,12 +5813,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "cluster": "DMZ",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.359Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:00.660Z",
-    "becameRedAt": "2017-04-25T11:21:01.665Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -6213,7 +5846,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136b2",
+    "_id": "59194db7c56f6146c45fd638",
     "agentId": "12300000136",
     "name": "SIM-NODE-136",
     "productType": "Workstation",
@@ -6223,11 +5856,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.381Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:46.788Z",
-    "becameRedAt": "2017-04-25T11:21:49.792Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -6259,7 +5889,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136b3",
+    "_id": "59194db7c56f6146c45fd639",
     "agentId": "12300000137",
     "name": "SIM-NODE-137",
     "productType": "Workstation",
@@ -6269,11 +5899,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.389Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:50.822Z",
-    "becameRedAt": "2017-04-25T11:22:09.644Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -6305,7 +5932,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136b4",
+    "_id": "59194db7c56f6146c45fd63a",
     "agentId": "12300000138",
     "name": "SIM-NODE-138",
     "productType": "Workstation",
@@ -6315,11 +5942,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.400Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:48.691Z",
-    "becameRedAt": "2017-04-25T11:24:33.805Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -6351,7 +5975,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136b5",
+    "_id": "59194db7c56f6146c45fd63b",
     "agentId": "12300000139",
     "name": "SIM-NODE-139",
     "productType": "Workstation",
@@ -6361,11 +5985,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.410Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:13.872Z",
-    "becameRedAt": "2017-04-25T11:19:18.672Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -6397,7 +6018,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136b6",
+    "_id": "59194db7c56f6146c45fd63c",
     "agentId": "12300000140",
     "name": "SIM-NODE-140",
     "productType": "Workstation",
@@ -6407,11 +6028,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.420Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:40.671Z",
-    "becameRedAt": "2017-04-25T11:23:41.679Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -6443,7 +6061,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136b7",
+    "_id": "59194db7c56f6146c45fd63d",
     "agentId": "12300000141",
     "name": "SIM-NODE-141",
     "productType": "Workstation",
@@ -6453,8 +6071,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.429Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -6486,7 +6104,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136b8",
+    "_id": "59194db7c56f6146c45fd63e",
     "agentId": "12300000142",
     "name": "SIM-NODE-142",
     "productType": "Workstation",
@@ -6496,11 +6114,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.439Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:23.678Z",
-    "becameRedAt": "2017-04-25T11:22:43.728Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -6532,7 +6147,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136b9",
+    "_id": "59194db7c56f6146c45fd63f",
     "agentId": "12300000143",
     "name": "SIM-NODE-143",
     "productType": "Workstation",
@@ -6542,11 +6157,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.448Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:44.678Z",
-    "becameRedAt": "2017-04-25T11:24:08.742Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -6578,7 +6190,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136ba",
+    "_id": "59194db7c56f6146c45fd640",
     "agentId": "12300000144",
     "name": "SIM-NODE-144",
     "productType": "Workstation",
@@ -6588,11 +6200,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.456Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:17.714Z",
-    "becameRedAt": "2017-04-25T11:21:27.741Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -6624,7 +6233,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136bb",
+    "_id": "59194db7c56f6146c45fd641",
     "agentId": "12300000145",
     "name": "SIM-NODE-145",
     "productType": "Workstation",
@@ -6634,11 +6243,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.465Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:24:20.769Z",
-    "becameRedAt": "2017-04-25T11:24:30.798Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -6670,7 +6276,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136bc",
+    "_id": "59194db7c56f6146c45fd642",
     "agentId": "12300000146",
     "name": "SIM-NODE-146",
     "productType": "Workstation",
@@ -6680,11 +6286,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.478Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:36.664Z",
-    "becameRedAt": "2017-04-25T11:23:37.666Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -6716,7 +6319,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136bd",
+    "_id": "59194db7c56f6146c45fd643",
     "agentId": "12300000147",
     "name": "SIM-NODE-147",
     "productType": "Workstation",
@@ -6726,11 +6329,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.487Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:25.731Z",
-    "becameRedAt": "2017-04-25T11:21:26.733Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -6762,7 +6362,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136be",
+    "_id": "59194db7c56f6146c45fd644",
     "agentId": "12300000148",
     "name": "SIM-NODE-148",
     "productType": "Workstation",
@@ -6772,8 +6372,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.495Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -6805,7 +6405,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136bf",
+    "_id": "59194db7c56f6146c45fd645",
     "agentId": "12300000149",
     "name": "SIM-NODE-149",
     "productType": "Workstation",
@@ -6815,8 +6415,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.504Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -6848,7 +6448,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136c0",
+    "_id": "59194db7c56f6146c45fd646",
     "agentId": "12300000150",
     "name": "SIM-NODE-150",
     "productType": "Workstation",
@@ -6858,11 +6458,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.511Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:24:43.834Z",
-    "becameRedAt": "2017-04-25T11:24:47.853Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -6894,7 +6491,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136c1",
+    "_id": "59194db7c56f6146c45fd647",
     "agentId": "12300000151",
     "name": "SIM-NODE-151",
     "productType": "Workstation",
@@ -6904,8 +6501,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.520Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -6937,7 +6534,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136c2",
+    "_id": "59194db7c56f6146c45fd648",
     "agentId": "12300000152",
     "name": "SIM-NODE-152",
     "productType": "Workstation",
@@ -6947,8 +6544,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.528Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -6980,7 +6577,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136c3",
+    "_id": "59194db7c56f6146c45fd649",
     "agentId": "12300000153",
     "name": "SIM-NODE-153",
     "productType": "Workstation",
@@ -6990,8 +6587,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.536Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -7023,7 +6620,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136c4",
+    "_id": "59194db7c56f6146c45fd64a",
     "agentId": "12300000154",
     "name": "SIM-NODE-154",
     "productType": "Workstation",
@@ -7033,11 +6630,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.544Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:06.684Z",
-    "becameRedAt": "2017-04-25T11:21:08.742Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -7069,7 +6663,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136c5",
+    "_id": "59194db7c56f6146c45fd64b",
     "agentId": "12300000155",
     "name": "SIM-NODE-155",
     "productType": "Workstation",
@@ -7079,11 +6673,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.552Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:24:03.724Z",
-    "becameRedAt": "2017-04-25T11:24:29.797Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -7115,7 +6706,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136c6",
+    "_id": "59194db7c56f6146c45fd64c",
     "agentId": "12300000156",
     "name": "SIM-NODE-156",
     "productType": "Workstation",
@@ -7125,8 +6716,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.560Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -7158,7 +6749,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136c7",
+    "_id": "59194db7c56f6146c45fd64d",
     "agentId": "12300000157",
     "name": "SIM-NODE-157",
     "productType": "Workstation",
@@ -7168,11 +6759,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.569Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:35.590Z",
-    "becameRedAt": "2017-04-25T11:20:42.612Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -7204,7 +6792,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136c8",
+    "_id": "59194db7c56f6146c45fd64e",
     "agentId": "12300000158",
     "name": "SIM-NODE-158",
     "productType": "Workstation",
@@ -7214,11 +6802,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.578Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:28.720Z",
-    "becameRedAt": "2017-04-25T11:19:30.730Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -7250,7 +6835,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136c9",
+    "_id": "59194db7c56f6146c45fd64f",
     "agentId": "12300000159",
     "name": "SIM-NODE-159",
     "productType": "Workstation",
@@ -7260,8 +6845,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.587Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -7293,7 +6878,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136ca",
+    "_id": "59194db7c56f6146c45fd650",
     "agentId": "12300000160",
     "name": "SIM-NODE-160",
     "productType": "Workstation",
@@ -7303,11 +6888,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.595Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:47.655Z",
-    "becameRedAt": "2017-04-25T11:19:48.659Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -7339,7 +6921,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136cb",
+    "_id": "59194db7c56f6146c45fd651",
     "agentId": "12300000161",
     "name": "SIM-NODE-161",
     "productType": "Workstation",
@@ -7349,8 +6931,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.602Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -7382,7 +6964,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136cc",
+    "_id": "59194db7c56f6146c45fd652",
     "agentId": "12300000162",
     "name": "SIM-NODE-162",
     "productType": "Workstation",
@@ -7392,11 +6974,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.611Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:32.793Z",
-    "becameRedAt": "2017-04-25T11:21:33.757Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -7428,7 +7007,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136cd",
+    "_id": "59194db7c56f6146c45fd653",
     "agentId": "12300000163",
     "name": "SIM-NODE-163",
     "productType": "Workstation",
@@ -7438,11 +7017,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.623Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:46.736Z",
-    "becameRedAt": "2017-04-25T11:22:47.742Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -7474,7 +7050,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136ce",
+    "_id": "59194db7c56f6146c45fd654",
     "agentId": "12300000164",
     "name": "SIM-NODE-164",
     "productType": "Workstation",
@@ -7484,11 +7060,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.631Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:10.638Z",
-    "becameRedAt": "2017-04-25T11:22:11.645Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -7520,7 +7093,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136cf",
+    "_id": "59194db7c56f6146c45fd655",
     "agentId": "12300000165",
     "name": "SIM-NODE-165",
     "productType": "Workstation",
@@ -7530,11 +7103,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.639Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:46.617Z",
-    "becameRedAt": "2017-04-25T11:20:58.656Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -7566,7 +7136,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136d0",
+    "_id": "59194db7c56f6146c45fd656",
     "agentId": "12300000166",
     "name": "SIM-NODE-166",
     "productType": "Workstation",
@@ -7576,11 +7146,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.648Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:24:11.747Z",
-    "becameRedAt": "2017-04-25T11:24:24.779Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -7612,7 +7179,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136d1",
+    "_id": "59194db7c56f6146c45fd657",
     "agentId": "12300000167",
     "name": "SIM-NODE-167",
     "productType": "Workstation",
@@ -7622,11 +7189,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.656Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:26.836Z",
-    "becameRedAt": "2017-04-25T11:23:30.643Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -7658,7 +7222,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136d2",
+    "_id": "59194db7c56f6146c45fd658",
     "agentId": "12300000168",
     "name": "SIM-NODE-168",
     "productType": "Workstation",
@@ -7668,11 +7232,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.671Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:56.709Z",
-    "becameRedAt": "2017-04-25T11:24:22.775Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -7704,7 +7265,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136d3",
+    "_id": "59194db7c56f6146c45fd659",
     "agentId": "12300000169",
     "name": "SIM-NODE-169",
     "productType": "Workstation",
@@ -7714,11 +7275,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.680Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:22.824Z",
-    "becameRedAt": "2017-04-25T11:23:35.663Z",
+    "cluster": "Production",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -7750,7 +7308,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136d4",
+    "_id": "59194db7c56f6146c45fd65a",
     "agentId": "12300000170",
     "name": "SIM-NODE-170",
     "productType": "Workstation",
@@ -7760,8 +7318,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.688Z",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -7793,7 +7350,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136d5",
+    "_id": "59194db7c56f6146c45fd65b",
     "agentId": "12300000171",
     "name": "SIM-NODE-171",
     "productType": "Workstation",
@@ -7803,11 +7360,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.697Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:24:00.719Z",
-    "becameRedAt": "2017-04-25T11:24:12.750Z",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -7839,7 +7392,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136d6",
+    "_id": "59194db7c56f6146c45fd65c",
     "agentId": "12300000172",
     "name": "SIM-NODE-172",
     "productType": "Workstation",
@@ -7849,11 +7402,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.706Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:02.574Z",
-    "becameRedAt": "2017-04-25T11:19:03.729Z",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -7885,7 +7434,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136d7",
+    "_id": "59194db7c56f6146c45fd65d",
     "agentId": "12300000173",
     "name": "SIM-NODE-173",
     "productType": "Workstation",
@@ -7895,11 +7444,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.716Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:38.765Z",
-    "becameRedAt": "2017-04-25T11:21:39.769Z",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -7931,7 +7476,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136d8",
+    "_id": "59194db7c56f6146c45fd65e",
     "agentId": "12300000174",
     "name": "SIM-NODE-174",
     "productType": "Workstation",
@@ -7941,11 +7486,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.725Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:24:38.816Z",
-    "becameRedAt": "2017-04-25T11:24:41.832Z",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -7977,7 +7518,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136d9",
+    "_id": "59194db7c56f6146c45fd65f",
     "agentId": "12300000175",
     "name": "SIM-NODE-175",
     "productType": "Workstation",
@@ -7987,11 +7528,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.735Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:54.708Z",
-    "becameRedAt": "2017-04-25T11:24:32.803Z",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -8023,7 +7560,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136da",
+    "_id": "59194db7c56f6146c45fd660",
     "agentId": "12300000176",
     "name": "SIM-NODE-176",
     "productType": "Workstation",
@@ -8033,11 +7570,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.744Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:25.831Z",
-    "becameRedAt": "2017-04-25T11:23:31.646Z",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -8069,7 +7602,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136db",
+    "_id": "59194db7c56f6146c45fd661",
     "agentId": "12300000177",
     "name": "SIM-NODE-177",
     "productType": "Workstation",
@@ -8079,11 +7612,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.751Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:24:25.783Z",
-    "becameRedAt": "2017-04-25T11:24:36.813Z",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -8115,7 +7644,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136dc",
+    "_id": "59194db7c56f6146c45fd662",
     "agentId": "12300000178",
     "name": "SIM-NODE-178",
     "productType": "Workstation",
@@ -8125,11 +7654,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.759Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:25.680Z",
-    "becameRedAt": "2017-04-25T11:22:32.702Z",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -8161,7 +7686,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136dd",
+    "_id": "59194db7c56f6146c45fd663",
     "agentId": "12300000179",
     "name": "SIM-NODE-179",
     "productType": "Workstation",
@@ -8171,11 +7696,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.766Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:42.677Z",
-    "becameRedAt": "2017-04-25T11:23:57.714Z",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -8207,7 +7728,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136de",
+    "_id": "59194db7c56f6146c45fd664",
     "agentId": "12300000180",
     "name": "SIM-NODE-180",
     "productType": "Workstation",
@@ -8217,11 +7738,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.773Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:20:17.748Z",
-    "becameRedAt": "2017-04-25T11:20:24.566Z",
+    "cluster": "Developement",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -8253,7 +7771,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136df",
+    "_id": "59194db7c56f6146c45fd665",
     "agentId": "12300000181",
     "name": "SIM-NODE-181",
     "productType": "Workstation",
@@ -8263,8 +7781,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.781Z",
+    "cluster": "Developement",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -8296,7 +7814,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136e0",
+    "_id": "59194db7c56f6146c45fd666",
     "agentId": "12300000182",
     "name": "SIM-NODE-182",
     "productType": "Workstation",
@@ -8306,11 +7824,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.800Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:50.747Z",
-    "becameRedAt": "2017-04-25T11:22:53.788Z",
+    "cluster": "Developement",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -8342,7 +7857,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136e1",
+    "_id": "59194db7c56f6146c45fd667",
     "agentId": "12300000183",
     "name": "SIM-NODE-183",
     "productType": "Workstation",
@@ -8352,11 +7867,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.808Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:04.624Z",
-    "becameRedAt": "2017-04-25T11:22:17.661Z",
+    "cluster": "Developement",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -8388,7 +7900,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136e2",
+    "_id": "59194db7c56f6146c45fd668",
     "agentId": "12300000184",
     "name": "SIM-NODE-184",
     "productType": "Workstation",
@@ -8398,11 +7910,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.815Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:49.662Z",
-    "becameRedAt": "2017-04-25T11:19:59.693Z",
+    "cluster": "Developement",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -8434,7 +7943,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136e3",
+    "_id": "59194db7c56f6146c45fd669",
     "agentId": "12300000185",
     "name": "SIM-NODE-185",
     "productType": "Workstation",
@@ -8444,11 +7953,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.822Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:24.714Z",
-    "becameRedAt": "2017-04-25T11:19:29.725Z",
+    "cluster": "Developement",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -8480,7 +7986,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136e4",
+    "_id": "59194db7c56f6146c45fd66a",
     "agentId": "12300000186",
     "name": "SIM-NODE-186",
     "productType": "Workstation",
@@ -8490,11 +7996,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.829Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:50.666Z",
-    "becameRedAt": "2017-04-25T11:20:11.730Z",
+    "cluster": "Developement",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -8526,7 +8029,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136e5",
+    "_id": "59194db7c56f6146c45fd66b",
     "agentId": "12300000187",
     "name": "SIM-NODE-187",
     "productType": "Workstation",
@@ -8536,11 +8039,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.835Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:19.720Z",
-    "becameRedAt": "2017-04-25T11:21:23.727Z",
+    "cluster": "Developement",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -8572,7 +8072,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136e6",
+    "_id": "59194db7c56f6146c45fd66c",
     "agentId": "12300000188",
     "name": "SIM-NODE-188",
     "productType": "Workstation",
@@ -8582,10 +8082,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.842Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:24:45.839Z",
+    "cluster": "Developement",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -8617,7 +8115,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136e7",
+    "_id": "59194db7c56f6146c45fd66d",
     "agentId": "12300000189",
     "name": "SIM-NODE-189",
     "productType": "Workstation",
@@ -8627,11 +8125,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.849Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:43.675Z",
-    "becameRedAt": "2017-04-25T11:23:58.714Z",
+    "cluster": "Developement",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -8663,7 +8158,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136e8",
+    "_id": "59194db7c56f6146c45fd66e",
     "agentId": "12300000190",
     "name": "SIM-NODE-190",
     "productType": "Workstation",
@@ -8673,8 +8168,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.858Z",
+    "cluster": "DMZ",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -8706,7 +8201,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136e9",
+    "_id": "59194db7c56f6146c45fd66f",
     "agentId": "12300000191",
     "name": "SIM-NODE-191",
     "productType": "Workstation",
@@ -8716,11 +8211,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.866Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:24:06.736Z",
-    "becameRedAt": "2017-04-25T11:24:18.766Z",
+    "cluster": "DMZ",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -8752,7 +8244,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136ea",
+    "_id": "59194db7c56f6146c45fd670",
     "agentId": "12300000192",
     "name": "SIM-NODE-192",
     "productType": "Workstation",
@@ -8762,11 +8254,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.872Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:22:52.746Z",
-    "becameRedAt": "2017-04-25T11:22:54.750Z",
+    "cluster": "DMZ",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -8798,7 +8287,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136eb",
+    "_id": "59194db7c56f6146c45fd671",
     "agentId": "12300000193",
     "name": "SIM-NODE-193",
     "productType": "Workstation",
@@ -8808,11 +8297,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.879Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:58.690Z",
-    "becameRedAt": "2017-04-25T11:20:18.752Z",
+    "cluster": "DMZ",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -8844,7 +8330,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136ec",
+    "_id": "59194db7c56f6146c45fd672",
     "agentId": "12300000194",
     "name": "SIM-NODE-194",
     "productType": "Workstation",
@@ -8854,11 +8340,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.886Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:23:10.796Z",
-    "becameRedAt": "2017-04-25T11:23:16.816Z",
+    "cluster": "DMZ",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -8890,7 +8373,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136ed",
+    "_id": "59194db7c56f6146c45fd673",
     "agentId": "12300000195",
     "name": "SIM-NODE-195",
     "productType": "Workstation",
@@ -8900,11 +8383,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.892Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:21:22.723Z",
-    "becameRedAt": "2017-04-25T11:21:36.763Z",
+    "cluster": "DMZ",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -8936,7 +8416,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136ee",
+    "_id": "59194db7c56f6146c45fd674",
     "agentId": "12300000196",
     "name": "SIM-NODE-196",
     "productType": "Workstation",
@@ -8946,11 +8426,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.900Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:19:57.687Z",
-    "becameRedAt": "2017-04-25T11:20:02.699Z",
+    "cluster": "DMZ",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -8982,7 +8459,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136ef",
+    "_id": "59194db7c56f6146c45fd675",
     "agentId": "12300000197",
     "name": "SIM-NODE-197",
     "productType": "Workstation",
@@ -8992,11 +8469,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "red",
-    "joinedCampaignAt": "2017-04-25T11:18:24.908Z",
-    "discovered": true,
-    "discoveredAt": "2017-04-25T11:24:42.832Z",
-    "becameRedAt": "2017-04-25T11:24:46.840Z",
+    "cluster": "DMZ",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -9028,7 +8502,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136f0",
+    "_id": "59194db7c56f6146c45fd676",
     "agentId": "12300000198",
     "name": "SIM-NODE-198",
     "productType": "Workstation",
@@ -9038,8 +8512,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.915Z",
+    "cluster": "DMZ",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -9071,7 +8545,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136f1",
+    "_id": "59194db7c56f6146c45fd677",
     "agentId": "12300000199",
     "name": "SIM-NODE-199",
     "productType": "Workstation",
@@ -9081,8 +8555,8 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.922Z",
+    "cluster": "DMZ",
+    "color": "white",
     "status": "active",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -9114,7 +8588,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136f2",
+    "_id": "59194db7c56f6146c45fd678",
     "agentId": "12300000200",
     "name": "SIM-NODE-200",
     "productType": "Workstation",
@@ -9124,8 +8598,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.928Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -9156,7 +8629,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136f3",
+    "_id": "59194db7c56f6146c45fd679",
     "agentId": "12300000201",
     "name": "SIM-NODE-201",
     "productType": "Workstation",
@@ -9166,8 +8639,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.933Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -9198,7 +8670,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136f4",
+    "_id": "59194db7c56f6146c45fd67a",
     "agentId": "12300000202",
     "name": "SIM-NODE-202",
     "productType": "Workstation",
@@ -9208,8 +8680,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.941Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -9240,7 +8711,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136f5",
+    "_id": "59194db7c56f6146c45fd67b",
     "agentId": "12300000203",
     "name": "SIM-NODE-203",
     "productType": "Workstation",
@@ -9250,8 +8721,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.947Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -9282,7 +8752,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136f6",
+    "_id": "59194db7c56f6146c45fd67c",
     "agentId": "12300000204",
     "name": "SIM-NODE-204",
     "productType": "Workstation",
@@ -9292,8 +8762,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.952Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -9324,7 +8793,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136f7",
+    "_id": "59194db7c56f6146c45fd67d",
     "agentId": "12300000205",
     "name": "SIM-NODE-205",
     "productType": "Workstation",
@@ -9334,8 +8803,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.956Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -9366,7 +8834,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136f8",
+    "_id": "59194db7c56f6146c45fd67e",
     "agentId": "12300000206",
     "name": "SIM-NODE-206",
     "productType": "Workstation",
@@ -9376,8 +8844,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.961Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -9408,7 +8875,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136f9",
+    "_id": "59194db7c56f6146c45fd67f",
     "agentId": "12300000207",
     "name": "SIM-NODE-207",
     "productType": "Workstation",
@@ -9418,8 +8885,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.965Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -9450,7 +8916,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136fa",
+    "_id": "59194db7c56f6146c45fd680",
     "agentId": "12300000208",
     "name": "SIM-NODE-208",
     "productType": "Workstation",
@@ -9460,8 +8926,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.971Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -9492,7 +8957,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136fb",
+    "_id": "59194db7c56f6146c45fd681",
     "agentId": "12300000209",
     "name": "SIM-NODE-209",
     "productType": "Workstation",
@@ -9502,8 +8967,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.975Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -9534,7 +8998,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136fc",
+    "_id": "59194db7c56f6146c45fd682",
     "agentId": "12300000210",
     "name": "SIM-NODE-210",
     "productType": "Workstation",
@@ -9544,8 +9008,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.980Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -9576,7 +9039,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136fd",
+    "_id": "59194db7c56f6146c45fd683",
     "agentId": "12300000211",
     "name": "SIM-NODE-211",
     "productType": "Workstation",
@@ -9586,8 +9049,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.984Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -9618,7 +9080,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136fe",
+    "_id": "59194db7c56f6146c45fd684",
     "agentId": "12300000212",
     "name": "SIM-NODE-212",
     "productType": "Workstation",
@@ -9628,8 +9090,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.988Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -9660,7 +9121,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e23136ff",
+    "_id": "59194db7c56f6146c45fd685",
     "agentId": "12300000213",
     "name": "SIM-NODE-213",
     "productType": "Workstation",
@@ -9670,8 +9131,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:24.994Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -9702,7 +9162,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313700",
+    "_id": "59194db7c56f6146c45fd686",
     "agentId": "12300000214",
     "name": "SIM-NODE-214",
     "productType": "Workstation",
@@ -9712,8 +9172,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:25.000Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -9744,7 +9203,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313701",
+    "_id": "59194db7c56f6146c45fd687",
     "agentId": "12300000215",
     "name": "SIM-NODE-215",
     "productType": "Workstation",
@@ -9754,8 +9213,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:25.007Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -9786,7 +9244,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313702",
+    "_id": "59194db7c56f6146c45fd688",
     "agentId": "12300000216",
     "name": "SIM-NODE-216",
     "productType": "Workstation",
@@ -9796,8 +9254,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:25.012Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -9828,7 +9285,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313703",
+    "_id": "59194db7c56f6146c45fd689",
     "agentId": "12300000217",
     "name": "SIM-NODE-217",
     "productType": "Workstation",
@@ -9838,8 +9295,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:25.021Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -9870,7 +9326,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313704",
+    "_id": "59194db7c56f6146c45fd68a",
     "agentId": "12300000218",
     "name": "SIM-NODE-218",
     "productType": "Workstation",
@@ -9880,8 +9336,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:25.026Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -9912,7 +9367,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313705",
+    "_id": "59194db7c56f6146c45fd68b",
     "agentId": "12300000219",
     "name": "SIM-NODE-219",
     "productType": "Workstation",
@@ -9922,8 +9377,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:25.030Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -9954,7 +9408,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313706",
+    "_id": "59194db7c56f6146c45fd68c",
     "agentId": "12300000220",
     "name": "SIM-NODE-220",
     "productType": "Workstation",
@@ -9964,8 +9418,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:25.035Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -9996,7 +9449,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313707",
+    "_id": "59194db7c56f6146c45fd68d",
     "agentId": "12300000221",
     "name": "SIM-NODE-221",
     "productType": "Workstation",
@@ -10006,8 +9459,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:25.040Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -10038,7 +9490,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313708",
+    "_id": "59194db7c56f6146c45fd68e",
     "agentId": "12300000222",
     "name": "SIM-NODE-222",
     "productType": "Workstation",
@@ -10048,8 +9500,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:25.044Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -10080,7 +9531,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e2313709",
+    "_id": "59194db7c56f6146c45fd68f",
     "agentId": "12300000223",
     "name": "SIM-NODE-223",
     "productType": "Workstation",
@@ -10090,8 +9541,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:25.049Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -10122,7 +9572,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231370a",
+    "_id": "59194db7c56f6146c45fd690",
     "agentId": "12300000224",
     "name": "SIM-NODE-224",
     "productType": "Workstation",
@@ -10132,8 +9582,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:25.053Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -10164,7 +9613,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231370b",
+    "_id": "59194db7c56f6146c45fd691",
     "agentId": "12300000225",
     "name": "SIM-NODE-225",
     "productType": "Workstation",
@@ -10174,8 +9623,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:25.058Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -10206,7 +9654,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231370c",
+    "_id": "59194db7c56f6146c45fd692",
     "agentId": "12300000226",
     "name": "SIM-NODE-226",
     "productType": "Workstation",
@@ -10216,8 +9664,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:25.062Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -10248,7 +9695,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231370d",
+    "_id": "59194db7c56f6146c45fd693",
     "agentId": "12300000227",
     "name": "SIM-NODE-227",
     "productType": "Workstation",
@@ -10258,8 +9705,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:25.067Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -10290,7 +9736,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231370e",
+    "_id": "59194db7c56f6146c45fd694",
     "agentId": "12300000228",
     "name": "SIM-NODE-228",
     "productType": "Workstation",
@@ -10300,8 +9746,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:25.072Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,
@@ -10332,7 +9777,7 @@
     }
   },
   {
-    "_id": "58ff30788e027f22e231370f",
+    "_id": "59194db7c56f6146c45fd695",
     "agentId": "12300000229",
     "name": "SIM-NODE-229",
     "productType": "Workstation",
@@ -10342,8 +9787,7 @@
     "lastDisconnectionReason": "DisconnectionReason_Unknown",
     "__v": 0,
     "cmId": "0009",
-    "color": "blue",
-    "joinedCampaignAt": "2017-04-25T11:18:25.077Z",
+    "color": "white",
     "status": "inactive",
     "latestPossibleAgentVersion": {
       "patch": 0,

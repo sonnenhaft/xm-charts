@@ -16,7 +16,7 @@ function moveToHead(arr, item) {
 }
 
 function moveUnidentifiedCulsterToTopLeft(items) {
-  const unidentifiedCluster = items.find(({ item: { clusterId } }) => !clusterId)
+  const unidentifiedCluster = items.find(({ item: { clusterId } }) => clusterId === 'undefined')
   if ( !unidentifiedCluster ) {
     return
   }
@@ -36,8 +36,8 @@ function moveUnidentifiedCulsterToTopLeft(items) {
   }, 0)
 }
 
-export default  function(computers, ratio = 1) {
-  let clusters = transform(groupBy(computers, 'cluster'), (result, nodesObject, clusterId) => {
+export default  function(nodes, ratio = 1) {
+  let clusters = transform(groupBy(nodes, 'cluster'), (result, nodesObject, clusterId) => {
     const size = nodesObject.length
     const width = Math.ceil(Math.sqrt(size))
     const height = Math.ceil(size / width)
@@ -54,7 +54,7 @@ export default  function(computers, ratio = 1) {
   })
 
   let { width: totalWidth, height: totalHeight, items } = pack(values(clusters), { inPlace: false })
-  moveUnidentifiedCulsterToTopLeft(items)
+  // moveUnidentifiedCulsterToTopLeft(items)
 
   totalWidth /= ratio
   items.forEach(item => {
@@ -69,7 +69,7 @@ export default  function(computers, ratio = 1) {
     item.y += MARGIN_TOP + PADDING_H
   })
 
-  const coordinatedNodes = items.reduce((nodes, { width, x, y, item: { nodesObject } }) => {
+  const coordinatedNodesMap = items.reduce((nodes, { width, x, y, item: { nodesObject } }) => {
     return nodes.concat(nodesObject.map((node, index) => {
       return ({
         node,
@@ -78,7 +78,15 @@ export default  function(computers, ratio = 1) {
         y: (index - index % width) / width + y,
       })
     }))
-  }, [])
+  }, []).reduce((map, value) => {
+    map[value.node.name] = value
+    return map
+  }, {})
+
+  // sorry for this, setting "coordinatedNodes" into same position as it was
+  const coordinatedNodes = nodes.map(({ name }) => {
+    return coordinatedNodesMap[name]
+  })
 
   const coordinatedClusters = items.reduce((clusters, { width, height, x, y, item: { clusterId: cluster } }) => {
     clusters.push({

@@ -19,7 +19,6 @@
     "airbnb-prop-types": "^2.5.2",
     "babel-plugin-react-css-modules": "^2.2.0",
     "babel-polyfill": "^6.23.0",
-    "chance": "^1.0.6",
     "d3": "^4.8.0",
     "lorem-ipsum": "^1.0.3",
     "react": "^15.4.2",
