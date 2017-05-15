@@ -10,32 +10,6 @@ const PADDING_RIGHT = 0
 const PADDING_LEFT = MARGIN
 const PADDING_H = MARGIN
 
-function moveToHead(arr, item) {
-  arr[arr.indexOf(item)] = arr[0]
-  arr[0] = item
-}
-
-function moveUnidentifiedCulsterToTopLeft(items) {
-  const unidentifiedCluster = items.find(({ item: { clusterId } }) => clusterId === 'undefined')
-  if ( !unidentifiedCluster ) {
-    return
-  }
-  const lines = values(groupBy(items, ({ y }) => y))
-  const unidentifiedLine = lines.find(line => line.indexOf(unidentifiedCluster) !== -1)
-  moveToHead(unidentifiedLine, unidentifiedCluster)
-  unidentifiedLine.reduce((sum, item) => {
-    item.x = sum
-    return sum + item.width
-  }, 0)
-
-  const allLines = Object.values(lines)
-  moveToHead(allLines, unidentifiedLine)
-  allLines.reduce((sum, line) => {
-    line.forEach(item => item.y = sum)
-    return sum + maxBy(line, 'height').height
-  }, 0)
-}
-
 export default  function(nodes, ratio = 1) {
   let clusters = transform(groupBy(nodes, 'cluster'), (result, nodesObject, clusterId) => {
     const size = nodesObject.length
@@ -54,7 +28,6 @@ export default  function(nodes, ratio = 1) {
   })
 
   let { width: totalWidth, height: totalHeight, items } = pack(values(clusters), { inPlace: false })
-  // moveUnidentifiedCulsterToTopLeft(items)
 
   totalWidth /= ratio
   items.forEach(item => {
