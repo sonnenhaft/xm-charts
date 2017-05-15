@@ -1,12 +1,12 @@
-import React, { Component, PropTypes as P } from 'react'
-import d3, { Transform } from 'charts/utils/decorated.d3.v4'
-import { getNodesEventsDataMap } from '../../utils/nodeEventData'
-import { Circle, Desktop, Diskette, Snow } from './IconsGroup'
-import './NetworkGrid.scss'
-import WindowDependable from '../common/WindowDependable'
-import _calculateClusterCoords, { getArrows } from './calculateClusterCoords'
+import React, { Component, PropTypes as P } from "react";
+import d3, { Transform } from "charts/utils/decorated.d3.v4";
+import { getNodesEventsDataMap } from "../../utils/nodeEventData";
+import { Circle, Desktop, Diskette, Snow } from "./IconsGroup";
+import "./NetworkGrid.scss";
+import WindowDependable from "../common/WindowDependable";
+import _calculateClusterCoords, { getArrows } from "./calculateClusterCoords";
 
-import { memoize } from 'lodash'
+import { memoize } from "lodash";
 const calculateClusterCoords = memoize(_calculateClusterCoords)
 
 const NODE_WIDTH = 40
@@ -15,6 +15,7 @@ const ZOOM_CHANGE = 1.2
 export default class NetworkGrid extends Component {
   state = {
     hoveredNodeIndex: null,
+    selectedArrowEventId: null,
   }
 
   static propTypes = {
@@ -46,12 +47,16 @@ export default class NetworkGrid extends Component {
     this.zoom = d3.zoom().scaleExtent([1, 1000]).on('zoom', this.onZoomFactorChanged)
   }
 
-  shouldComponentUpdate({ currentTime, events, nodes, selectedNodeIndex }, { hoveredNodeIndex }) {
+
+  // TODO(vlad): remove code below
+  shouldComponentUpdate({ currentTime, events, nodes, selectedNodeIndex },
+                        { hoveredNodeIndex, selectedArrowEventId }) {
     const { props, state } = this
     return props.currentTime !== currentTime
       || props.events !== events
       || props.nodes !== nodes
       || state.hoveredNodeIndex !== hoveredNodeIndex
+      || state.selectedArrowEventId !== selectedArrowEventId
       || props.selectedNodeIndex !== selectedNodeIndex
   }
 
@@ -102,13 +107,13 @@ export default class NetworkGrid extends Component {
     const { k, x, y } = d3.zoomTransform(this.svg.select('.zoomRect').node())
     const shiftX = (width - this.cachedClusters.totalWidth * NODE_WIDTH * centralizeZoomFactor ) * k / 2
     const shiftY = (height - this.cachedClusters.totalHeight * NODE_WIDTH * centralizeZoomFactor ) * k / 2
-    this.svg.select('.grid-shifter').attr('transform', `translate(${shiftX}, ${shiftY})`)
+    this.svg.selectAll('.grid-shifter').attr('transform', `translate(${shiftX}, ${shiftY})`)
 
     const currentZoom = new Transform(centralizeZoomFactor * k, x, y)
     this.zoom.translateExtent([[0, 0], [width, height]]).extent([[0, 0], [width, height]])
 
 
-    this.svg.select('.zoom-scale').attr('transform', currentZoom.toString())
+    this.svg.selectAll('.zoom-scale').attr('transform', currentZoom.toString())
     xScale.domain(currentZoom.rescaleX(xScale).domain())
     yScale.domain(currentZoom.rescaleY(yScale).domain())
 
@@ -170,18 +175,28 @@ export default class NetworkGrid extends Component {
     const y = ({ y }) => scale(y + 1 / 4)
 
 
-    const stroke = ({ event: { type } }) => type === 'newDiscoveredNode' ? 'blue' : 'red'
+    const stroke = ({ event: { type, id } }) => {
+      if ( this.state.selectedArrowEventId === id ) {
+        return 'black'
+      } else if ( type === 'newDiscoveredNode' ) {
+        return 'blue'
+      } else {
+        return 'red'
+      }
+    }
+
     this.svg.select('.arrows').bindData('line.arrow', getArrows(
       this.props.events,
       nodes,
       this.props.currentTime
     ), {
+      click: ({ event: { id } }) => this.setState({ selectedArrowEventId: id }),
+      stroke,
       x1: (({ startNode }) => x(startNode)),
       y1: (({ startNode }) => y(startNode)),
       x2: (({ endNode }) => x(endNode)),
       y2: (({ endNode }) => y(endNode)),
-      stroke,
-      'stroke-width': ({isCompormised}) => isCompormised ? 4 : 1.5,
+      'stroke-width': ({ isCompormised }) => isCompormised ? 4 : 1.5,
       'marker-end': line => `url(#${stroke(line)}-arrow)`,
     })
 
@@ -256,6 +271,11 @@ export default class NetworkGrid extends Component {
                 <path d="M 0 0 L 2.5 3 L 0 6" stroke="red"/>
               </g>
             </marker>
+            <marker id="black-arrow" markerWidth="10" markerHeight="10" refX="10" refY="3" orient="auto" markerUnits="strokeWidth">
+              <g transform="translate(7,0)" strokeWidth="1.2" fill="none">
+                <path d="M 0 0 L 2.5 3 L 0 6" stroke="black"/>
+              </g>
+            </marker>
             <marker id="blue-arrow" markerWidth="10" markerHeight="10" refX="10" refY="3" orient="auto" markerUnits="strokeWidth">
               <g transform="translate(7,0)" strokeWidth="1.2" fill="none">
                 <path d="M 0 0 L 2.5 3 L 0 6" stroke="blue"/>
@@ -267,10 +287,15 @@ export default class NetworkGrid extends Component {
               <g className="clusters" styleName="clusters-wrapper"/>
               <g className="clusterLabels" styleName="cluster-labels"/>
               <g className="grid"/>
-              <g className="arrows"/>
             </g>
           </g>
           <rect className="zoomRect" styleName="zoom-rect"/>
+          <g className="grid-shifter">
+            <g className="zoom-scale">
+              <g className="arrows"/>
+            </g>
+          </g>
+
         </svg>
       </WindowDependable>
     )
