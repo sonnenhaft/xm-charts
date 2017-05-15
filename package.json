@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "airbnb-prop-types": "^2.5.2",
+    "array-to-tree": "^2.2.0",
     "babel-plugin-react-css-modules": "^2.2.0",
     "babel-polyfill": "^6.23.0",
     "d3": "^4.8.0",

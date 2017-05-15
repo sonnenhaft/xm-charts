@@ -112,8 +112,6 @@ export const getArrows = (events, coordinatedNodes, currentTime) => {
         endNode,
       }
     })
-    .sort(({ event: { type } }) => type === 'newDiscoveredNode' ? -1 : 1)
-  // .filter(({startNode, endNode})=> startNode && endNode)
 }
 
 export const moveArrowsToCorners = (arrows, width, height) => {
@@ -129,6 +127,26 @@ export const moveArrowsToCorners = (arrows, width, height) => {
     return [x1, x2]
   }
 
+  const nodesMap = arrows.reduce((map, { startNode: {node: {agentId: start}}, endNode: {node: {agentId: end}} }) => {
+    map[start] = end
+    return map
+  }, {})
+
+  const getDeps = initialStartNode => {
+    let deps = 0
+    let node = initialStartNode
+    while (node) {
+      const parentNode = nodesMap[node]
+      if (parentNode && parentNode !== initialStartNode) {
+        deps++
+        node = parentNode
+      } else {
+        node = null
+      }
+    }
+    return deps
+  }
+
   return arrows.map(({ event, startNode, endNode, isCompormised }) => {
     const [x1, x2] = fn([startNode.x, endNode.x], width)
     const [y2, y1] = fn([endNode.y, startNode.y], height)
@@ -136,6 +154,7 @@ export const moveArrowsToCorners = (arrows, width, height) => {
       id: event.id,
       event,
       isCompormised,
+      // value: getDeps(startNode.id),
       value: 0,
       startNode: { x: x1, y: y1 },
       endNode: { x: x2, y: y2 },
