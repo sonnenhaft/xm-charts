@@ -176,7 +176,6 @@ export default class NetworkGrid extends Component {
 
 
     const stroke = ({ event: { type, id } }) => {
-      console.log('setting')
       if ( this.state.selectedArrowEventId === id ) {
         return 'black'
       } else if ( type === 'newDiscoveredNode' ) {
@@ -211,7 +210,7 @@ export default class NetworkGrid extends Component {
       y2: (({ endNode }) => y(endNode)),
     }
 
-    arrowsNew.select('line.arrow').attrs({
+    arrowsEntered.select('line.arrow').attrs({
       stroke,
       'marker-end': line => `url(#${stroke(line)}-arrow)`,
       'stroke-width': ({ isCompormised }) => isCompormised ? 2 : 1,
@@ -228,7 +227,7 @@ export default class NetworkGrid extends Component {
       visibility: ({ value }) => !value ? 'hidden' : 'visible',
     })
 
-    arrowsNew.select('circle.arrow-circle').attrs({
+    arrowsEntered.select('circle.arrow-circle').attrs({
       fill: stroke,
     })
 
