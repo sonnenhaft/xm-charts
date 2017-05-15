@@ -94,21 +94,29 @@ export const getArrows = (events, coordinatedNodes, currentTime) => {
   const filteredEvents = events
     .filter(({ date }) => date < currentTime)
 
-  const compromisedMap = filteredEvents.filter(({type}) => type === 'assetCompromised').reduce((map, event) => {
+  const compromisedMap = filteredEvents.filter(({ type }) => type === 'assetCompromised').reduce((map, event) => {
     map[event.node.id] = true
     return map
   }, {})
+
+  function getMiddlePoint({ x: x1, y: y1 }, { x: x2, y: y2 }) {
+    return { x: x1 + (x2 - x1) / 2, y: y1 + (y2 - y1) / 2 }
+  }
+
   return filteredEvents
     .filter(({ data = {} }) => data.sourceNode && data.sourceNode.id)
     .map(event => {
       const { data: { sourceNode: { id: start } }, node: { id: end } } = event
+      const startNode = nodesMap[start]
+      const endNode = nodesMap[end]
       return {
         event,
         isCompormised: event.type !== 'newDiscoveredNode' && compromisedMap[end],
-        startNode: nodesMap[start],
-        endNode: nodesMap[end],
+        startNode,
+        middlePoint: getMiddlePoint(startNode, endNode),
+        endNode,
       }
     })
-    .sort(({event: {type}}) => type === 'newDiscoveredNode' ? -1 : 1)
+    .sort(({ event: { type } }) => type === 'newDiscoveredNode' ? -1 : 1)
   // .filter(({startNode, endNode})=> startNode && endNode)
 }

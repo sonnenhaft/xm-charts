@@ -1,12 +1,12 @@
-import React, { Component, PropTypes as P } from "react";
-import d3, { Transform } from "charts/utils/decorated.d3.v4";
-import { getNodesEventsDataMap } from "../../utils/nodeEventData";
-import { Circle, Desktop, Diskette, Snow } from "./IconsGroup";
-import "./NetworkGrid.scss";
-import WindowDependable from "../common/WindowDependable";
-import _calculateClusterCoords, { getArrows } from "./calculateClusterCoords";
+import React, { Component, PropTypes as P } from 'react'
+import d3, { Transform } from 'charts/utils/decorated.d3.v4'
+import { getNodesEventsDataMap } from '../../utils/nodeEventData'
+import { Circle, Desktop, Diskette, Snow } from './IconsGroup'
+import './NetworkGrid.scss'
+import WindowDependable from '../common/WindowDependable'
+import _calculateClusterCoords, { getArrows } from './calculateClusterCoords'
 
-import { memoize } from "lodash";
+import { memoize } from 'lodash'
 const calculateClusterCoords = memoize(_calculateClusterCoords)
 
 const NODE_WIDTH = 40
@@ -185,11 +185,21 @@ export default class NetworkGrid extends Component {
       }
     }
 
-    this.svg.select('.arrows').bindData('line.arrow', getArrows(
+    const arrows = getArrows(
       this.props.events,
       nodes,
       this.props.currentTime
-    ), {
+    )
+    const selection = this.svg.select('.arrows').bindData('g.arrow-line', arrows, {
+      click: ({ event: { id } }) => this.setState({ selectedArrowEventId: id }),
+      html: `
+        <line class="arrow"></line>
+        <circle class="arrow-circle"></circle>
+        <text class="arrow-circle-text"></text>
+      `,
+    })
+
+    selection.select('line.arrow').attrs({
       click: ({ event: { id } }) => this.setState({ selectedArrowEventId: id }),
       stroke,
       x1: (({ startNode }) => x(startNode)),
@@ -200,6 +210,22 @@ export default class NetworkGrid extends Component {
       'marker-end': line => `url(#${stroke(line)}-arrow)`,
     })
 
+    // selection.select('circle.arrow-circle').attrs({
+    //   r: 10,
+    //   fill: stroke,
+    //   cx: ({ middlePoint: { x } }) => scale(x) + 10,
+    //   cy: ({ middlePoint: { y } }) => scale(y) + 10,
+    // })
+    //
+    // selection.select('text.arrow-circle-text').attrs({
+    //   text: 23,
+    //   fill: 'white',
+    //   'font-family': 'sans-serif',
+    //   'font-size': 11,
+    //   'text-anchor': 'middle',
+    //   x: ({ middlePoint: { x } }) => scale(x) + 10,
+    //   y: ({ middlePoint: { y } }) => scale(y) + 13,
+    // })
 
     this.svg.select('.clusterLabels').bindData('text.clusterLabel', clusters, {
       transform: ({ x, y }) => `translate(${scale(x)}, ${scale(y)})`,
@@ -295,7 +321,6 @@ export default class NetworkGrid extends Component {
               <g className="arrows"/>
             </g>
           </g>
-
         </svg>
       </WindowDependable>
     )
