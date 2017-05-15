@@ -99,10 +99,6 @@ export const getArrows = (events, coordinatedNodes, currentTime) => {
     return map
   }, {})
 
-  function getMiddlePoint({ x: x1, y: y1 }, { x: x2, y: y2 }) {
-    return { x: x1 + (x2 - x1) / 2, y: y1 + (y2 - y1) / 2 }
-  }
-
   return filteredEvents
     .filter(({ data = {} }) => data.sourceNode && data.sourceNode.id)
     .map(event => {
@@ -113,10 +109,37 @@ export const getArrows = (events, coordinatedNodes, currentTime) => {
         event,
         isCompormised: event.type !== 'newDiscoveredNode' && compromisedMap[end],
         startNode,
-        middlePoint: getMiddlePoint(startNode, endNode),
         endNode,
       }
     })
     .sort(({ event: { type } }) => type === 'newDiscoveredNode' ? -1 : 1)
   // .filter(({startNode, endNode})=> startNode && endNode)
+}
+
+export const moveArrowsToCorners = (arrows, width, height) => {
+  const fn = ([x1, x2], width) => {
+    if ( x1 < x2 ) {
+      x1 += width
+    } else if ( x1 > x2 ) {
+      x2 += width
+    } else {
+      x1 += width / 2
+      x2 += width / 2
+    }
+    return [x1, x2]
+  }
+
+  return arrows.map(({ event, startNode, endNode, isCompormised }) => {
+    const [x1, x2] = fn([startNode.x, endNode.x], width)
+    const [y2, y1] = fn([endNode.y, startNode.y], height)
+    return {
+      id: event.id,
+      event,
+      isCompormised,
+      value: 0,
+      startNode: { x: x1, y: y1 },
+      endNode: { x: x2, y: y2 },
+      middlePoint: { x: x1 + (x2 - x1) / 2, y: y1 + (y2 - y1) / 2 },
+    }
+  })
 }

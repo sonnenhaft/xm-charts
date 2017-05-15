@@ -4,7 +4,7 @@ import { getNodesEventsDataMap } from '../../utils/nodeEventData'
 import { Circle, Desktop, Diskette, Snow } from './IconsGroup'
 import './NetworkGrid.scss'
 import WindowDependable from '../common/WindowDependable'
-import _calculateClusterCoords, { getArrows } from './calculateClusterCoords'
+import _calculateClusterCoords, { getArrows, moveArrowsToCorners } from './calculateClusterCoords'
 
 import { memoize } from 'lodash'
 const calculateClusterCoords = memoize(_calculateClusterCoords)
@@ -171,11 +171,12 @@ export default class NetworkGrid extends Component {
       height: ({ height }) => scale(height),
     })
 
-    const x = ({ x }) => scale(x + 1 / 6)
-    const y = ({ y }) => scale(y + 1 / 4)
+    const x = ({ x }) => scale(x)
+    const y = ({ y }) => scale(y)
 
 
     const stroke = ({ event: { type, id } }) => {
+      console.log('setting')
       if ( this.state.selectedArrowEventId === id ) {
         return 'black'
       } else if ( type === 'newDiscoveredNode' ) {
@@ -185,47 +186,67 @@ export default class NetworkGrid extends Component {
       }
     }
 
-    const arrows = getArrows(
+    let arrows = getArrows(
       this.props.events,
       nodes,
       this.props.currentTime
     )
-    const selection = this.svg.select('.arrows').bindData('g.arrow-line', arrows, {
-      click: ({ event: { id } }) => this.setState({ selectedArrowEventId: id }),
+    arrows = moveArrowsToCorners(arrows, 1 / 2 - 0.11, 1 - 0.25)
+
+    const { mergedSelection: arrowsNew, enteredSelection: arrowsEntered } = this.svg.select('.arrows')._bindData('g.arrow-line', arrows, {
+      click: ({ id }) => this.setState({ selectedArrowEventId: id }),
       html: `
         <line class="arrow"></line>
-        <circle class="arrow-circle"></circle>
-        <text class="arrow-circle-text"></text>
-      `,
+        <line class="arrow-highlight"></line>
+        <g class="text-value">
+          <circle class="arrow-circle"></circle>
+          <text class="arrow-circle-text"></text>
+        </g>`,
     })
 
-    selection.select('line.arrow').attrs({
-      click: ({ event: { id } }) => this.setState({ selectedArrowEventId: id }),
-      stroke,
+    const coords = {
       x1: (({ startNode }) => x(startNode)),
       y1: (({ startNode }) => y(startNode)),
       x2: (({ endNode }) => x(endNode)),
       y2: (({ endNode }) => y(endNode)),
-      'stroke-width': ({ isCompormised }) => isCompormised ? 4 : 1.5,
+    }
+
+    arrowsNew.select('line.arrow').attrs({
+      stroke,
       'marker-end': line => `url(#${stroke(line)}-arrow)`,
+      'stroke-width': ({ isCompormised }) => isCompormised ? 2 : 1,
+    })
+    arrowsNew.select('line.arrow').attrs({ ...coords })
+    arrowsNew.select('line.arrow-highlight').attrs({
+      ...coords,
+      opacity: 0,
+      stroke: 'black',
+      'stroke-width': 10,
     })
 
-    // selection.select('circle.arrow-circle').attrs({
-    //   r: 10,
-    //   fill: stroke,
-    //   cx: ({ middlePoint: { x } }) => scale(x) + 10,
-    //   cy: ({ middlePoint: { y } }) => scale(y) + 10,
-    // })
-    //
-    // selection.select('text.arrow-circle-text').attrs({
-    //   text: 23,
-    //   fill: 'white',
-    //   'font-family': 'sans-serif',
-    //   'font-size': 11,
-    //   'text-anchor': 'middle',
-    //   x: ({ middlePoint: { x } }) => scale(x) + 10,
-    //   y: ({ middlePoint: { y } }) => scale(y) + 13,
-    // })
+    arrowsNew.select('g.text-value').attrs({
+      visibility: ({ value }) => !value ? 'hidden' : 'visible',
+    })
+
+    arrowsNew.select('circle.arrow-circle').attrs({
+      fill: stroke,
+    })
+
+    arrowsNew.select('circle.arrow-circle').attrs({
+      r: 8,
+      cx: ({ middlePoint: { x } }) => scale(x),
+      cy: ({ middlePoint: { y } }) => scale(y),
+    })
+
+    arrowsNew.select('text.arrow-circle-text').attrs({
+      text: ({ value }) => value,
+      fill: 'white',
+      'font-family': 'sans-serif',
+      'font-size': 10,
+      'text-anchor': 'middle',
+      x: ({ middlePoint: { x } }) => scale(x),
+      y: ({ middlePoint: { y } }) => scale(y) + 3.5,
+    })
 
     this.svg.select('.clusterLabels').bindData('text.clusterLabel', clusters, {
       transform: ({ x, y }) => `translate(${scale(x)}, ${scale(y)})`,

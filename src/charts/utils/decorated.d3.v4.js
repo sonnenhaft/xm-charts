@@ -34,7 +34,7 @@ const methods = {
     })
     return this
   },
-  bindData: function(tagAndClass, data, opt_attrs, duration) {
+  _bindData: function(tagAndClass, data, opt_attrs, duration) {
     const [tag, className] = tagAndClass.split('.')
     const selector = className ? `${tag}.${className}` : tag
     const enteredSelection = this.selectAll(selector).data(data, ({ id }) => id)
@@ -47,7 +47,10 @@ const methods = {
       .transition()
       .duration(duration)
       .attrs(opt_attrs, true)
-    return mergedSelection
+    return {mergedSelection, enteredSelection}
+  },
+  bindData: function(tagAndClass, data, opt_attrs, duration) {
+    return this._bindData(tagAndClass, data, opt_attrs, duration).mergedSelection
   },
 }
 
