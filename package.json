@@ -12,8 +12,7 @@
     "test:coverage": "jest --coverage",
     "build:bitballoon": "npm --no-git-tag-version version patch && npm run prod && node bitballoon",
     "bitballoon": "node bitballoon.js",
-    "bump": "npm version patch --no-git-tag-version && git add package.json",
-    "nodemon": "nodemon src/charts/components/NetworkGrid/calculateClustersSample.js"
+    "bump": "npm version patch --no-git-tag-version && git add package.json"
   },
   "dependencies": {
     "airbnb-prop-types": "^2.5.2",

@@ -181,6 +181,7 @@ export default class NetworkGrid extends Component {
       x2: (({ endNode }) => x(endNode)),
       y2: (({ endNode }) => y(endNode)),
       stroke,
+      'stroke-width': ({isCompormised}) => isCompormised ? 4 : 1.5,
       'marker-end': line => `url(#${stroke(line)}-arrow)`,
     })
 
@@ -266,7 +267,7 @@ export default class NetworkGrid extends Component {
               <g className="clusters" styleName="clusters-wrapper"/>
               <g className="clusterLabels" styleName="cluster-labels"/>
               <g className="grid"/>
-              <g className="arrows" strokeWidth="2" opacity={0.5}/>
+              <g className="arrows"/>
             </g>
           </g>
           <rect className="zoomRect" styleName="zoom-rect"/>

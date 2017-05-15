@@ -91,16 +91,24 @@ export const getArrows = (events, coordinatedNodes, currentTime) => {
     map[calc.node.agentId] = calc
     return map
   }, {})
-  return events
+  const filteredEvents = events
     .filter(({ date }) => date < currentTime)
+
+  const compromisedMap = filteredEvents.filter(({type}) => type === 'assetCompromised').reduce((map, event) => {
+    map[event.node.id] = true
+    return map
+  }, {})
+  return filteredEvents
     .filter(({ data = {} }) => data.sourceNode && data.sourceNode.id)
     .map(event => {
       const { data: { sourceNode: { id: start } }, node: { id: end } } = event
       return {
         event,
+        isCompormised: event.type !== 'newDiscoveredNode' && compromisedMap[end],
         startNode: nodesMap[start],
         endNode: nodesMap[end],
       }
     })
+    .sort(({event: {type}}) => type === 'newDiscoveredNode' ? -1 : 1)
   // .filter(({startNode, endNode})=> startNode && endNode)
 }
