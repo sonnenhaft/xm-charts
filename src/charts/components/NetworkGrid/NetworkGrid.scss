@@ -135,15 +135,22 @@ $grey-light: rgba(230, 230, 230, 0.4);
           fill: $white;
         }
       }
+    }
 
-      &.is-starting-point {
-        .outerHover {
-          stroke: rgba(242, 30, 39, 0.12);
-        }
+    &.is-starting-point {
 
-        .innerHover {
-          stroke: rgba(242, 30, 39, 0.25);
-        }
+      .content {
+        fill: $red;
+        stroke: $red;
+      }
+
+
+      .outerHover {
+        stroke: rgba(242, 30, 39, 0.12);
+      }
+
+      .innerHover {
+        stroke: rgba(242, 30, 39, 0.25);
       }
     }
   }
