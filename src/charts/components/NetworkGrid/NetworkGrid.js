@@ -4,10 +4,7 @@ import { getNodesEventsDataMap } from '../../utils/nodeEventData'
 import { Circle, Desktop, Diskette, Snow } from './IconsGroup'
 import './NetworkGrid.scss'
 import WindowDependable from '../common/WindowDependable'
-import _calculateClusterCoords, { getArrows, moveArrowsToCorners } from './calculateClusterCoords'
-
-import { memoize } from 'lodash'
-const calculateClusterCoords = memoize(_calculateClusterCoords)
+import calculateClusterCoords, { getArrows, moveArrowsToCorners } from './calculateClusterCoords'
 
 const NODE_WIDTH = 40
 const ZOOM_CHANGE = 1.2
@@ -26,6 +23,63 @@ export default class NetworkGrid extends Component {
     onSelectedNodeIndexChanged: P.func,
   }
 
+  constructor(props) {
+    super(props)
+    this.zoom = d3.zoom().scaleExtent([1, 1000]).on('zoom', this.onZoomFactorChanged)
+  }
+
+  componentDidMount() {
+    this.calculateClusters(this.props)
+    this.calculateArrows(this.props, this.cachedClusters)
+  }
+
+  calculateClusters({ nodes }) {
+    this.cachedClusters = calculateClusterCoords(nodes)
+  }
+
+  calculateArrows({ events, currentTime }, cachedClusters) {
+    let arrows = getArrows(
+      events,
+      cachedClusters.coordinatedNodes,
+      currentTime
+    )
+    this.cachedArrows = moveArrowsToCorners(arrows, 1 / 2 - 0.14, 1 - 0.25)
+    console.warn('Arrows and events logging should be removed when nodes colors are adjusted')
+    console.debug('currentTime: ', currentTime)
+    console.debug('arrows: ', this.cachedArrows)
+    console.debug('events: ', events.filter(({ date }) => date < currentTime))
+  }
+
+  // TODO(vlad): remove code below
+  shouldComponentUpdate({ currentTime, events, nodes, selectedNodeIndex },
+                        { hoveredNodeIndex, selectedArrowEventId }) {
+    const { props, state } = this
+    return props.currentTime !== currentTime
+      || props.events !== events
+      || props.nodes !== nodes
+      || state.hoveredNodeIndex !== hoveredNodeIndex
+      || state.selectedArrowEventId !== selectedArrowEventId
+      || props.selectedNodeIndex !== selectedNodeIndex
+  }
+
+
+  componentWillReceiveProps({ nodes, events, currentTime }) {
+    if ( this.props.nodes !== nodes ) {
+      this.calculateClusters({ nodes })
+    }
+
+    if ( this.props.nodes !== nodes ||
+      this.props.events !== events ||
+      this.props.currentTime !== currentTime
+    ) {
+      this.calculateArrows({ events, currentTime }, this.cachedClusters)
+    }
+  }
+
+  componentDidUpdate() {
+    this.renderChart()
+  }
+
   refRootBlock = rootBlock => {
     this.rootBlock = d3.select(rootBlock)
     this.svg = this.rootBlock.select('.svg')
@@ -41,45 +95,6 @@ export default class NetworkGrid extends Component {
     this.rootBlock.select('.nodeTooltip').style('display', 'none')
     this.forceUpdate()
   }
-
-  constructor(props) {
-    super(props)
-    this.zoom = d3.zoom().scaleExtent([1, 1000]).on('zoom', this.onZoomFactorChanged)
-  }
-
-
-  // TODO(vlad): remove code below
-  shouldComponentUpdate({ currentTime, events, nodes, selectedNodeIndex },
-                        { hoveredNodeIndex, selectedArrowEventId }) {
-    const { props, state } = this
-    return props.currentTime !== currentTime
-      || props.events !== events
-      || props.nodes !== nodes
-      || state.hoveredNodeIndex !== hoveredNodeIndex
-      || state.selectedArrowEventId !== selectedArrowEventId
-      || props.selectedNodeIndex !== selectedNodeIndex
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.calculateEvents(nextProps)
-  }
-
-  componentDidUpdate() {
-    this.renderChart()
-  }
-
-  componentDidMount() {
-    this.calculateEvents(this.props)
-  }
-
-  calculateEvents({ nodes }) {
-    if ( !nodes.length ) {
-      return
-    }
-
-    this.cachedClusters = calculateClusterCoords(nodes)
-  }
-
 
   renderChart() {
     const { nodes, events, currentTime } = this.props
@@ -185,14 +200,7 @@ export default class NetworkGrid extends Component {
       }
     }
 
-    let arrows = getArrows(
-      this.props.events,
-      nodes,
-      this.props.currentTime
-    )
-    arrows = moveArrowsToCorners(arrows, 1 / 2 - 0.11, 1 - 0.25)
-
-    const { mergedSelection: arrowsNew, enteredSelection: arrowsEntered } = this.svg.select('.arrows')._bindData('g.arrow-line', arrows, {
+    const { mergedSelection: arrowsNew, enteredSelection: arrowsEntered } = this.svg.select('.arrows')._bindData('g.arrow-line', this.cachedArrows, {
       click: ({ id }) => this.setState({ selectedArrowEventId: id }),
       html: `
         <line class="arrow"></line>
@@ -210,11 +218,13 @@ export default class NetworkGrid extends Component {
       y2: (({ endNode }) => y(endNode)),
     }
 
-    arrowsEntered.select('line.arrow').attrs({
+    const arrowAttrs = {
       stroke,
       'marker-end': line => `url(#${stroke(line)}-arrow)`,
       'stroke-width': ({ isCompormised }) => isCompormised ? 2 : 1,
-    })
+    }
+    arrowsNew.select('line.arrow').attrs(arrowAttrs)
+    arrowsEntered.select('line.arrow').attrs(arrowAttrs)
     arrowsNew.select('line.arrow').attrs({ ...coords })
     arrowsNew.select('line.arrow-highlight').attrs({
       ...coords,
@@ -227,9 +237,8 @@ export default class NetworkGrid extends Component {
       visibility: ({ value }) => !value ? 'hidden' : 'visible',
     })
 
-    arrowsEntered.select('circle.arrow-circle').attrs({
-      fill: stroke,
-    })
+    arrowsNew.select('circle.arrow-circle').attrs({ fill: stroke })
+    arrowsEntered.select('circle.arrow-circle').attrs({ fill: stroke })
 
     arrowsNew.select('circle.arrow-circle').attrs({
       r: 8,

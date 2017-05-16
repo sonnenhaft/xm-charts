@@ -127,7 +127,7 @@ export const moveArrowsToCorners = (arrows, width, height) => {
     return [x1, x2]
   }
 
-  const nodesMap = arrows.reduce((map, { startNode: {node: {agentId: start}}, endNode: {node: {agentId: end}} }) => {
+  const nodesMap = arrows.reduce((map, { startNode: { node: { agentId: start } }, endNode: { node: { agentId: end } } }) => {
     map[start] = end
     return map
   }, {})
@@ -137,7 +137,7 @@ export const moveArrowsToCorners = (arrows, width, height) => {
     let node = initialStartNode
     while (node) {
       const parentNode = nodesMap[node]
-      if (parentNode && parentNode !== initialStartNode) {
+      if ( parentNode && parentNode !== initialStartNode ) {
         deps++
         node = parentNode
       } else {
@@ -147,15 +147,48 @@ export const moveArrowsToCorners = (arrows, width, height) => {
     return deps
   }
 
+  const getNode = ({ node: { agentId: id } }) => id
+  const startsEndsArray = arrows.map(({ startNode, endNode }) => ({
+    start: getNode(startNode),
+    end: getNode(endNode),
+  }))
+
+  const parentsMap = groupBy(startsEndsArray, ({ start }) => start)
+  const childrenMap = groupBy(startsEndsArray, ({ end }) => end)
+  const roots = Object.keys(parentsMap).filter(key => !childrenMap[key])
+
+  function setWeights(root, weight, weights) {
+    if ( weights[root] !== undefined ) {
+      return
+    }
+
+    weights[root] = weight
+    const children = parentsMap[root]
+    if ( !children ) {
+      return
+    }
+    for (let i = 0; i < children.length; i++) {
+      setWeights(children[i].end, weight + 1, weights)
+    }
+    return weights
+  }
+
+  const w = roots.map(root => setWeights(root, 0, {})).reduce((map, weights) => {
+    Object.keys(weights).forEach(key => {
+      map[key] = Math.max(map[key] || 0, weights[key])
+    })
+    return map
+  }, {})
+
   return arrows.map(({ event, startNode, endNode, isCompormised }) => {
     const [x1, x2] = fn([startNode.x, endNode.x], width)
     const [y2, y1] = fn([endNode.y, startNode.y], height)
+    const val = w[endNode.node.agentId]
     return {
       id: event.id,
       event,
       isCompormised,
-      // value: getDeps(startNode.id),
-      value: 0,
+      value: val,
       startNode: { x: x1, y: y1 },
       endNode: { x: x2, y: y2 },
       middlePoint: { x: x1 + (x2 - x1) / 2, y: y1 + (y2 - y1) / 2 },
