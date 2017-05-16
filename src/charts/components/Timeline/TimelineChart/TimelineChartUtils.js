@@ -3,6 +3,8 @@ import { isSpecial } from 'charts/utils/EventUtils'
 
 export const composeCircles = (data, width, groupWidth) => {
   const nonBulkCircles = data.filter(isSpecial)
+  return { bulkCircles: [], nonBulkCircles }
+  return
   const rounderRange = d3.scaleQuantile()
     .domain([data[0].date, data[data.length - 1].date])
     .range(d3.range(0, width / groupWidth))
