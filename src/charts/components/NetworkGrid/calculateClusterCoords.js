@@ -127,26 +127,6 @@ export const moveArrowsToCorners = (arrows, width, height) => {
     return [x1, x2]
   }
 
-  const nodesMap = arrows.reduce((map, { startNode: { node: { agentId: start } }, endNode: { node: { agentId: end } } }) => {
-    map[start] = end
-    return map
-  }, {})
-
-  const getDeps = initialStartNode => {
-    let deps = 0
-    let node = initialStartNode
-    while (node) {
-      const parentNode = nodesMap[node]
-      if ( parentNode && parentNode !== initialStartNode ) {
-        deps++
-        node = parentNode
-      } else {
-        node = null
-      }
-    }
-    return deps
-  }
-
   const getNode = ({ node: { agentId: id } }) => id
   const startsEndsArray = arrows.map(({ startNode, endNode }) => ({
     start: getNode(startNode),

@@ -221,7 +221,12 @@ export default class NetworkGrid extends Component {
     const arrowAttrs = {
       stroke,
       'marker-end': line => `url(#${stroke(line)}-arrow)`,
-      'stroke-width': ({ isCompormised }) => isCompormised ? 2 : 1,
+      'stroke-width': ({ isCompormised }) => {
+        if (isCompormised) {
+          console.log('have')
+        }
+        return isCompormised ? 3 : 1
+      },
     }
     arrowsNew.select('line.arrow').attrs(arrowAttrs)
     arrowsEntered.select('line.arrow').attrs(arrowAttrs)
