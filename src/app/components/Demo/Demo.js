@@ -48,9 +48,9 @@ class DemoHeader extends Component {
       <div className={className}>
         <div styleName="toolbar-header">
           Toolbar here ({version})
-          <select value={value} styleName="section">
+          <select value={value} styleName="section" onChange={onChange}>
             {options.map(({ value, title }) =>
-              <option key={value} value={value} onChange={onChange}>Data set #{title}</option>
+              <option key={value} value={value}>Data set #{title}</option>
             )}
           </select>
           <div>
