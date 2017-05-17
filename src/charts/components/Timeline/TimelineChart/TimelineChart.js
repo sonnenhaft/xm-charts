@@ -97,7 +97,7 @@ export default class TimelineChart extends Component {
     const y = ({ networkSuperiority }) => yScale(networkSuperiority / 100)
 
     this.rootNode.select('.linePath').attr('d', d3.line().x(x).y(y).curve(
-      d3.curveBundle.beta(0.97))(calculatePath({ min, max, data, events }))
+      d3.curveMonotoneX)(calculatePath({ min, max, data, events }))
     )
 
     const onTimeChanged = ({ date }) => {
