@@ -1,7 +1,7 @@
 [
   {
-    "id": "58ff3098aab6690ae348dd5f",
-    "timestamp": "2017-04-25T11:18:48.198Z",
+    "id": "59102d7ebd5f8e3998aa777d",
+    "timestamp": "2017-05-08T08:34:06.740Z",
     "type": "newStartingPointNode",
     "networkSuperiority": 0,
     "compromisedAssets": {
@@ -12,62 +12,14 @@
     "compromisedDataGB": 0,
     "data": {},
     "node": {
-      "id": "12300000000"
+      "id": "12300000096"
     }
   },
   {
-    "id": "58ff3098aab6690ae348dd62",
-    "timestamp": "2017-04-25T11:18:48.246Z",
-    "type": "newStartingPointNode",
-    "networkSuperiority": 0.43478260869565216,
-    "compromisedAssets": {
-      "data": 0,
-      "device": 0,
-      "network": 0
-    },
-    "compromisedDataGB": 0,
-    "data": {},
-    "node": {
-      "id": "12300000010"
-    }
-  },
-  {
-    "id": "58ff3098aab6690ae348dd65",
-    "timestamp": "2017-04-25T11:18:48.286Z",
-    "type": "newStartingPointNode",
-    "networkSuperiority": 0.8695652173913043,
-    "compromisedAssets": {
-      "data": 0,
-      "device": 0,
-      "network": 0
-    },
-    "compromisedDataGB": 0,
-    "data": {},
-    "node": {
-      "id": "12300000020"
-    }
-  },
-  {
-    "id": "58ff3098aab6690ae348dd68",
-    "timestamp": "2017-04-25T11:18:48.326Z",
-    "type": "newStartingPointNode",
-    "networkSuperiority": 1.3043478260869565,
-    "compromisedAssets": {
-      "data": 0,
-      "device": 0,
-      "network": 0
-    },
-    "compromisedDataGB": 0,
-    "data": {},
-    "node": {
-      "id": "12300000030"
-    }
-  },
-  {
-    "id": "58ff3099aab6690ae348dd6d",
-    "timestamp": "2017-04-25T11:18:49.509Z",
+    "id": "59102d84bd5f8e3998aa779d",
+    "timestamp": "2017-05-08T08:34:12.649Z",
     "type": "newDiscoveredNode",
-    "networkSuperiority": 1.7391304347826086,
+    "networkSuperiority": 25,
     "compromisedAssets": {
       "data": 0,
       "device": 0,
@@ -77,218 +29,18 @@
     "data": {
       "method": "Simulation::Mock",
       "sourceNode": {
-        "id": "12300000000"
+        "id": "12300000096"
       }
     },
     "node": {
-      "id": "12300000129"
+      "id": "12300000099"
     }
   },
   {
-    "id": "58ff309aaab6690ae348dd6e",
-    "timestamp": "2017-04-25T11:18:50.345Z",
-    "type": "newAsset",
-    "networkSuperiority": 1.7391304347826086,
-    "compromisedAssets": {
-      "data": 0,
-      "device": 0,
-      "network": 0
-    },
-    "compromisedDataGB": 0,
-    "data": {
-      "device": true,
-      "network": false,
-      "data": false
-    },
-    "node": {
-      "id": "12300000100"
-    }
-  },
-  {
-    "id": "58ff309aaab6690ae348dd70",
-    "timestamp": "2017-04-25T11:18:50.355Z",
-    "type": "newAsset",
-    "networkSuperiority": 1.7391304347826086,
-    "compromisedAssets": {
-      "data": 0,
-      "device": 0,
-      "network": 0
-    },
-    "compromisedDataGB": 0,
-    "data": {
-      "device": true,
-      "network": false,
-      "data": false
-    },
-    "node": {
-      "id": "12300000101"
-    }
-  },
-  {
-    "id": "58ff309aaab6690ae348dd72",
-    "timestamp": "2017-04-25T11:18:50.368Z",
-    "type": "newAsset",
-    "networkSuperiority": 1.7391304347826086,
-    "compromisedAssets": {
-      "data": 0,
-      "device": 0,
-      "network": 0
-    },
-    "compromisedDataGB": 0,
-    "data": {
-      "device": true,
-      "network": false,
-      "data": false
-    },
-    "node": {
-      "id": "12300000102"
-    }
-  },
-  {
-    "id": "58ff309aaab6690ae348dd74",
-    "timestamp": "2017-04-25T11:18:50.381Z",
-    "type": "newAsset",
-    "networkSuperiority": 1.7391304347826086,
-    "compromisedAssets": {
-      "data": 0,
-      "device": 0,
-      "network": 0
-    },
-    "compromisedDataGB": 0,
-    "data": {
-      "device": true,
-      "network": false,
-      "data": false
-    },
-    "node": {
-      "id": "12300000103"
-    }
-  },
-  {
-    "id": "58ff309aaab6690ae348dd76",
-    "timestamp": "2017-04-25T11:18:50.404Z",
-    "type": "newAsset",
-    "networkSuperiority": 1.7391304347826086,
-    "compromisedAssets": {
-      "data": 0,
-      "device": 0,
-      "network": 0
-    },
-    "compromisedDataGB": 0,
-    "data": {
-      "device": true,
-      "network": false,
-      "data": false
-    },
-    "node": {
-      "id": "12300000104"
-    }
-  },
-  {
-    "id": "58ff309aaab6690ae348dd78",
-    "timestamp": "2017-04-25T11:18:50.423Z",
-    "type": "newAsset",
-    "networkSuperiority": 1.7391304347826086,
-    "compromisedAssets": {
-      "data": 0,
-      "device": 0,
-      "network": 0
-    },
-    "compromisedDataGB": 0,
-    "data": {
-      "device": true,
-      "network": false,
-      "data": false
-    },
-    "node": {
-      "id": "12300000105"
-    }
-  },
-  {
-    "id": "58ff309aaab6690ae348dd7a",
-    "timestamp": "2017-04-25T11:18:50.437Z",
-    "type": "newAsset",
-    "networkSuperiority": 1.7391304347826086,
-    "compromisedAssets": {
-      "data": 0,
-      "device": 0,
-      "network": 0
-    },
-    "compromisedDataGB": 0,
-    "data": {
-      "device": true,
-      "network": false,
-      "data": false
-    },
-    "node": {
-      "id": "12300000106"
-    }
-  },
-  {
-    "id": "58ff309aaab6690ae348dd7c",
-    "timestamp": "2017-04-25T11:18:50.450Z",
-    "type": "newAsset",
-    "networkSuperiority": 1.7391304347826086,
-    "compromisedAssets": {
-      "data": 0,
-      "device": 0,
-      "network": 0
-    },
-    "compromisedDataGB": 0,
-    "data": {
-      "device": true,
-      "network": false,
-      "data": false
-    },
-    "node": {
-      "id": "12300000107"
-    }
-  },
-  {
-    "id": "58ff309aaab6690ae348dd7e",
-    "timestamp": "2017-04-25T11:18:50.460Z",
-    "type": "newAsset",
-    "networkSuperiority": 1.7391304347826086,
-    "compromisedAssets": {
-      "data": 0,
-      "device": 0,
-      "network": 0
-    },
-    "compromisedDataGB": 0,
-    "data": {
-      "device": true,
-      "network": false,
-      "data": false
-    },
-    "node": {
-      "id": "12300000108"
-    }
-  },
-  {
-    "id": "58ff309aaab6690ae348dd80",
-    "timestamp": "2017-04-25T11:18:50.471Z",
-    "type": "newAsset",
-    "networkSuperiority": 1.7391304347826086,
-    "compromisedAssets": {
-      "data": 0,
-      "device": 0,
-      "network": 0
-    },
-    "compromisedDataGB": 0,
-    "data": {
-      "device": true,
-      "network": false,
-      "data": false
-    },
-    "node": {
-      "id": "12300000109"
-    }
-  },
-  {
-    "id": "58ff309aaab6690ae348dd85",
-    "timestamp": "2017-04-25T11:18:50.529Z",
+    "id": "59102d85bd5f8e3998aa77a2",
+    "timestamp": "2017-05-08T08:34:13.650Z",
     "type": "nodeMarkAsRed",
-    "networkSuperiority": 2.1739130434782608,
+    "networkSuperiority": 50,
     "compromisedAssets": {
       "data": 0,
       "device": 0,
@@ -298,20 +50,20 @@
     "data": {
       "method": "Simulation::Mock",
       "sourceNode": {
-        "id": "12300000010"
+        "id": "12300000096"
       },
       "localRank": "100%",
       "globalRank": "100%"
     },
     "node": {
-      "id": "12300000129"
+      "id": "12300000099"
     }
   },
   {
-    "id": "58ff309baab6690ae348dd89",
-    "timestamp": "2017-04-25T11:18:51.145Z",
-    "type": "newAsset",
-    "networkSuperiority": 2.1739130434782608,
+    "id": "59102d8abd5f8e3998aa77af",
+    "timestamp": "2017-05-08T08:34:18.661Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 50,
     "compromisedAssets": {
       "data": 0,
       "device": 0,
@@ -319,19 +71,20 @@
     },
     "compromisedDataGB": 0,
     "data": {
-      "device": false,
-      "network": false,
-      "data": true
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000099"
+      }
     },
     "node": {
-      "id": "12300000003"
+      "id": "12300000098"
     }
   },
   {
-    "id": "58ff309baab6690ae348dd8b",
-    "timestamp": "2017-04-25T11:18:51.166Z",
-    "type": "newAsset",
-    "networkSuperiority": 2.1739130434782608,
+    "id": "59102d8bbd5f8e3998aa77b3",
+    "timestamp": "2017-05-08T08:34:19.664Z",
+    "type": "nodeMarkAsRed",
+    "networkSuperiority": 75,
     "compromisedAssets": {
       "data": 0,
       "device": 0,
@@ -339,19 +92,22 @@
     },
     "compromisedDataGB": 0,
     "data": {
-      "device": false,
-      "network": false,
-      "data": true
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000099"
+      },
+      "localRank": "100%",
+      "globalRank": "100%"
     },
     "node": {
-      "id": "12300000003"
+      "id": "12300000098"
     }
   },
   {
-    "id": "58ff309baab6690ae348dd8d",
-    "timestamp": "2017-04-25T11:18:51.343Z",
-    "type": "newAsset",
-    "networkSuperiority": 2.1739130434782608,
+    "id": "59102d8ebd5f8e3998aa7ba6",
+    "timestamp": "2017-05-08T08:34:22.059Z",
+    "type": "newDiscoveredNode",
+    "networkSuperiority": 75,
     "compromisedAssets": {
       "data": 0,
       "device": 0,
@@ -359,19 +115,20 @@
     },
     "compromisedDataGB": 0,
     "data": {
-      "device": false,
-      "network": false,
-      "data": true
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000099"
+      }
     },
     "node": {
-      "id": "12300000030"
+      "id": "12300000097"
     }
   },
   {
-    "id": "58ff309baab6690ae348dd8f",
-    "timestamp": "2017-04-25T11:18:51.354Z",
-    "type": "newAsset",
-    "networkSuperiority": 2.1739130434782608,
+    "id": "59102d8fbd5f8e3998aa7bb8",
+    "timestamp": "2017-05-08T08:34:23.784Z",
+    "type": "nodeMarkAsRed",
+    "networkSuperiority": 100,
     "compromisedAssets": {
       "data": 0,
       "device": 0,
@@ -379,212 +136,15 @@
     },
     "compromisedDataGB": 0,
     "data": {
-      "device": false,
-      "network": false,
-      "data": true
+      "method": "Simulation::Mock",
+      "sourceNode": {
+        "id": "12300000096"
+      },
+      "localRank": "100%",
+      "globalRank": "100%"
     },
     "node": {
-      "id": "12300000031"
-    }
-  },
-  {
-    "id": "58ff309baab6690ae348dd91",
-    "timestamp": "2017-04-25T11:18:51.361Z",
-    "type": "newAsset",
-    "networkSuperiority": 2.1739130434782608,
-    "compromisedAssets": {
-      "data": 0,
-      "device": 0,
-      "network": 0
-    },
-    "compromisedDataGB": 0,
-    "data": {
-      "device": false,
-      "network": false,
-      "data": true
-    },
-    "node": {
-      "id": "12300000030"
-    }
-  },
-  {
-    "id": "58ff309baab6690ae348dd93",
-    "timestamp": "2017-04-25T11:18:51.374Z",
-    "type": "newAsset",
-    "networkSuperiority": 2.1739130434782608,
-    "compromisedAssets": {
-      "data": 0,
-      "device": 0,
-      "network": 0
-    },
-    "compromisedDataGB": 0,
-    "data": {
-      "device": false,
-      "network": false,
-      "data": true
-    },
-    "node": {
-      "id": "12300000032"
-    }
-  },
-  {
-    "id": "58ff309baab6690ae348dd95",
-    "timestamp": "2017-04-25T11:18:51.383Z",
-    "type": "newAsset",
-    "networkSuperiority": 2.1739130434782608,
-    "compromisedAssets": {
-      "data": 0,
-      "device": 0,
-      "network": 0
-    },
-    "compromisedDataGB": 0,
-    "data": {
-      "device": false,
-      "network": false,
-      "data": true
-    },
-    "node": {
-      "id": "12300000031"
-    }
-  },
-  {
-    "id": "58ff309baab6690ae348dd97",
-    "timestamp": "2017-04-25T11:18:51.390Z",
-    "type": "newAsset",
-    "networkSuperiority": 2.1739130434782608,
-    "compromisedAssets": {
-      "data": 0,
-      "device": 0,
-      "network": 0
-    },
-    "compromisedDataGB": 0,
-    "data": {
-      "device": false,
-      "network": false,
-      "data": true
-    },
-    "node": {
-      "id": "12300000033"
-    }
-  },
-  {
-    "id": "58ff309baab6690ae348dd99",
-    "timestamp": "2017-04-25T11:18:51.406Z",
-    "type": "newAsset",
-    "networkSuperiority": 2.1739130434782608,
-    "compromisedAssets": {
-      "data": 0,
-      "device": 0,
-      "network": 0
-    },
-    "compromisedDataGB": 0,
-    "data": {
-      "device": false,
-      "network": false,
-      "data": true
-    },
-    "node": {
-      "id": "12300000034"
-    }
-  },
-  {
-    "id": "58ff309baab6690ae348dd9a",
-    "timestamp": "2017-04-25T11:18:51.407Z",
-    "type": "newAsset",
-    "networkSuperiority": 2.1739130434782608,
-    "compromisedAssets": {
-      "data": 0,
-      "device": 0,
-      "network": 0
-    },
-    "compromisedDataGB": 0,
-    "data": {
-      "device": false,
-      "network": false,
-      "data": true
-    },
-    "node": {
-      "id": "12300000032"
-    }
-  },
-  {
-    "id": "58ff309baab6690ae348dd9d",
-    "timestamp": "2017-04-25T11:18:51.429Z",
-    "type": "newAsset",
-    "networkSuperiority": 2.1739130434782608,
-    "compromisedAssets": {
-      "data": 0,
-      "device": 0,
-      "network": 0
-    },
-    "compromisedDataGB": 0,
-    "data": {
-      "device": false,
-      "network": false,
-      "data": true
-    },
-    "node": {
-      "id": "12300000035"
-    }
-  },
-  {
-    "id": "58ff309baab6690ae348dd9e",
-    "timestamp": "2017-04-25T11:18:51.429Z",
-    "type": "newAsset",
-    "networkSuperiority": 2.1739130434782608,
-    "compromisedAssets": {
-      "data": 0,
-      "device": 0,
-      "network": 0
-    },
-    "compromisedDataGB": 0,
-    "data": {
-      "device": false,
-      "network": false,
-      "data": true
-    },
-    "node": {
-      "id": "12300000033"
-    }
-  },
-  {
-    "id": "58ff309baab6690ae348dda1",
-    "timestamp": "2017-04-25T11:18:51.443Z",
-    "type": "newAsset",
-    "networkSuperiority": 2.1739130434782608,
-    "compromisedAssets": {
-      "data": 0,
-      "device": 0,
-      "network": 0
-    },
-    "compromisedDataGB": 0,
-    "data": {
-      "device": false,
-      "network": false,
-      "data": true
-    },
-    "node": {
-      "id": "12300000034"
-    }
-  },
-  {
-    "id": "58ff309baab6690ae348dda3",
-    "timestamp": "2017-04-25T11:18:51.458Z",
-    "type": "newAsset",
-    "networkSuperiority": 2.1739130434782608,
-    "compromisedAssets": {
-      "data": 0,
-      "device": 0,
-      "network": 0
-    },
-    "compromisedDataGB": 0,
-    "data": {
-      "device": false,
-      "network": false,
-      "data": true
-    },
-    "node": {
-      "id": "12300000036"
+      "id": "12300000097"
     }
   }
 ]
