@@ -79,7 +79,7 @@ class Demo extends Component {
 
   onLoadData(value = this.state.option) {
     const events = require(`./events${value}.json`)
-    const nodes = require('./nodes.json')
+    const nodes = require(`./nodes${value}.json`)
 
     this.setState({ option: value, events, nodes: nodes.map(addDemoClusters) })
   }
