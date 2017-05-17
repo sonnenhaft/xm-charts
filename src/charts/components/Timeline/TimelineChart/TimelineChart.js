@@ -42,14 +42,14 @@ export default class TimelineChart extends Component {
 
   refRootNode = node => this.rootNode = d3.select(node)
 
-  componentWillUpdate({ isToggled, zoomFactor }) {
+  componentWillUpdate({ isToggled, zoomFactor, events }) {
     const { clientWidth: realWidth } = this.rootNode.node()
     const realHeight = isToggled ? 100 : 200
     const width = Math.max(realWidth - getMarginLeft(isToggled) - MARGIN_RIGHT, 0)
     const height = Math.max(realHeight - getMarginTop(isToggled) - MARGIN_BOTTOM, 0)
     Object.assign(this, { width, height, realWidth, realHeight })
 
-    const minMaxValues = d3.extent(this.props.events, ({ date }) => date)
+    const minMaxValues = d3.extent(events, ({ date }) => date)
     this.xScale.domain(minMaxValues).rangeRound([0, width])
     this.xScaleMini.domain(minMaxValues).rangeRound([0, width])
     this.yScale.rangeRound([height, 0])
@@ -109,13 +109,7 @@ export default class TimelineChart extends Component {
     g.bindData(`rect.${styles['small-line']}`, data.filter(filterVisible), attrs, 0)
 
     const groupWidth = 25 / this.zoom.k
-    const prevGroupWidth = width / groupWidth
-    if ( this.prevGroupWidth !== prevGroupWidth ) {
-      this.prevGroupWidth = prevGroupWidth
-      this.composedData = composeCircles(events, width, groupWidth)
-    }
-
-    const { bulkCircles, nonBulkCircles } = this.composedData
+    const { bulkCircles, nonBulkCircles } = composeCircles(events, width, groupWidth)
     const actions = {
       click: onTimeChanged,
       mouseout: () => this.setState({ isTooltipOpened: false }),
