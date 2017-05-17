@@ -59,7 +59,8 @@ export default class CircleIndicator extends Component {
 
     const textBlock = this.root.select('.textBlock')
     td(textBlock).tween('text', function() {
-      const i = d3.interpolate(this.textContent - 0, percent * 10)
+      const initialTime = this.textContent - 0
+      const i = d3.interpolate(initialTime * 10, percent * 10)
       return t => {
         let percentTime = i(t) / 10
         if ( percentTime > 10 ) {

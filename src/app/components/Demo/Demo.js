@@ -2,10 +2,8 @@ import React, { Component } from 'react'
 import SimulationChart from 'charts/components/SimulationChart'
 import './Demo.scss'
 
-const addDemoClusters = node => ({
-  ...node,
-})
-
+const addDemoClusters = node => ({ ...node })
+const rand = arr => arr[Math.round(Math.random() * (arr.length - 1))]
 const version = `${process.env.npm_package_name} v${process.env.npm_package_version}`
 const options = [
   { value: 1, title: 1 },
@@ -86,13 +84,18 @@ class Demo extends Component {
 
   onNextAddTick = () => {
     const events = this.state.events.slice()
-    const event = events[Math.round(Math.random() * (events.length - 1))]
+    const event = rand(events)
+    const node = rand(this.state.nodes)
     const lastEvent = events[events.length - 1]
     const date = new Date(new Date(lastEvent.timestamp).getTime() + 1000)
     events.push({
       ...event,
       id: Date.now(),
       timestamp: new Date(date),
+      data: {
+        ...(event.data || {}),
+        sourceNode: { id: node.agentId },
+      },
       networkSuperiority: Math.min((lastEvent.networkSuperiority + Math.random()), 100),
     })
     this.setState({ events })
