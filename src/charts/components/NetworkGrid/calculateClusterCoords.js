@@ -52,13 +52,13 @@ export default  function(nodes, ratio = 1) {
       })
     }))
   }, []).reduce((map, value) => {
-    map[value.node.name] = value
+    map[value.node.agentId] = value
     return map
   }, {})
 
   // sorry for this, setting "coordinatedNodes" into same position as it was
-  const coordinatedNodes = nodes.map(({ name }) => {
-    return coordinatedNodesMap[name]
+  const coordinatedNodes = nodes.map(({ agentId }) => {
+    return coordinatedNodesMap[agentId]
   })
 
   const coordinatedClusters = items.reduce((clusters, { width, height, x, y, item: { clusterId: cluster } }) => {
