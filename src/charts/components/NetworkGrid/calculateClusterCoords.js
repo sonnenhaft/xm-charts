@@ -92,7 +92,7 @@ export const getArrows = (events, coordinatedNodes, currentTime) => {
     return map
   }, {})
   const filteredEvents = events
-    .filter(({ date }) => date < currentTime)
+    .filter(({ date }) => date <= currentTime)
 
   const compromisedMap = filteredEvents.filter(({ type }) => type === 'assetCompromised').reduce((map, event) => {
     map[event.node.id] = true
