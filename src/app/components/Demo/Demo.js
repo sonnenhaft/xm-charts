@@ -13,18 +13,58 @@ const options = [
   { value: 3, title: 3 },
 ]
 
-const DemoHeader = ({ className, value, ...rest }) => (
-  <div className={className}>
-    <div styleName="toolbar-header">
-      Toolbar here ({version})
-      <select value={value} {...rest} styleName="section">
-        {options.map(({ value, title }) =>
-          <option key={value} value={value}>Data set #{title}</option>
-        )}
-      </select>
-    </div>
-  </div>
-)
+class DemoHeader extends Component {
+  state = {
+    interval: null,
+  }
+
+  clearInterval = () => {
+    if ( this.state.interval ) {
+      clearInterval(this.state.interval)
+      this.setState({ interval: null })
+    }
+  }
+
+  runInterval = () => {
+    if ( this.state.interval ) {
+      this.clearInterval()
+    } else {
+      this.setState({ interval: setInterval(this.props.onNextAddTick, 100) })
+    }
+  }
+
+  componentDidMount() {
+    document.addEventListener('visibilitychange', this.clearInterval)
+    window.onblur = this.clearInterval
+  }
+
+  componentWillUnmount() {
+    this.clearInterval()
+  }
+
+  render() {
+    const { className, value, events, onChange } = this.props
+    return (
+      <div className={className}>
+        <div styleName="toolbar-header">
+          Toolbar here ({version})
+          <select value={value} styleName="section">
+            {options.map(({ value, title }) =>
+              <option key={value} value={value} onChange={onChange}>Data set #{title}</option>
+            )}
+          </select>
+          <div>
+            {events.length &&
+            <button onClick={this.runInterval}>
+              {this.state.interval ? 'Stop ' : 'Start '} generating events
+            </button>
+            }
+          </div>
+        </div>
+      </div>
+    )
+  }
+}
 
 class Demo extends Component {
   state = {
@@ -44,13 +84,28 @@ class Demo extends Component {
     this.setState({ option: value, events, nodes: nodes.map(addDemoClusters) })
   }
 
+  onNextAddTick = () => {
+    const events = this.state.events.slice()
+    const event = events[Math.round(Math.random() * (events.length - 1))]
+    const lastEvent = events[events.length - 1]
+    const date = new Date(new Date(lastEvent.timestamp).getTime() + 1000)
+    events.push({
+      ...event,
+      id: Date.now(),
+      timestamp: new Date(date),
+      networkSuperiority: Math.min((lastEvent.networkSuperiority + Math.random()), 100),
+    })
+    this.setState({ events })
+  }
+
   render() {
     const { option, events, nodes } = this.state
 
     return (
       <div styleName="root">
         <DemoHeader styleName="toolbar" value={option}
-             onChange={event => this.onLoadData(event.target.value)}/>
+                    onNextAddTick={this.onNextAddTick}
+                    onChange={event => this.onLoadData(event.target.value)} events={events}/>
         <SimulationChart styleName="simulation-chart" events={events} nodes={nodes}/>
       </div>
     )
