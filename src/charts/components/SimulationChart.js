@@ -11,32 +11,41 @@ const getLastDateOrReturnZero = events => {
 }
 
 export default class SimulationChart extends Component {
-  onSelectedNodeIndexChanged = selectedNodeIndex => this.setState({ selectedNodeIndex })
-  onCurrentTimeChanged = currentTime => this.setState({ currentTime })
 
-  constructor(props) {
-    super(props)
-    const events = eventsAdapter(props.events)
-    this.state = {
-      selectedNodeIndex: -1,
-      events: events,
-      currentTime: getLastDateOrReturnZero(events),
-    }
+  state = {
+    selectedNodeIndex: -1,
+    events: undefined,
+    currentTime: undefined,
+  }
+
+  componentWillMount() {
+    this.setRawEvents(this.props.events)
   }
 
   componentWillReceiveProps({ events }) {
     if ( this.props.events !== events ) {
-      events = eventsAdapter(events)
-      this.setState({ events, currentTime: getLastDateOrReturnZero(events) })
+      this.setRawEvents(events)
     }
   }
 
+  setRawEvents(rawEvents) {
+    const events = eventsAdapter(rawEvents)
+    const currentTime =  getLastDateOrReturnZero(events)
+    this.state = {events, currentTime}
+  }
+
+  onSelectedNodeIndexChanged = selectedNodeIndex => this.setState({ selectedNodeIndex })
+
+  onCurrentTimeChanged = currentTime => this.setState({ currentTime })
+
   render() {
-    const props = this.props
-    const state = this.state
-    const { nodes, className } = props
-    const { currentTime, selectedNodeIndex, events } = state
-    const { onCurrentTimeChanged, onSelectedNodeIndexChanged } = this
+
+    const {
+      props: {nodes, className},
+      state: {currentTime, selectedNodeIndex, events},
+      onCurrentTimeChanged,
+      onSelectedNodeIndexChanged,
+    } = this
 
     return (
       <div className={className} styleName="root">
