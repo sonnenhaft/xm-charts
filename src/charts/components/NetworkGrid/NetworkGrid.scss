@@ -6,9 +6,12 @@ $grey: #E6E6E6;
 $grey-light: rgba(230, 230, 230, 0.4);
 
 .node-tooltip {
+  &.hidden {
+    visibility: hidden;
+  }
   position: fixed;
   pointer-events: none;
-  display: none;
+  display: block;
   z-index: 10;
 }
 

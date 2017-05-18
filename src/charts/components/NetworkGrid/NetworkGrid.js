@@ -66,7 +66,7 @@ export default class NetworkGrid extends Component {
   }
 
 
-  componentWillReceiveProps({ nodes, events, currentTime }) {
+  componentWillReceiveProps({ nodes, events, currentTime }, { hoveredNodeIndex }) {
     if ( this.props.nodes !== nodes ) {
       this.calculateClusters({ nodes })
     }
@@ -86,7 +86,7 @@ export default class NetworkGrid extends Component {
   refRootBlock = rootBlock => {
     this.rootBlock = d3.select(rootBlock)
     this.svg = this.rootBlock.select('.svg')
-    this.svg.select('.zoomRect').call(this.zoom)
+    this.svg.call(this.zoom)
 
     setTimeout(() => {
       // think that better to remember height in here and on window changed
@@ -95,7 +95,7 @@ export default class NetworkGrid extends Component {
   }
 
   onZoomFactorChanged = () => {
-    this.rootBlock.select('.nodeTooltip').style('display', 'none')
+    this.setState({hoveredNodeIndex: -1})
     this.forceUpdate()
   }
 
@@ -115,14 +115,13 @@ export default class NetworkGrid extends Component {
     const coordinatedNodes = cachedClusters.coordinatedNodes
 
     this.svg.attrs({ width, height })
-    this.svg.select('.zoomRect').attrs({ width, height })
 
 
     const centralizeZoomFactor = Math.min(
       height / (NODE_WIDTH * this.cachedClusters.totalHeight),
       width / (NODE_WIDTH * this.cachedClusters.totalWidth)
     )
-    const { k, x, y } = d3.zoomTransform(this.svg.select('.zoomRect').node())
+    const { k, x, y } = d3.zoomTransform(this.svg.node())
     const shiftX = (width - this.cachedClusters.totalWidth * NODE_WIDTH * centralizeZoomFactor ) * k / 2
     const shiftY = (height - this.cachedClusters.totalHeight * NODE_WIDTH * centralizeZoomFactor ) * k / 2
     this.svg.selectAll('.grid-shifter').attr('transform', `translate(${shiftX}, ${shiftY})`)
@@ -135,42 +134,24 @@ export default class NetworkGrid extends Component {
     xScale.domain(currentZoom.rescaleX(xScale).domain())
     yScale.domain(currentZoom.rescaleY(yScale).domain())
 
-    const findNodeByMouse = ({ offsetX, offsetY }) => {
-      const x = xScale.invert(offsetX - shiftX)
-      const y = yScale.invert(offsetY - shiftY)
-      return coordinatedNodes.findIndex(({ x: _x, y: _y }) =>
-        _x - 0.1 < x && _y - 0.1 < y && _x + 0.4 > x && _y + 0.8 >= y
-      )
-    }
-
-    this.svg.select('.zoomRect').attrs({
-      mousemove: () => {
-        const hoveredNodeIndex = findNodeByMouse(d3.event)
-        const rect = this.rootBlock.select('.nodeTooltip')
-
-        if ( hoveredNodeIndex !== -1 ) {
-          const { x, y } = coordinatedNodes[hoveredNodeIndex]
-          const offsets = this.rootBlock.node().getBoundingClientRect()
-          rect.styles({
-            top: yScale(y + 0.38) - 74 + shiftY + offsets.top,
-            left: xScale(x + 0.1755) + shiftX + offsets.left,
-            display: 'block',
-          })
-          this.svg.select('.zoomRect').style('cursor', 'pointer')
-          if ( this.state.hoveredNodeIndex !== hoveredNodeIndex ) {
-            this.setState({ hoveredNodeIndex })
-          }
-        } else if ( hoveredNodeIndex === -1 ) {
-          rect.style('display', 'none')
-          this.svg.select('.zoomRect').style('cursor', 'move')
-        }
-      },
-      click: () => this.props.onSelectedNodeIndexChanged(findNodeByMouse(d3.event)),
-    })
-
     const status = getNodesEventsDataMap(events, currentTime)
     const allElements = this.paintAndReturnNodes(this.cachedClusters, status, currentZoom)
 
+    allElements.attrs({
+      click: (item, index) => this.props.onSelectedNodeIndexChanged(index),
+      mouseout: () => this.setState({ hoveredNodeIndex: -1 }),
+      mouseover: (item, hoveredNodeIndex) => {
+        const { x, y } = coordinatedNodes[hoveredNodeIndex]
+        const offsets = this.rootBlock.node().getBoundingClientRect()
+        this.rootBlock.select('.nodeTooltip').styles({
+          top: yScale(y + 0.38) - 74 + shiftY + offsets.top,
+          left: xScale(x + 0.1755) + shiftX + offsets.left,
+        })
+        if ( hoveredNodeIndex !== this.state.hoveredNodeIndex ) {
+          this.setState({ hoveredNodeIndex })
+        }
+      },
+    })
     allElements.select('.wrapper')
       .classed('is-selected', (_, index) => index === this.props.selectedNodeIndex)
     allElements.select('.icons')
@@ -312,17 +293,19 @@ export default class NetworkGrid extends Component {
     return (
       <WindowDependable className={className} refCb={this.refRootBlock}
                         onDimensionsChanged={() => this.forceUpdate()}>
-        <div styleName="node-tooltip" className="nodeTooltip">
-          <div styleName="node-information">
-            <div>Name: {name}</div>
-            <div>Node ID: {agentId}</div>
+        <div styleName={`node-tooltip ${selectedItem ? '' : 'hidden'}`} className="nodeTooltip">
+          <div>
+            <div styleName="node-information">
+              <div>Name: {name}</div>
+              <div>Node ID: {agentId}</div>
+            </div>
+            <svg styleName="tooltip-svg">
+              <line x1="0" y1="50" x2="70" y2="0"/>
+              <line x1="70" y1="0" x2="100" y2="0" strokeWidth="2.5"/>
+            </svg>
           </div>
-          <svg styleName="tooltip-svg">
-            <line x1="0" y1="50" x2="70" y2="0"/>
-            <line x1="70" y1="0" x2="100" y2="0" strokeWidth="2.5"/>
-          </svg>
         </div>
-        <svg className="svg">
+        <svg className="svg zoomRect">
           <defs>
             <marker id="red-arrow" markerWidth="10" markerHeight="10" refX="10" refY="3" orient="auto" markerUnits="strokeWidth">
               <g transform="translate(7,0)" strokeWidth="1.2" fill="none">
@@ -345,11 +328,6 @@ export default class NetworkGrid extends Component {
               <g className="clusters" styleName="clusters-wrapper"/>
               <g className="clusterLabels" styleName="cluster-labels"/>
               <g className="grid"/>
-            </g>
-          </g>
-          <rect className="zoomRect" styleName="zoom-rect"/>
-          <g className="grid-shifter">
-            <g className="zoom-scale">
               <g className="arrows"/>
             </g>
           </g>
