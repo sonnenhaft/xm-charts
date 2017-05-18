@@ -15,7 +15,7 @@ const methods = {
     })
   },
   attrs: function(object, noEvents = false) {
-    const mouseEvents = ['mouseover', 'mouseout', 'click', 'mousemove']
+    const mouseEvents = ['mouseover', 'mouseout', 'click', 'mousemove', 'mouseup']
     Object.keys(object).forEach(key => {
       const value = object[key]
       if ( key === 'html' ) {

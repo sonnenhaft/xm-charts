@@ -44,15 +44,18 @@ $grey-light: rgba(230, 230, 230, 0.4);
   .arrow-highlight {
     opacity: 0;
     stroke: black;
-    stroke-width: 10;
+    stroke-width: 5px;
   }
   rect.cluster {
-    &:hover, &.active {
-      fill: white;
-      cursor: pointer;
+    fill: white;
+  }
+  .cluster-group.active {
+    rect.cluster {
+      stroke-width: 2px;
       stroke: #d7d7d7;
     }
   }
+
   .test {
     width: 100px;
     height: 100px;
