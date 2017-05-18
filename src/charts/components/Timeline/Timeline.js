@@ -63,6 +63,6 @@ export default class Timeline extends Component {
           maxZoom: MAX_ZOOM, minZoom: MIN_ZOOM,
         }} />
       </div>
-    ) : <div styleName="root no-data" className={className}>No events data yet...</div>
+    ) : null //<div styleName="root no-data" className={className}>No events data yet...</div>
   }
 }
