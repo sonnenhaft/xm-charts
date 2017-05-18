@@ -12,7 +12,7 @@ const ZOOM_CHANGE = 1.2
 export default class NetworkGrid extends Component {
   state = {
     hoveredNodeIndex: null,
-    selectedArrowEventId: null,
+    selectedEvent: null,
   }
 
   static propTypes = {
@@ -55,18 +55,18 @@ export default class NetworkGrid extends Component {
 
   // TODO(vlad): remove code below
   shouldComponentUpdate({ currentTime, events, nodes, selectedNodeIndex },
-                        { hoveredNodeIndex, selectedArrowEventId }) {
+                        { hoveredNodeIndex, selectedEvent }) {
     const { props, state } = this
     return props.currentTime !== currentTime
       || props.events !== events
       || props.nodes !== nodes
       || state.hoveredNodeIndex !== hoveredNodeIndex
-      || state.selectedArrowEventId !== selectedArrowEventId
+      || state.selectedEvent !== selectedEvent
       || props.selectedNodeIndex !== selectedNodeIndex
   }
 
 
-  componentWillReceiveProps({ nodes, events, currentTime }, { hoveredNodeIndex }) {
+  componentWillReceiveProps({ nodes, events, currentTime }) {
     if ( this.props.nodes !== nodes ) {
       this.calculateClusters({ nodes })
     }
@@ -95,7 +95,6 @@ export default class NetworkGrid extends Component {
   }
 
   onZoomFactorChanged = () => {
-    this.setState({hoveredNodeIndex: -1})
     this.forceUpdate()
   }
 
@@ -137,16 +136,27 @@ export default class NetworkGrid extends Component {
     const status = getNodesEventsDataMap(events, currentTime)
     const allElements = this.paintAndReturnNodes(this.cachedClusters, status, currentZoom)
 
+    const getCoords = (coords, zo, xo = 0, yo = 0) => {
+      if ( !coords ) {
+        return {}
+      }
+      const { x, y } = coords
+      const offsets = this.rootBlock.node().getBoundingClientRect()
+      return {
+        top: `${yScale(y + yo) - zo + shiftY + offsets.top  }px`,
+        left: `${xScale(x + xo) + shiftX + offsets.left  }px`,
+      }
+    }
+
+    const node = coordinatedNodes[this.state.hoveredNodeIndex]
+    this.rootBlock.select('.nodeTooltip').styles(getCoords(node, 74, 0.1755, 0.38))
+    const arrow = this.cachedArrows.find(({ event }) => event === this.state.selectedEvent)
+    this.rootBlock.select('.arrowTooltip').styles(getCoords((arrow || {}).middlePoint, 64))
+
     allElements.attrs({
       click: (item, index) => this.props.onSelectedNodeIndexChanged(index),
       mouseout: () => this.setState({ hoveredNodeIndex: -1 }),
       mouseover: (item, hoveredNodeIndex) => {
-        const { x, y } = coordinatedNodes[hoveredNodeIndex]
-        const offsets = this.rootBlock.node().getBoundingClientRect()
-        this.rootBlock.select('.nodeTooltip').styles({
-          top: yScale(y + 0.38) - 74 + shiftY + offsets.top,
-          left: xScale(x + 0.1755) + shiftX + offsets.left,
-        })
         if ( hoveredNodeIndex !== this.state.hoveredNodeIndex ) {
           this.setState({ hoveredNodeIndex })
         }
@@ -174,10 +184,10 @@ export default class NetworkGrid extends Component {
     const y = ({ y }) => scale(y)
 
 
-    const stroke = ({ event: { type, id } }) => {
-      if ( this.state.selectedArrowEventId === id ) {
+    const stroke = ({ event }) => {
+      if ( this.state.selectedEvent === event ) {
         return 'black'
-      } else if ( type === 'newDiscoveredNode' ) {
+      } else if ( event.type === 'newDiscoveredNode' ) {
         return 'blue'
       } else {
         return 'red'
@@ -185,7 +195,10 @@ export default class NetworkGrid extends Component {
     }
 
     const { mergedSelection: arrowsNew, enteredSelection: arrowsEntered } = this.svg.select('.arrows')._bindData('g.arrow-line', this.cachedArrows, {
-      click: ({ id }) => this.setState({ selectedArrowEventId: id }),
+      cursor: 'pointer',
+      click: ({ event }) => {
+        this.setState({ selectedEvent: this.state.selectedEvent === event ? null : event })
+      },
       html: `
         <line class="arrow"></line>
         <line class="arrow-highlight"></line>
@@ -261,7 +274,7 @@ export default class NetworkGrid extends Component {
         rx="5.1" ry="5.1" x="-2.1" y="-2.1"></rect>
       <rect class="innerHover visible-small" stroke-width="6" width="18.8" height="33.41"
         rx="5.1" ry="5.1" x="-2.1" y="-2.1"></rect>
-      <g class="wrapper">
+      <g class="wrapper" cursor="pointer">
         <rect class="visible-large" stroke-width="0.73" width="17.8" height="32.41"
           rx="4.7" ry="4.7" x="-1.6" y="-1.6"></rect> 
         <rect class="visible-small" stroke-width="1.5" width="21.3" height="35.91"
@@ -287,24 +300,37 @@ export default class NetworkGrid extends Component {
 
   render() {
     const { className, nodes } = this.props
-    const selectedItem = nodes[this.state.hoveredNodeIndex]
-    const { name, agentId } = selectedItem || {}
+    const hoveredNode = nodes[this.state.hoveredNodeIndex]
+    const selectedEvent = this.state.selectedEvent
 
     return (
       <WindowDependable className={className} refCb={this.refRootBlock}
                         onDimensionsChanged={() => this.forceUpdate()}>
-        <div styleName={`node-tooltip ${selectedItem ? '' : 'hidden'}`} className="nodeTooltip">
-          <div>
+        <div styleName="node-tooltip" className="nodeTooltip">
+          {hoveredNode && <div>
             <div styleName="node-information">
-              <div>Name: {name}</div>
-              <div>Node ID: {agentId}</div>
+              <div>Name: {hoveredNode.name}</div>
+              <div>Node ID: {hoveredNode.agentId}</div>
             </div>
             <svg styleName="tooltip-svg">
               <line x1="0" y1="50" x2="70" y2="0"/>
               <line x1="70" y1="0" x2="100" y2="0" strokeWidth="2.5"/>
             </svg>
-          </div>
+          </div>}
         </div>
+
+        <div styleName="node-tooltip" className="arrowTooltip">
+          {selectedEvent && <div>
+            <div styleName="node-information">
+              <div>Type: {selectedEvent.type}</div>
+            </div>
+            <svg styleName="tooltip-svg">
+              <line x1="0" y1="50" x2="70" y2="0"/>
+              <line x1="70" y1="0" x2="100" y2="0" strokeWidth="2.5"/>
+            </svg>
+          </div>}
+        </div>
+
         <svg className="svg zoomRect">
           <defs>
             <marker id="red-arrow" markerWidth="10" markerHeight="10" refX="10" refY="3" orient="auto" markerUnits="strokeWidth">
