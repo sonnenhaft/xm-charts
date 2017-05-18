@@ -1,5 +1,6 @@
 import { groupBy, transform, values } from 'lodash'
 import pack from 'bin-pack'
+import { defaultMemoize }  from 'reselect'
 
 const MARGIN = 0.5
 const MARGIN_TOP = 1
@@ -10,7 +11,7 @@ const PADDING_RIGHT = 0
 const PADDING_LEFT = MARGIN
 const PADDING_H = MARGIN
 
-export default  function(nodes, ratio = 1) {
+export default  defaultMemoize(function(nodes, ratio = 1) {
   let clusters = transform(groupBy(nodes, 'cluster'), (result, nodesObject, clusterId) => {
     const size = nodesObject.length
     const width = Math.ceil(Math.sqrt(size))
@@ -84,9 +85,9 @@ export default  function(nodes, ratio = 1) {
     coordinatedClusters,
     coordinatedNodes,
   }
-}
+})
 
-export const getArrows = (events, coordinatedNodes, currentTime) => {
+export const getArrows = defaultMemoize((events, coordinatedNodes, currentTime) => {
   const nodesMap = coordinatedNodes.reduce((map, calc) => {
     map[calc.node.agentId] = calc
     return map
@@ -112,9 +113,9 @@ export const getArrows = (events, coordinatedNodes, currentTime) => {
         endNode,
       }
     })
-}
+})
 
-export const moveArrowsToCorners = (arrows, width, height) => {
+export const moveArrowsToCorners = defaultMemoize((arrows, width, height) => {
   const fn = ([x1, x2], width) => {
     if ( x1 < x2 ) {
       x1 += width
@@ -174,4 +175,4 @@ export const moveArrowsToCorners = (arrows, width, height) => {
       middlePoint: { x: x1 + (x2 - x1) / 2, y: y1 + (y2 - y1) / 2 },
     }
   })
-}
+})

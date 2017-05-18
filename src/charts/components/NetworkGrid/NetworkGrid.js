@@ -23,6 +23,13 @@ export default class NetworkGrid extends Component {
     onSelectedNodeIndexChanged: P.func,
   }
 
+  zoom = undefined
+
+  cachedClusters = undefined
+
+  cachedArrows = undefined
+
+
   constructor(props) {
     super(props)
     this.zoom = d3.zoom().scaleExtent([1, 1000]).on('zoom', this.onZoomFactorChanged)
