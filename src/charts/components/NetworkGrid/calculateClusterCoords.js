@@ -1,6 +1,6 @@
 import { groupBy, transform, values } from 'lodash'
 import pack from 'bin-pack'
-import { defaultMemoize }  from 'reselect'
+import { defaultMemoize } from 'reselect'
 
 const MARGIN = 0.5
 const MARGIN_TOP = 1
@@ -129,7 +129,9 @@ export const moveArrowsToCorners = defaultMemoize((arrows, width, height) => {
   }
 
   const getNode = ({ node: { agentId: id } }) => id
-  const startsEndsArray = arrows.map(({ startNode, endNode }) => ({
+  let startsEndsArray = arrows.filter(({ event: { type } }) => {
+    return type !== 'newDiscoveredNode'
+  }).map(({ startNode, endNode }) => ({
     start: getNode(startNode),
     end: getNode(endNode),
   }))
@@ -154,7 +156,7 @@ export const moveArrowsToCorners = defaultMemoize((arrows, width, height) => {
     return weights
   }
 
-  const w = roots.map(root => setWeights(root, 0, {})).reduce((map, weights) => {
+  const rootsMap = roots.map(root => setWeights(root, 0, {})).reduce((map, weights) => {
     Object.keys(weights).forEach(key => {
       map[key] = Math.max(map[key] || 0, weights[key])
     })
@@ -164,7 +166,7 @@ export const moveArrowsToCorners = defaultMemoize((arrows, width, height) => {
   return arrows.map(({ event, startNode, endNode, isCompormised }) => {
     const [x1, x2] = fn([startNode.x, endNode.x], width)
     const [y2, y1] = fn([endNode.y, startNode.y], height)
-    const val = w[endNode.node.agentId]
+    const val = event. type !== 'newDiscoveredNode' ? rootsMap[endNode.node.agentId] : null
     return {
       id: event.id,
       event,

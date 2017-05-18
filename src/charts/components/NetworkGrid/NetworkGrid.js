@@ -51,10 +51,6 @@ export default class NetworkGrid extends Component {
       currentTime
     )
     this.cachedArrows = moveArrowsToCorners(arrows, 1 / 2 - 0.14, 1 - 0.25)
-    console.warn('Arrows and events logging should be removed when nodes colors are adjusted')
-    console.debug('currentTime: ', currentTime)
-    console.debug('arrows: ', this.cachedArrows)
-    console.debug('events: ', events.filter(({ date }) => date < currentTime))
   }
 
   // TODO(vlad): remove code below
