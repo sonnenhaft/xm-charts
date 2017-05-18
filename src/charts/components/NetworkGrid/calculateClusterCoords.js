@@ -46,6 +46,7 @@ export default  defaultMemoize(function(nodes, ratio = 1) {
   const coordinatedNodesMap = items.reduce((nodes, { width, x, y, item: { nodesObject } }) => {
     return nodes.concat(nodesObject.map((node, index) => {
       return ({
+        id: node.agentId + index + x,
         node,
         x: index % width + x,
         // yes, in here u see width too, hard to explain, is just works)
@@ -62,10 +63,11 @@ export default  defaultMemoize(function(nodes, ratio = 1) {
     return coordinatedNodesMap[agentId]
   })
 
-  const coordinatedClusters = items.reduce((clusters, { width, height, x, y, item: { clusterId: cluster } }) => {
+  const coordinatedClusters = items.reduce((clusters, { width, height, x, y, item: { nodesObject, clusterId: cluster } }) => {
     clusters.push({
       cluster,
-      id: cluster,
+      id: cluster + nodesObject.length,
+      coordinatedNodes: nodesObject.map(({ agentId }) => coordinatedNodesMap[agentId]),
       width: PADDING_RIGHT + PADDING_LEFT + width,
       height: PADDING_H * 2 + height,
       x: x - PADDING_LEFT,
@@ -166,7 +168,7 @@ export const moveArrowsToCorners = defaultMemoize((arrows, width, height) => {
   return arrows.map(({ event, startNode, endNode, isCompormised }) => {
     const [x1, x2] = fn([startNode.x, endNode.x], width)
     const [y2, y1] = fn([endNode.y, startNode.y], height)
-    const val = event. type !== 'newDiscoveredNode' ? rootsMap[endNode.node.agentId] : null
+    const val = event.type !== 'newDiscoveredNode' ? rootsMap[endNode.node.agentId] : null
     return {
       id: event.id,
       event,

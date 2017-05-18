@@ -11,7 +11,7 @@ const ZOOM_CHANGE = 1.2
 
 export default class NetworkGrid extends Component {
   state = {
-    hoveredNodeIndex: null,
+    hoveredNode: null,
     selectedEvent: null,
   }
 
@@ -55,12 +55,12 @@ export default class NetworkGrid extends Component {
 
   // TODO(vlad): remove code below
   shouldComponentUpdate({ currentTime, events, nodes, selectedNodeIndex },
-                        { hoveredNodeIndex, selectedEvent }) {
+                        { hoveredNode, selectedEvent }) {
     const { props, state } = this
     return props.currentTime !== currentTime
       || props.events !== events
       || props.nodes !== nodes
-      || state.hoveredNodeIndex !== hoveredNodeIndex
+      || state.hoveredNode !== hoveredNode
       || state.selectedEvent !== selectedEvent
       || props.selectedNodeIndex !== selectedNodeIndex
   }
@@ -91,7 +91,7 @@ export default class NetworkGrid extends Component {
     setTimeout(() => {
       // think that better to remember height in here and on window changed
       this.forceUpdate()
-    }, 800)
+    }, 1600)
   }
 
   onZoomFactorChanged = () => {
@@ -108,13 +108,7 @@ export default class NetworkGrid extends Component {
       return
     }
 
-    // uncomment to see optimal feeling of empty space in action
-    // this.cachedClusters = _calculateClusterCoords(nodes, height/width) // memoize eats one arg
-    const cachedClusters = this.cachedClusters
-    const coordinatedNodes = cachedClusters.coordinatedNodes
-
     this.svg.attrs({ width, height })
-
 
     const centralizeZoomFactor = Math.min(
       height / (NODE_WIDTH * this.cachedClusters.totalHeight),
@@ -128,13 +122,12 @@ export default class NetworkGrid extends Component {
     const currentZoom = new Transform(centralizeZoomFactor * k, x, y)
     this.zoom.translateExtent([[0, 0], [width, height]]).extent([[0, 0], [width, height]])
 
-
     this.svg.selectAll('.zoom-scale').attr('transform', currentZoom.toString())
     xScale.domain(currentZoom.rescaleX(xScale).domain())
     yScale.domain(currentZoom.rescaleY(yScale).domain())
 
     const status = getNodesEventsDataMap(events, currentTime)
-    const allElements = this.paintAndReturnNodes(this.cachedClusters, status, currentZoom)
+    this.paintAndReturnNodes(this.cachedClusters, status, currentZoom)
 
     const getCoords = (coords, zo, xo = 0, yo = 0) => {
       if ( !coords ) {
@@ -148,41 +141,94 @@ export default class NetworkGrid extends Component {
       }
     }
 
-    const node = coordinatedNodes[this.state.hoveredNodeIndex]
+    const node = this.state.hoveredNode
     this.rootBlock.select('.nodeTooltip').styles(getCoords(node, 74, 0.1755, 0.38))
     const arrow = this.cachedArrows.find(({ event }) => event === this.state.selectedEvent)
     this.rootBlock.select('.arrowTooltip').styles(getCoords((arrow || {}).middlePoint, 64))
-
-    allElements.attrs({
-      click: (item, index) => this.props.onSelectedNodeIndexChanged(index),
-      mouseout: () => this.setState({ hoveredNodeIndex: -1 }),
-      mouseover: (item, hoveredNodeIndex) => {
-        if ( hoveredNodeIndex !== this.state.hoveredNodeIndex ) {
-          this.setState({ hoveredNodeIndex })
-        }
-      },
-    })
-    allElements.select('.wrapper')
-      .classed('is-selected', (_, index) => index === this.props.selectedNodeIndex)
-    allElements.select('.icons')
-      .classed('is-icon', () => currentZoom.k < ZOOM_CHANGE)
-      .classed('is-dot', () => currentZoom.k >= ZOOM_CHANGE)
   }
 
   paintAndReturnNodes({ coordinatedClusters: clusters, coordinatedNodes: nodes }, status, currentZoom) {
     const scale = x => x * NODE_WIDTH
 
-    this.svg.select('.clusters').bindData('rect.cluster', clusters, {
-      rx: 3,
-      ry: 3,
-      transform: ({ x, y }) => `translate(${scale(x)}, ${scale(y)})`,
-      width: ({ width }) => scale(width),
-      height: ({ height }) => scale(height),
+    const { mergedSelection: sel } = this.svg.select('.clusters')._bindData('g.cluster-group', clusters, {
+      html: ({ x, y, width, height, cluster }) => {
+        return `
+          <g>
+            <g transform="translate(${scale(x)}, ${scale(y)})">
+              <rect class="cluster" rx="3" ry="3" 
+                width="${scale(width)}" height="${scale(height)}"></rect>
+              <text class="cluster-labels">
+                ${cluster === 'undefined' ? 'Unidentified' : cluster}
+              </text>
+            </g>
+          </g>
+          <g class="grid"></g>
+          <g class="arrow"></g>`
+      },
     })
 
-    const x = ({ x }) => scale(x)
-    const y = ({ y }) => scale(y)
+    // .data(nodes, ({ node: { _id: id } }) => id)
 
+    const { mergedSelection: newNodes } = sel.select('.grid')._bindData('g.node', ({ coordinatedNodes }) => coordinatedNodes, {
+      transform: ({ x, y }) => `translate(${scale(x)},${scale(y)})`,
+      click: ({node}) => {
+        this.props.onSelectedNodeIndexChanged(this.props.nodes.findIndex(item => node === item))
+      },
+      mouseout: () => this.setState({ hoveredNode: null }),
+      mouseover: item => {
+        if ( item !== this.state.hoveredNode ) {
+          this.setState({ hoveredNode: item })
+        }
+      },
+      html: () => {
+        return `<g>
+      <rect class="outerHover visible-large" stroke-width="1" width="21.3" height="35.91"
+        rx="6.35" ry="6.35" x="-3.35" y="-3.35"></rect>
+      <rect class="outerHover visible-small" stroke-width="3" width="27.8" height="42.41"
+        rx="9.61" ry="9.61" x="-6.6" y="-6.6"></rect>
+      <rect class="innerHover visible-large" stroke-width="1.5" width="18.8" height="33.41"
+        rx="5.1" ry="5.1" x="-2.1" y="-2.1"></rect>
+      <rect class="innerHover visible-small" stroke-width="6" width="18.8" height="33.41"
+        rx="5.1" ry="5.1" x="-2.1" y="-2.1"></rect>
+      <g class="wrapper">
+        <rect class="visible-large" stroke-width="0.73" width="17.8" height="32.41"
+          rx="4.7" ry="4.7" x="-1.6" y="-1.6"></rect> 
+        <rect class="visible-small" stroke-width="1.5" width="21.3" height="35.91"
+          rx="6.35" ry="6.35" x="-3.35" y="-3.35"></rect>
+      </g>
+      <rect class="content" rx="3.2" ry="3.2" width="14.6" height="29.2"></rect>
+      <g class="icons" transform="translate(2,1.5) scale(0.35, 0.35)">
+        <g class="device">${Desktop}${Circle}</g>
+        <g class="data" transform="translate(0, 23)">${Diskette}${Circle}</g>
+        <g class="network" transform="translate(0, 45)">${Snow}${Circle}</g>
+      </g>
+    </g>`},
+    })
+
+    const hasStatus = (key, val1, val2) => ({ node: { agentId } }) => {
+      return status[agentId] && status[agentId][key] === val1 && (!val2 || status[agentId][key] === val2 )
+    }
+
+    newNodes
+      .classed('is-compromised', hasStatus('state', 'compromised'))
+      .classed('is-undiscovered', hasStatus('state', 'undiscovered'))
+      .classed('is-discovered', hasStatus('state', 'discovered'))
+      .classed('is-data-discovered', hasStatus('data', 'discovered', 'compromised'))
+      .classed('is-device-discovered', hasStatus('device', 'discovered', 'compromised'))
+      .classed('is-network-discovered', hasStatus('network', 'discovered', 'compromised'))
+      .classed('is-starting-point', hasStatus('isStartingPoint', true))
+
+    this.svg.selectAll('g.node')
+      .classed('is-small', () => currentZoom.k < ZOOM_CHANGE)
+
+    const currentNode = this.props.nodes[this.props.selectedNodeIndex]
+    this.svg.selectAll('g.node').each(function(){
+      const svgNode = d3.select(this)
+      const datum = svgNode.datum()
+      svgNode.select('.wrapper').classed('is-selected', datum.node === currentNode)
+    })
+
+    this.svg.selectAll('.icons').classed('icons-visible',  currentZoom.k < ZOOM_CHANGE)
 
     const stroke = ({ event }) => {
       if ( this.state.selectedEvent === event ) {
@@ -199,21 +245,23 @@ export default class NetworkGrid extends Component {
       click: ({ event }) => {
         this.setState({ selectedEvent: this.state.selectedEvent === event ? null : event })
       },
-      html: `
-        <line class="arrow"></line>
-        <line class="arrow-highlight"></line>
-        <g class="text-value">
-          <circle class="arrow-circle"></circle>
-          <text class="arrow-circle-text"></text>
-        </g>`,
-    })
+      html: ({ value, middlePoint: { x, y }, startNode: { x: x1, y: y1 }, endNode: { x: x2, y: y2 } }) => {
+        x1 = scale(x1)
+        x2 = scale(x2)
+        y1 = scale(y1)
+        y2 = scale(y2)
+        x = scale(x)
+        y = scale(y)
 
-    const coords = {
-      x1: (({ startNode }) => x(startNode)),
-      y1: (({ startNode }) => y(startNode)),
-      x2: (({ endNode }) => x(endNode)),
-      y2: (({ endNode }) => y(endNode)),
-    }
+        return `
+        <line class="arrow" x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}"></line>
+        <line class="arrow-highlight" x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}"></line>
+        <g class="text-value" visibility="${value ? 'visible' : 'hidden'}">
+          <circle class="arrow-circle" r="8" cx="${x}" cy="${y}"></circle>
+          <text class="arrow-circle-text" x="${x}" y="${y}" dy="3.5">${value}</text>
+        </g>`
+      },
+    })
 
     const arrowAttrs = {
       stroke,
@@ -222,85 +270,13 @@ export default class NetworkGrid extends Component {
     }
     arrowsNew.select('line.arrow').attrs(arrowAttrs)
     arrowsEntered.select('line.arrow').attrs(arrowAttrs)
-    arrowsNew.select('line.arrow').attrs({ ...coords })
-    arrowsNew.select('line.arrow-highlight').attrs({
-      ...coords,
-      opacity: 0,
-      stroke: 'black',
-      'stroke-width': 10,
-    })
-
-    arrowsNew.select('g.text-value').attrs({
-      visibility: ({ value }) => !value ? 'hidden' : 'visible',
-    })
-
     arrowsNew.select('circle.arrow-circle').attrs({ fill: stroke })
     arrowsEntered.select('circle.arrow-circle').attrs({ fill: stroke })
-
-    arrowsNew.select('circle.arrow-circle').attrs({
-      r: 8,
-      cx: ({ middlePoint: { x } }) => scale(x),
-      cy: ({ middlePoint: { y } }) => scale(y),
-    })
-
-    arrowsNew.select('text.arrow-circle-text').attrs({
-      text: ({ value }) => value,
-      fill: 'white',
-      'font-family': 'sans-serif',
-      'font-size': 10,
-      'text-anchor': 'middle',
-      x: ({ middlePoint: { x } }) => scale(x),
-      y: ({ middlePoint: { y } }) => scale(y) + 3.5,
-    })
-
-    this.svg.select('.clusterLabels').bindData('text.clusterLabel', clusters, {
-      transform: ({ x, y }) => `translate(${scale(x)}, ${scale(y)})`,
-      text: ({ cluster }) => cluster === 'undefined' ? 'Unidentified' : cluster,
-    })
-
-    const hasStatus = (key, val1, val2) => ({ node: { agentId } }) => {
-      return status[agentId] && status[agentId][key] === val1 && (!val2 || status[agentId][key] === val2 )
-    }
-
-    const enteredSelection = this.svg.select('.grid').selectAll('.node').data(nodes, ({ node: { _id: id } }) => id)
-    enteredSelection.exit().remove()
-
-    return enteredSelection.enter().append('g').attr('class', 'node').html(`<g>
-      <rect class="outerHover visible-large" stroke-width="1" width="21.3" height="35.91"
-        rx="6.35" ry="6.35" x="-3.35" y="-3.35"></rect>
-      <rect class="outerHover visible-small" stroke-width="3" width="27.8" height="42.41"
-        rx="9.61" ry="9.61" x="-6.6" y="-6.6"></rect>
-      <rect class="innerHover visible-large" stroke-width="1.5" width="18.8" height="33.41"
-        rx="5.1" ry="5.1" x="-2.1" y="-2.1"></rect>
-      <rect class="innerHover visible-small" stroke-width="6" width="18.8" height="33.41"
-        rx="5.1" ry="5.1" x="-2.1" y="-2.1"></rect>
-      <g class="wrapper" cursor="pointer">
-        <rect class="visible-large" stroke-width="0.73" width="17.8" height="32.41"
-          rx="4.7" ry="4.7" x="-1.6" y="-1.6"></rect> 
-        <rect class="visible-small" stroke-width="1.5" width="21.3" height="35.91"
-          rx="6.35" ry="6.35" x="-3.35" y="-3.35"></rect>
-      </g>
-      <rect class="content" rx="3.2" ry="3.2" width="14.6" height="29.2"></rect>
-      <g class="icons" transform="translate(2,1.5) scale(0.35, 0.35)">
-        <g class="device">${Desktop}${Circle}</g>
-        <g class="data" transform="translate(0, 23)">${Diskette}${Circle}</g>
-        <g class="network" transform="translate(0, 45)">${Snow}${Circle}</g>
-      </g>
-    </g>`).merge(enteredSelection)
-      .attrs({ transform: ({ x, y }) => `translate(${scale(x)},${scale(y)})` })
-      .classed('is-compromised', hasStatus('state', 'compromised'))
-      .classed('is-undiscovered', hasStatus('state', 'undiscovered'))
-      .classed('is-discovered', hasStatus('state', 'discovered'))
-      .classed('is-data-discovered', hasStatus('data', 'discovered', 'compromised'))
-      .classed('is-device-discovered', hasStatus('device', 'discovered', 'compromised'))
-      .classed('is-network-discovered', hasStatus('network', 'discovered', 'compromised'))
-      .classed('is-starting-point', hasStatus('isStartingPoint', true))
-      .classed('is-small', () => currentZoom.k < ZOOM_CHANGE)
   }
 
   render() {
-    const { className, nodes } = this.props
-    const hoveredNode = nodes[this.state.hoveredNodeIndex]
+    const { className } = this.props
+    const hoveredNode = this.state.hoveredNode
     const selectedEvent = this.state.selectedEvent
 
     return (
@@ -309,8 +285,8 @@ export default class NetworkGrid extends Component {
         <div styleName="node-tooltip" className="nodeTooltip">
           {hoveredNode && <div>
             <div styleName="node-information">
-              <div>Name: {hoveredNode.name}</div>
-              <div>Node ID: {hoveredNode.agentId}</div>
+              <div>Name: {hoveredNode.node.name}</div>
+              <div>Node ID: {hoveredNode.node.agentId}</div>
             </div>
             <svg styleName="tooltip-svg">
               <line x1="0" y1="50" x2="70" y2="0"/>
@@ -352,8 +328,6 @@ export default class NetworkGrid extends Component {
           <g className="grid-shifter">
             <g className="zoom-scale">
               <g className="clusters" styleName="clusters-wrapper"/>
-              <g className="clusterLabels" styleName="cluster-labels"/>
-              <g className="grid"/>
               <g className="arrows"/>
             </g>
           </g>
