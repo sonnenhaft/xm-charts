@@ -75,6 +75,14 @@ export default class NetworkGrid extends Component {
       this.calculateClusters({ nodes })
     }
 
+    if ( this.props.nodes !== nodes || this.props.events !== events ) {
+      this.setState({
+        hoveredNode: null,
+        selectedArrow: null,
+        selectedCluster: null,
+      })
+    }
+
     if ( this.props.nodes !== nodes ||
       this.props.events !== events ||
       this.props.currentTime !== currentTime
@@ -182,7 +190,7 @@ export default class NetworkGrid extends Component {
       svgCluster.classed('active', svgCluster.datum() === selectedCluster)
     })
 
-    const { mergedSelection: newNodes } = sel.select('.grid')._bindData('g.node', ({ coordinatedNodes }) => coordinatedNodes, {
+    sel.select('.grid').bindData('g.node', ({ coordinatedNodes }) => coordinatedNodes, {
       transform: ({ x, y }) => `translate(${scale(x)},${scale(y)})`,
       click: ({ node }) => {
         this.props.onSelectedNodeIndexChanged(this.props.nodes.findIndex(item => node === item))
@@ -219,21 +227,24 @@ export default class NetworkGrid extends Component {
       },
     })
 
-    const hasStatus = (key, val1, val2) => ({ node: { agentId } }) => {
+    const hasStatus = ({ node: { agentId } }, key, val1, val2) => {
       return status[agentId] && status[agentId][key] === val1 && (!val2 || status[agentId][key] === val2 )
     }
 
-    newNodes
-      .classed('is-compromised', hasStatus('state', 'compromised'))
-      .classed('is-undiscovered', hasStatus('state', 'undiscovered'))
-      .classed('is-discovered', hasStatus('state', 'discovered'))
-      .classed('is-data-discovered', hasStatus('data', 'discovered', 'compromised'))
-      .classed('is-device-discovered', hasStatus('device', 'discovered', 'compromised'))
-      .classed('is-network-discovered', hasStatus('network', 'discovered', 'compromised'))
-      .classed('is-starting-point', hasStatus('isStartingPoint', true))
-
     this.svg.selectAll('g.node')
       .classed('is-small', () => currentZoom.k < ZOOM_CHANGE)
+      .each(function() {
+        const svgNode = d3.select(this)
+        const data = svgNode.datum()
+        svgNode
+          .classed('is-compromised', hasStatus(data, 'state', 'compromised'))
+          .classed('is-undiscovered', hasStatus(data, 'state', 'undiscovered'))
+          .classed('is-discovered', hasStatus(data, 'state', 'discovered'))
+          .classed('is-data-discovered', hasStatus(data, 'data', 'discovered', 'compromised'))
+          .classed('is-device-discovered', hasStatus(data, 'device', 'discovered', 'compromised'))
+          .classed('is-network-discovered', hasStatus(data, 'network', 'discovered', 'compromised'))
+          .classed('is-starting-point', hasStatus(data, 'isStartingPoint', true))
+      })
 
     const currentNode = this.props.nodes[this.props.selectedNodeIndex]
     this.svg.selectAll('g.node').each(function() {
