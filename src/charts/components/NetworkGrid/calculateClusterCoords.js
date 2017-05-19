@@ -177,6 +177,7 @@ export const moveArrowsToCorners = defaultMemoize((arrows, width, height) => {
       startNode: { x: x1, y: y1 },
       endNode: { x: x2, y: y2 },
       middlePoint: { x: x1 + (x2 - x1) / 2, y: y1 + (y2 - y1) / 2 },
+      tipPoint: { x: x1 + (x2 - x1) / 2 * 1.1, y: y1 + (y2 - y1) / 2 * 1.1 },
     }
   })
 })

@@ -6,6 +6,7 @@ import './NetworkGrid.scss'
 import WindowDependable from '../common/WindowDependable'
 import NetworkTooltip from './NetworkTooltip/NetworkTooltip'
 import calculateClusterCoords, { getArrows, moveArrowsToCorners } from './calculateClusterCoords'
+import ShareButtons from '../Timeline/common/ShareButtons'
 
 const NODE_WIDTH = 40
 const ZOOM_CHANGE = 1.2
@@ -255,17 +256,7 @@ export default class NetworkGrid extends Component {
 
     this.svg.selectAll('.icons').classed('icons-visible', currentZoom.k < ZOOM_CHANGE)
 
-    const stroke = arrow => {
-      if ( this.state.selectedArrow === arrow ) {
-        return 'black'
-      } else if ( arrow.event.type === 'newDiscoveredNode' ) {
-        return 'blue'
-      } else {
-        return 'red'
-      }
-    }
-
-    const { mergedSelection: arrowsNew, enteredSelection: arrowsEntered } = this.svg.select('.arrows')._bindData('g.arrow-line', this.cachedArrows, {
+    const { mergedSelection: arrowsNew } = this.svg.select('.arrows')._bindData('g.arrow-line', this.cachedArrows, {
       cursor: 'pointer',
       click: arrow => {
         this.setState({ selectedArrow: this.state.selectedArrow === arrow ? null : arrow })
@@ -279,7 +270,8 @@ export default class NetworkGrid extends Component {
         y = scale(y)
 
         return `
-        <line class="arrow" x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}"></line>
+        <line class="arrow" x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}" 
+          marker-end="url(#arrow)"></line>
         <line class="arrow-highlight" x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}"></line>
         <g class="text-value" visibility="${value ? 'visible' : 'hidden'}">
           <circle class="arrow-circle" r="8" cx="${x}" cy="${y}"></circle>
@@ -288,15 +280,10 @@ export default class NetworkGrid extends Component {
       },
     })
 
-    const arrowAttrs = {
-      stroke,
-      'marker-end': line => `url(#${stroke(line)}-arrow)`,
-      'stroke-width': ({ isCompormised }) => isCompormised ? 3 : 1,
-    }
-    arrowsNew.select('line.arrow').attrs(arrowAttrs)
-    arrowsEntered.select('line.arrow').attrs(arrowAttrs)
-    arrowsNew.select('circle.arrow-circle').attrs({ fill: stroke })
-    arrowsEntered.select('circle.arrow-circle').attrs({ fill: stroke })
+    arrowsNew
+      .classed('is-compromised', ({ isCompormised }) => isCompormised ? 3 : 1)
+      .classed('is-black', arrow => this.state.selectedArrow === arrow)
+      .classed('is-blue', arrow => arrow.event.type === 'newDiscoveredNode')
   }
 
   render() {
@@ -312,36 +299,31 @@ export default class NetworkGrid extends Component {
                         onDimensionsChanged={() => this.forceUpdate()}>
         <NetworkTooltip item={hoveredNode} coordsFn={getCoordsFn} offsets={{ h: 74, x: 0.1755, y: 0.38 }}>
           {hoveredNode && <div>
-            <div>Name: {hoveredNode.node.name}</div>
-            <div>Node ID: {hoveredNode.node.agentId}</div>
+            <div>{hoveredNode.node.name}</div>
           </div>}
         </NetworkTooltip>
-        <NetworkTooltip item={selectedArrow && selectedArrow.middlePoint}
-                        coordsFn={getCoordsFn} offsets={{ h: 64 }}>
-          {selectedArrow && <div>Type: {selectedArrow.event.type}</div>}
+        <NetworkTooltip item={selectedArrow && selectedArrow.tipPoint}
+                        coordsFn={getCoordsFn} offsets={{ h: 62 }}>
+          {selectedArrow && <div>
+            {selectedArrow.event.data && <div>{selectedArrow.event.data.method}</div>}
+            {!selectedArrow.event.data && <div>Type: {selectedArrow.event.type}</div>}
+          </div>}
         </NetworkTooltip>
         <NetworkTooltip item={selectedCluster} coordsFn={getCoordsFn}
-                        offsets={{ h: 64, x: this.state.selectedCluster ? this.state.selectedCluster.width : 0 }}>
+                        offsets={{ h: 60, x: this.state.selectedCluster ? this.state.selectedCluster.width : 0 }}>
           {selectedCluster && <div>
             #{getClusterName(selectedCluster.coordinatedNodes.length)}
+            <div styleName="share-buttons">
+              <ShareButtons data={{ data: 'TODO: add data' }} type="dark-icons"/>
+            </div>
           </div>}
         </NetworkTooltip>
 
         <svg className="svg zoomRect">
           <defs>
-            <marker id="red-arrow" markerWidth="10" markerHeight="10" refX="10" refY="3" orient="auto" markerUnits="strokeWidth">
-              <g transform="translate(7,0)" strokeWidth="1.2" fill="none">
-                <path d="M 0 0 L 2.5 3 L 0 6" stroke="red"/>
-              </g>
-            </marker>
-            <marker id="black-arrow" markerWidth="10" markerHeight="10" refX="10" refY="3" orient="auto" markerUnits="strokeWidth">
-              <g transform="translate(7,0)" strokeWidth="1.2" fill="none">
-                <path d="M 0 0 L 2.5 3 L 0 6" stroke="black"/>
-              </g>
-            </marker>
-            <marker id="blue-arrow" markerWidth="10" markerHeight="10" refX="10" refY="3" orient="auto" markerUnits="strokeWidth">
-              <g transform="translate(7,0)" strokeWidth="1.2" fill="none">
-                <path d="M 0 0 L 2.5 3 L 0 6" stroke="blue"/>
+            <marker id="arrow" markerWidth="10" markerHeight="10" refX="10" refY="3" orient="auto" markerUnits="strokeWidth">
+              <g transform="translate(7,0)" strokeWidth="1.2">
+                <path d="M 0 0 L 2.5 3 L 0 6" fill="none"/>
               </g>
             </marker>
           </defs>

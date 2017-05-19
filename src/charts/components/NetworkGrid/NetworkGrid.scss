@@ -14,10 +14,47 @@
     font-size: 10px;
     text-anchor: middle
   }
+
+  .arrow-line {
+    .arrow, path {
+      stroke-width: 1px;
+      stroke: $red;
+    }
+    .arrow-circle {
+      fill: $red;
+    }
+    &:hover {
+      .arrow, path {
+        stroke-dasharray: 5px 2px;
+      }
+    }
+    &.is-compromised {
+      .arrow, .path {
+        stroke-width: 3px;
+      }
+    }
+    &.is-black {
+      .arrow, path {
+        stroke: $black
+      }
+      .arrow-circle {
+        fill: $black;
+      }
+    }
+    &.is-blue {
+      .arrow, path {
+        stroke: $blue
+      }
+      .arrow-circle, path {
+        fill: $blue;
+      }
+    }
+  }
+
   .arrow-highlight {
     opacity: 0;
     stroke: black;
-    stroke-width: 5px;
+    stroke-width: 3px;
   }
   rect.cluster {
     fill: white;
@@ -181,4 +218,12 @@
   fill: none;
   stroke: #efefef;
   stroke-width: 1px;
+}
+
+
+.share-buttons {
+  position: absolute;
+  top: 24px;
+  left: 0;
+  background: rgba(255, 255, 255, 0.36);
 }
