@@ -10,6 +10,10 @@
 .node-information {
   pointer-events: all;
   background: $white;
+  &.dark {
+    background: #282828;
+    color: $white;
+  }
   white-space: nowrap;
   border: solid $black 1.5px;
   border-radius: 4px;

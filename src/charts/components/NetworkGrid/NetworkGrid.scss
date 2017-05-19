@@ -15,26 +15,36 @@
     text-anchor: middle
   }
 
+  .arrow-marker path {
+    transform: translate(6.9px, 0);
+    stroke-width: 1.2px;
+    fill: none;
+  }
+  #blue-arrow path {
+    stroke: $blue;
+  }
+  #black-arrow path {
+    stroke: $black;
+  }
+  #red-arrow path {
+    stroke: $red;
+  }
   .arrow-line {
-    .arrow, path {
+    .arrow {
       stroke-width: 1px;
       stroke: $red;
     }
     .arrow-circle {
       fill: $red;
     }
-    &:hover {
-      .arrow, path {
-        stroke-dasharray: 5px 2px;
-      }
+    &:hover .arrow {
+      stroke-dasharray: 5px 2px;
     }
-    &.is-compromised {
-      .arrow, .path {
-        stroke-width: 3px;
-      }
+    &.is-compromised .arrow {
+      stroke-width: 3px;
     }
     &.is-black {
-      .arrow, path {
+      .arrow {
         stroke: $black
       }
       .arrow-circle {
@@ -42,10 +52,10 @@
       }
     }
     &.is-blue {
-      .arrow, path {
+      .arrow {
         stroke: $blue
       }
-      .arrow-circle, path {
+      .arrow-circle {
         fill: $blue;
       }
     }
@@ -220,10 +230,10 @@
   stroke-width: 1px;
 }
 
-
 .share-buttons {
   position: absolute;
   top: 24px;
   left: 0;
+  color: $black;
   background: rgba(255, 255, 255, 0.36);
 }

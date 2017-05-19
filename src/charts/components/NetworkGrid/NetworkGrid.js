@@ -17,6 +17,7 @@ export default class NetworkGrid extends Component {
     hoveredNode: null,
     selectedArrow: null,
     selectedCluster: null,
+    hoveredCluster: null,
   }
 
   static propTypes = {
@@ -59,13 +60,14 @@ export default class NetworkGrid extends Component {
 
   // TODO(vlad): remove code below
   shouldComponentUpdate({ currentTime, events, nodes, selectedNodeIndex },
-                        { hoveredNode, selectedArrow, selectedCluster }) {
+                        { hoveredNode, selectedArrow, selectedCluster, hoveredCluster }) {
     const { props, state } = this
     return props.currentTime !== currentTime
       || props.events !== events
       || props.nodes !== nodes
       || state.hoveredNode !== hoveredNode
       || state.selectedCluster !== selectedCluster
+      || state.hoveredCluster !== hoveredCluster
       || state.selectedArrow !== selectedArrow
       || props.selectedNodeIndex !== selectedNodeIndex
   }
@@ -81,6 +83,7 @@ export default class NetworkGrid extends Component {
         hoveredNode: null,
         selectedArrow: null,
         selectedCluster: null,
+        hoveredCluster: null,
       })
     }
 
@@ -160,15 +163,35 @@ export default class NetworkGrid extends Component {
     this.paintAndReturnNodes(this.cachedClusters, status, currentZoom)
   }
 
-  paintAndReturnNodes({ coordinatedClusters: clusters, coordinatedNodes: nodes }, status, currentZoom) {
+  getClusterData(coordinatedCluster) {
+    const status = getNodesEventsDataMap(this.props.events, this.props.currentTime)
+
+    const hasStatus = ({ node: { agentId } }, key, val1, val2) => {
+      return status[agentId] && status[agentId][key] === val1 && (!val2 || status[agentId][key] === val2 )
+    }
+    const nodes = coordinatedCluster ? coordinatedCluster.coordinatedNodes : []
+    // TODO(vlad): fix devices algorithm
+    return nodes
+      .filter(({ node }) => status[node.agentId])
+      .map(data => ({
+        data: hasStatus(data, 'data', 'discovered', 'compromised'),
+        device: hasStatus(data, 'device', 'discovered', 'compromised'),
+        network: hasStatus(data, 'network', 'discovered', 'compromised'),
+      })).reduce((sum, data) => {
+        Object.keys(sum).forEach(key => sum[key] += (data[key] ? 1 : 0))
+        return sum
+      }, { device: 0, network: 0, data: 0 })
+  }
+
+  paintAndReturnNodes({ coordinatedClusters: clusters }, status, currentZoom) {
     const scale = x => x * NODE_WIDTH
 
-    const { mergedSelection: sel } = this.svg.select('.clusters')._bindData('g.cluster-group', clusters, {
+    this.svg.select('.clusters').bindData('g.cluster-group', clusters, {
       click: cluster => {
-        if ( d3.select(d3.event.target).classed('cluster') ) {
-          this.setState({ selectedCluster: cluster === this.state.selectedCluster ? null : cluster })
-        }
+        this.setState({ selectedCluster: cluster === this.state.selectedCluster ? null : cluster })
       },
+      mouseover: hoveredCluster => this.setState({ hoveredCluster }),
+      mouseout: () => this.setState({ hoveredCluster: null }),
       html: ({ x, y, width, height, cluster }) => {
         return `
           <g>
@@ -180,18 +203,18 @@ export default class NetworkGrid extends Component {
               </text>
             </g>
           </g>
-          <g class="grid"></g>
           <g class="arrow"></g>`
       },
     })
 
     const selectedCluster = this.state.selectedCluster
+
     this.svg.selectAll('g.cluster-group').each(function() {
       const svgCluster = d3.select(this)
       svgCluster.classed('active', svgCluster.datum() === selectedCluster)
     })
 
-    sel.select('.grid').bindData('g.node', ({ coordinatedNodes }) => coordinatedNodes, {
+    this.svg.select('.grid').bindData('g.node', this.cachedClusters.coordinatedNodes, {
       transform: ({ x, y }) => `translate(${scale(x)},${scale(y)})`,
       click: ({ node }) => {
         this.props.onSelectedNodeIndexChanged(this.props.nodes.findIndex(item => node === item))
@@ -270,8 +293,7 @@ export default class NetworkGrid extends Component {
         y = scale(y)
 
         return `
-        <line class="arrow" x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}" 
-          marker-end="url(#arrow)"></line>
+        <line class="arrow" x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}"></line>
         <line class="arrow-highlight" x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}"></line>
         <g class="text-value" visibility="${value ? 'visible' : 'hidden'}">
           <circle class="arrow-circle" r="8" cx="${x}" cy="${y}"></circle>
@@ -284,6 +306,15 @@ export default class NetworkGrid extends Component {
       .classed('is-compromised', ({ isCompormised }) => isCompormised ? 3 : 1)
       .classed('is-black', arrow => this.state.selectedArrow === arrow)
       .classed('is-blue', arrow => arrow.event.type === 'newDiscoveredNode')
+
+    arrowsNew.select('.arrow').attrs({
+      'marker-end': arrow => {
+        let type = 'red'
+        type = arrow.event.type === 'newDiscoveredNode' ? 'blue' : type
+        type = this.state.selectedArrow === arrow ? 'black' : type
+        return `url(#${type}-arrow)`
+      },
+    })
   }
 
   render() {
@@ -291,13 +322,34 @@ export default class NetworkGrid extends Component {
     const hoveredNode = this.state.hoveredNode
     const selectedArrow = this.state.selectedArrow
     const selectedCluster = this.state.selectedCluster
+    const hoveredCluster = this.state.hoveredCluster
 
     const { getCoordsFn } = this.rootBlock ? this.getScalesAndTransforms() : () => {}
 
     return (
       <WindowDependable className={className} refCb={this.refRootBlock}
                         onDimensionsChanged={() => this.forceUpdate()}>
-        <NetworkTooltip item={hoveredNode} coordsFn={getCoordsFn} offsets={{ h: 74, x: 0.1755, y: 0.38 }}>
+
+        <NetworkTooltip item={hoveredCluster} coordsFn={getCoordsFn}
+                        offsets={{ h: 60, x: hoveredCluster ? hoveredCluster.width : 0 }}>
+          {hoveredCluster && <div>
+            # devices
+            <div styleName="share-buttons">
+              <ShareButtons data={this.getClusterData(hoveredCluster)} type="dark-icons"/>
+            </div>
+          </div>}
+        </NetworkTooltip>
+        <NetworkTooltip item={selectedCluster} coordsFn={getCoordsFn} isDark={true}
+                        offsets={{ h: 60, x: selectedCluster ? selectedCluster.width : 0 }}>
+          {selectedCluster && <div>
+            # devices
+            <div styleName="share-buttons">
+              <ShareButtons data={this.getClusterData(selectedCluster)} type="dark-icons"/>
+            </div>
+          </div>}
+        </NetworkTooltip>
+
+        <NetworkTooltip item={hoveredNode} coordsFn={getCoordsFn} offsets={{ h: 62, x: 0.1755, y: 0.38 }}>
           {hoveredNode && <div>
             <div>{hoveredNode.node.name}</div>
           </div>}
@@ -309,27 +361,23 @@ export default class NetworkGrid extends Component {
             {!selectedArrow.event.data && <div>Type: {selectedArrow.event.type}</div>}
           </div>}
         </NetworkTooltip>
-        <NetworkTooltip item={selectedCluster} coordsFn={getCoordsFn}
-                        offsets={{ h: 60, x: this.state.selectedCluster ? this.state.selectedCluster.width : 0 }}>
-          {selectedCluster && <div>
-            #{getClusterName(selectedCluster.coordinatedNodes.length)}
-            <div styleName="share-buttons">
-              <ShareButtons data={{ data: 'TODO: add data' }} type="dark-icons"/>
-            </div>
-          </div>}
-        </NetworkTooltip>
 
         <svg className="svg zoomRect">
           <defs>
-            <marker id="arrow" markerWidth="10" markerHeight="10" refX="10" refY="3" orient="auto" markerUnits="strokeWidth">
-              <g transform="translate(7,0)" strokeWidth="1.2">
-                <path d="M 0 0 L 2.5 3 L 0 6" fill="none"/>
-              </g>
+            <marker id="black-arrow" markerWidth="10" markerHeight="10" refX="10" refY="3" orient="auto" markerUnits="strokeWidth" className="arrow-marker">
+              <path d="M 0 0 L 2.5 3 L 0 6"/>
+            </marker>
+            <marker id="blue-arrow" markerWidth="10" markerHeight="10" refX="10" refY="3" orient="auto" markerUnits="strokeWidth" className="arrow-marker">
+              <path d="M 0 0 L 2.5 3 L 0 6"/>
+            </marker>
+            <marker id="red-arrow" markerWidth="10" markerHeight="10" refX="10" refY="3" orient="auto" markerUnits="strokeWidth" className="arrow-marker">
+              <path d="M 0 0 L 2.5 3 L 0 6"/>
             </marker>
           </defs>
           <g className="grid-shifter">
             <g className="zoom-scale">
               <g className="clusters" styleName="clusters-wrapper"/>
+              <g className="grid"/>
               <g className="arrows"/>
             </g>
           </g>
