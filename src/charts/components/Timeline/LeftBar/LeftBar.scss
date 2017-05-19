@@ -38,7 +38,7 @@
   .circle-block {
     font-size: 20px;
   }
-  border-right: 1px solid $buttonGrey;
+  border-right: 1px solid $black-light;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -77,7 +77,7 @@
 
         & > span {
           align-items: center;
-          background: $buttonGrey;
+          background: $black-light;
           cursor: pointer;
           display: flex;
           padding: 5px;
@@ -135,7 +135,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: $buttonGrey;
+  background: $black-light;
 }
 
 .left-buttons .play-action-button {
@@ -182,19 +182,19 @@
   z-index: 1;
   border: 1px solid #333;
   border-top: none;
-  background: $buttonGrey;
+  background: $black-light;
   &.blacked {
     background: black;
   }
   &[disabled]:not(.active) {
     cursor: not-allowed;
-    background: $disabledButton;
+    background: $black-disabled;
     span {
       opacity: 0.5;
     }
   }
   &:hover:not(.no-hover):not([disabled]), &.active {
-    background: $buttonBlue;
+    background: $blue;
     &:hover {
       circle {
         fill: $white;
@@ -243,7 +243,7 @@
     font-size: 7px;
     border: none;
     &:hover {
-      background: $buttonBlue;
+      background: $blue;
     }
     width: 25px;
     height: 25px;

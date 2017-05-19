@@ -59,22 +59,22 @@ $halfWidth: 30px;
 }
 
 .square-button {
-  background: $buttonGrey;
-  border: 1px solid $buttonBorder;
+  background: $black-light;
+  border: 1px solid $black-border;
   color: $white;
   cursor: pointer;
   height: $buttonWidth;
   width: $buttonWidth;
   &[disabled]:not(.active) {
     cursor: not-allowed;
-    background: $disabledButton;
+    background: $black-disabled;
     span {
       opacity: 0.5;
     }
   }
   &:hover:not(.no-hover):not([disabled]), &.active {
-    background: $buttonBlue;
-    border-color: $buttonBlue;
+    background: $blue;
+    border-color: $blue;
   }
   &:focus {
     outline: none;

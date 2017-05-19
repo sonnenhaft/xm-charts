@@ -4,6 +4,7 @@ import { getNodesEventsDataMap } from '../../utils/nodeEventData'
 import { Circle, Desktop, Diskette, Snow } from './IconsGroup'
 import './NetworkGrid.scss'
 import WindowDependable from '../common/WindowDependable'
+import NetworkTooltip from './NetworkTooltip/NetworkTooltip'
 import calculateClusterCoords, { getArrows, moveArrowsToCorners } from './calculateClusterCoords'
 
 const NODE_WIDTH = 40
@@ -13,7 +14,7 @@ const getClusterName = cluster => cluster === 'undefined' ? 'Unidentified' : clu
 export default class NetworkGrid extends Component {
   state = {
     hoveredNode: null,
-    selectedEvent: null,
+    selectedArrow: null,
     selectedCluster: null,
   }
 
@@ -57,14 +58,14 @@ export default class NetworkGrid extends Component {
 
   // TODO(vlad): remove code below
   shouldComponentUpdate({ currentTime, events, nodes, selectedNodeIndex },
-                        { hoveredNode, selectedEvent, selectedCluster }) {
+                        { hoveredNode, selectedArrow, selectedCluster }) {
     const { props, state } = this
     return props.currentTime !== currentTime
       || props.events !== events
       || props.nodes !== nodes
       || state.hoveredNode !== hoveredNode
       || state.selectedCluster !== selectedCluster
-      || state.selectedEvent !== selectedEvent
+      || state.selectedArrow !== selectedArrow
       || props.selectedNodeIndex !== selectedNodeIndex
   }
 
@@ -101,18 +102,8 @@ export default class NetworkGrid extends Component {
     this.forceUpdate()
   }
 
-  renderChart() {
-    const { nodes, events, currentTime } = this.props
+  getScalesAndTransforms() {
     const { clientWidth: width, clientHeight: height } = this.rootBlock.node()
-    const xScale = d3.scaleLinear().domain([0, 1]).range([0, NODE_WIDTH])
-    const yScale = d3.scaleLinear().domain([0, 1]).range([0, NODE_WIDTH])
-
-    if ( !nodes.length || !height ) { // we just can calculate anything with 0 height
-      return
-    }
-
-    this.svg.attrs({ width, height })
-
     const centralizeZoomFactor = Math.min(
       height / (NODE_WIDTH * this.cachedClusters.totalHeight),
       width / (NODE_WIDTH * this.cachedClusters.totalWidth)
@@ -120,39 +111,44 @@ export default class NetworkGrid extends Component {
     const { k, x, y } = d3.zoomTransform(this.svg.node())
     const shiftX = (width - this.cachedClusters.totalWidth * NODE_WIDTH * centralizeZoomFactor ) * k / 2
     const shiftY = (height - this.cachedClusters.totalHeight * NODE_WIDTH * centralizeZoomFactor ) * k / 2
-    this.svg.selectAll('.grid-shifter').attr('transform', `translate(${shiftX}, ${shiftY})`)
-
     const currentZoom = new Transform(centralizeZoomFactor * k, x, y)
     this.zoom.translateExtent([[0, 0], [width, height]]).extent([[0, 0], [width, height]])
-
-    this.svg.selectAll('.zoom-scale').attr('transform', currentZoom.toString())
+    const xScale = d3.scaleLinear().domain([0, 1]).range([0, NODE_WIDTH])
+    const yScale = d3.scaleLinear().domain([0, 1]).range([0, NODE_WIDTH])
     xScale.domain(currentZoom.rescaleX(xScale).domain())
     yScale.domain(currentZoom.rescaleY(yScale).domain())
 
-    const status = getNodesEventsDataMap(events, currentTime)
-    this.paintAndReturnNodes(this.cachedClusters, status, currentZoom)
-
-    const getCoords = (coords, zo, xo = 0, yo = 0) => {
+    const getCoordsFn = (coords, heightOffset, xCoordOffset = 0, yCoordOffset = 0) => {
       if ( !coords ) {
         return {}
       }
       const { x, y } = coords
       const offsets = this.rootBlock.node().getBoundingClientRect()
       return {
-        top: `${yScale(y + yo) - zo + shiftY + offsets.top  }px`,
-        left: `${xScale(x + xo) + shiftX + offsets.left  }px`,
+        top: `${yScale(y + yCoordOffset) - heightOffset + shiftY + offsets.top  }px`,
+        left: `${xScale(x + xCoordOffset) + shiftX + offsets.left  }px`,
       }
     }
 
-    const node = this.state.hoveredNode
-    this.rootBlock.select('.nodeTooltip').styles(getCoords(node, 74, 0.1755, 0.38))
-    const arrow = this.cachedArrows.find(({ event }) => event === this.state.selectedEvent)
-    this.rootBlock.select('.arrowTooltip').styles(getCoords((arrow || {}).middlePoint, 64))
-    this.rootBlock.select('.clusterTooltip').styles(
-      getCoords(this.state.selectedCluster,
-        64,
-        this.state.selectedCluster ? this.state.selectedCluster.width : 0
-      ))
+    return { xScale, yScale, shiftY, shiftX, currentZoom, getCoordsFn }
+  }
+
+  renderChart() {
+    const { nodes, events, currentTime } = this.props
+    const { clientWidth: width, clientHeight: height } = this.rootBlock.node()
+
+    if ( !nodes.length || !height ) { // we just can calculate anything with 0 height
+      return
+    }
+
+    this.svg.attrs({ width, height })
+    const { shiftY, shiftX, currentZoom } = this.getScalesAndTransforms()
+
+    this.svg.selectAll('.grid-shifter').attr('transform', `translate(${shiftX}, ${shiftY})`)
+    this.svg.selectAll('.zoom-scale').attr('transform', currentZoom.toString())
+
+    const status = getNodesEventsDataMap(events, currentTime)
+    this.paintAndReturnNodes(this.cachedClusters, status, currentZoom)
   }
 
   paintAndReturnNodes({ coordinatedClusters: clusters, coordinatedNodes: nodes }, status, currentZoom) {
@@ -160,8 +156,8 @@ export default class NetworkGrid extends Component {
 
     const { mergedSelection: sel } = this.svg.select('.clusters')._bindData('g.cluster-group', clusters, {
       click: cluster => {
-        if (d3.select(d3.event.target).classed('cluster')) {
-          this.setState({selectedCluster: cluster === this.state.selectedCluster ? null : cluster})
+        if ( d3.select(d3.event.target).classed('cluster') ) {
+          this.setState({ selectedCluster: cluster === this.state.selectedCluster ? null : cluster })
         }
       },
       html: ({ x, y, width, height, cluster }) => {
@@ -181,7 +177,7 @@ export default class NetworkGrid extends Component {
     })
 
     const selectedCluster = this.state.selectedCluster
-    this.svg.selectAll('g.cluster-group').each(function(){
+    this.svg.selectAll('g.cluster-group').each(function() {
       const svgCluster = d3.select(this)
       svgCluster.classed('active', svgCluster.datum() === selectedCluster)
     })
@@ -248,10 +244,10 @@ export default class NetworkGrid extends Component {
 
     this.svg.selectAll('.icons').classed('icons-visible', currentZoom.k < ZOOM_CHANGE)
 
-    const stroke = ({ event }) => {
-      if ( this.state.selectedEvent === event ) {
+    const stroke = arrow => {
+      if ( this.state.selectedArrow === arrow ) {
         return 'black'
-      } else if ( event.type === 'newDiscoveredNode' ) {
+      } else if ( arrow.event.type === 'newDiscoveredNode' ) {
         return 'blue'
       } else {
         return 'red'
@@ -260,8 +256,8 @@ export default class NetworkGrid extends Component {
 
     const { mergedSelection: arrowsNew, enteredSelection: arrowsEntered } = this.svg.select('.arrows')._bindData('g.arrow-line', this.cachedArrows, {
       cursor: 'pointer',
-      click: ({ event }) => {
-        this.setState({ selectedEvent: this.state.selectedEvent === event ? null : event })
+      click: arrow => {
+        this.setState({ selectedArrow: this.state.selectedArrow === arrow ? null : arrow })
       },
       html: ({ value, middlePoint: { x, y }, startNode: { x: x1, y: y1 }, endNode: { x: x2, y: y2 } }) => {
         x1 = scale(x1)
@@ -295,48 +291,30 @@ export default class NetworkGrid extends Component {
   render() {
     const { className } = this.props
     const hoveredNode = this.state.hoveredNode
-    const selectedEvent = this.state.selectedEvent
+    const selectedArrow = this.state.selectedArrow
     const selectedCluster = this.state.selectedCluster
+
+    const { getCoordsFn } = this.rootBlock ? this.getScalesAndTransforms() : () => {}
 
     return (
       <WindowDependable className={className} refCb={this.refRootBlock}
                         onDimensionsChanged={() => this.forceUpdate()}>
-        <div styleName="node-tooltip" className="nodeTooltip">
+        <NetworkTooltip item={hoveredNode} coordsFn={getCoordsFn} offsets={{ h: 74, x: 0.1755, y: 0.38 }}>
           {hoveredNode && <div>
-            <div styleName="node-information">
-              <div>Name: {hoveredNode.node.name}</div>
-              <div>Node ID: {hoveredNode.node.agentId}</div>
-            </div>
-            <svg styleName="tooltip-svg">
-              <line x1="0" y1="50" x2="70" y2="0"/>
-              <line x1="70" y1="0" x2="100" y2="0" strokeWidth="2.5"/>
-            </svg>
+            <div>Name: {hoveredNode.node.name}</div>
+            <div>Node ID: {hoveredNode.node.agentId}</div>
           </div>}
-        </div>
-
-        <div styleName="node-tooltip" className="arrowTooltip">
-          {selectedEvent && <div>
-            <div styleName="node-information">
-              <div>Type: {selectedEvent.type}</div>
-            </div>
-            <svg styleName="tooltip-svg">
-              <line x1="0" y1="50" x2="70" y2="0"/>
-              <line x1="70" y1="0" x2="100" y2="0" strokeWidth="2.5"/>
-            </svg>
-          </div>}
-        </div>
-
-        <div styleName="node-tooltip" className="clusterTooltip">
+        </NetworkTooltip>
+        <NetworkTooltip item={selectedArrow && selectedArrow.middlePoint}
+                        coordsFn={getCoordsFn} offsets={{ h: 64 }}>
+          {selectedArrow && <div>Type: {selectedArrow.event.type}</div>}
+        </NetworkTooltip>
+        <NetworkTooltip item={selectedCluster} coordsFn={getCoordsFn}
+                        offsets={{ h: 64, x: this.state.selectedCluster ? this.state.selectedCluster.width : 0 }}>
           {selectedCluster && <div>
-            <div styleName="node-information">
-              <div>Cluster: {getClusterName(selectedCluster.cluster)}</div>
-            </div>
-            <svg styleName="tooltip-svg">
-              <line x1="0" y1="50" x2="70" y2="0"/>
-              <line x1="70" y1="0" x2="100" y2="0" strokeWidth="2.5"/>
-            </svg>
+            #{getClusterName(selectedCluster.coordinatedNodes.length)}
           </div>}
-        </div>
+        </NetworkTooltip>
 
         <svg className="svg zoomRect">
           <defs>

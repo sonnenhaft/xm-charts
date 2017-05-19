@@ -52,7 +52,7 @@ svg.timeline-chart {
   }
 
   .black-background {
-    fill: $darkBackground
+    fill: $black-background
   }
 
   .brush-circle {
@@ -64,7 +64,7 @@ svg.timeline-chart {
     stroke-width: 1;
     //pointer-events: none;
     transform: translate(-6.5px, -5px);
-    fill: $buttonBlue;
+    fill: $blue;
   }
 }
 
@@ -80,7 +80,7 @@ svg.timeline-chart {
 
 .brush-line {
   pointer-events: none;
-  fill: $darkBackground;
+  fill: $black-background;
   transform: translate(30px, 15px);
 }
 
@@ -102,7 +102,7 @@ svg.timeline-chart {
 }
 
 .black-line-between-x-axes {
-  fill: $buttonGrey;
+  fill: $black-light;
 }
 
 .root {
@@ -140,6 +140,6 @@ svg.timeline-chart {
   }
   .red-bulk-circle,
   .red-bulk-line {
-    fill: $chartRed
+    fill: $red
   }
 }
