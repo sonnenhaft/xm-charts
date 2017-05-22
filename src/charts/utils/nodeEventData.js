@@ -1,3 +1,5 @@
+import { defaultMemoize } from 'reselect'
+
 const DEFAULT_STATE = {
   state: 'undiscovered', // undiscovered, discovered, compromised
   device: 'undiscovered',
@@ -28,14 +30,16 @@ function getStateFromEvent({type, data, compromisedAssets}) {
   }
 }
 
-export function getNodesEventsDataMap(events, datetime) {
+export const getNodesEventsDataMap = defaultMemoize((events, datetime)  => {
+
   return events
           .filter(({date}) => datetime >= date)
-          .reduce((result, event) => ({
+          .map(es => console.log(es) || es)
+          .reduce((result, event) =>  ({
             ...result,
             [event.node.id]: {
               ...(result[event.node.id] || {...DEFAULT_STATE}),
               ...getStateFromEvent(event),
             },
           }), {})
-}
+})
