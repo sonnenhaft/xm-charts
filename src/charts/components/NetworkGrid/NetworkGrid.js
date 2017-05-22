@@ -279,7 +279,7 @@ export default class NetworkGrid extends Component {
 
     this.svg.selectAll('.icons').classed('icons-visible', currentZoom.k < ZOOM_CHANGE)
 
-    const { mergedSelection: arrowsNew } = this.svg.select('.arrows')._bindData('g.arrow-line', this.cachedArrows, {
+    const { enteredSelection: arrows } = this.svg.select('.arrows')._bindData('g.arrow-line', this.cachedArrows, {
       cursor: 'pointer',
       click: arrow => {
         this.setState({ selectedArrow: this.state.selectedArrow === arrow ? null : arrow })
@@ -302,12 +302,12 @@ export default class NetworkGrid extends Component {
       },
     })
 
-    arrowsNew
-      .classed('is-compromised', ({ isCompormised }) => isCompormised ? 3 : 1)
-      .classed('is-black', arrow => this.state.selectedArrow === arrow)
+    arrows
+      .classed('is-compromised', ({ isCompormised }) =>  isCompormised ? 3 : 1)
+      .classed('is-black', arrow =>  this.state.selectedArrow === arrow)
       .classed('is-blue', arrow => arrow.event.type === 'newDiscoveredNode')
 
-    arrowsNew.select('.arrow').attrs({
+    arrows.select('.arrow').attrs({
       'marker-end': arrow => {
         let type = 'red'
         type = arrow.event.type === 'newDiscoveredNode' ? 'blue' : type
