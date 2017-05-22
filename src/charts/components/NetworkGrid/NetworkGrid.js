@@ -166,9 +166,11 @@ export default class NetworkGrid extends Component {
   getClusterData(coordinatedCluster) {
     const status = getNodesEventsDataMap(this.props.events, this.props.currentTime)
 
-    const hasStatus = ({ node: { agentId } }, key, val1, val2) => {
-      return status[agentId] && status[agentId][key] === val1 && (!val2 || status[agentId][key] === val2 )
+    const hasStatus = ({ node: { agentId } }, key, val1, val2 = 'missed') => {
+      const val = status[agentId] && status[agentId][key]
+      return val === val1 || val === val2
     }
+
     const nodes = coordinatedCluster ? coordinatedCluster.coordinatedNodes : []
     // TODO(vlad): fix devices algorithm
     return nodes
@@ -251,8 +253,9 @@ export default class NetworkGrid extends Component {
       },
     })
 
-    const hasStatus = ({ node: { agentId } }, key, val1, val2) => {
-      return status[agentId] && status[agentId][key] === val1 && (!val2 || status[agentId][key] === val2 )
+    const hasStatus = ({ node: { agentId } }, key, val1, val2 = 'missed') => {
+      const val = status[agentId] && status[agentId][key]
+      return val === val1 || val === val2
     }
 
     this.svg.selectAll('g.node')
@@ -303,8 +306,8 @@ export default class NetworkGrid extends Component {
     })
 
     arrows
-      .classed('is-compromised', ({ isCompormised }) =>  isCompormised ? 3 : 1)
-      .classed('is-black', arrow =>  this.state.selectedArrow === arrow)
+      .classed('is-compromised', ({ isCompormised }) => isCompormised ? 3 : 1)
+      .classed('is-black', arrow => this.state.selectedArrow === arrow)
       .classed('is-blue', arrow => arrow.event.type === 'newDiscoveredNode')
 
     arrows.select('.arrow').attrs({
