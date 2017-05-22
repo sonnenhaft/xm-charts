@@ -26,28 +26,8 @@ export default events => {
   const assetEventsByNode = groupBy(assetEvents, e => e.node.id)
 
   timelineEvents.forEach(e => {
-    e.filteredAssets = assetEventsByNode[e.node.id] //allNodesAssets
+    e.filteredAssets = assetEventsByNode[e.node.id] // allNodesAssets
   })
 
   return timelineEvents
-
-  // const points = events.filter(({ type }) => type !== 'newAsset').map(event => {
-  //   return {
-  //     ...event,
-  //     date: getMicrosconds(event.timestamp),
-  //   }
-  // })
-  // shiftSameTimestamps(points)
-  //
-  // const assets = events.filter(({ type }) => ['assetCompromised', 'newAsset'].includes(type))
-  //
-  // return points.map(point => {
-  //   const filteredAssets = assets.filter(asset => asset.node.id === point.node.id).map(asset => ({
-  //     ...asset,
-  //     date: getMicrosconds(asset.timestamp),
-  //   }))
-  //
-  //   shiftSameTimestamps(filteredAssets)
-  //   return ({ ...point, filteredAssets })
-  // })
 }

@@ -34,7 +34,7 @@ export const getNodesEventsDataMap = defaultMemoize((events, datetime)  => {
 
   return events
           .filter(({date}) => datetime >= date)
-          .map(es => console.log(es) || es)
+          .map(es => es)
           .reduce((result, event) =>  ({
             ...result,
             [event.node.id]: {

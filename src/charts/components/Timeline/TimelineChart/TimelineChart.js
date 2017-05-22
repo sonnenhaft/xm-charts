@@ -8,7 +8,7 @@ import BrushCircleGroup from './BrushCircleGroup/BrushCircleGroup'
 import ZoomRect from '../../common/ZoomRect'
 import Brush from './Brush'
 import Axes from './Axes/Axes'
-import { isTrafficLight, isFirstInSubnet } from 'charts/utils/EventUtils'
+import { isAssetCompromised, isStaringPoint } from 'charts/utils/EventUtils'
 
 const MARGIN_RIGHT = 10
 const MARGIN_BOTTOM = 60
@@ -122,32 +122,51 @@ export default class TimelineChart extends Component {
       ...bulkCircles.filter(filterVisible),
     ]
 
-    const enteredSelection = g.selectAll('.bulkBlock').data(allCirclesData, ({ id }) => id)
+    const enteredSelection = g.selectAll('.big-event').data(allCirclesData, ({ id }) => id)
     enteredSelection.exit().remove()
     const mergedSelection = enteredSelection.enter().append('g')
-      .attr('class', 'bulkBlock').html(({ value, type }) => `<g class="${styles['circle-group-wrapper']}">
+      .attr('class', 'big-event').html(({ value }) => `<g class="${styles['circle-group-wrapper']}">
       <rect class="${styles['red-bulk-line']} redBulkLine" width="${RADIUS / 4}"></rect>
-      <g visibility="${value || isFirstInSubnet(type) ? 'visible' : 'hidden'}">
+      
+      <g class="bulk-or-staring">
         <rect class="whiteShadowRect ${styles['white-shadow-rect']}" width="${(RADIUS + 1) * 2}"></rect>
-        <circle class="${styles['circle-wrapper']} ${value ? '' : styles['no-value']}" r="${RADIUS}"></circle>
-        <circle class="${styles['red-bulk-circle']}" r="${value ? RADIUS : RADIUS / 2}"></circle>
-        <text class="${styles['circle-text']}" fill="white">${value || ''}</text>     
+        <g class="starting-point-data">
+           <circle class="${styles['circle-wrapper']} ${styles['no-value']}" r="${RADIUS}"></circle>
+           <circle class="${styles['red-bulk-circle']}" r="${RADIUS/2}"></circle>
+        </g>
+        <g class="bulk-data">
+          <circle class="${styles['circle-wrapper']}" r="${RADIUS}"></circle>
+          <circle class="${styles['red-bulk-circle']}" r="${RADIUS}"></circle>
+          <text class="${styles['circle-text']}" fill="white">${value}</text>
+        </g>
       </g>
-      <g visibility="${isTrafficLight(type) ? 'visible' : 'hidden'}" transform="translate(-5, -10)">
-        <rect fill="red" width="10" height="20" rx="2" ry="2" stroke="white" stroke-width="1"></rect>
-        <g transform="translate(4.8, 4)" opacity="0.5">
-          <circle fill="white" r="2.3"></circle>
-          <circle fill="white" transform="translate(0, 5.5)" r="2.3"></circle>
-          <circle fill="white" transform="translate(0, 11)" r="2.3"></circle>
+      
+      <g class="asset-compromised">
+        <rect width="10" height="20" rx="2" ry="2"></rect>
+        <g class="compromised-circles">
+          <circle r="2.3" class="device"></circle>
+          <circle r="2.3" class="data"></circle>
+          <circle r="2.3" class="network"></circle>
         </g>
       </g>
     </g>`)
+
+    const hasInfo = (event, infoKey) => {
+      return isAssetCompromised(event.type) && event.data.asset.ruleGroup === infoKey
+    }
+    mergedSelection
+      .classed('is-asset-compromised', ({ type }) => isAssetCompromised(type))
+      .classed('has-device', data => hasInfo(data, 'device'))
+      .classed('has-data', data => hasInfo(data, 'data'))
+      .classed('has-network', data => hasInfo(data, 'network'))
+      .classed('is-starting-point', ({ type }) => isStaringPoint(type))
+      .classed('is-bulk-circle', ({ value }) => value)
 
     const legHeight = this.props.isToggled ? 54 : height + RADIUS * 2
     const allElements = mergedSelection.attrs(actions).merge(enteredSelection)
     allElements.attrs({ transform: d => `translate(${x(d)}, 0)` })
     allElements.select('.whiteShadowRect').attrs({
-      opacity: ({ type }) => isFirstInSubnet(type) ? 0.2 : 0,
+      opacity: ({ type }) => isStaringPoint(type) ? 0.2 : 0,
       height: legHeight,
     })
     allElements.select('.redBulkLine').attrs({ height: legHeight - RADIUS / 2 - 2 })
@@ -162,7 +181,7 @@ export default class TimelineChart extends Component {
 
   mouseOverTooltip = tooltipData => {
     // d3.select(d3.event.target).moveToFront()
-    if (!tooltipData.type) {
+    if ( !tooltipData.type ) {
       return
     }
     if ( d3.event.target.tagName !== 'rect' ) {

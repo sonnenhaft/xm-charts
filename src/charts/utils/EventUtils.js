@@ -1,12 +1,10 @@
-const circleTypes = ['assetCompromised', 'newAsset']
+export const isAssetCompromised = type => 'assetCompromised' === type
 
-export const isTrafficLight = type => circleTypes.includes(type)
+export const isStaringPoint = type => 'newStartingPointNode' === type
 
-export const isFirstInSubnet = type => 'newStartingPointNode' === type
+export const isSpecial = ({ type }) => isStaringPoint(type) || isAssetCompromised(type)
 
-export const isSpecial = ({type}) => isFirstInSubnet(type) || isTrafficLight(type)
-
-export const getEventInfo = ({data = {}}) => ({
+export const getEventInfo = ({ data = {} }) => ({
   source: (data.sourceNode || {}).id,
   method: data.method,
 })

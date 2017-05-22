@@ -143,3 +143,70 @@ svg.timeline-chart {
     fill: $red
   }
 }
+
+:global {
+  .big-event {
+    .asset-compromised {
+      transform: translate(-5px, -10px);
+      rect {
+        fill: red;
+        stroke: white;
+        stroke-width: 1px;
+      }
+
+      .compromised-circles {
+        transform: translate(4.8px, 4px);
+        circle {
+          fill: white;
+          opacity: 0.6;
+
+          &.data {
+            transform: translate(0, 5.5px);
+          }
+          &.network {
+            transform: translate(0, 11px);
+          }
+        }
+      }
+    }
+
+    .asset-compromised,
+    .starting-point-data,
+    .bulk-data,
+    .bulk-or-staring {
+      visibility: hidden;
+    }
+
+    &.is-asset-compromised {
+      .asset-compromised {
+        visibility: visible;
+      }
+
+      &.has-device circle.device {
+        opacity: 1;
+      }
+
+      &.has-data circle.data {
+        opacity: 1;
+      }
+
+      &.has-network circle.network {
+        opacity: 1;
+      }
+    }
+
+    &.is-starting-point .starting-point-data {
+      visibility: visible;
+    }
+    &.is-bulk-circle .bulk-data {
+      visibility: visible;
+    }
+
+    &.is-starting-point,
+    &.is-bulk-circle {
+      .bulk-or-staring {
+        visibility: visible;
+      }
+    }
+  }
+}
