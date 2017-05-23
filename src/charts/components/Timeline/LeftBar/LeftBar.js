@@ -24,6 +24,7 @@ export default class LeftBar extends Component {
 
     currentSpeed: P.number.isRequired,
     onCurrentSpeedChanged: P.func.isRequired,
+    onZoomFactorChanged: P.func.isRequired,
 
     playingInterval: P.number,
     onPlayingIntervalChanged: P.func.isRequired,
@@ -90,7 +91,10 @@ export default class LeftBar extends Component {
     }
   }
 
-  onRecordButtonClicked = () => this.props.onCurrentTimeChanged(this.props.events[0].date)
+  onRecordButtonClicked = () => {
+    this.props.onCurrentTimeChanged(this.props.events[0].date)
+    this.props.onZoomFactorChanged(1)
+  }
 
   setCurrentEvent({ events, currentTime }) {
     const lastDate = events[events.length - 1].date
@@ -206,7 +210,6 @@ export default class LeftBar extends Component {
           </button>
         </div>
       </div>
-
       <div />
       <div styleName="play-buttons-block">
         <button onClick={this.onRecordButtonClicked} styleName="play-action-button">

@@ -38,6 +38,23 @@ export default class TimelineChart extends Component {
   xScaleMini = d3.scaleTime()
   yScale = d3.scaleLinear().domain([0, 1])
 
+  componentWillReceiveProps({ currentTime }) {
+    if ( this.props.currentTime !== currentTime ) {
+      const currentTimeX = this.xScale(currentTime)
+      if ( currentTimeX >  this.width ) {
+        this.onZoomFactorChangedAndMoved({
+          zoomFactor: this.zoom.k,
+          zoomPosition: this.zoom.x - currentTimeX,
+        })
+      } else if (currentTimeX < 0) {
+        this.onZoomFactorChangedAndMoved({
+          zoomFactor: this.zoom.k,
+          zoomPosition: this.zoom.x - currentTimeX + this.width,
+        })
+      }
+    }
+  }
+
   componentDidMount() { setTimeout(() => { this.forceUpdate() }, 0) }
 
   refRootNode = node => this.rootNode = d3.select(node)
@@ -175,8 +192,10 @@ export default class TimelineChart extends Component {
 
   onZoomFactorChangedAndMoved = ({ zoomFactor, zoomPosition }) => {
     zoomFactor = Math.min(this.props.maxZoom, Math.max(zoomFactor, this.props.minZoom))
-    zoomPosition = zoomFactor === 1 ? 0 : zoomPosition
-    Object.assign(this.zoom, { x: zoomPosition, k: zoomFactor })
+    zoomPosition = zoomFactor === 1 ? 0 : Math.min(zoomPosition, 0)
+    const maxZoomPosition = this.width * (zoomFactor - 1)
+
+    Object.assign(this.zoom, { x: Math.max(zoomPosition, -maxZoomPosition), k: zoomFactor })
     this.props.onZoomFactorChanged(zoomFactor)
   }
 

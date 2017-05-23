@@ -51,6 +51,7 @@ export default class Timeline extends Component {
           currentTime, onCurrentTimeChanged,
           currentSpeed, onCurrentSpeedChanged,
           playingInterval, onPlayingIntervalChanged,
+          onZoomFactorChanged,
           isToggled, events,
         }} />
         <TimelineChart {...{
