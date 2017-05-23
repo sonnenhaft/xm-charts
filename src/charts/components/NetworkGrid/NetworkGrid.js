@@ -293,7 +293,7 @@ export default class NetworkGrid extends Component {
 
     this.svg.selectAll('.icons').classed('icons-visible', currentZoom.k < ZOOM_CHANGE)
 
-    const { enteredSelection: arrows } = this.svg.select('.arrows')._bindData('g.arrow-line', this.cachedArrows, {
+    const { mergedSelection: arrows } = this.svg.select('.arrows')._bindData('g.arrow-line', this.cachedArrows, {
       cursor: 'pointer',
       click: arrow => this.setSelectedElement('arrow', arrow),
       html: ({ value, middlePoint: { x, y }, startNode: { x: x1, y: y1 }, endNode: { x: x2, y: y2 } }) => {
@@ -304,13 +304,16 @@ export default class NetworkGrid extends Component {
         x = scale(x)
         y = scale(y)
 
+        // TODO(vlad): add arrows circles back when we define which number to display on it
+        /* eslint-disable */
         return `
         <line class="arrow" x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}"></line>
         <line class="arrow-highlight" x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}"></line>
-        <g class="text-value" visibility="${value ? 'visible' : 'hidden'}">
+        <g class="text-value" visibility="${value && false ? 'visible' : 'hidden'}">
           <circle class="arrow-circle" r="8" cx="${x}" cy="${y}"></circle>
           <text class="arrow-circle-text" x="${x}" y="${y}" dy="3.5">${value}</text>
         </g>`
+        /* eslint-enable */
       },
     })
 

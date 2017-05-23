@@ -37,9 +37,6 @@
     .arrow-circle {
       fill: $red;
     }
-    &:hover .arrow {
-      stroke-dasharray: 5px 2px;
-    }
     &.is-compromised .arrow {
       stroke-width: 3px;
     }
