@@ -40,20 +40,20 @@
     &.is-compromised .arrow {
       stroke-width: 3px;
     }
-    &.is-black {
-      .arrow {
-        stroke: $black
-      }
-      .arrow-circle {
-        fill: $black;
-      }
-    }
     &.is-blue {
       .arrow {
         stroke: $blue
       }
       .arrow-circle {
         fill: $blue;
+      }
+    }
+    &.is-black {
+      .arrow {
+        stroke: $black
+      }
+      .arrow-circle {
+        fill: $black;
       }
     }
   }

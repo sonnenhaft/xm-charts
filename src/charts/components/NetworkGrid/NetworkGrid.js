@@ -13,7 +13,7 @@ const ZOOM_CHANGE = 1.2
 
 const getClusterName = cluster => cluster === 'undefined' ? 'Unidentified' : cluster
 const getSelectionByType = (selectedElement, type) =>
-  (selectedElement && selectedElement.type === type && selectedElement.element) || undefined
+(selectedElement && selectedElement.type === type && selectedElement.element) || undefined
 
 export default class NetworkGrid extends Component {
   state = {
@@ -59,8 +59,8 @@ export default class NetworkGrid extends Component {
   }
 
   // TODO(vlad): remove code below
-  shouldComponentUpdate({currentTime, events, nodes},
-                        {hoveredNode, selectedElement}) {
+  shouldComponentUpdate({ currentTime, events, nodes },
+                        { hoveredNode, selectedElement }) {
     const { props, state } = this
     return props.currentTime !== currentTime
       || props.events !== events
@@ -75,7 +75,7 @@ export default class NetworkGrid extends Component {
       this.calculateClusters({ nodes })
     }
 
-    if(currentTime !== this.props.currentTime){
+    if ( currentTime !== this.props.currentTime ) {
       this.setSelectedElement(undefined)
     }
 
@@ -178,15 +178,15 @@ export default class NetworkGrid extends Component {
   }
 
   setSelectedElement = (type, element) => {
-    if(this.isSelected(element)){
+    if ( this.isSelected(element) ) {
       return
     }
 
-    const selectedElement = type && {type, element}
-    this.setState({selectedElement})
+    const selectedElement = type && { type, element }
+    this.setState({ selectedElement })
     this.props.onSelectedElementChanged(selectedElement)
 
-    if(d3.event){
+    if ( d3.event ) {
       d3.event.stopPropagation()
       return false
     }
@@ -194,7 +194,7 @@ export default class NetworkGrid extends Component {
   }
 
   isSelected = element => this.state.selectedElement && this.state.selectedElement.element === element
-    || (!this.state.selectedElement &&  !element)
+  || (!this.state.selectedElement && !element)
 
 
   paintAndReturnNodes({ coordinatedClusters: clusters }, status, currentZoom) {
@@ -228,11 +228,11 @@ export default class NetworkGrid extends Component {
 
     this.svg.select('.grid').bindData('g.node', this.cachedClusters.coordinatedNodes, {
       transform: ({ x, y }) => `translate(${scale(x)},${scale(y)})`,
-      click: ({node}) => this.setSelectedElement('node', node),
+      click: ({ node }) => this.setSelectedElement('node', node),
       mouseout: () => this.setState({ hoveredNode: null }),
       mouseover: node => {
-        if (!this.isSelected(node)) {
-          this.setState({hoveredNode: node})
+        if ( !this.isSelected(node) ) {
+          this.setState({ hoveredNode: node })
         }
       },
       html: () => {
@@ -290,7 +290,7 @@ export default class NetworkGrid extends Component {
 
     this.svg.selectAll('.icons').classed('icons-visible', currentZoom.k < ZOOM_CHANGE)
 
-    const { mergedSelection: arrows } = this.svg.select('.arrows')._bindData('g.arrow-line', this.cachedArrows, {
+    const { enteredSelection: arrows } = this.svg.select('.arrows')._bindData('g.arrow-line', this.cachedArrows, {
       cursor: 'pointer',
       click: arrow => this.setSelectedElement('arrow', arrow),
       html: ({ value, middlePoint: { x, y }, startNode: { x: x1, y: y1 }, endNode: { x: x2, y: y2 } }) => {
@@ -314,16 +314,17 @@ export default class NetworkGrid extends Component {
       },
     })
 
+    const selectedArrow = getSelectionByType(this.state.selectedElement, 'arrow')
     arrows
       .classed('is-compromised', ({ isCompormised }) => isCompormised ? 3 : 1)
-      .classed('is-black', arrow => this.state.selectedArrow === arrow)
+      .classed('is-black', arrow => selectedArrow === arrow)
       .classed('is-blue', arrow => arrow.event.type === 'newDiscoveredNode')
 
     arrows.select('.arrow').attrs({
       'marker-end': arrow => {
         let type = 'red'
         type = arrow.event.type === 'newDiscoveredNode' ? 'blue' : type
-        type = this.state.selectedArrow === arrow ? 'black' : type
+        type = selectedArrow === arrow ? 'black' : type
         return `url(#${type}-arrow)`
       },
     })
