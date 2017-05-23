@@ -17,7 +17,6 @@ export default class NetworkGrid extends Component {
     hoveredNode: null,
     selectedArrow: null,
     selectedCluster: null,
-    hoveredCluster: null,
   }
 
   static propTypes = {
@@ -60,14 +59,13 @@ export default class NetworkGrid extends Component {
 
   // TODO(vlad): remove code below
   shouldComponentUpdate({ currentTime, events, nodes, selectedNodeIndex },
-                        { hoveredNode, selectedArrow, selectedCluster, hoveredCluster }) {
+                        { hoveredNode, selectedArrow, selectedCluster }) {
     const { props, state } = this
     return props.currentTime !== currentTime
       || props.events !== events
       || props.nodes !== nodes
       || state.hoveredNode !== hoveredNode
       || state.selectedCluster !== selectedCluster
-      || state.hoveredCluster !== hoveredCluster
       || state.selectedArrow !== selectedArrow
       || props.selectedNodeIndex !== selectedNodeIndex
   }
@@ -83,7 +81,6 @@ export default class NetworkGrid extends Component {
         hoveredNode: null,
         selectedArrow: null,
         selectedCluster: null,
-        hoveredCluster: null,
       })
     }
 
@@ -103,6 +100,12 @@ export default class NetworkGrid extends Component {
     this.rootBlock = d3.select(rootBlock)
     this.svg = this.rootBlock.select('.svg')
     this.svg.call(this.zoom)
+
+    this.svg.on('click', e => console.log(e) || this.setState({
+      hoveredNode: null,
+      selectedArrow: null,
+      selectedCluster: null,
+    }))
 
     setTimeout(() => {
       // think that better to remember height in here and on window changed
@@ -191,9 +194,9 @@ export default class NetworkGrid extends Component {
     this.svg.select('.clusters').bindData('g.cluster-group', clusters, {
       click: cluster => {
         this.setState({ selectedCluster: cluster === this.state.selectedCluster ? null : cluster })
+        d3.event.stopPropagation()
+        return false
       },
-      mouseover: hoveredCluster => this.setState({ hoveredCluster }),
-      mouseout: () => this.setState({ hoveredCluster: null }),
       html: ({ x, y, width, height, cluster }) => {
         return `
           <g>
@@ -220,6 +223,8 @@ export default class NetworkGrid extends Component {
       transform: ({ x, y }) => `translate(${scale(x)},${scale(y)})`,
       click: ({ node }) => {
         this.props.onSelectedNodeIndexChanged(this.props.nodes.findIndex(item => node === item))
+        d3.event.stopPropagation()
+        return false
       },
       mouseout: () => this.setState({ hoveredNode: null }),
       mouseover: item => {
@@ -286,6 +291,8 @@ export default class NetworkGrid extends Component {
       cursor: 'pointer',
       click: arrow => {
         this.setState({ selectedArrow: this.state.selectedArrow === arrow ? null : arrow })
+        d3.event.stopPropagation()
+        return false
       },
       html: ({ value, middlePoint: { x, y }, startNode: { x: x1, y: y1 }, endNode: { x: x2, y: y2 } }) => {
         x1 = scale(x1)
@@ -325,7 +332,6 @@ export default class NetworkGrid extends Component {
     const hoveredNode = this.state.hoveredNode
     const selectedArrow = this.state.selectedArrow
     const selectedCluster = this.state.selectedCluster
-    const hoveredCluster = this.state.hoveredCluster
 
     const { getCoordsFn } = this.rootBlock ? this.getScalesAndTransforms() : () => {}
 
@@ -333,15 +339,7 @@ export default class NetworkGrid extends Component {
       <WindowDependable className={className} refCb={this.refRootBlock}
                         onDimensionsChanged={() => this.forceUpdate()}>
 
-        <NetworkTooltip item={hoveredCluster} coordsFn={getCoordsFn}
-                        offsets={{ h: 60, x: hoveredCluster ? hoveredCluster.width : 0 }}>
-          {hoveredCluster && <div>
-            # devices
-            <div styleName="share-buttons">
-              <ShareButtons data={this.getClusterData(hoveredCluster)} type="dark-icons"/>
-            </div>
-          </div>}
-        </NetworkTooltip>
+
         <NetworkTooltip item={selectedCluster} coordsFn={getCoordsFn} isDark={true}
                         offsets={{ h: 60, x: selectedCluster ? selectedCluster.width : 0 }}>
           {selectedCluster && <div>
