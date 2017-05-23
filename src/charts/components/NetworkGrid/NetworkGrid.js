@@ -75,11 +75,8 @@ export default class NetworkGrid extends Component {
       this.calculateClusters({ nodes })
     }
 
-    if ( this.props.nodes !== nodes || this.props.events !== events ) {
-      this.setState({
-        hoveredNode: null,
-        selectedElement: null,
-      })
+    if(currentTime !== this.props.currentTime){
+      this.setSelectedElement(undefined)
     }
 
     if ( this.props.nodes !== nodes ||
