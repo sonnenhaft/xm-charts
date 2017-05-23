@@ -151,21 +151,19 @@ svg.timeline-chart {
       transform: translate(-5px, -10px);
       rect {
         fill: red;
-        stroke: white;
-        stroke-width: 1px;
       }
 
       .compromised-circles {
-        transform: translate(4.8px, 4px);
+        transform: translate(4.8px, 5px);
         circle {
           fill: white;
-          opacity: 0.6;
+          opacity: 0.35;
 
           &.data {
-            transform: translate(0, 5.5px);
+            transform: translate(0, 7.2px);
           }
           &.network {
-            transform: translate(0, 11px);
+            transform: translate(0, 14px);
           }
         }
       }

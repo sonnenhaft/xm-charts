@@ -160,7 +160,7 @@ export default class TimelineChart extends Component {
       </g>
       
       <g class="asset-compromised">
-        <rect width="10" height="20" rx="2" ry="2"></rect>
+        <rect width="10" height="24" rx="4" ry="4"></rect>
         <g class="compromised-circles">
           <circle r="2.3" class="device"></circle>
           <circle r="2.3" class="data"></circle>
