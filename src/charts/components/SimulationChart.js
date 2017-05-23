@@ -13,7 +13,6 @@ const getLastDateOrReturnZero = events => {
 export default class SimulationChart extends Component {
 
   state = {
-    selectedNodeIndex: -1,
     events: undefined,
     currentTime: undefined,
   }
@@ -34,9 +33,9 @@ export default class SimulationChart extends Component {
     this.state = {events, currentTime}
   }
 
-  onSelectedNodeIndexChanged = selectedNodeIndex => this.setState({ selectedNodeIndex })
-
   onCurrentTimeChanged = currentTime => this.setState({ currentTime })
+
+  onSelectedElementChanged = ({type, element}) => console.log({type, element})
 
   render() {
 
@@ -44,12 +43,12 @@ export default class SimulationChart extends Component {
       props: {nodes, className},
       state: {currentTime, selectedNodeIndex, events},
       onCurrentTimeChanged,
-      onSelectedNodeIndexChanged,
+      onSelectedElementChanged,
     } = this
 
     return (
       <div className={className} styleName="root">
-        <NetworkGrid styleName="network" {...{ events, nodes, currentTime, selectedNodeIndex, onSelectedNodeIndexChanged }}/>
+        <NetworkGrid styleName="network" {...{ events, nodes, currentTime, selectedNodeIndex, onSelectedElementChanged }}/>
         <Timeline styleName="timeline" {...{ events, nodes, currentTime, onCurrentTimeChanged }} />
       </div>
     )

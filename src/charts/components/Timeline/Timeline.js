@@ -29,7 +29,9 @@ export default class Timeline extends Component {
   }
 
   onCurrentSpeedChanged = (currentSpeed, cb) => this.setState({ currentSpeed }, cb)
+
   onToggledChanged = isToggled => this.setState({ isToggled })
+
   onPlayingIntervalChanged = (playingInterval, cb) => this.setState({ playingInterval }, cb) // necessary to disable animation
 
   onZoomFactorChanged = zoomFactor => this.setState({ zoomFactor })
