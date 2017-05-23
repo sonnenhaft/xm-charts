@@ -181,14 +181,23 @@ export default class NetworkGrid extends Component {
   }
 
   setSelectedElement = (type, element) => {
-    this.setState({selectedElement: type && {type, element}})
+    if(this.isSelected(element)){
+      return
+    }
+
+    const selectedElement = type && {type, element}
+    this.setState({selectedElement})
+    this.props.onSelectedElementChanged(selectedElement)
+
     if(d3.event){
       d3.event.stopPropagation()
       return false
     }
+
   }
 
   isSelected = element => this.state.selectedElement && this.state.selectedElement.element === element
+    || (!this.state.selectedElement &&  !element)
 
 
   paintAndReturnNodes({ coordinatedClusters: clusters }, status, currentZoom) {
