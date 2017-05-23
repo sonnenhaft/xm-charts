@@ -367,7 +367,7 @@ export default class NetworkGrid extends Component {
           </div>}
         </NetworkTooltip>
 
-        <svg className="svg zoomRect">
+        <svg className="svg" styleName="network-grid-svg">
           <defs>
             <marker id="black-arrow" markerWidth="10" markerHeight="10" refX="10" refY="3" orient="auto" markerUnits="strokeWidth" className="arrow-marker">
               <path d="M 0 0 L 2.5 3 L 0 6"/>

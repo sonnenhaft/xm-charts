@@ -60,17 +60,17 @@
 
   .arrow-highlight {
     opacity: 0;
-    stroke: black;
+    stroke: $black;
     stroke-width: 3px;
   }
   rect.cluster {
-    fill: white;
+    fill: #f4f4f4;
+    stroke: #bebebe;
   }
-  .cluster-group.active {
-    rect.cluster {
-      stroke-width: 2px;
-      stroke: #d7d7d7;
-    }
+  .cluster-group.active rect.cluster {
+    stroke-width: 2px;
+    stroke: $black;
+    fill: $white;
   }
 
   .test {
@@ -143,7 +143,6 @@
       }
     }
 
-
     &.is-discovered {
       .content {
         fill: $blue;
@@ -163,7 +162,7 @@
     &.is-starting-point {
 
       .icons {
-        fill:  opacify($grey-light, 0);
+        fill: opacify($grey-light, 0);
       }
 
       &.is-data-discovered {
@@ -217,10 +216,8 @@
   }
 }
 
-.zoom-rect {
-  fill: black;
-  opacity: 0;
-  cursor: move;
+.network-grid-svg {
+  background: #f4f4f4;
 }
 
 .clusters-wrapper {
