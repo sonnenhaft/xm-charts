@@ -44,6 +44,7 @@ export default class TimelineChart extends Component {
 
   componentWillUpdate({ isToggled, zoomFactor, events }) {
     const { clientWidth: realWidth } = this.rootNode.node()
+    this.realWidth = realWidth
     const realHeight = isToggled ? 100 : 200
     const width = Math.max(realWidth - getMarginLeft(isToggled) - MARGIN_RIGHT, 0)
     const height = Math.max(realHeight - getMarginTop(isToggled) - MARGIN_BOTTOM, 0)
@@ -132,7 +133,7 @@ export default class TimelineChart extends Component {
         <rect class="whiteShadowRect ${styles['white-shadow-rect']}" width="${(RADIUS + 1) * 2}"></rect>
         <g class="starting-point-data">
            <circle class="${styles['circle-wrapper']} ${styles['no-value']}" r="${RADIUS}"></circle>
-           <circle class="${styles['red-bulk-circle']}" r="${RADIUS/2}"></circle>
+           <circle class="${styles['red-bulk-circle']}" r="${RADIUS / 2}"></circle>
         </g>
         <g class="bulk-data">
           <circle class="${styles['circle-wrapper']}" r="${RADIUS}"></circle>
@@ -206,11 +207,15 @@ export default class TimelineChart extends Component {
       currentTime, onCurrentTimeChanged,
       isToggled, isPlaying, currentSpeed,
     } = this.props
-    const marginTop = getMarginTop(isToggled)
 
     return <WindowDependable className={styles['root']} refCb={this.refRootNode}
                              onDimensionsChanged={() => this.forceUpdate()}>
-      <svg styleName={`${(isToggled ? 'toggled' : '')} timeline-chart`} height={realHeight}>
+      <ZoomRect {...{
+        marginLeft: getMarginLeft(isToggled),
+        zoomFactor, zoomPosition, onZoomFactorChangedAndMoved,
+        height: realHeight,
+        width: this.realWidth,
+      }} styleName={`${(isToggled ? 'toggled' : '')} timeline-chart`}>
         <rect styleName="black-background" width="100%" height="100%"/>
         <g transform={`translate(0,${ this.height || 0 })`}>
           <g className="brushLineGroup" styleName="brush-line-group">
@@ -223,12 +228,7 @@ export default class TimelineChart extends Component {
           <Axes {...{ xScale, yScale, xScaleMini, isToggled, realHeight, zoomFactor }}>
             <path className="linePath" styleName="line-path"/>
           </Axes>
-          <g className="clickableArea">
-            <ZoomRect {...{
-              xScale, yScale, isToggled, marginTop,
-              zoomFactor, zoomPosition, onZoomFactorChangedAndMoved,
-            }} />
-          </g>
+          <g className="clickableArea"/>
           <g className="smalRects" styleName="small-rects"/>
         </g>
         <g styleName="brush-group-wrapper">
@@ -242,7 +242,7 @@ export default class TimelineChart extends Component {
             }} />
           </Brush>
         </g>
-      </svg>
+      </ZoomRect>
       <Tooltip data={state.tooltipData} coords={state.tooltipCoords} isOpened={state.isTooltipOpened}/>
     </WindowDependable>
   }

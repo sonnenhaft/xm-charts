@@ -1,14 +1,9 @@
 import React, { PropTypes, Component } from 'react'
 import d3, { Transform }  from 'charts/utils/decorated.d3.v4'
 
-const ScaleObjectFunction = PropTypes.func.isRequired
 export default class ZoomRect extends Component {
   static propTypes = {
-    xScale: ScaleObjectFunction,
-    yScale: ScaleObjectFunction,
-
-    isToggled: PropTypes.bool,
-    marginTop: PropTypes.number,
+    marginLeft: PropTypes.number,
     minimalZoom: PropTypes.number,
     zoomFactor: PropTypes.number,
     zoomPosition: PropTypes.number,
@@ -16,13 +11,8 @@ export default class ZoomRect extends Component {
   }
 
   static defaultProps = {
-    marginTop: 0,
     minimalZoom: 0,
-    isToggled: false,
   }
-
-  getWidth = () => this.props.xScale.range()[1]
-  getHeight = () => this.props.yScale.range()[0]
 
   componentWillMount() {
     this.zoom = d3.zoom().scaleExtent([this.props.minimalZoom, 1000 * 1000 * 1000])
@@ -42,7 +32,7 @@ export default class ZoomRect extends Component {
     if ( k !== this.props.zoomFactor || x !== this.props.zoomPosition ) {
       this.props.onZoomFactorChangedAndMoved({
         zoomFactor: k,
-        zoomPosition: x,
+        zoomPosition: x - this.props.marginLeft,
         y,
       })
     }
@@ -56,25 +46,22 @@ export default class ZoomRect extends Component {
     this.setZoom(props)
   }
 
+  _getLeftOffset(){
+    return 30
+  }
+
   setZoom({ zoomFactor, zoomPosition }) {
     const currentZoom = this.getCurrentZoom()
     const { k, x, y } = currentZoom
-    if ( k !== zoomFactor || x !== zoomPosition ) {
+    const x_ = zoomPosition + this.props.marginLeft
+    if ( k !== zoomFactor || x !== x_) {
       this.isDisabled = true
-      this.zoom.transform(this.zoomRect, new Transform(zoomFactor, zoomPosition, y))
+      this.zoom.transform(this.zoomRect, new Transform(zoomFactor, x_, y))
       this.isDisabled = false
     }
   }
 
   getCurrentZoom() {return d3.zoomTransform(this.zoomRect.node())}
-
-  componentDidUpdate() {
-    const [width, height] = [this.getWidth(), this.getHeight()]
-    this.zoom.translateExtent([[0, 0], [width, height]]).extent([[0, 0], [width, height]])
-    const marginTop = this.props.marginTop
-    const attrs = { width, height: height + marginTop, y: -marginTop }
-    this.zoomRect.attrs(attrs)
-  }
 
   refZoomRect = zoomRect => {
     this.zoomRect = d3.select(zoomRect)
@@ -82,6 +69,9 @@ export default class ZoomRect extends Component {
   }
 
   render() {
-    return <rect ref={this.refZoomRect} cursor="move" pointerEvents="all" fill="none"/>
+    return <svg ref={this.refZoomRect} className={this.props.className} height={this.props.height}
+    width={this.props.width}>
+      {this.props.children}
+    </svg>
   }
 }

@@ -4,6 +4,7 @@ $radius: 8px;
 svg.timeline-chart {
   display: block;
   width: 100%;
+  cursor: move;
 
   text {
     font-family: 'Roboto Mono', sans-serif;
@@ -93,7 +94,7 @@ svg.timeline-chart {
 }
 
 .main-group {
-  flil: white;
+  flil: $white;
   transform: translate(30px, 30px);
 }
 
