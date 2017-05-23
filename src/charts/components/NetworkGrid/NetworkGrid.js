@@ -287,7 +287,7 @@ export default class NetworkGrid extends Component {
 
     this.svg.selectAll('.icons').classed('icons-visible', currentZoom.k < ZOOM_CHANGE)
 
-    const { enteredSelection: arrows } = this.svg.select('.arrows')._bindData('g.arrow-line', this.cachedArrows, {
+    const { mergedSelection: arrows } = this.svg.select('.arrows')._bindData('g.arrow-line', this.cachedArrows, {
       cursor: 'pointer',
       click: arrow => {
         this.setState({ selectedArrow: this.state.selectedArrow === arrow ? null : arrow })
