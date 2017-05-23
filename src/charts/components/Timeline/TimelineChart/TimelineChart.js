@@ -5,7 +5,7 @@ import Tooltip from './Tooltip/Tooltip'
 import { calculatePath, composeCircles } from './TimelineChartUtils'
 import WindowDependable from '../../common/WindowDependable'
 import BrushCircleGroup from './BrushCircleGroup/BrushCircleGroup'
-import ZoomRect from '../../common/ZoomRect'
+import ZoomableSVG from './ZoomableSVG'
 import Brush from './Brush'
 import Axes from './Axes/Axes'
 import { isAssetCompromised, isStaringPoint } from 'charts/utils/EventUtils'
@@ -206,16 +206,18 @@ export default class TimelineChart extends Component {
     const {
       currentTime, onCurrentTimeChanged,
       isToggled, isPlaying, currentSpeed,
+      minZoom, maxZoom,
     } = this.props
 
     return <WindowDependable className={styles['root']} refCb={this.refRootNode}
                              onDimensionsChanged={() => this.forceUpdate()}>
-      <ZoomRect {...{
+      <ZoomableSVG {...{
         marginLeft: getMarginLeft(isToggled),
         zoomFactor, zoomPosition, onZoomFactorChangedAndMoved,
-        height: realHeight,
-        width: this.realWidth,
-      }} styleName={`${(isToggled ? 'toggled' : '')} timeline-chart`}>
+        minZoom, maxZoom,
+      }} styleName={`${(isToggled ? 'toggled' : '')} timeline-chart`}
+                   className="clickableArea"
+                   height={realHeight}>
         <rect styleName="black-background" width="100%" height="100%"/>
         <g transform={`translate(0,${ this.height || 0 })`}>
           <g className="brushLineGroup" styleName="brush-line-group">
@@ -228,7 +230,6 @@ export default class TimelineChart extends Component {
           <Axes {...{ xScale, yScale, xScaleMini, isToggled, realHeight, zoomFactor }}>
             <path className="linePath" styleName="line-path"/>
           </Axes>
-          <g className="clickableArea"/>
           <g className="smalRects" styleName="small-rects"/>
         </g>
         <g styleName="brush-group-wrapper">
@@ -242,7 +243,7 @@ export default class TimelineChart extends Component {
             }} />
           </Brush>
         </g>
-      </ZoomRect>
+      </ZoomableSVG>
       <Tooltip data={state.tooltipData} coords={state.tooltipCoords} isOpened={state.isTooltipOpened}/>
     </WindowDependable>
   }

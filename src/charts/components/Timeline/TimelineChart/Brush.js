@@ -15,7 +15,10 @@ export default class Brush extends Component {
   }
 
   setBrushGroup = brushGroup => this.brushGroup = d3.select(brushGroup)
-  setBrusher = brusher => this.brusher = d3.select(brusher)
+  setBrusher = brusher => {
+    this.brusher = d3.select(brusher)
+    this.brusher.on('click', () => d3.event.stopPropagation())
+  }
   getWidth = () => this.props.xScale.range()[1]
   getHeight = () => this.props.yScale.range()[0]
 

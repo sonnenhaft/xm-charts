@@ -1,21 +1,21 @@
-import React, { PropTypes, Component } from 'react'
-import d3, { Transform }  from 'charts/utils/decorated.d3.v4'
+import React, { Component, PropTypes as P } from 'react'
+import d3, { Transform } from 'charts/utils/decorated.d3.v4'
 
-export default class ZoomRect extends Component {
+export default class ZoomableSVG extends Component {
   static propTypes = {
-    marginLeft: PropTypes.number,
-    minimalZoom: PropTypes.number,
-    zoomFactor: PropTypes.number,
-    zoomPosition: PropTypes.number,
-    onZoomFactorChangedAndMoved: PropTypes.func.isRequired,
-  }
+    marginLeft: P.number.isRequired,
 
-  static defaultProps = {
-    minimalZoom: 0,
+    minZoom: P.number.isRequired,
+    maxZoom: P.number.isRequired,
+
+    zoomFactor: P.number.isRequired,
+    zoomPosition: P.number.isRequired,
+    onZoomFactorChangedAndMoved: P.func.isRequired,
   }
 
   componentWillMount() {
-    this.zoom = d3.zoom().scaleExtent([this.props.minimalZoom, 1000 * 1000 * 1000])
+    this.zoom = d3.zoom()
+      .scaleExtent([this.props.minZoom, this.props.maxZoom])
       .on('zoom', this.onZoomFactorChangedAndMoved)
   }
 
@@ -46,31 +46,29 @@ export default class ZoomRect extends Component {
     this.setZoom(props)
   }
 
-  _getLeftOffset(){
-    return 30
-  }
-
   setZoom({ zoomFactor, zoomPosition }) {
     const currentZoom = this.getCurrentZoom()
     const { k, x, y } = currentZoom
     const x_ = zoomPosition + this.props.marginLeft
-    if ( k !== zoomFactor || x !== x_) {
+    if ( k !== zoomFactor || x !== x_ ) {
       this.isDisabled = true
       this.zoom.transform(this.zoomRect, new Transform(zoomFactor, x_, y))
       this.isDisabled = false
     }
   }
 
-  getCurrentZoom() {return d3.zoomTransform(this.zoomRect.node())}
+  getCurrentZoom() {
+    return d3.zoomTransform(this.zoomRect.node())
+  }
 
-  refZoomRect = zoomRect => {
+  refZoomableSVG = zoomRect => {
     this.zoomRect = d3.select(zoomRect)
     this.zoomRect.call(this.zoom)
   }
 
   render() {
-    return <svg ref={this.refZoomRect} className={this.props.className} height={this.props.height}
-    width={this.props.width}>
+    return <svg ref={this.refZoomableSVG} className={this.props.className}
+                height={this.props.height}>
       {this.props.children}
     </svg>
   }
