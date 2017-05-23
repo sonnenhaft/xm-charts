@@ -226,7 +226,7 @@ export default class LeftBar extends Component {
         <div styleName="left-buttons show-zoom-menu">
 
           <button title="Current speed" styleName="no-hover play-action-button">
-            <Icon>{`${props.currentSpeed}x`}</Icon>
+            <Icon>{`x${props.currentSpeed}`}</Icon>
           </button>
 
           <div styleName="zoom-menu">
