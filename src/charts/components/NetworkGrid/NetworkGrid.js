@@ -122,14 +122,14 @@ export default class NetworkGrid extends Component {
     xScale.domain(currentZoom.rescaleX(xScale).domain())
     yScale.domain(currentZoom.rescaleY(yScale).domain())
 
-    const getCoordsFn = (coords, heightOffset, xCoordOffset = 0, yCoordOffset = 0) => {
+    const getCoordsFn = (coords, heightOffset = 0, xCoordOffset = 0, yCoordOffset = 0) => {
       if ( !coords ) {
         return {}
       }
       const { x, y } = coords
       const offsets = this.rootBlock.node().getBoundingClientRect()
       return {
-        top: `${yScale(y + yCoordOffset) - heightOffset + shiftY + offsets.top  }px`,
+        top: `${yScale(y + yCoordOffset) - heightOffset - 52 + shiftY + offsets.top  }px`,
         left: `${xScale(x + xCoordOffset) + shiftX + offsets.left  }px`,
       }
     }
@@ -344,7 +344,7 @@ export default class NetworkGrid extends Component {
                         onDimensionsChanged={() => this.forceUpdate()}>
 
         <NetworkTooltip item={selectedCluster} coordsFn={getCoordsFn} isDark={true}
-                        offsets={{ h: 60, x: selectedCluster ? selectedCluster.width : 0 }}>
+                        offsets={{ h: -4, x: selectedCluster ? selectedCluster.width : 0 }}>
           {selectedCluster && <div>
             # devices
             <div styleName="share-buttons">
@@ -353,13 +353,13 @@ export default class NetworkGrid extends Component {
           </div>}
         </NetworkTooltip>
 
-        <NetworkTooltip item={hoveredNode} coordsFn={getCoordsFn} offsets={{ h: 62, x: 0.1755, y: 0.38 }}>
+        <NetworkTooltip item={hoveredNode} coordsFn={getCoordsFn} offsets={{ x: 0.1755, y: 0.38 }}>
           {hoveredNode && <div>
             <div>{hoveredNode.node.name}</div>
           </div>}
         </NetworkTooltip>
         <NetworkTooltip item={selectedArrow && selectedArrow.tipPoint}
-                        coordsFn={getCoordsFn} offsets={{ h: 62 }}>
+                        coordsFn={getCoordsFn} offsets={{}}>
           {selectedArrow && <div>
             {selectedArrow.event.data && <div>{selectedArrow.event.data.method}</div>}
             {!selectedArrow.event.data && <div>Type: {selectedArrow.event.type}</div>}

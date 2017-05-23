@@ -10,8 +10,8 @@ const NetworkTooltip = ({ item, coordsFn, children, offsets, isDark }) => {
           {children}
         </div>
         <svg styleName="tooltip-svg">
-          <line x1="0" y1="50" x2="70" y2="0"/>
-          <line x1="70" y1="0" x2="100" y2="0" strokeWidth="2.5"/>
+          <path
+            d="M 0 75 L  75 0 L 110 0" fill="none" stroke="black" strokeWidth="3" transform="translate(0,2) scale(0.5)"/>
         </svg>
       </div>}
     </div>
