@@ -303,6 +303,7 @@ export default class NetworkGrid extends Component {
         y = scale(y)
 
         // TODO(vlad): add arrows circles back when we define which number to display on it
+        /* eslint-disable */
         return `
         <line class="arrow" x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}"></line>
         <line class="arrow-highlight" x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}"></line>
@@ -310,6 +311,7 @@ export default class NetworkGrid extends Component {
           <circle class="arrow-circle" r="8" cx="${x}" cy="${y}"></circle>
           <text class="arrow-circle-text" x="${x}" y="${y}" dy="3.5">${value}</text>
         </g>`
+        /* eslint-enable */
       },
     })
 
