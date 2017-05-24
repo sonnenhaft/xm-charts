@@ -8,8 +8,9 @@ const LAYOUT_MARGIN_TOP = MARGIN * 2
 const LAYOUT_MARGIN_BOTTOM = MARGIN / 4
 const LAYOUT_MARGIN_LEFT = MARGIN / 4
 const PADDING_RIGHT = 0
-const PADDING_LEFT = MARGIN
-const PADDING_H = MARGIN
+const PADDING_LEFT = 0.7 * MARGIN
+const PADDING_TOP = 0.7 * MARGIN
+const PADDING_BOTTOM = 0.42 * MARGIN
 
 export default  defaultMemoize(function(nodes, ratio = 1) {
   let clusters = transform(groupBy(nodes, 'cluster'), (result, nodesObject, clusterId) => {
@@ -19,7 +20,7 @@ export default  defaultMemoize(function(nodes, ratio = 1) {
     result[clusterId] = {
       clusterId,
       width: width + PADDING_RIGHT + PADDING_LEFT + MARGIN * 2,
-      height: height + PADDING_H * 2 + MARGIN + MARGIN_TOP,
+      height: height + PADDING_TOP + PADDING_BOTTOM + MARGIN + MARGIN_TOP,
       nodesObject,
     }
   })
@@ -38,9 +39,9 @@ export default  defaultMemoize(function(nodes, ratio = 1) {
 
   items.forEach(item => {
     item.width -= MARGIN * 2 + PADDING_RIGHT + PADDING_LEFT
-    item.height -= MARGIN + MARGIN_TOP + PADDING_H * 2
+    item.height -= MARGIN + MARGIN_TOP + PADDING_TOP + PADDING_BOTTOM
     item.x += MARGIN + PADDING_LEFT
-    item.y += MARGIN_TOP + PADDING_H
+    item.y += MARGIN_TOP + PADDING_TOP
   })
 
   const coordinatedNodesMap = items.reduce((nodes, { width, x, y, item: { nodesObject } }) => {
@@ -69,9 +70,9 @@ export default  defaultMemoize(function(nodes, ratio = 1) {
       id: cluster + nodesObject.length,
       coordinatedNodes: nodesObject.map(({ agentId }) => coordinatedNodesMap[agentId]),
       width: PADDING_RIGHT + PADDING_LEFT + width,
-      height: PADDING_H * 2 + height,
+      height: PADDING_TOP + PADDING_BOTTOM + height,
       x: x - PADDING_LEFT,
-      y: y - PADDING_H,
+      y: y - PADDING_TOP,
     })
     return clusters
   }, [])
