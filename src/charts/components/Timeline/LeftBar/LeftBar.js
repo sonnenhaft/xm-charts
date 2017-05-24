@@ -1,18 +1,18 @@
-import React, { Component, PropTypes as P } from 'react'
+import React, { Component, PropTypes as P } from "react";
 
-import playSvg from 'assets/icons/play.svg'
-import pauseSvg from 'assets/icons/pause.svg'
-import nextFlagSvg from 'assets/icons/next-flag.svg'
-import nextStorySvg from 'assets/icons/next-story.svg'
-import circleButtonSvgIcon from 'assets/icons/circle-button.svg'
-import downloadedSvg from 'assets/icons/asset-downloaded.svg'
-import { isSpecial } from 'charts/utils/EventUtils'
+import playSvg from "assets/icons/play.svg";
+import pauseSvg from "assets/icons/pause.svg";
+import nextFlagSvg from "assets/icons/next-flag.svg";
+import nextStorySvg from "assets/icons/next-story.svg";
+import circleButtonSvgIcon from "assets/icons/circle-button.svg";
+import downloadedSvg from "assets/icons/asset-downloaded.svg";
+import { isSpecial } from "charts/utils/EventUtils";
 
-import './LeftBar.scss'
+import "./LeftBar.scss";
 
-import CurrentTime from './CurrentTime'
-import CircleIndicator from './CircleIndicator'
-import ShareButtons from '../common/ShareButtons'
+import CurrentTime from "./CurrentTime";
+import CircleIndicator from "./CircleIndicator";
+import ShareButtons from "../common/ShareButtons";
 
 const Icon = ({ children: __html }) => <span dangerouslySetInnerHTML={{ __html }}/>
 
@@ -156,8 +156,8 @@ export default class LeftBar extends Component {
       return specialEvents.find(({ date }) => date > props.currentTime)
     } else {
       let closetIdx
-      if (props.currentTime >= props.events[props.events.length - 1].date) {
-        closetIdx = specialEvents.length -1
+      if ( props.currentTime >= props.events[props.events.length - 1].date ) {
+        closetIdx = specialEvents.length - 1
       } else {
         closetIdx = specialEvents.findIndex(({ date }) => date >= props.currentTime)
       }
@@ -174,83 +174,89 @@ export default class LeftBar extends Component {
 
     const isPlaying = props.playingInterval
     return <div styleName={`timeline-control-block ${(props.isToggled ? 'is-toggled' : '')}`}>
-      <div />
-      <div styleName="circle-stats-block">
-        <div styleName="circle-block">
-          <CircleIndicator percent={currentEvent.networkSuperiority} isPlaying={!!isPlaying}/>
-        </div>
-
-        <div styleName="stats-block">
-          <ShareButtons data={currentEvent.compromisedAssets}
-                        type={props.isToggled ? 'vertical-black' : ''}/>
-          <div styleName="buttoned-item">
-            <span styleName="icon" dangerouslySetInnerHTML={{ __html: downloadedSvg }}/>
-            <span>
-                {currentEvent.compromisedDataGB}
-              <small>GB</small>
-              </span>
+      <div>
+        <div styleName="circle-stats-block">
+          <div styleName="circle-block">
+            <CircleIndicator percent={currentEvent.networkSuperiority} isPlaying={!!isPlaying}/>
           </div>
-        </div>
-        <div styleName="right-buttons black-buttons">
-          <button onClick={this.onPrev}
-                  title="jump to previous event"
-                  styleName="play-action-button"
-                  disabled={!this.getEventPossibleEvent(-1)}>
-            <Icon>{nextStorySvg}</Icon>
-          </button>
 
-          <button onClick={this.onLongPrev}
-                  title="long jump backward"
-                  styleName="play-action-button"
-                  disabled={!this.getPossibleCircle()}>
-            <Icon>{nextFlagSvg}</Icon>
-          </button>
+          <div styleName="stats-block">
+            <ShareButtons data={currentEvent.compromisedAssets}
+                          type={props.isToggled ? 'vertical-black' : ''}/>
+            <div styleName="buttoned-item">
+              <span styleName="icon" dangerouslySetInnerHTML={{ __html: downloadedSvg }}/>
+              <span>
+                {currentEvent.compromisedDataGB}
+                <small>GB</small>
+              </span>
+            </div>
+          </div>
+
         </div>
-        <div styleName="left-buttons black-buttons">
-          <button onClick={this.onNext}
-                  title="jump to next event"
-                  styleName="play-action-button"
-                  disabled={!this.getEventPossibleEvent(1)}>
-            <Icon>{nextStorySvg}</Icon>
+        <div styleName="play-buttons-block">
+          <button onClick={this.onRecordButtonClicked} styleName="play-action-button">
+            <Icon>{circleButtonSvgIcon}</Icon>
           </button>
-          <button onClick={this.onLongNext}
-                  title="long jump forward"
-                  styleName="play-action-button"
-                  disabled={!this.getPossibleCircle(true)}>
-            <Icon>{nextFlagSvg}</Icon>
-          </button>
+          <CurrentTime {...{ time }} />
         </div>
       </div>
-      <div />
-      <div styleName="play-buttons-block">
-        <button onClick={this.onRecordButtonClicked} styleName="play-action-button">
-          <Icon>{circleButtonSvgIcon}</Icon>
-        </button>
-        <CurrentTime {...{ time }} />
+      <div>
+        <div styleName="four-control-buttons">
+          <div styleName="right-buttons black-buttons">
+            <button onClick={this.onPrev}
+                    title="jump to previous event"
+                    styleName="play-action-button"
+                    disabled={!this.getEventPossibleEvent(-1)}>
+              <Icon>{nextStorySvg}</Icon>
+            </button>
 
-        <button onClick={this.onPlay}
-                styleName="play-action-button"
-                title={isPlaying ? 'pause' : 'play'}>
-          <Icon>{isPlaying ? pauseSvg : playSvg}</Icon>
-        </button>
-
-        <div styleName="left-buttons show-zoom-menu">
-
-          <button title="Current speed" styleName="no-hover play-action-button">
-            <Icon>{`x${props.currentSpeed}`}</Icon>
+            <button onClick={this.onLongPrev}
+                    title="long jump backward"
+                    styleName="play-action-button"
+                    disabled={!this.getPossibleCircle()}>
+              <Icon>{nextFlagSvg}</Icon>
+            </button>
+          </div>
+          <div styleName="left-buttons black-buttons">
+            <button onClick={this.onNext}
+                    title="jump to next event"
+                    styleName="play-action-button"
+                    disabled={!this.getEventPossibleEvent(1)}>
+              <Icon>{nextStorySvg}</Icon>
+            </button>
+            <button onClick={this.onLongNext}
+                    title="long jump forward"
+                    styleName="play-action-button"
+                    disabled={!this.getPossibleCircle(true)}>
+              <Icon>{nextFlagSvg}</Icon>
+            </button>
+          </div>
+        </div>
+        <div styleName="four-control-buttons">
+          <button onClick={this.onPlay}
+                  styleName="play-action-button"
+                  title={isPlaying ? 'pause' : 'play'}>
+            <Icon>{isPlaying ? pauseSvg : playSvg}</Icon>
           </button>
 
-          <div styleName="zoom-menu">
-            {[0.5, 1, 2, 4].map(number => (
-              <div key={number}>
-                <button onClick={() => this.onSpeedUpdated(number)}
-                        title="Change play speed"
-                        disabled={number === props.currentSpeed}
-                        styleName={`play-action-button ${number === props.currentSpeed ? 'active' : ''}`}>
-                  <span>{number}x</span>
-                </button>
-              </div>
-            ))}
+          <div styleName="left-buttons show-zoom-menu">
+
+            <button title="Current speed" styleName="no-hover play-action-button">
+              <Icon>{`x${props.currentSpeed}`}</Icon>
+            </button>
+
+            <div styleName="zoom-menu">
+              {[0.5, 1, 2, 4].map(number => (
+                <div key={number}>
+                  <button onClick={() => this.onSpeedUpdated(number)}
+                          title="Change play speed"
+                          disabled={number === props.currentSpeed}
+                          styleName={`play-action-button ${number === props.currentSpeed ? 'active' : ''}`}>
+                    <span>{number}x</span>
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

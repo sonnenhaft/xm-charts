@@ -29,7 +29,10 @@ $halfWidth: 30px;
   &.is-toggled {
     height: 50px;
     > div {
-      flex-direction: row;
+      button {
+        width: 25px;
+      }
+      flex-direction: row-reverse;
     }
 
     flex-flow: column wrap;

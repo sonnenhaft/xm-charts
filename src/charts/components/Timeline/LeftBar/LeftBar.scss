@@ -2,6 +2,11 @@
 
 .timeline-control-block.is-toggled {
   height: 100px;
+  .four-control-buttons {
+    button {
+      height: 33px;
+    }
+  }
   .play-action-button {
     height: 50px;
   }
@@ -40,7 +45,10 @@
   }
   border-right: 1px solid $black-light;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  .four-control-buttons {
+    display: flex;
+  }
   justify-content: space-between;
 
   .circle-stats-block {
