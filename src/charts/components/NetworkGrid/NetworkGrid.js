@@ -54,8 +54,8 @@ export default class NetworkGrid extends Component {
       events,
       cachedClusters.coordinatedNodes,
       currentTime,
-      1 / 2 - 0.14,
-      1 - 0.25
+      (1 / 2 - 0.14) / 1.5,
+      (1 - 0.25) / 1.5
     )
   }
 
@@ -236,7 +236,7 @@ export default class NetworkGrid extends Component {
         }
       },
       html: () => {
-        return `<g>
+        return `<g transform="scale(0.65)">
       <rect class="outerHover visible-large" stroke-width="1" width="21.3" height="35.91"
         rx="6.35" ry="6.35" x="-3.35" y="-3.35"></rect>
       <rect class="outerHover visible-small" stroke-width="3" width="27.8" height="42.41"
@@ -361,7 +361,7 @@ export default class NetworkGrid extends Component {
           </div>}
         </NetworkTooltip>
 
-        <NetworkTooltip item={hoveredNode} coordsFn={getCoordsFn} offsets={{ x: 0.35, y: 0.03 }}>
+        <NetworkTooltip item={hoveredNode} coordsFn={getCoordsFn} offsets={{ x: 0.23, y: 0.02 }}>
           {hoveredNode && <div>
             <div>{hoveredNode.node.name}</div>
           </div>}
