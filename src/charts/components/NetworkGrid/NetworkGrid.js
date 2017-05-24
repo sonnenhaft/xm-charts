@@ -353,7 +353,6 @@ export default class NetworkGrid extends Component {
     //const selectedNode = getSelectionByType(this.state.selectedElement, 'node')
     const selectedArrow = getSelectionByType(this.state.selectedElement, 'arrow')
 
-
     const { getCoordsFn } = this.rootBlock ? this.getScalesAndTransforms() : () => {}
 
     return (
@@ -370,7 +369,7 @@ export default class NetworkGrid extends Component {
           </div>}
         </NetworkTooltip>
 
-        <NetworkTooltip item={hoveredNode} coordsFn={getCoordsFn} offsets={{ x: 0.37, y: 0.1 }}>
+        <NetworkTooltip item={hoveredNode} coordsFn={getCoordsFn} offsets={{ x: 0.35, y: 0.03 }}>
           {hoveredNode && <div>
             <div>{hoveredNode.node.name}</div>
           </div>}
