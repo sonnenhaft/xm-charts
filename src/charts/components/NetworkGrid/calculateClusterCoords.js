@@ -2,7 +2,7 @@ import { groupBy, transform, values } from 'lodash'
 import pack from 'bin-pack'
 import { defaultMemoize } from 'reselect'
 
-const MARGIN = 0.5
+const MARGIN = 1
 const MARGIN_TOP = 1
 const LAYOUT_MARGIN_TOP = MARGIN * 2
 const LAYOUT_MARGIN_BOTTOM = MARGIN / 4
