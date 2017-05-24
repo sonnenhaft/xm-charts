@@ -2,6 +2,7 @@ import React, { Component, PropTypes as P } from 'react'
 import d3, { Transform } from 'charts/utils/decorated.d3.v4'
 import { getNodesEventsDataMap } from '../../utils/nodeEventData'
 import { Circle, Desktop, Diskette, Snow } from './IconsGroup'
+import { groupBy } from 'lodash'
 import './NetworkGrid.scss'
 import WindowDependable from '../common/WindowDependable'
 import NetworkTooltip from './NetworkTooltip/NetworkTooltip'
@@ -290,46 +291,58 @@ export default class NetworkGrid extends Component {
 
     this.svg.selectAll('.icons').classed('icons-visible', currentZoom.k < ZOOM_CHANGE)
 
-    const { mergedSelection: arrows, enteredSelection: enteredArrows } = this.svg.select('.arrows')._bindData('g.arrow-line', this.cachedArrows, {
-      cursor: 'pointer',
-      click: arrow => this.setSelectedElement('arrow', arrow),
-      html: ({ value, middlePoint: { x, y }, startNode: { x: x1, y: y1 }, endNode: { x: x2, y: y2 } }) => {
-        x1 = scale(x1)
-        x2 = scale(x2)
-        y1 = scale(y1)
-        y2 = scale(y2)
-        x = scale(x)
-        y = scale(y)
+    const groupedArrows = groupBy(this.cachedArrows, ({ event: { type } }) => {
+      return type === 'newDiscoveredNode' ? '.blue-arrows' : '.red-arrows'
+    })
 
-        // TODO(vlad): add arrows circles back when we define which number to display on it
-        /* eslint-disable */
-        return `
+    const arrows = Object.keys(groupedArrows).map(className => {
+      return { cachedArrows: groupedArrows[className], className }
+    }).map(({ className, cachedArrows }) => {
+      return this.svg.select(className).bindData('g.arrow-line', cachedArrows, {
+        cursor: 'pointer',
+        click: arrow => this.setSelectedElement('arrow', arrow),
+        html: ({ value, middlePoint: { x, y }, startNode: { x: x1, y: y1 }, endNode: { x: x2, y: y2 } }) => {
+          x1 = scale(x1)
+          x2 = scale(x2)
+          y1 = scale(y1)
+          y2 = scale(y2)
+          x = scale(x)
+          y = scale(y)
+
+          // TODO(vlad): add arrows circles back when we define which number to display on it
+          /* eslint-disable */
+          return `
         <line class="arrow" x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}"></line>
         <line class="arrow-highlight" x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}"></line>
         <g class="text-value" visibility="${value && false ? 'visible' : 'hidden'}">
           <circle class="arrow-circle" r="8" cx="${x}" cy="${y}"></circle>
           <text class="arrow-circle-text" x="${x}" y="${y}" dy="3.5">${value}</text>
         </g>`
-        /* eslint-enable */
-      },
-    })
-
-    const selectedArrow = getSelectionByType(this.state.selectedElement, 'arrow');
-
-    [enteredArrows, arrows].forEach(arrows => {
-      arrows
-        .classed('is-compromised', ({ isCompormised }) => isCompormised)
-        .classed('is-black', arrow => selectedArrow === arrow)
-        .classed('is-blue', arrow => arrow.event.type === 'newDiscoveredNode')
-
-      arrows.select('.arrow').attrs({
-        'marker-end': arrow => {
-          let type = 'red'
-          type = arrow.event.type === 'newDiscoveredNode' ? 'blue' : type
-          type = selectedArrow === arrow ? 'black' : type
-          return `url(#${type}-arrow)`
+          /* eslint-enable */
         },
       })
+    }).reduce((arr, q) => {
+      if (!arr) {
+        return q
+      } else {
+        return arr.merge(q)
+      }
+    }, null)
+
+    const selectedArrow = getSelectionByType(this.state.selectedElement, 'arrow')
+
+    arrows
+      .classed('is-compromised', ({ isCompormised }) => isCompormised)
+      .classed('is-black', arrow => selectedArrow === arrow)
+      .classed('is-blue', arrow => arrow.event.type === 'newDiscoveredNode')
+
+    arrows.select('.arrow').attrs({
+      'marker-end': arrow => {
+        let type = 'red'
+        type = arrow.event.type === 'newDiscoveredNode' ? 'blue' : type
+        type = selectedArrow === arrow ? 'black' : type
+        return `url(#${type}-arrow)`
+      },
     })
   }
 
@@ -385,8 +398,9 @@ export default class NetworkGrid extends Component {
           <g className="grid-shifter">
             <g className="zoom-scale">
               <g className="clusters" styleName="clusters-wrapper"/>
+              <g className="blue-arrows"/>
               <g className="grid"/>
-              <g className="arrows"/>
+              <g className="red-arrows"/>
             </g>
           </g>
         </svg>
