@@ -90,7 +90,7 @@ export default  defaultMemoize(function(nodes, ratio = 1) {
   }
 })
 
-export const getArrows = defaultMemoize((events, coordinatedNodes, currentTime) => {
+export const getArrows = defaultMemoize((events, coordinatedNodes, currentTime, width, height) => {
   const nodesMap = coordinatedNodes.reduce((map, calc) => {
     map[calc.node.agentId] = calc
     return map
@@ -98,27 +98,14 @@ export const getArrows = defaultMemoize((events, coordinatedNodes, currentTime) 
   const filteredEvents = events
     .filter(({ date }) => date <= currentTime)
 
+  let count = 0;
   const compromisedMap = filteredEvents.filter(({ type }) => type === 'assetCompromised').reduce((map, event) => {
-    map[event.node.id] = true
+    if (!map[event.node.id] ) {
+      map[event.node.id] = ++count
+    }
     return map
   }, {})
 
-  return filteredEvents
-    .filter(({ data = {} }) => data.sourceNode && data.sourceNode.id)
-    .map(event => {
-      const { data: { sourceNode: { id: start } }, node: { id: end } } = event
-      const startNode = nodesMap[start]
-      const endNode = nodesMap[end]
-      return {
-        event,
-        isCompormised: event.type !== 'newDiscoveredNode' && compromisedMap[end],
-        startNode,
-        endNode,
-      }
-    })
-})
-
-export const moveArrowsToCorners = defaultMemoize((arrows, width, height) => {
   const fn = ([x1, x2], width) => {
     if ( x1 < x2 ) {
       x1 += width
@@ -131,54 +118,25 @@ export const moveArrowsToCorners = defaultMemoize((arrows, width, height) => {
     return [x1, x2]
   }
 
-  const getNode = ({ node: { agentId: id } }) => id
-  let startsEndsArray = arrows.filter(({ event: { type } }) => {
-    return type !== 'newDiscoveredNode'
-  }).map(({ startNode, endNode }) => ({
-    start: getNode(startNode),
-    end: getNode(endNode),
-  }))
+  return filteredEvents
+    .filter(({ data = {} }) => data.sourceNode && data.sourceNode.id)
+    .map(event => {
 
-  const parentsMap = groupBy(startsEndsArray, ({ start }) => start)
-  const childrenMap = groupBy(startsEndsArray, ({ end }) => end)
-  const roots = Object.keys(parentsMap).filter(key => !childrenMap[key])
+      const { data: { sourceNode: { id: start } }, node: { id: end } } = event
+      const startNode = nodesMap[start]
+      const endNode = nodesMap[end]
 
-  function setWeights(root, weight, weights) {
-    if ( weights[root] !== undefined ) {
-      return
-    }
+      const [x1, x2] = fn([startNode.x, endNode.x], width)
+      const [y2, y1] = fn([endNode.y, startNode.y], height)
 
-    weights[root] = weight
-    const children = parentsMap[root]
-    if ( !children ) {
-      return
-    }
-    for (let i = 0; i < children.length; i++) {
-      setWeights(children[i].end, weight + 1, weights)
-    }
-    return weights
-  }
-
-  const rootsMap = roots.map(root => setWeights(root, 0, {})).reduce((map, weights) => {
-    Object.keys(weights).forEach(key => {
-      map[key] = Math.max(map[key] || 0, weights[key])
+      return {
+        id: event.id,
+        event,
+        attackPathNumber: event.type !== 'newDiscoveredNode' ? compromisedMap[end] : 0,
+        startNode: { x: x1, y: y1 },
+        endNode: { x: x2, y: y2 },
+        middlePoint: { x: x1 + (x2 - x1) / 2, y: y1 + (y2 - y1) / 2 },
+        tipPoint: { x: x1 + (x2 - x1) / 2 * 1.1, y: y1 + (y2 - y1) / 2 * 1.1 },
+      }
     })
-    return map
-  }, {})
-
-  return arrows.map(({ event, startNode, endNode, isCompormised }) => {
-    const [x1, x2] = fn([startNode.x, endNode.x], width)
-    const [y2, y1] = fn([endNode.y, startNode.y], height)
-    const val = event.type !== 'newDiscoveredNode' ? rootsMap[endNode.node.agentId] : null
-    return {
-      id: event.id,
-      event,
-      isCompormised,
-      value: val,
-      startNode: { x: x1, y: y1 },
-      endNode: { x: x2, y: y2 },
-      middlePoint: { x: x1 + (x2 - x1) / 2, y: y1 + (y2 - y1) / 2 },
-      tipPoint: { x: x1 + (x2 - x1) / 2 * 1.1, y: y1 + (y2 - y1) / 2 * 1.1 },
-    }
-  })
 })
