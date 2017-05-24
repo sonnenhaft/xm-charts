@@ -151,9 +151,20 @@ export default class LeftBar extends Component {
     const props = this.props
     // only "special" events in here
     // find instead of  findIndex because we loose order
-    return props.events
-      .filter(isSpecial)
-      .find(({ date }) => forward ? date > props.currentTime : date < props.currentTime)
+    const specialEvents = props.events.filter(isSpecial)
+    if ( forward ) {
+      return specialEvents.find(({ date }) => date > props.currentTime)
+    } else {
+      let closetIdx
+      if (props.currentTime >= props.events[props.events.length - 1].date) {
+        closetIdx = specialEvents.length -1
+      } else {
+        closetIdx = specialEvents.findIndex(({ date }) => date >= props.currentTime)
+      }
+      if ( closetIdx > 0 ) {
+        return specialEvents[closetIdx - 1]
+      }
+    }
   }
 
   render() {
