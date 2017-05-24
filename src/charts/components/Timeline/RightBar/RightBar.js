@@ -85,12 +85,11 @@ export default compose(
       onZoomFactorChanged(zoomFactor / ZOOM_STEP)
     },
     zoomCompletely: ({ setLongPressedButton, onZoomFactorChanged, minZoom, maxZoom, longPressedButton }) => key => {
+      console.log('zoom completely')
       if ( !longPressedButton || longPressedButton.key !== key ) {
         return
       } else {
-        if ( Date.now() - longPressedButton.time >= 2000 ) {
-          onZoomFactorChanged(key === 'longZoomIn' ? maxZoom : minZoom)
-        }
+        onZoomFactorChanged(key === 'longZoomIn' ? maxZoom : minZoom)
         setLongPressedButton(null)
       }
     },
