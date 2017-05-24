@@ -34,23 +34,21 @@ const methods = {
     })
     return this
   },
-  _bindData: function(tagAndClass, data, opt_attrs, duration) {
+  bindData: function(tagAndClass, data, opt_attrs, duration) {
     const [tag, className] = tagAndClass.split('.')
     const selector = className ? `${tag}.${className}` : tag
     const enteredSelection = this.selectAll(selector).data(data, ({ id }) => id)
     enteredSelection.exit().remove()
     const mergedSelection = enteredSelection.enter().append(tag)
       .attr('class', className)
-    mergedSelection
+    const allNodes = mergedSelection
       .attrs(opt_attrs)
       .merge(enteredSelection)
+    allNodes
       .transition()
       .duration(duration)
       .attrs(opt_attrs, true)
-    return {mergedSelection, enteredSelection}
-  },
-  bindData: function(tagAndClass, data, opt_attrs, duration) {
-    return this._bindData(tagAndClass, data, opt_attrs, duration).mergedSelection
+    return allNodes
   },
 }
 

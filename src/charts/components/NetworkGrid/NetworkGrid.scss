@@ -88,8 +88,8 @@
 
     .wrapper {
       rect {
-        stroke: $white;
-        fill: $white;
+        stroke: none;
+        fill: none;
       }
 
       &.is-selected {
