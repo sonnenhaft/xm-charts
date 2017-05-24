@@ -362,7 +362,7 @@ export default class NetworkGrid extends Component {
         <NetworkTooltip item={selectedCluster} coordsFn={getCoordsFn} isDark={true}
                         offsets={{ h: -4, x: selectedCluster ? selectedCluster.width : 0 }}>
           {selectedCluster && <div>
-            # devices
+            {selectedCluster.coordinatedNodes.length}
             <div styleName="share-buttons">
               <ShareButtons data={this.getClusterData(selectedCluster)} type="dark-icons"/>
             </div>
