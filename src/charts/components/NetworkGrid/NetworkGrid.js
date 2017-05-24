@@ -357,7 +357,7 @@ export default class NetworkGrid extends Component {
           </div>}
         </NetworkTooltip>
 
-        <NetworkTooltip item={hoveredNode} coordsFn={getCoordsFn} offsets={{ x: 0.1755, y: 0.38 }}>
+        <NetworkTooltip item={hoveredNode} coordsFn={getCoordsFn} offsets={{ x: 0.37, y: 0.1 }}>
           {hoveredNode && <div>
             <div>{hoveredNode.node.name}</div>
           </div>}
