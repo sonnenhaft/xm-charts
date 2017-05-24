@@ -18,26 +18,59 @@ $halfWidth: 30px;
   }
 }
 
-.small-buttons {
+.zoom-buttons {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: flex-start;
+  border-radius: 3px;
   height: 100%;
+  padding: 10px;
   &.is-toggled {
     height: 50px;
     > div {
       flex-direction: row;
     }
-  }
-  .text-shifted-to-top .square-button span {
-    display: block;
-    margin-top: -4px;
-    .square-button {
-      width: $halfWidth*0.65;
-      height: $halfWidth*0.65;
+
+    flex-flow: column wrap;
+    margin-left: -20px;
+
+    .zoom-button {
+      &:not(:first-child) {
+        border-bottom-color: $black-light !important;
+        border-right-color: $black-border;
+      }
+
+      &:first-child {
+        order: 2;
+        border-top-left-radius: 0;
+        border-top-right-radius: 3px;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 3px;
+      }
+
+      &:last-child {
+        order: 1;
+        border-bottom-left-radius: 3px;
+        border-bottom-right-radius: 0;
+        border-top-left-radius: 3px;
+        border-top-right-radius: 0;
+      }
     }
   }
-  .square-button {
+  &.text-shifted-to-top {
+    .zoom-button {
+      width: $halfWidth*0.65;
+      height: $halfWidth*0.65;
+
+      span {
+        display: block;
+        margin-top: -4px;
+      }
+    }
+  }
+
+  .zoom-button {
     width: $halfWidth;
     height: $halfWidth;
     font-size: 25px;
@@ -54,7 +87,59 @@ $halfWidth: 30px;
   }
 }
 
-.is-toggled .square-button svg {
+.zoom-button {
+  background: $black-light;
+  border: 1px solid $black-light;
+  color: $white;
+  cursor: pointer;
+  height: $buttonWidth;
+  width: $buttonWidth;
+  &[disabled]:not(.active) {
+    cursor: not-allowed;
+    background: $black-disabled;
+    span {
+      opacity: 0.5;
+    }
+  }
+
+  &:not(:last-child) {
+    border-bottom-color: $black-border !important;
+  }
+
+  &:first-child {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+  }
+
+  &:last-child {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+  }
+
+  &:hover:not(.no-hover):not([disabled]), &.active {
+    background: $blue;
+    border-color: $blue;
+  }
+  &:focus {
+    outline: none;
+  }
+  svg {
+    width: 23px;
+  }
+
+  path {
+    stroke: $white;
+    stroke-width: 0;
+    fill: $white;
+  }
+}
+
+.is-toggled .square-button svg,
+.is-toggled .zoom-button svg {
   transform: rotate(180deg);
 }
 

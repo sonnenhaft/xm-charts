@@ -18,18 +18,18 @@ const RightBar = ({
   const toggledClass = isToggled ? 'is-toggled' : ''
   return <div styleName="right-bar">
     <div />
-    <div styleName={`small-buttons ${ toggledClass }`}>
+    <div styleName={`zoom-buttons ${ toggledClass }`}>
       <div styleName="text-shifted-to-top" onContextMenu={e => {
         e.preventDefault()
         onZoomFactorChanged(1)
       }}>
 
-        <button styleName="square-button"
+        <button styleName="zoom-button"
                 disabled={zoomFactor >= maxZoom}
                 onClick={() => onZoomFactorChanged(zoomFactor * ZOOM_STEP)}>
           <span>+</span>
         </button>
-        <button styleName="square-button"
+        <button styleName="zoom-button"
                 disabled={zoomFactor <= minZoom}
                 onClick={() => onZoomFactorChanged(zoomFactor / ZOOM_STEP)}>
           <span>-</span>
