@@ -2,7 +2,6 @@ import React, { Component, PropTypes as P } from 'react'
 import d3, { Transform } from 'charts/utils/decorated.d3.v4'
 import { getNodesEventsDataMap } from '../../utils/nodeEventData'
 import { Circle, Desktop, Diskette, Snow } from './IconsGroup'
-import { groupBy } from 'lodash'
 import './NetworkGrid.scss'
 import WindowDependable from '../common/WindowDependable'
 import NetworkTooltip from './NetworkTooltip/NetworkTooltip'
@@ -291,9 +290,11 @@ export default class NetworkGrid extends Component {
 
     this.svg.selectAll('.icons').classed('icons-visible', currentZoom.k < ZOOM_CHANGE)
 
-    const groupedArrows = groupBy(this.cachedArrows, ({ event: { type } }) => {
-      return type === 'newDiscoveredNode' ? '.blue-arrows' : '.red-arrows'
-    })
+    const groupedArrows = this.cachedArrows.reduce((groupedArrows, arrow) => {
+      const key = arrow.event.type === 'newDiscoveredNode' ? '.blue-arrows' : '.red-arrows'
+      groupedArrows[key].push(arrow)
+      return groupedArrows
+    }, { '.blue-arrows': [], '.red-arrows': [] })
 
     const arrows = Object.keys(groupedArrows).map(className => {
       return { cachedArrows: groupedArrows[className], className }
@@ -321,12 +322,8 @@ export default class NetworkGrid extends Component {
           /* eslint-enable */
         },
       })
-    }).reduce((arr, q) => {
-      if (!arr) {
-        return q
-      } else {
-        return arr.merge(q)
-      }
+    }).reduce((arrows, arrowsSelection) => {
+      return arrows ? arrows.merge(arrowsSelection) : arrowsSelection
     }, null)
 
     const selectedArrow = getSelectionByType(this.state.selectedElement, 'arrow')
