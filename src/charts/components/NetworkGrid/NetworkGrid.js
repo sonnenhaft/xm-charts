@@ -316,7 +316,7 @@ export default class NetworkGrid extends Component {
 
     const selectedArrow = getSelectionByType(this.state.selectedElement, 'arrow')
     arrows
-      .classed('is-compromised', ({ isCompormised }) => isCompormised ? 3 : 1)
+      .classed('is-compromised', ({ isCompormised }) => isCompormised)
       .classed('is-black', arrow => selectedArrow === arrow)
       .classed('is-blue', arrow => arrow.event.type === 'newDiscoveredNode')
 

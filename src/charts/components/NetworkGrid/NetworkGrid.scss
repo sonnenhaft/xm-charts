@@ -17,7 +17,7 @@
 
   .arrow-marker path {
     transform: translate(6.9px, 0);
-    stroke-width: 1.2px;
+    stroke-width: 1.2px!important;
     fill: none;
   }
   #blue-arrow path {
@@ -38,7 +38,7 @@
       fill: $red;
     }
     &.is-compromised .arrow {
-      stroke-width: 3px;
+      stroke-width: 2.2px;
     }
     &.is-blue {
       .arrow {
