@@ -5371,6 +5371,10 @@ react-router@^4.0.0:
     path-to-regexp "^1.5.3"
     warning "^3.0.0"
 
+react-tappable@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-tappable/-/react-tappable-1.0.0.tgz#16a3e9e6ce2ab764569ec56e45a591d660a966a6"
+
 react@15.4.2:
   version "15.4.2"
   resolved "https://registry.yarnpkg.com/react/-/react-15.4.2.tgz#41f7991b26185392ba9bae96c8889e7e018397ef"
