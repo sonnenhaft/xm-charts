@@ -38,8 +38,16 @@
     .arrow-circle {
       fill: $red;
     }
-    &.is-compromised .arrow {
-      stroke-width: 2.2px;
+    .attack-circle {
+      visibility: hidden;
+    }
+    &.is-compromised {
+      .attack-circle {
+        visibility: visible;
+      }
+      .arrow {
+        stroke-width: 2.2px;
+      }
     }
     &.is-blue {
       .arrow {
