@@ -390,8 +390,8 @@ export default class NetworkGrid extends Component {
             <g className="zoom-scale">
               <g className="clusters" styleName="clusters-wrapper"/>
               <g className="blue-arrows"/>
-              <g className="grid"/>
               <g className="red-arrows"/>
+              <g className="grid"/>
             </g>
           </g>
         </svg>
