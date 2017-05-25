@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import SimulationChart from 'charts/components/SimulationChart'
 import './Demo.scss'
 
-const addDemoClusters = node => ({ ...node })
 const rand = arr => arr[Math.round(Math.random() * (arr.length - 1))]
 const version = `${process.env.npm_package_name} v${process.env.npm_package_version}`
 const options = [
   { value: 1, title: 1 },
   { value: 2, title: 2 },
   { value: 3, title: 3 },
+  { value: 4, title: 4 },
 ]
 
 class DemoHeader extends Component {
@@ -68,7 +68,7 @@ class Demo extends Component {
   state = {
     nodes: [],
     events: [],
-    option: options[1].value,
+    option: options[3].value,
   }
 
   componentDidMount() {
@@ -79,7 +79,7 @@ class Demo extends Component {
     const events = require(`./events${value}.json`)
     const nodes = require(`./nodes${value}.json`)
 
-    this.setState({ option: value, events, nodes: nodes.map(addDemoClusters) })
+    this.setState({ option: value, events, nodes: nodes })
   }
 
   onNextAddTick = () => {
