@@ -24,15 +24,16 @@ class Sample extends React.Component {
   }
 
   onMouseEnter = () => {
-    this.cardHoverAnimation.play()
+    this.cardHoverAnimation.play().timeScale(1)
   }
 
   onMouseLeave = () => {
     if (!this.panelAnimation.reversed()) {
       this.panelAnimation.reverse().timeScale(10)
+      this.cardHoverAnimation.reverse().timeScale(6)
+    } else {
+      this.cardHoverAnimation.reverse().timeScale(1)
     }
-
-    this.cardHoverAnimation.reverse()
   }
 
   onClick = () => {
