@@ -3,10 +3,16 @@ import GSAP from 'react-gsap-enhancer'
 import {TweenMax, TimelineMax, Expo} from 'gsap'
 import './Sample.scss'
 
-function createCardHoverAnim({ target, options: { panel } }) {
-  return new TimelineMax({ paused: true, reversed: true })
+function createCardHoverInAnim({ target, options: { panel } }) {
+  return new TimelineMax({ paused: true, reversed: false })
           .add(TweenMax.to(target, 0.25, { scale: 1, boxShadow: '0px 1px 3px rgba(0, 0, 0, 0.085)' }))
           .add(TweenMax.to(panel, 0.35, { y: '260px', ease: Expo.easeOut }), '=-0.25')
+}
+
+function createCardHoverOutAnim({ target, options: { panel } }) {
+  return new TimelineMax({ paused: true, reversed: false })
+          .add(TweenMax.to(target, 0.25, { scale: 1, boxShadow: '0px 6px 22px rgba(0, 0, 0, 0.12)' }))
+          .add(TweenMax.to(panel, 0.35, { y: '310px', ease: Expo.easeOut }), '=-0.25')
 }
 
 function createPanelAnim({ options: { panel, arrow, buttons } }) {
@@ -19,27 +25,27 @@ function createPanelAnim({ options: { panel, arrow, buttons } }) {
 class Sample extends React.Component {
   componentDidMount() {
     const { arrow, panel, buttons } = this
-    this.cardHoverAnimation = this.addAnimation(createCardHoverAnim, { panel })
+    this.cardHoverInAnimation = this.addAnimation(createCardHoverInAnim, { panel })
+    this.cardHoverOutAnimation = this.addAnimation(createCardHoverOutAnim, { panel })
     this.panelAnimation = this.addAnimation(createPanelAnim, { panel, arrow, buttons })
   }
 
   onMouseEnter = () => {
-    this.cardHoverAnimation.play().timeScale(1)
+    this.cardHoverInAnimation.restart()
   }
 
   onMouseLeave = () => {
     if (!this.panelAnimation.reversed()) {
-      this.panelAnimation.reverse().timeScale(10)
-      this.cardHoverAnimation.reverse().timeScale(6)
-    } else {
-      this.cardHoverAnimation.reverse().timeScale(1)
+      this.panelAnimation.timeScale(10).reverse()
     }
+
+    this.cardHoverOutAnimation.restart()
   }
 
   onClick = () => {
     this.panelAnimation.reversed() ?
-      this.panelAnimation.play().timeScale(1) :
-      this.panelAnimation.reverse()
+      this.panelAnimation.timeScale(1).play() :
+      this.panelAnimation.timeScale(1).reverse()
   }
 
   render () {
