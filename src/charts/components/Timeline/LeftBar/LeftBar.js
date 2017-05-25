@@ -93,6 +93,7 @@ export default class LeftBar extends Component {
 
   onRecordButtonClicked = () => {
     this.props.onCurrentTimeChanged(this.props.events[0].date)
+    this.onPaused()
     this.props.onZoomFactorChanged(1)
   }
 
