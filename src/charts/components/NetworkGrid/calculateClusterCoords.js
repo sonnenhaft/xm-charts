@@ -98,7 +98,7 @@ export const getArrows = defaultMemoize((events, coordinatedNodes, currentTime, 
   const filteredEvents = events
     .filter(({ date }) => date <= currentTime)
 
-  let count = 0;
+  let count = 0
   const compromisedMap = filteredEvents.filter(({ type }) => type === 'assetCompromised').reduce((map, event) => {
     if (!map[event.node.id] ) {
       map[event.node.id] = ++count

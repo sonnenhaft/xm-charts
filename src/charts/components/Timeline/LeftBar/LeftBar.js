@@ -1,18 +1,18 @@
-import React, { Component, PropTypes as P } from "react";
+import React, { Component, PropTypes as P } from 'react'
 
-import playSvg from "assets/icons/play.svg";
-import pauseSvg from "assets/icons/pause.svg";
-import nextFlagSvg from "assets/icons/next-flag.svg";
-import nextStorySvg from "assets/icons/next-story.svg";
-import circleButtonSvgIcon from "assets/icons/circle-button.svg";
-import downloadedSvg from "assets/icons/asset-downloaded.svg";
-import { isSpecial } from "charts/utils/EventUtils";
+import playSvg from 'assets/icons/play.svg'
+import pauseSvg from 'assets/icons/pause.svg'
+import nextFlagSvg from 'assets/icons/next-flag.svg'
+import nextStorySvg from 'assets/icons/next-story.svg'
+import circleButtonSvgIcon from 'assets/icons/circle-button.svg'
+import downloadedSvg from 'assets/icons/asset-downloaded.svg'
+import { isSpecial } from 'charts/utils/EventUtils'
 
-import "./LeftBar.scss";
+import './LeftBar.scss'
 
-import CurrentTime from "./CurrentTime";
-import CircleIndicator from "./CircleIndicator";
-import ShareButtons from "../common/ShareButtons";
+import CurrentTime from './CurrentTime'
+import CircleIndicator from './CircleIndicator'
+import ShareButtons from '../common/ShareButtons'
 
 const Icon = ({ children: __html }) => <span dangerouslySetInnerHTML={{ __html }}/>
 
