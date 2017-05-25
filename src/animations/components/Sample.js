@@ -36,7 +36,7 @@ class Sample extends React.Component {
 
   onMouseLeave = () => {
     if (!this.panelAnimation.reversed()) {
-      this.panelAnimation.timeScale(10).reverse()
+      this.panelAnimation.time(0).timeScale(10).reverse()
     }
 
     this.cardHoverOutAnimation.restart()
