@@ -131,7 +131,7 @@ export default class TimelineChart extends Component {
     const actions = {
       click: onTimeChanged,
       mouseout: () => this.setState({ isTooltipOpened: false }),
-      mouseover: this.mouseOverTooltip
+      mouseover: this.mouseOverTooltip,
     }
 
     const RADIUS = 8
@@ -206,10 +206,17 @@ export default class TimelineChart extends Component {
     }
       const fixedOffsets = this.rootNode.select('svg').node().getBoundingClientRect()
       const x = this.xScale(event.date) + getMarginLeft(this.props.isToggled)
-      this.setState({
+    const subEvent = this.props.events
+      .filter(({data, type}) => data && type === 'nodeMarkAsRed')
+      .reverse()
+      .find(({date}) => date < event.date)
+    this.setState({
         tooltipData: {
           date: event.date,
-          name: this.props.nodes.find(({agentId}) => agentId === event.node.id).name
+          event,
+          subEvent,
+          name: this.props.nodes.find(({agentId}) => agentId === event.node.id).name,
+          subName: subEvent && this.props.nodes.find(({agentId}) => agentId === subEvent.node.id).name,
         },
         isTooltipOpened: true,
         tooltipCoords: {
