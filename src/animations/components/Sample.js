@@ -51,6 +51,7 @@ class Sample extends React.Component {
   render () {
     return (
       <div styleName="card" onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
+        <div>fdsafsa</div>
         <div styleName="panel" ref={element => { this.panel = element }}>
           <div styleName="toggle" onClick={this.onClick}>
             Campaing Actions
