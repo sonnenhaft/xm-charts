@@ -58,9 +58,9 @@ export default class TooltipContent extends Component {
   }
 
   render() {
-    const event = this.props.data
-    const { type, date } = event
-    const { method, source } = getEventInfo(event)
+    const data = this.props.data
+    const { name, date } = data
+    // const { method, source } = getEventInfo(data)
 
     return <div className="tooltipBlock" styleName="tooltip" ref={this.refRootNode}>
       <div styleName="triangle-wrapper" className="triangleWrapper">
@@ -69,19 +69,19 @@ export default class TooltipContent extends Component {
         </div>
       </div>
       <div styleName="tooltip-content">
-        <div styleName="title">{type}</div>
+        <div styleName="title">{name}</div>
         <div styleName="tooltip-event-icons">
           <ShareButtons type="vertical"/>
         </div>
         <div styleName="content">
-          {method && <div>
-            <span styleName="title">Method: </span>
-            <span>{method}</span>
-          </div>}
-          {source && <div>
-            <span styleName="title">Source: </span>
-            <span>{source}</span>
-          </div>}
+          {/*{method && <div>*/}
+            {/*<span styleName="title">Method: </span>*/}
+            {/*<span>{method}</span>*/}
+          {/*</div>}*/}
+          {/*{source && <div>*/}
+            {/*<span styleName="title">Source: </span>*/}
+            {/*<span>{source}</span>*/}
+          {/*</div>}*/}
         </div>
         <div>
           <b>{d3.timeFormat('%H:%M:%S')(date)}</b>
