@@ -89,7 +89,9 @@ export default compose(
       if ( !longPressedButton || longPressedButton.key !== key ) {
         return
       } else {
-        onZoomFactorChanged(key === 'longZoomIn' ? maxZoom : minZoom)
+        if ( Date.now() - longPressedButton.time >= 2000 ) {
+          onZoomFactorChanged(key === 'longZoomIn' ? maxZoom : minZoom)
+        }
         setLongPressedButton(null)
       }
     },
