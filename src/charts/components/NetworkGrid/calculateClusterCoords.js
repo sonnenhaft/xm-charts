@@ -134,7 +134,7 @@ export const getArrows = defaultMemoize((events, coordinatedNodes, currentTime, 
       return {
         id: event.id,
         event,
-        attackPathNumber: event.type !== 'newDiscoveredNode' ? compromisedMap[end] : 0,
+        attackPathNumber: event.type !== 'newDiscoveredNode' ? (compromisedMap[end] || 0) : 0,
         startNode: { x: x1, y: y1 },
         endNode: { x: x2, y: y2 },
         middlePoint: { x: x1 + (x2 - x1) / 2, y: y1 + (y2 - y1) / 2 },
