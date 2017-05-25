@@ -376,13 +376,13 @@ export default class NetworkGrid extends Component {
 
         <svg className="svg zoomRect">
           <defs>
-            <marker id="black-arrow" markerWidth="10" markerHeight="10" refX="10" refY="3" orient="auto" markerUnits="strokeWidth" className="arrow-marker">
+            <marker id="black-arrow" markerWidth="10" markerHeight="10" refX="9.4" refY="3.35" orient="auto" markerUnits="strokeWidth" className="arrow-marker">
               <path d="M 0 0 L 2.5 3 L 0 6"/>
             </marker>
-            <marker id="blue-arrow" markerWidth="10" markerHeight="10" refX="10" refY="3" orient="auto" markerUnits="strokeWidth" className="arrow-marker">
+            <marker id="blue-arrow" markerWidth="10" markerHeight="10" refX="9.4" refY="3.35" orient="auto" markerUnits="strokeWidth" className="arrow-marker">
               <path d="M 0 0 L 2.5 3 L 0 6"/>
             </marker>
-            <marker id="red-arrow" markerWidth="10" markerHeight="10" refX="10" refY="3" orient="auto" markerUnits="strokeWidth" className="arrow-marker">
+            <marker id="red-arrow" markerWidth="10" markerHeight="10" refX="9.4" refY="3.35" orient="auto" markerUnits="strokeWidth" className="arrow-marker">
               <path d="M 0 0 L 2.5 3 L 0 6"/>
             </marker>
           </defs>
