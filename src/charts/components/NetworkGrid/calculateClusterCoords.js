@@ -3,6 +3,8 @@ import pack from 'bin-pack'
 import { defaultMemoize } from 'reselect'
 
 const MARGIN = 1
+const MARGIN_LEFT = 0
+const MARGIN_RIGHT = 3
 const MARGIN_TOP = 1
 const LAYOUT_MARGIN_TOP = MARGIN * 2
 const LAYOUT_MARGIN_BOTTOM = MARGIN / 4
@@ -19,7 +21,7 @@ export default  defaultMemoize(function(nodes, ratio = 1) {
     const height = Math.ceil(size / width)
     result[clusterId] = {
       clusterId,
-      width: width + PADDING_RIGHT + PADDING_LEFT + MARGIN * 2,
+      width: width + PADDING_RIGHT + PADDING_LEFT + MARGIN_LEFT + MARGIN_RIGHT,
       height: height + PADDING_TOP + PADDING_BOTTOM + MARGIN + MARGIN_TOP,
       nodesObject,
     }
@@ -38,9 +40,9 @@ export default  defaultMemoize(function(nodes, ratio = 1) {
   })
 
   items.forEach(item => {
-    item.width -= MARGIN * 2 + PADDING_RIGHT + PADDING_LEFT
+    item.width -= MARGIN_LEFT + MARGIN_RIGHT + PADDING_RIGHT + PADDING_LEFT
     item.height -= MARGIN + MARGIN_TOP + PADDING_TOP + PADDING_BOTTOM
-    item.x += MARGIN + PADDING_LEFT
+    item.x += MARGIN_LEFT  + PADDING_LEFT
     item.y += MARGIN_TOP + PADDING_TOP
   })
 
@@ -132,7 +134,7 @@ export const getArrows = defaultMemoize((events, coordinatedNodes, currentTime, 
       return {
         id: event.id,
         event,
-        attackPathNumber: event.type !== 'newDiscoveredNode' ? compromisedMap[end] : 0,
+        attackPathNumber: event.type !== 'newDiscoveredNode' ? (compromisedMap[end] || 0) : 0,
         startNode: { x: x1, y: y1 },
         endNode: { x: x2, y: y2 },
         middlePoint: { x: x1 + (x2 - x1) / 2, y: y1 + (y2 - y1) / 2 },

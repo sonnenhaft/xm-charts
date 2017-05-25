@@ -5,21 +5,28 @@ import { Desktop, Diskette, Snow } from '../../NetworkGrid/IconsGroup'
 
 const Icon = ({ children: __html }) => <svg styleName="icon" dangerouslySetInnerHTML={{ __html }}/>
 
-const ShareButtons = ({ type = '', data: { data, device, network } = {}, children }) => {
+const iconsMap = {
+  data: Diskette,
+  device: Desktop,
+  network: Snow,
+}
+const iconsArray = ['data', 'device', 'network']
+
+const ShareButtons = ({ type = '', data = {}, children, onlyIcon }) => {
+
+  const isActive = type => {
+    console.log(type, onlyIcon)
+    return (!onlyIcon || onlyIcon === type) ? 'active' : ''
+  }
+
   return <div styleName={`share-buttons ${type}`}>
-    <div styleName="share-button">
-      <Icon>{Diskette}</Icon>
-      <span styleName="limited-text" title={data}>{data}</span>
-    </div>
-    <div styleName="share-button">
-      <Icon>{Desktop}</Icon>
-      <span styleName="limited-text" title={device}>{device}</span>
-    </div>
-    <div styleName="share-button">
-      <Icon>{Snow}</Icon>
-      <span styleName="limited-text" title={network}>{network}</span>
-    </div>
-    {children && <div styleName="share-button">
+    {iconsArray.map(icon => (
+      <div key={icon} styleName={`share-button ${isActive(icon)}`}>
+        <Icon>{iconsMap[icon]}</Icon>
+        <span styleName="limited-text" title={data[icon]}>{data[icon]}</span>
+      </div>
+    ))}
+    {children && <div styleName="share-button active">
       {children}
     </div>}
   </div>
@@ -28,6 +35,7 @@ const ShareButtons = ({ type = '', data: { data, device, network } = {}, childre
 ShareButtons.propTypes = {
   type: PropTypes.oneOf(['vertical', 'dark-icons', '', 'vertical-black']),
   data: PropTypes.object,
+  onlyIcon: PropTypes.string,
   children: PropTypes.any,
 }
 

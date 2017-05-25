@@ -199,23 +199,31 @@ export default class TimelineChart extends Component {
     this.props.onZoomFactorChanged(zoomFactor)
   }
 
-  mouseOverTooltip = tooltipData => {
+  mouseOverTooltip = event => {
     // d3.select(d3.event.target).moveToFront()
-    if ( !tooltipData.type ) {
+    if ( !event.type ) {
       return
     }
-    if ( d3.event.target.tagName !== 'rect' ) {
       const fixedOffsets = this.rootNode.select('svg').node().getBoundingClientRect()
-      const x = this.xScale(tooltipData.date) + getMarginLeft(this.props.isToggled)
-      this.setState({
-        tooltipData,
+      const x = this.xScale(event.date) + getMarginLeft(this.props.isToggled)
+    const subEvent = this.props.events
+      .filter(({data, type}) => data && type === 'nodeMarkAsRed')
+      .reverse()
+      .find(({date}) => date < event.date)
+    this.setState({
+        tooltipData: {
+          date: event.date,
+          event,
+          subEvent,
+          name: this.props.nodes.find(({agentId}) => agentId === event.node.id).name,
+          subName: subEvent && this.props.nodes.find(({agentId}) => agentId === subEvent.node.id).name,
+        },
         isTooltipOpened: true,
         tooltipCoords: {
           top: fixedOffsets.top,
           left: x + fixedOffsets.left,
         },
       })
-    }
   }
 
   render() {

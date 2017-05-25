@@ -2,7 +2,6 @@ import d3 from 'charts/utils/decorated.d3.v4'
 import React, { Component, PropTypes as P } from 'react'
 import styles from './Tooltip.scss'
 import ShareButtons from '../../common/ShareButtons'
-import { getEventInfo } from 'charts/utils/EventUtils'
 
 export default class TooltipContent extends Component {
   static propTypes = {
@@ -58,9 +57,13 @@ export default class TooltipContent extends Component {
   }
 
   render() {
-    const event = this.props.data
-    const { type, date } = event
-    const { method, source } = getEventInfo(event)
+    const data = this.props.data
+    let { name, date, event = {}, subEvent = {}, subName, ruleGroup } = data
+    if ( event.type === 'assetCompromised' ) {
+      name = event.data.asset.ruleTitle
+      ruleGroup = event.data.asset.ruleGroup
+      console.log(ruleGroup)
+    }
 
     return <div className="tooltipBlock" styleName="tooltip" ref={this.refRootNode}>
       <div styleName="triangle-wrapper" className="triangleWrapper">
@@ -69,20 +72,20 @@ export default class TooltipContent extends Component {
         </div>
       </div>
       <div styleName="tooltip-content">
-        <div styleName="title">{type}</div>
-        <div styleName="tooltip-event-icons">
-          <ShareButtons type="vertical"/>
-        </div>
-        <div styleName="content">
-          {method && <div>
+        <div styleName="title">{name}</div>
+        {ruleGroup && <div styleName="tooltip-event-icons">
+          <ShareButtons type="vertical" onlyIcon={ruleGroup}/>
+        </div>}
+        {subEvent && subEvent.data && <div styleName="content">
+          <div>
             <span styleName="title">Method: </span>
-            <span>{method}</span>
-          </div>}
-          {source && <div>
+            <span>{subEvent.data.method}</span>
+          </div>
+          <div>
             <span styleName="title">Source: </span>
-            <span>{source}</span>
-          </div>}
-        </div>
+            <span>{subName}</span>
+          </div>
+        </div>}
         <div>
           <b>{d3.timeFormat('%H:%M:%S')(date)}</b>
         </div>
