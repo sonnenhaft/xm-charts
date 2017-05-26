@@ -98,10 +98,13 @@ export default class NetworkGrid extends Component {
 
   setSvgDimensionsAndReturnShifts() {
     const props = this.props
+    if ( !this.rootBlock ) {
+      return {}
+    }
     const { clientWidth: width, clientHeight: height } = this.rootBlock.node()
 
     if ( !props.nodes.length || !height ) { // we just can calculate anything with 0 height
-      return
+      return {}
     }
     const centralizeZoomFactor = Math.min(
       height / (NODE_WIDTH * this.cachedClusters.totalHeight),
@@ -189,6 +192,7 @@ export default class NetworkGrid extends Component {
       (1 / 2 - 0.14) / 1.5,
       (1 - 0.25) / 1.5
     )
+
     const status = getNodesEventsDataMap(events, currentTime)
 
     const scale = x => x * NODE_WIDTH
@@ -281,7 +285,7 @@ export default class NetworkGrid extends Component {
     const selectedCluster = getSelectionByType(this.state.selectedElement, 'cluster')
     const selectedArrow = getSelectionByType(this.state.selectedElement, 'arrow')
 
-    const { getCoordsFn } = this.rootBlock ? this.setSvgDimensionsAndReturnShifts() : () => {}
+    const { getCoordsFn } = this.setSvgDimensionsAndReturnShifts()
 
     return (
       <WindowDependable className={className} refCb={this.refRootBlock}
