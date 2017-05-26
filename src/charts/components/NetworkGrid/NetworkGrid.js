@@ -68,7 +68,7 @@ export default class NetworkGrid extends Component {
     }
 
     const selectedNode = getSelectionByType(state.selectedElement, 'node')
-    this.d3Nodes.select('.wrapper').classed('is-selected', ({ node }) => node === selectedNode)
+    this.d3Nodes.classed('is-selected', ({ node }) => node === selectedNode)
 
     const selectedCluster = getSelectionByType(state.selectedElement, 'cluster')
     this.d3Clusters.classed('active', cluster => cluster === selectedCluster)
@@ -225,7 +225,26 @@ export default class NetworkGrid extends Component {
         }
       },
       html: () => `<g transform="scale(0.65)">
+      <rect class="outerHover visible-large" stroke-width="1" width="21.3" height="35.91"
+        rx="6.35" ry="6.35" x="-3.35" y="-3.35"></rect>
+      <rect class="outerHover visible-small" stroke-width="3" width="27.8" height="42.41"
+        rx="9.61" ry="9.61" x="-6.6" y="-6.6"></rect>
+      <rect class="innerHover visible-large" stroke-width="1.5" width="18.8" height="33.41"
+        rx="5.1" ry="5.1" x="-2.1" y="-2.1"></rect>
+      <rect class="innerHover visible-small" stroke-width="6" width="18.8" height="33.41"
+        rx="5.1" ry="5.1" x="-2.1" y="-2.1"></rect>
+      <g class="wrapper">
+        <rect class="visible-large" stroke-width="0.73" width="17.8" height="32.41"
+          rx="4.7" ry="4.7" x="-1.6" y="-1.6"></rect> 
+        <rect class="visible-small" stroke-width="1.5" width="21.3" height="35.91"
+          rx="6.35" ry="6.35" x="-3.35" y="-3.35"></rect>
+      </g>
       <rect class="content" rx="3.2" ry="3.2" width="14.6" height="29.2"></rect>
+      <g class="icons" transform="translate(2,1.5) scale(0.35, 0.35)">
+        <g class="device">${Desktop}${Circle}</g>
+        <g class="data" transform="translate(0, 23)">${Diskette}${Circle}</g>
+        <g class="network" transform="translate(0, 45)">${Snow}${Circle}</g>
+      </g>
     </g>`,
     })
       .classed('is-compromised', hasStatus('state', 'compromised'))
@@ -249,7 +268,11 @@ export default class NetworkGrid extends Component {
 
         return `
         <line class="arrow" x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}"></line>
-       `
+        <line class="arrow-highlight" x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}"></line>
+        <g class="attack-circle">
+          <circle class="arrow-circle" r="8" cx="${x}" cy="${y}"></circle>
+          <text class="arrow-circle-text" x="${x}" y="${y}" dy="3.5">${attackPathNumber}</text>
+        </g>`
       },
     })
       .classed('is-compromised', ({ attackPathNumber }) => attackPathNumber)

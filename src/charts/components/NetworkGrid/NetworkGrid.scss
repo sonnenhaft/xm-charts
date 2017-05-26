@@ -107,12 +107,6 @@
         stroke: none;
         fill: none;
       }
-
-      &.is-selected {
-        rect {
-          stroke: $black;
-        }
-      }
     }
 
     .visible-large,
@@ -128,6 +122,14 @@
     .content {
       stroke: $black;
       stroke-width: 0.73
+    }
+
+    &.is-selected {
+      .wrapper {
+        rect {
+          stroke: $black;
+        }
+      }
     }
 
     &.is-data-discovered {
@@ -219,7 +221,7 @@
   }
 
   .svg.icons-visible {
-    .node  .visible-small {
+    .node .visible-small {
       visibility: visible;
     }
   }
