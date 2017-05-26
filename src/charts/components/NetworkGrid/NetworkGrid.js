@@ -377,13 +377,25 @@ export default class NetworkGrid extends Component {
         <svg className="svg zoomRect">
           <defs>
             <marker id="black-arrow" markerWidth="10" markerHeight="10" refX="9.4" refY="3.35" orient="auto" markerUnits="strokeWidth" className="arrow-marker">
-              <path d="M 0 0 L 2.5 3 L 0 6"/>
+              <g transform="scale(0.2)">
+                <g transform="translate(50 1) rotate(90)">
+                  <path d="M 2.65877 11.8328C 2.95253 12.1309 3.43349 12.1309 3.72726 11.8328L 8.46563 7.02378C 8.7594 6.72564 9.24035 6.72564 9.53411 7.02378L 14.2725 11.8328C 14.5663 12.1309 15.0472 12.1309 15.341 11.8328L 17.4813 9.66054C 17.769 9.36857 17.769 8.89972 17.4813 8.60775L 9.53424 0.542201C 9.24047 0.244058 8.75953 0.244058 8.46576 0.542201L 0.518641 8.60777C 0.230967 8.89973 0.230958 9.36856 0.51862 9.66054L 2.65877 11.8328Z"/>
+                </g>
+              </g>
             </marker>
             <marker id="blue-arrow" markerWidth="10" markerHeight="10" refX="9.4" refY="3.35" orient="auto" markerUnits="strokeWidth" className="arrow-marker">
-              <path d="M 0 0 L 2.5 3 L 0 6"/>
+              <g transform="scale(0.2)">
+                <g transform="translate(50 1) rotate(90)">
+                  <path d="M 2.65877 11.8328C 2.95253 12.1309 3.43349 12.1309 3.72726 11.8328L 8.46563 7.02378C 8.7594 6.72564 9.24035 6.72564 9.53411 7.02378L 14.2725 11.8328C 14.5663 12.1309 15.0472 12.1309 15.341 11.8328L 17.4813 9.66054C 17.769 9.36857 17.769 8.89972 17.4813 8.60775L 9.53424 0.542201C 9.24047 0.244058 8.75953 0.244058 8.46576 0.542201L 0.518641 8.60777C 0.230967 8.89973 0.230958 9.36856 0.51862 9.66054L 2.65877 11.8328Z"/>
+                </g>
+              </g>
             </marker>
             <marker id="red-arrow" markerWidth="10" markerHeight="10" refX="9.4" refY="3.35" orient="auto" markerUnits="strokeWidth" className="arrow-marker">
-              <path d="M 0 0 L 2.5 3 L 0 6"/>
+              <g transform="scale(0.2)">
+                <g transform="translate(50 1) rotate(90)">
+                  <path d="M 2.65877 11.8328C 2.95253 12.1309 3.43349 12.1309 3.72726 11.8328L 8.46563 7.02378C 8.7594 6.72564 9.24035 6.72564 9.53411 7.02378L 14.2725 11.8328C 14.5663 12.1309 15.0472 12.1309 15.341 11.8328L 17.4813 9.66054C 17.769 9.36857 17.769 8.89972 17.4813 8.60775L 9.53424 0.542201C 9.24047 0.244058 8.75953 0.244058 8.46576 0.542201L 0.518641 8.60777C 0.230967 8.89973 0.230958 9.36856 0.51862 9.66054L 2.65877 11.8328Z"/>
+                </g>
+              </g>
             </marker>
           </defs>
           <g className="grid-shifter">

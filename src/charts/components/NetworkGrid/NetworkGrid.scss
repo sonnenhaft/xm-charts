@@ -18,17 +18,20 @@
 
   .arrow-marker path {
     transform: translate(6.7px, 0.35px);
-    stroke-width: 1.2px!important;
+    stroke-width: 0.8px!important;
     fill: none;
   }
   #blue-arrow path {
     stroke: $blue;
+    fill: $blue;
   }
   #black-arrow path {
     stroke: $black;
+    fill: $black;
   }
   #red-arrow path {
     stroke: $red;
+    fill: $red;
   }
   .arrow-line {
     .arrow {
