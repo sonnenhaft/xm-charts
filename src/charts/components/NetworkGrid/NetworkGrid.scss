@@ -92,7 +92,7 @@
     cursor: pointer;
 
     .icons {
-      fill: $grey;
+      fill: opacify($grey-light, 0);;
     }
 
     .content {
@@ -176,7 +176,7 @@
     &.is-starting-point {
 
       .icons {
-        fill:  opacify($grey-light, 0);
+        fill: opacify($grey-light, 0);
       }
 
       &.is-data-discovered {
