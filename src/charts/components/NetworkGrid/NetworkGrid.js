@@ -40,64 +40,44 @@ export default class NetworkGrid extends Component {
     this.zoom = d3.zoom().scaleExtent([1, 1000]).on('zoom', this.onZoomFactorChanged)
   }
 
-  componentDidMount() {
-    this.calculateClusters(this.props)
-    this.calculateArrows(this.props, this.cachedClusters)
-  }
-
-  calculateClusters({ nodes }) {
-    this.cachedClusters = calculateClusterCoords(nodes)
-  }
-
-  calculateArrows({ events, currentTime }, cachedClusters) {
-    this.cachedArrows = getArrows(
-      events,
-      cachedClusters.coordinatedNodes,
-      currentTime,
-      (1 / 2 - 0.14) / 1.5,
-      (1 - 0.25) / 1.5
-    )
-  }
-
   // TODO(vlad): remove code below
   shouldComponentUpdate({ currentTime, events, nodes },
                         { hoveredNode, selectedElement }) {
     const { props, state } = this
-    const eventsChanged = props.events !== events;
-    const nodesChanged = props.nodes !== nodes;
-    const timeChanged = props.currentTime !== currentTime;
-    this.disableD3Repaint = !(eventsChanged || nodesChanged || timeChanged)
-    return timeChanged
-      || eventsChanged
-      || nodesChanged
+    return props.currentTime !== currentTime
+      || props.events !== events
+      || props.nodes !== nodes
       || state.hoveredNode !== hoveredNode
       || state.selectedElement !== selectedElement
   }
 
+  componentWillUpdate({events, nodes, currentTime}, state) {
+    console.time('arrows')
+    const props = this.props;
+    const nodesChanged = props.nodes !== nodes;
+    const currentTimeChanged = props.currentTime !== currentTime;
 
-  componentWillReceiveProps({ nodes, events, currentTime }) {
-    if ( this.props.nodes !== nodes ) {
-      this.calculateClusters({ nodes })
+    if ( nodesChanged ) {
+      this.cachedClusters = calculateClusterCoords(nodes)
     }
 
-    if ( currentTime !== this.props.currentTime ) {
+    if ( currentTimeChanged ) {
       this.setSelectedElement(undefined)
     }
+    const eventsChanged = props.events !== events;
+    const disableD3Repaint = !(eventsChanged || nodesChanged || currentTimeChanged)
 
-    if ( this.props.nodes !== nodes ||
-      this.props.events !== events ||
-      this.props.currentTime !== currentTime
-    ) {
-      this.calculateArrows({ events, currentTime }, this.cachedClusters)
-    }
-  }
-
-  componentWillUpdate(props, state){
-    console.time()
-    if ( !this.disableD3Repaint ) {
+    if ( !disableD3Repaint ) {
+      this.cachedArrows = getArrows(
+        events,
+        this.cachedClusters.coordinatedNodes,
+        currentTime,
+        (1 / 2 - 0.14) / 1.5,
+        (1 - 0.25) / 1.5
+      )
       this.repaintNodesAndArrows(props)
     }
-    console.timeEnd()
+    console.timeEnd('arrows')
 
     return
 
@@ -221,9 +201,9 @@ export default class NetworkGrid extends Component {
   isSelected = element => this.state.selectedElement && this.state.selectedElement.element === element
   || (!this.state.selectedElement && !element)
 
-  repaintNodesAndArrows(props) {
+  repaintNodesAndArrows({events, currentTime}) {
     const clusters = this.cachedClusters.coordinatedClusters
-    const status = getNodesEventsDataMap(props.events, props.currentTime)
+    const status = getNodesEventsDataMap(events, currentTime)
 
     const scale = x => x * NODE_WIDTH
 
