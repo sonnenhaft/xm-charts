@@ -3,25 +3,25 @@ import './Navigation.scss'
 
 const Navigation = () => (
   <div styleName="container">
-    <div styleName="item">
-      <div styleName="icon campaign-overview"></div>
+    <div styleName="item campaign-overview">
+      <div styleName="icon"></div>
       <div styleName="label">Battleground</div>
     </div>
-    <div styleName="item">
-      <div styleName="icon campaign-hub"></div>
+    <div styleName="item campaign-hub">
+      <div styleName="icon"></div>
       <div styleName="label">Campaign Hub</div>
     </div>
-    <div styleName="item">
-      <div styleName="icon performances"></div>
+    <div styleName="item performances">
+      <div styleName="icon"></div>
       <div styleName="label">Statistics</div>
     </div>
-    <div styleName="item">
-      <div styleName="icon settings"></div>
+    <div styleName="item settings">
+      <div styleName="icon"></div>
       <div styleName="label">Settings</div>
     </div>
 
-    <div styleName="item">
-      <div styleName="icon exit"></div>
+    <div styleName="item exit">
+      <div styleName="icon"></div>
     </div>
   </div>
 )
