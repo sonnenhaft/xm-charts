@@ -1,12 +1,12 @@
-import React, { Component, PropTypes as P } from "react";
-import d3, { Transform } from "charts/utils/decorated.d3.v4";
-import { getNodesEventsDataMap } from "../../utils/nodeEventData";
-import { Circle, Desktop, Diskette, Snow } from "./IconsGroup";
-import "./NetworkGrid.scss";
-import WindowDependable from "../common/WindowDependable";
-import NetworkTooltip from "./NetworkTooltip/NetworkTooltip";
-import calculateClusterCoords, { getArrows } from "./calculateClusterCoords";
-import ShareButtons from "../Timeline/common/ShareButtons";
+import React, { Component, PropTypes as P } from 'react'
+import d3, { Transform } from 'charts/utils/decorated.d3.v4'
+import { getNodesEventsDataMap } from '../../utils/nodeEventData'
+import { Circle, Desktop, Diskette, Snow } from './IconsGroup'
+import './NetworkGrid.scss'
+import WindowDependable from '../common/WindowDependable'
+import NetworkTooltip from './NetworkTooltip/NetworkTooltip'
+import calculateClusterCoords, { getArrows } from './calculateClusterCoords'
+import ShareButtons from '../Timeline/common/ShareButtons'
 
 const NODE_WIDTH = 40
 const ZOOM_CHANGE = 1.2
@@ -48,11 +48,10 @@ export default class NetworkGrid extends Component {
       || state.selectedElement !== selectedElement
   }
 
-  componentWillUpdate({events, nodes, currentTime}, state) {
-    console.time('willupdate')
-    const props = this.props;
-    const nodesChanged = props.nodes !== nodes;
-    const currentTimeChanged = props.currentTime !== currentTime;
+  componentWillUpdate({ events, nodes, currentTime }, state) {
+    const props = this.props
+    const nodesChanged = props.nodes !== nodes
+    const currentTimeChanged = props.currentTime !== currentTime
 
     if ( nodesChanged ) {
       this.cachedClusters = calculateClusterCoords(nodes)
@@ -61,11 +60,11 @@ export default class NetworkGrid extends Component {
     if ( currentTimeChanged ) {
       this.setSelectedElement(undefined)
     }
-    const eventsChanged = props.events !== events;
+    const eventsChanged = props.events !== events
     const disableD3Repaint = !(eventsChanged || nodesChanged || currentTimeChanged)
 
     if ( !disableD3Repaint ) {
-      this.repaintNodesAndArrows({events, currentTime})
+      this.repaintNodesAndArrows({ events, currentTime })
     }
 
     const selectedNode = getSelectionByType(state.selectedElement, 'node')
@@ -82,22 +81,6 @@ export default class NetworkGrid extends Component {
       type = selectedArrow === arrow ? 'black' : type
       return `url(#${type}-arrow)`
     })
-    console.timeEnd('willupdate')
-  }
-
-  componentDidUpdate() {
-    const props = this.props;
-    const { clientWidth: width, clientHeight: height } = this.rootBlock.node()
-
-    if ( !props.nodes.length || !height ) { // we just can calculate anything with 0 height
-      return
-    }
-
-    const { shiftY, shiftX, currentZoom } = this.getScalesAndTransforms()
-
-    this.svg.attrs({ width, height }).classed('icons-visible', currentZoom.k < ZOOM_CHANGE)
-    this.svg.selectAll('.grid-shifter').attr('transform', `translate(${shiftX}, ${shiftY})`)
-    this.svg.selectAll('.zoom-scale').attr('transform', currentZoom.toString())
   }
 
   refRootBlock = rootBlock => {
@@ -111,13 +94,15 @@ export default class NetworkGrid extends Component {
     }, 1600)
   }
 
-  onZoomFactorChanged = () => {
-    this.forceUpdate()
-  }
+  onZoomFactorChanged = () => this.forceUpdate()
 
-  getScalesAndTransforms() {
+  setSvgDimensionsAndReturnShifts() {
+    const props = this.props
     const { clientWidth: width, clientHeight: height } = this.rootBlock.node()
 
+    if ( !props.nodes.length || !height ) { // we just can calculate anything with 0 height
+      return
+    }
     const centralizeZoomFactor = Math.min(
       height / (NODE_WIDTH * this.cachedClusters.totalHeight),
       width / (NODE_WIDTH * this.cachedClusters.totalWidth),
@@ -128,6 +113,11 @@ export default class NetworkGrid extends Component {
     const shiftX = (width - this.cachedClusters.totalWidth * NODE_WIDTH * centralizeZoomFactor ) * k / 2
     const shiftY = (height - this.cachedClusters.totalHeight * NODE_WIDTH * centralizeZoomFactor ) * k / 2
     const currentZoom = new Transform(centralizeZoomFactor * k, x, y)
+
+    this.svg.classed('icons-visible', currentZoom.k < ZOOM_CHANGE)
+    this.svg.selectAll('.grid-shifter').attr('transform', `translate(${shiftX}, ${shiftY})`)
+    this.svg.selectAll('.zoom-scale').attr('transform', currentZoom.toString())
+    this.svg.attrs({ width, height })
 
     this.zoom.translateExtent([[0, 0], [width, height]]).extent([[0, 0], [width, height]])
 
@@ -147,9 +137,6 @@ export default class NetworkGrid extends Component {
         left: `${xScale(x + xCoordOffset) + shiftX + offsets.left  }px`,
       }
     }
-
-
-
     return { xScale, yScale, shiftY, shiftX, currentZoom, getCoordsFn }
   }
 
@@ -193,8 +180,8 @@ export default class NetworkGrid extends Component {
   isSelected = element => this.state.selectedElement && this.state.selectedElement.element === element
   || (!this.state.selectedElement && !element)
 
-  repaintNodesAndArrows({events, currentTime}) {
-    const {coordinatedClusters, coordinatedNodes} = this.cachedClusters;
+  repaintNodesAndArrows({ events, currentTime }) {
+    const { coordinatedClusters, coordinatedNodes } = this.cachedClusters
     const arrowsData = getArrows(
       events,
       coordinatedNodes,
@@ -216,7 +203,7 @@ export default class NetworkGrid extends Component {
             ${getClusterName(cluster)}
           </text>
         </g>
-      </g>`
+      </g>`,
     })
 
     const hasStatus = (key, val1, val2 = 'missed') => ({ node: { agentId } }) => {
@@ -254,7 +241,7 @@ export default class NetworkGrid extends Component {
         <g class="data" transform="translate(0, 23)">${Diskette}${Circle}</g>
         <g class="network" transform="translate(0, 45)">${Snow}${Circle}</g>
       </g>
-    </g>`
+    </g>`,
     })
       .classed('is-compromised', hasStatus('state', 'compromised'))
       .classed('is-undiscovered', hasStatus('state', 'undiscovered'))
@@ -294,7 +281,7 @@ export default class NetworkGrid extends Component {
     const selectedCluster = getSelectionByType(this.state.selectedElement, 'cluster')
     const selectedArrow = getSelectionByType(this.state.selectedElement, 'arrow')
 
-    const { getCoordsFn } = this.rootBlock ? this.getScalesAndTransforms() : () => {}
+    const { getCoordsFn } = this.rootBlock ? this.setSvgDimensionsAndReturnShifts() : () => {}
 
     return (
       <WindowDependable className={className} refCb={this.refRootBlock}
