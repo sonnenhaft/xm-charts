@@ -91,13 +91,11 @@ export default class NetworkGrid extends Component {
       return
     }
 
-    this.svg.attrs({ width, height })
     const { shiftY, shiftX, currentZoom } = this.getScalesAndTransforms()
 
+    this.svg.attrs({ width, height }).classed('icons-visible', currentZoom.k < ZOOM_CHANGE)
     this.svg.selectAll('.grid-shifter').attr('transform', `translate(${shiftX}, ${shiftY})`)
     this.svg.selectAll('.zoom-scale').attr('transform', currentZoom.toString())
-    this.svg.selectAll('.icons').classed('icons-visible', currentZoom.k < ZOOM_CHANGE)
-    this.svg.selectAll('g.node').classed('is-small', () => currentZoom.k < ZOOM_CHANGE)
   }
 
   refRootBlock = rootBlock => {
@@ -116,6 +114,7 @@ export default class NetworkGrid extends Component {
   }
 
   getScalesAndTransforms() {
+    console.time('getScalesAndTransforms')
     const { clientWidth: width, clientHeight: height } = this.rootBlock.node()
     const centralizeZoomFactor = Math.min(
       height / (NODE_WIDTH * this.cachedClusters.totalHeight),
@@ -142,6 +141,8 @@ export default class NetworkGrid extends Component {
         left: `${xScale(x + xCoordOffset) + shiftX + offsets.left  }px`,
       }
     }
+
+    console.timeEnd('getScalesAndTransforms')
 
     return { xScale, yScale, shiftY, shiftX, currentZoom, getCoordsFn }
   }
@@ -181,7 +182,6 @@ export default class NetworkGrid extends Component {
       d3.event.stopPropagation()
       return false
     }
-
   }
 
   isSelected = element => this.state.selectedElement && this.state.selectedElement.element === element
@@ -218,7 +218,7 @@ export default class NetworkGrid extends Component {
       return val === val1 || val === val2
     }
 
-    this.d3Nodes = this.svg.select('.grid').bindData('g.node', cachedClusters.coordinatedNodes, {
+    this.d3Nodes = this.svg.select('.grid').bindData('g.node', coordinatedNodes, {
       transform: ({ x, y }) => `translate(${scale(x)},${scale(y)})`,
       click: ({ node }) => this.setSelectedElement('node', node),
       mouseout: () => this.setState({ hoveredNode: null }),
@@ -286,7 +286,6 @@ export default class NetworkGrid extends Component {
     const { className } = this.props
     const hoveredNode = this.state.hoveredNode
     const selectedCluster = getSelectionByType(this.state.selectedElement, 'cluster')
-    //const selectedNode = getSelectionByType(this.state.selectedElement, 'node')
     const selectedArrow = getSelectionByType(this.state.selectedElement, 'arrow')
 
     const { getCoordsFn } = this.rootBlock ? this.getScalesAndTransforms() : () => {}

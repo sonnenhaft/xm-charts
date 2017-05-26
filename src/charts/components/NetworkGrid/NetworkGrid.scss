@@ -18,7 +18,7 @@
 
   .arrow-marker path {
     transform: translate(6.7px, 0.35px);
-    stroke-width: 0.8px!important;
+    stroke-width: 0.8px !important;
     fill: none;
   }
   #blue-arrow path {
@@ -120,18 +120,6 @@
       visibility: hidden;
     }
 
-    &.is-small {
-      .visible-small {
-        visibility: visible;
-      }
-    }
-
-    &:not(.is-small) {
-      .visible-large {
-        visibility: visible;
-      }
-    }
-
     .outerHover,
     .innerHover {
       stroke: transparent;
@@ -158,7 +146,6 @@
         fill: $black;
       }
     }
-
 
     &.is-discovered {
       .content {
@@ -218,17 +205,28 @@
     }
   }
 
-  .icons {
-    circle {
+  .icons circle {
+    visibility: hidden;
+  }
+
+  .svg.icons-visible .icons {
+    path {
       visibility: hidden;
     }
-    &.icons-visible {
-      path {
-        visibility: hidden;
-      }
-      circle {
-        visibility: visible;
-      }
+    circle {
+      visibility: visible;
+    }
+  }
+
+  .svg.icons-visible {
+    .node  .visible-small {
+      visibility: visible;
+    }
+  }
+
+  .svg:not(.icons-visible) {
+    .node .visible-large {
+      visibility: visible;
     }
   }
 }
