@@ -8,7 +8,9 @@ const options = [
   { value: 1, title: 1 },
   { value: 2, title: 2 },
   { value: 3, title: 3 },
-  { value: 4, title: 4 },
+  { value: 5, title: '2nd +300' },
+  { value: 6, title: '2nd +500' },
+  { value: 7, title: '2nd +1000' },
 ]
 
 class DemoHeader extends Component {
