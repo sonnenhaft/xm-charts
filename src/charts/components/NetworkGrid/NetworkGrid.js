@@ -49,6 +49,7 @@ export default class NetworkGrid extends Component {
   }
 
   componentWillUpdate({events, nodes, currentTime}, state) {
+    console.time('willupdate')
     const props = this.props;
     const nodesChanged = props.nodes !== nodes;
     const currentTimeChanged = props.currentTime !== currentTime;
@@ -81,6 +82,7 @@ export default class NetworkGrid extends Component {
       type = selectedArrow === arrow ? 'black' : type
       return `url(#${type}-arrow)`
     })
+    console.timeEnd('willupdate')
   }
 
   componentDidUpdate() {
@@ -114,17 +116,21 @@ export default class NetworkGrid extends Component {
   }
 
   getScalesAndTransforms() {
-    console.time('getScalesAndTransforms')
     const { clientWidth: width, clientHeight: height } = this.rootBlock.node()
+
     const centralizeZoomFactor = Math.min(
       height / (NODE_WIDTH * this.cachedClusters.totalHeight),
       width / (NODE_WIDTH * this.cachedClusters.totalWidth),
     )
+
     const { k, x, y } = d3.zoomTransform(this.svg.node())
+
     const shiftX = (width - this.cachedClusters.totalWidth * NODE_WIDTH * centralizeZoomFactor ) * k / 2
     const shiftY = (height - this.cachedClusters.totalHeight * NODE_WIDTH * centralizeZoomFactor ) * k / 2
     const currentZoom = new Transform(centralizeZoomFactor * k, x, y)
+
     this.zoom.translateExtent([[0, 0], [width, height]]).extent([[0, 0], [width, height]])
+
     const xScale = d3.scaleLinear().domain([0, 1]).range([0, NODE_WIDTH])
     const yScale = d3.scaleLinear().domain([0, 1]).range([0, NODE_WIDTH])
     xScale.domain(currentZoom.rescaleX(xScale).domain())
@@ -142,7 +148,7 @@ export default class NetworkGrid extends Component {
       }
     }
 
-    console.timeEnd('getScalesAndTransforms')
+
 
     return { xScale, yScale, shiftY, shiftX, currentZoom, getCoordsFn }
   }
