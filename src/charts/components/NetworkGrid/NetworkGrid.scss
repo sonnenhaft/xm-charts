@@ -211,22 +211,12 @@
     visibility: hidden;
   }
 
-  .symbol-icon {
+  .svg.icons-visible .icons {
     path {
-      visibility: visible;
-    }
-    circle {
       visibility: hidden;
     }
-  }
-  .svg.icons-visible {
-    .icons, .symbol-icon {
-      path {
-        visibility: hidden;
-      }
-      circle {
-        visibility: visible;
-      }
+    circle {
+      visibility: visible;
     }
   }
 
