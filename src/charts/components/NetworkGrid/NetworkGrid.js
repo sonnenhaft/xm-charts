@@ -67,7 +67,7 @@ export default class NetworkGrid extends Component {
       this.repaintNodesAndArrows({ events, currentTime })
     }
 
-    const selectedNodeChanged = this.state.selectedElement !== selectedElement;
+    const selectedNodeChanged = state.selectedElement !== selectedElement
     const selectedArrow = getSelectionByType(selectedElement, 'arrow')
     if (selectedNodeChanged) {
       const selectedNode = getSelectionByType(selectedElement, 'node')

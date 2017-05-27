@@ -70,7 +70,7 @@ class Demo extends Component {
   state = {
     nodes: [],
     events: [],
-    option: options[5].value,
+    option: options[1].value,
   }
 
   componentDidMount() {

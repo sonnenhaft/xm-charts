@@ -49,7 +49,7 @@ export default class SimulationChart extends Component {
     return (
       <div className={className} styleName="root">
         <NetworkGrid styleName="network" {...{ events, nodes, currentTime, selectedNodeIndex, onSelectedElementChanged }}/>
-        {/*<Timeline styleName="timeline" {...{ events, nodes, currentTime, onCurrentTimeChanged }} />*/}
+        <Timeline styleName="timeline" {...{ events, nodes, currentTime, onCurrentTimeChanged }} />
       </div>
     )
   }

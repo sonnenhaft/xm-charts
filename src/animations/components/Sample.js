@@ -18,8 +18,8 @@ function createCardHoverOutAnim({ target, options: { panel } }) {
 function createPanelAnim({ options: { panel, arrow, buttons } }) {
   return new TimelineMax({ paused: true, reversed: true })
           .add(TweenMax.to(panel, 0.55, { y: 0, ease: Expo.easeOut }))
-          .add(TweenMax.to(arrow, 0.35, { rotation: 180, ease: Expo.easeOut }), "=-0.55")
-          .add(TweenMax.staggerFrom(buttons.childNodes, 0.35, { y: '100%', opacity: 0, ease: Expo.easeOut }, 0.12), "=-0.55")
+          .add(TweenMax.to(arrow, 0.35, { rotation: 180, ease: Expo.easeOut }), '=-0.55')
+          .add(TweenMax.staggerFrom(buttons.childNodes, 0.35, { y: '100%', opacity: 0, ease: Expo.easeOut }, 0.12), '=-0.55')
 }
 
 class Sample extends React.Component {
@@ -48,7 +48,7 @@ class Sample extends React.Component {
       this.panelAnimation.timeScale(1).reverse()
   }
 
-  render () {
+  render() {
     return (
       <div styleName="card" onMouseEnter={this.onMouseEnter} onMouseLeave={this.onMouseLeave}>
         <div>fdsafsa</div>
