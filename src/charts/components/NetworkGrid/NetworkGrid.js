@@ -48,8 +48,8 @@ export default class NetworkGrid extends Component {
       || state.selectedElement !== selectedElement
   }
 
-  componentWillUpdate({ events, nodes, currentTime }, state) {
-    const props = this.props
+  componentWillUpdate({ events, nodes, currentTime }, {selectedElement}) {
+    const {props, state} = this
     const nodesChanged = props.nodes !== nodes
     const currentTimeChanged = props.currentTime !== currentTime
 
@@ -67,20 +67,24 @@ export default class NetworkGrid extends Component {
       this.repaintNodesAndArrows({ events, currentTime })
     }
 
-    const selectedNode = getSelectionByType(state.selectedElement, 'node')
-    this.d3Nodes.classed('is-selected', ({ node }) => node === selectedNode)
+    const selectedNodeChanged = this.state.selectedElement !== selectedElement;
+    const selectedArrow = getSelectionByType(selectedElement, 'arrow')
+    if (selectedNodeChanged) {
+      const selectedNode = getSelectionByType(selectedElement, 'node')
+      const selectedCluster = getSelectionByType(selectedElement, 'cluster')
+      this.d3Nodes.classed('is-selected', ({ node }) => node === selectedNode)
+      this.d3Clusters.classed('active', cluster => cluster === selectedCluster)
+      this.d3Arrows.classed('is-black', arrow => arrow === selectedArrow)
+    }
 
-    const selectedCluster = getSelectionByType(state.selectedElement, 'cluster')
-    this.d3Clusters.classed('active', cluster => cluster === selectedCluster)
-
-    const selectedArrow = getSelectionByType(state.selectedElement, 'arrow')
-    this.d3Arrows.classed('is-black', arrow => selectedArrow === arrow)
-      .select('.arrow').attr('marker-end', arrow => {
-      let type = 'red'
-      type = arrow.event.type === 'newDiscoveredNode' ? 'blue' : type
-      type = selectedArrow === arrow ? 'black' : type
-      return `url(#${type}-arrow)`
-    })
+    if (selectedNodeChanged || !disableD3Repaint) {
+      this.d3Arrows.select('.arrow').attr('marker-end', arrow => {
+        let type = 'red'
+        type = arrow.event.type === 'newDiscoveredNode' ? 'blue' : type
+        type = selectedArrow === arrow ? 'black' : type
+        return `url(#${type}-arrow)`
+      })
+    }
   }
 
   refRootBlock = rootBlock => {
@@ -146,7 +150,7 @@ export default class NetworkGrid extends Component {
   getClusterData(coordinatedCluster) {
     const status = getNodesEventsDataMap(this.props.events, this.props.currentTime)
 
-    const hasStatus = ({ node: { agentId } }, key, val1, val2 = 'missed') => {
+    const hasAsset = ({ node: { agentId } }, key, val1, val2) => {
       const val = status[agentId] && status[agentId][key]
       return val === val1 || val === val2
     }
@@ -156,9 +160,9 @@ export default class NetworkGrid extends Component {
     return nodes
       .filter(({ node }) => status[node.agentId])
       .map(data => ({
-        data: hasStatus(data, 'data', 'discovered', 'compromised'),
-        device: hasStatus(data, 'device', 'discovered', 'compromised'),
-        network: hasStatus(data, 'network', 'discovered', 'compromised'),
+        data: hasAsset(data, 'data', 'discovered', 'compromised'),
+        device: hasAsset(data, 'device', 'discovered', 'compromised'),
+        network: hasAsset(data, 'network', 'discovered', 'compromised'),
       })).reduce((sum, data) => {
         Object.keys(sum).forEach(key => sum[key] += (data[key] ? 1 : 0))
         return sum
