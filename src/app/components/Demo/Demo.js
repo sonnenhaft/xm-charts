@@ -111,7 +111,7 @@ class Demo extends Component {
         <DemoHeader styleName="toolbar" value={option}
                     onNextAddTick={this.onNextAddTick}
                     onChange={event => this.onLoadData(event.target.value)} events={events}/>
-        <SimulationChart styleName="simulation-chart" events={events} nodes={nodes}/>
+        <SimulationChart styleName="simulation-chart" events={events} nodes={nodes} onNewtorkFirstRepaint={() => console.log('repaint')}/>
       </div>
     )
   }

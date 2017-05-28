@@ -40,7 +40,7 @@ export default class SimulationChart extends Component {
   render() {
 
     const {
-      props: {nodes, className},
+      props: {nodes, className, onNewtorkFirstRepaint: onRepaint},
       state: {currentTime, selectedNodeIndex, events},
       onCurrentTimeChanged,
       onSelectedElementChanged,
@@ -48,7 +48,7 @@ export default class SimulationChart extends Component {
 
     return (
       <div className={className} styleName="root">
-        <NetworkGrid styleName="network" {...{ events, nodes, currentTime, selectedNodeIndex, onSelectedElementChanged }}/>
+        <NetworkGrid styleName="network" {...{ events, nodes, currentTime, selectedNodeIndex, onSelectedElementChanged, onRepaint }}/>
         <Timeline styleName="timeline" {...{ events, nodes, currentTime, onCurrentTimeChanged }} />
       </div>
     )
