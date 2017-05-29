@@ -13,7 +13,7 @@ const SIZE = {
   }
 }
 
-const Loader = ({ size = 'lg' }) => (
+const Loader = ({ size = 'lg', text }) => (
   <div styleName='wrapper'>
     <div styleName='container' style={SIZE[size]}>
       <div styleName='loader'>
@@ -29,6 +29,9 @@ const Loader = ({ size = 'lg' }) => (
           </div>
         </div>
       </div>
+      {text &&
+        <div styleName="description">{text}</div>
+      }
     </div>
   </div>
 )
