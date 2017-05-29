@@ -1,11 +1,11 @@
-import React, { Component, PropTypes as P } from 'react'
-import d3, { Transform } from 'charts/utils/decorated.d3.v4'
-import { getNodesEventsDataMap } from '../../utils/nodeEventData'
-import { Circle, Desktop, Diskette, Snow } from './IconsGroup'
+import React, {Component, PropTypes as P} from 'react'
+import d3, {Transform} from 'charts/utils/decorated.d3.v4'
+import {getNodesEventsDataMap} from '../../utils/nodeEventData'
+import {Circle, Desktop, Diskette, Snow} from './IconsGroup'
 import './NetworkGrid.scss'
 import WindowDependable from '../common/WindowDependable'
 import NetworkTooltip from './NetworkTooltip/NetworkTooltip'
-import calculateClusterCoords, { getArrows } from './calculateClusterCoords'
+import calculateClusterCoords, {getArrows} from './calculateClusterCoords'
 import ShareButtons from '../Timeline/common/ShareButtons'
 
 const NODE_WIDTH = 40
@@ -13,7 +13,7 @@ const ZOOM_CHANGE = 1.2
 
 const getClusterName = cluster => cluster === 'undefined' ? 'Unidentified' : cluster
 const getSelectionByType = (selectedElement, type) =>
-(selectedElement && selectedElement.type === type && selectedElement.element) || undefined
+  (selectedElement && selectedElement.type === type && selectedElement.element) || undefined
 
 export default class NetworkGrid extends Component {
   state = {
@@ -26,43 +26,22 @@ export default class NetworkGrid extends Component {
     nodes: P.array,
     currentTime: P.number,
     onSelectedElementChanged: P.func,
+    onRepaint: P.func,
   }
 
   zoom = undefined
 
   cachedClusters = undefined
 
-  cachedArrows = undefined
-
-
   constructor(props) {
     super(props)
     this.zoom = d3.zoom().scaleExtent([1, 1000]).on('zoom', this.onZoomFactorChanged)
   }
 
-  componentDidMount() {
-    this.calculateClusters(this.props)
-    this.calculateArrows(this.props, this.cachedClusters)
-  }
-
-  calculateClusters({ nodes }) {
-    this.cachedClusters = calculateClusterCoords(nodes)
-  }
-
-  calculateArrows({ events, currentTime }, cachedClusters) {
-    this.cachedArrows = getArrows(
-      events,
-      cachedClusters.coordinatedNodes,
-      currentTime,
-      (1 / 2 - 0.14) / 1.5,
-      (1 - 0.25) / 1.5
-    )
-  }
-
   // TODO(vlad): remove code below
-  shouldComponentUpdate({ currentTime, events, nodes },
-                        { hoveredNode, selectedElement }) {
-    const { props, state } = this
+  shouldComponentUpdate({currentTime, events, nodes},
+                        {hoveredNode, selectedElement}) {
+    const {props, state} = this
     return props.currentTime !== currentTime
       || props.events !== events
       || props.nodes !== nodes
@@ -70,26 +49,43 @@ export default class NetworkGrid extends Component {
       || state.selectedElement !== selectedElement
   }
 
+  componentWillUpdate({events, nodes, currentTime}, {selectedElement}) {
+    const {props, state} = this
+    const nodesChanged = props.nodes !== nodes
+    const currentTimeChanged = props.currentTime !== currentTime
 
-  componentWillReceiveProps({ nodes, events, currentTime }) {
-    if ( this.props.nodes !== nodes ) {
-      this.calculateClusters({ nodes })
+    if (nodesChanged) {
+      this.cachedClusters = calculateClusterCoords(nodes)
     }
 
-    if ( currentTime !== this.props.currentTime ) {
+    if (currentTimeChanged) {
       this.setSelectedElement(undefined)
     }
+    const eventsChanged = props.events !== events
+    const disableD3Repaint = !(eventsChanged || nodesChanged || currentTimeChanged)
 
-    if ( this.props.nodes !== nodes ||
-      this.props.events !== events ||
-      this.props.currentTime !== currentTime
-    ) {
-      this.calculateArrows({ events, currentTime }, this.cachedClusters)
+    if (!disableD3Repaint) {
+      this.repaintNodesAndArrows({events, currentTime})
     }
-  }
 
-  componentDidUpdate() {
-    this.renderChart()
+    const selectedNodeChanged = state.selectedElement !== selectedElement
+    const selectedArrow = getSelectionByType(selectedElement, 'arrow')
+    if (selectedNodeChanged) {
+      const selectedNode = getSelectionByType(selectedElement, 'node')
+      const selectedCluster = getSelectionByType(selectedElement, 'cluster')
+      this.d3Nodes.classed('is-selected', ({node}) => node === selectedNode)
+      this.d3Clusters.classed('active', cluster => cluster === selectedCluster)
+      this.d3Arrows.classed('is-black', arrow => arrow === selectedArrow)
+    }
+
+    if (selectedNodeChanged || !disableD3Repaint) {
+      this.d3Arrows.select('.arrow').attr('marker-end', arrow => {
+        let type = 'red'
+        type = arrow.event.type === 'newDiscoveredNode' ? 'blue' : type
+        type = selectedArrow === arrow ? 'black' : type
+        return `url(#${type}-arrow)`
+      })
+    }
   }
 
   refRootBlock = rootBlock => {
@@ -103,63 +99,59 @@ export default class NetworkGrid extends Component {
     }, 1600)
   }
 
-  onZoomFactorChanged = () => {
-    this.forceUpdate()
-  }
+  onZoomFactorChanged = () => this.forceUpdate()
 
-  getScalesAndTransforms() {
-    const { clientWidth: width, clientHeight: height } = this.rootBlock.node()
+  setSvgDimensionsAndReturnShifts() {
+    const props = this.props
+    if (!this.rootBlock) {
+      return {}
+    }
+    const {clientWidth: width, clientHeight: height} = this.rootBlock.node()
+
+    if (!props.nodes.length || !height) { // we just can calculate anything with 0 height
+      return {}
+    }
     const centralizeZoomFactor = Math.min(
       height / (NODE_WIDTH * this.cachedClusters.totalHeight),
       width / (NODE_WIDTH * this.cachedClusters.totalWidth),
     )
-    const { k, x, y } = d3.zoomTransform(this.svg.node())
+
+    const {k, x, y} = d3.zoomTransform(this.svg.node())
+
     const shiftX = (width - this.cachedClusters.totalWidth * NODE_WIDTH * centralizeZoomFactor ) * k / 2
     const shiftY = (height - this.cachedClusters.totalHeight * NODE_WIDTH * centralizeZoomFactor ) * k / 2
     const currentZoom = new Transform(centralizeZoomFactor * k, x, y)
+
+    this.svg.classed('icons-visible', currentZoom.k < ZOOM_CHANGE)
+    this.svg.selectAll('.grid-shifter').attr('transform', `translate(${shiftX}, ${shiftY})`)
+    this.svg.selectAll('.zoom-scale').attr('transform', currentZoom.toString())
+    this.svg.attrs({width, height})
+
     this.zoom.translateExtent([[0, 0], [width, height]]).extent([[0, 0], [width, height]])
+
     const xScale = d3.scaleLinear().domain([0, 1]).range([0, NODE_WIDTH])
     const yScale = d3.scaleLinear().domain([0, 1]).range([0, NODE_WIDTH])
     xScale.domain(currentZoom.rescaleX(xScale).domain())
     yScale.domain(currentZoom.rescaleY(yScale).domain())
 
     const getCoordsFn = (coords, heightOffset = 0, xCoordOffset = 0, yCoordOffset = 0) => {
-      if ( !coords ) {
+      if (!coords) {
         return {}
       }
-      const { x, y } = coords
+      const {x, y} = coords
       const offsets = this.rootBlock.node().getBoundingClientRect()
       return {
         top: `${yScale(y + yCoordOffset) - heightOffset - 52 + shiftY + offsets.top  }px`,
         left: `${xScale(x + xCoordOffset) + shiftX + offsets.left  }px`,
       }
     }
-
-    return { xScale, yScale, shiftY, shiftX, currentZoom, getCoordsFn }
-  }
-
-  renderChart() {
-    const { nodes, events, currentTime } = this.props
-    const { clientWidth: width, clientHeight: height } = this.rootBlock.node()
-
-    if ( !nodes.length || !height ) { // we just can calculate anything with 0 height
-      return
-    }
-
-    this.svg.attrs({ width, height })
-    const { shiftY, shiftX, currentZoom } = this.getScalesAndTransforms()
-
-    this.svg.selectAll('.grid-shifter').attr('transform', `translate(${shiftX}, ${shiftY})`)
-    this.svg.selectAll('.zoom-scale').attr('transform', currentZoom.toString())
-
-    const status = getNodesEventsDataMap(events, currentTime)
-    this.paintAndReturnNodes(this.cachedClusters, status, currentZoom)
+    return {xScale, yScale, shiftY, shiftX, currentZoom, getCoordsFn}
   }
 
   getClusterData(coordinatedCluster) {
     const status = getNodesEventsDataMap(this.props.events, this.props.currentTime)
 
-    const hasStatus = ({ node: { agentId } }, key, val1, val2 = 'missed') => {
+    const hasAsset = ({node: {agentId}}, key, val1, val2) => {
       const val = status[agentId] && status[agentId][key]
       return val === val1 || val === val2
     }
@@ -167,76 +159,77 @@ export default class NetworkGrid extends Component {
     const nodes = coordinatedCluster ? coordinatedCluster.coordinatedNodes : []
     // TODO(vlad): fix devices algorithm
     return nodes
-      .filter(({ node }) => status[node.agentId])
+      .filter(({node}) => status[node.agentId])
       .map(data => ({
-        data: hasStatus(data, 'data', 'discovered', 'compromised'),
-        device: hasStatus(data, 'device', 'discovered', 'compromised'),
-        network: hasStatus(data, 'network', 'discovered', 'compromised'),
+        data: hasAsset(data, 'data', 'discovered', 'compromised'),
+        device: hasAsset(data, 'device', 'discovered', 'compromised'),
+        network: hasAsset(data, 'network', 'discovered', 'compromised'),
       })).reduce((sum, data) => {
         Object.keys(sum).forEach(key => sum[key] += (data[key] ? 1 : 0))
         return sum
-      }, { device: 0, network: 0, data: 0 })
+      }, {device: 0, network: 0, data: 0})
   }
 
   setSelectedElement = (type, element) => {
-    if ( this.isSelected(element) ) {
+    if (this.isSelected(element)) {
       return
     }
 
-    const selectedElement = type && { type, element }
-    this.setState({ selectedElement })
+    const selectedElement = type && {type, element}
+    this.setState({selectedElement})
     this.props.onSelectedElementChanged(selectedElement)
 
-    if ( d3.event ) {
+    if (d3.event) {
       d3.event.stopPropagation()
       return false
     }
-
   }
 
   isSelected = element => this.state.selectedElement && this.state.selectedElement.element === element
-  || (!this.state.selectedElement && !element)
+    || (!this.state.selectedElement && !element)
 
+  repaintNodesAndArrows({events, currentTime}) {
+    const {coordinatedClusters, coordinatedNodes} = this.cachedClusters
+    const arrowsData = getArrows(
+      events,
+      coordinatedNodes,
+      currentTime,
+      (1 / 2 - 0.14) / 1.5,
+      (1 - 0.25) / 1.5,
+    )
 
-  paintAndReturnNodes({ coordinatedClusters: clusters }, status, currentZoom) {
+    const status = getNodesEventsDataMap(events, currentTime)
+
     const scale = x => x * NODE_WIDTH
 
-    this.svg.select('.clusters').bindData('g.cluster-group', clusters, {
+    this.d3Clusters = this.svg.select('.clusters').bindData('g.cluster-group', coordinatedClusters, {
       click: cluster => this.setSelectedElement('cluster', cluster),
-      html: ({ x, y, width, height, cluster }) => {
-        return `
-          <g>
-            <g transform="translate(${scale(x)}, ${scale(y)})">
-              <rect class="cluster" rx="3" ry="3" 
-                width="${scale(width)}" height="${scale(height)}"></rect>
-              <text class="cluster-labels">
-                ${getClusterName(cluster)}
-              </text>
-            </g>
-          </g>`
-      },
+      html: ({x, y, width, height, cluster}) => `<g>
+        <g transform="translate(${scale(x)}, ${scale(y)})">
+          <rect class="cluster" rx="3" ry="3" 
+            width="${scale(width)}" height="${scale(height)}"></rect>
+          <text class="cluster-labels">
+            ${getClusterName(cluster)}
+          </text>
+        </g>
+      </g>`,
     })
 
-    const selectedCluster = getSelectionByType(this.state.selectedElement, 'cluster')
-    const selectedNode = getSelectionByType(this.state.selectedElement, 'node')
-    //const selectedArrow = getSelectionByType(this.state.selectedElement, 'arrow')
+    const hasStatus = (key, val1, val2 = 'missed') => ({node: {agentId}}) => {
+      const val = status[agentId] && status[agentId][key]
+      return val === val1 || val === val2
+    }
 
-    this.svg.selectAll('g.cluster-group').each(function() {
-      const svgCluster = d3.select(this)
-      svgCluster.classed('active', svgCluster.datum() === selectedCluster)
-    })
-
-    this.svg.select('.grid').bindData('g.node', this.cachedClusters.coordinatedNodes, {
-      transform: ({ x, y }) => `translate(${scale(x)},${scale(y)})`,
-      click: ({ node }) => this.setSelectedElement('node', node),
-      mouseout: () => this.setState({ hoveredNode: null }),
+    this.d3Nodes = this.svg.select('.grid').bindData('g.node', coordinatedNodes, {
+      transform: ({x, y}) => `translate(${scale(x)},${scale(y)})`,
+      click: ({node}) => this.setSelectedElement('node', node),
+      mouseout: () => this.setState({hoveredNode: null}),
       mouseover: node => {
-        if ( !this.isSelected(node) ) {
-          this.setState({ hoveredNode: node })
+        if (!this.isSelected(node)) {
+          this.setState({hoveredNode: node})
         }
       },
-      html: () => {
-        return `<g transform="scale(0.65)">
+      html: () => `<g transform="scale(0.65)">
       <rect class="outerHover visible-large" stroke-width="1" width="21.3" height="35.91"
         rx="6.35" ry="6.35" x="-3.35" y="-3.35"></rect>
       <rect class="outerHover visible-small" stroke-width="3" width="27.8" height="42.41"
@@ -257,102 +250,56 @@ export default class NetworkGrid extends Component {
         <g class="data" transform="translate(0, 23)">${Diskette}${Circle}</g>
         <g class="network" transform="translate(0, 45)">${Snow}${Circle}</g>
       </g>
-    </g>`
-      },
+    </g>`,
     })
+      .classed('is-compromised', hasStatus('state', 'compromised'))
+      .classed('is-undiscovered', hasStatus('state', 'undiscovered'))
+      .classed('is-discovered', hasStatus('state', 'discovered'))
+      .classed('is-data-discovered', hasStatus('data', 'discovered', 'compromised'))
+      .classed('is-device-discovered', hasStatus('device', 'discovered', 'compromised'))
+      .classed('is-network-discovered', hasStatus('network', 'discovered', 'compromised'))
+      .classed('is-starting-point', hasStatus('isStartingPoint', true))
 
-    const hasStatus = ({ node: { agentId } }, key, val1, val2 = 'missed') => {
-      const val = status[agentId] && status[agentId][key]
-      return val === val1 || val === val2
-    }
+    this.d3Arrows = this.svg.select('g.arrows').bindData('g.arrow-line', arrowsData, {
+      cursor: 'pointer',
+      click: arrow => this.setSelectedElement('arrow', arrow),
+      html: ({attackPathNumber, middlePoint: {x, y}, startNode: {x: x1, y: y1}, endNode: {x: x2, y: y2}}) => {
+        x1 = scale(x1)
+        x2 = scale(x2)
+        y1 = scale(y1)
+        y2 = scale(y2)
+        x = scale(x)
+        y = scale(y)
 
-    this.svg.selectAll('g.node')
-      .classed('is-small', () => currentZoom.k < ZOOM_CHANGE)
-      .each(function() {
-        const svgNode = d3.select(this)
-        const data = svgNode.datum()
-        svgNode
-          .classed('is-compromised', hasStatus(data, 'state', 'compromised'))
-          .classed('is-undiscovered', hasStatus(data, 'state', 'undiscovered'))
-          .classed('is-discovered', hasStatus(data, 'state', 'discovered'))
-          .classed('is-data-discovered', hasStatus(data, 'data', 'discovered', 'compromised'))
-          .classed('is-device-discovered', hasStatus(data, 'device', 'discovered', 'compromised'))
-          .classed('is-network-discovered', hasStatus(data, 'network', 'discovered', 'compromised'))
-          .classed('is-starting-point', hasStatus(data, 'isStartingPoint', true))
-      })
-
-
-    this.svg.selectAll('g.node').each(function() {
-      const svgNode = d3.select(this)
-      const datum = svgNode.datum()
-      svgNode.select('.wrapper').classed('is-selected', datum.node === selectedNode)
-    })
-
-    this.svg.selectAll('.icons').classed('icons-visible', currentZoom.k < ZOOM_CHANGE)
-
-    const groupedArrows = this.cachedArrows.reduce((groupedArrows, arrow) => {
-      const key = arrow.event.type === 'newDiscoveredNode' ? '.blue-arrows' : '.red-arrows'
-      groupedArrows[key].push(arrow)
-      return groupedArrows
-    }, { '.blue-arrows': [], '.red-arrows': [] })
-
-    Object.keys(groupedArrows).map(className => {
-      return { cachedArrows: groupedArrows[className], className }
-    }).map(({ className, cachedArrows }) => {
-      const arrows = this.svg.select(className).bindData('g.arrow-line', cachedArrows, {
-        cursor: 'pointer',
-        click: arrow => this.setSelectedElement('arrow', arrow),
-        html: ({ attackPathNumber, middlePoint: { x, y }, startNode: { x: x1, y: y1 }, endNode: { x: x2, y: y2 } }) => {
-          x1 = scale(x1)
-          x2 = scale(x2)
-          y1 = scale(y1)
-          y2 = scale(y2)
-          x = scale(x)
-          y = scale(y)
-
-          return `
+        return `
         <line class="arrow" x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}"></line>
         <line class="arrow-highlight" x1="${x1}" x2="${x2}" y1="${y1}" y2="${y2}"></line>
         <g class="attack-circle">
           <circle class="arrow-circle" r="8" cx="${x}" cy="${y}"></circle>
           <text class="arrow-circle-text" x="${x}" y="${y}" dy="3.5">${attackPathNumber}</text>
         </g>`
-        },
-      })
-
-      const selectedArrow = getSelectionByType(this.state.selectedElement, 'arrow')
-
-      arrows
-        .classed('is-compromised', ({ attackPathNumber }) => attackPathNumber)
-        .classed('is-black', arrow => selectedArrow === arrow)
-        .classed('is-blue', arrow => arrow.event.type === 'newDiscoveredNode')
-
-      arrows.select('.arrow').attrs({
-        'marker-end': arrow => {
-          let type = 'red'
-          type = arrow.event.type === 'newDiscoveredNode' ? 'blue' : type
-          type = selectedArrow === arrow ? 'black' : type
-          return `url(#${type}-arrow)`
-        },
-      })
+      },
     })
+      .classed('is-compromised', ({attackPathNumber}) => attackPathNumber)
+      .classed('is-blue', arrow => arrow.event.type === 'newDiscoveredNode')
+
+    this.props.onRepaint()
   }
 
   render() {
-    const { className } = this.props
+    const {className} = this.props
     const hoveredNode = this.state.hoveredNode
     const selectedCluster = getSelectionByType(this.state.selectedElement, 'cluster')
-    //const selectedNode = getSelectionByType(this.state.selectedElement, 'node')
     const selectedArrow = getSelectionByType(this.state.selectedElement, 'arrow')
 
-    const { getCoordsFn } = this.rootBlock ? this.getScalesAndTransforms() : () => {}
+    const {getCoordsFn} = this.setSvgDimensionsAndReturnShifts()
 
     return (
       <WindowDependable className={className} refCb={this.refRootBlock}
                         onDimensionsChanged={() => this.forceUpdate()}>
 
         <NetworkTooltip item={selectedCluster} coordsFn={getCoordsFn} isDark={true}
-                        offsets={{ h: -4, x: selectedCluster ? selectedCluster.width : 0 }}>
+                        offsets={{h: -4, x: selectedCluster ? selectedCluster.width : 0}}>
           {selectedCluster && <div>
             {selectedCluster.coordinatedNodes.length}
             <div styleName="share-buttons">
@@ -361,7 +308,7 @@ export default class NetworkGrid extends Component {
           </div>}
         </NetworkTooltip>
 
-        <NetworkTooltip item={hoveredNode} coordsFn={getCoordsFn} offsets={{ x: 0.23, y: 0.02 }}>
+        <NetworkTooltip item={hoveredNode} coordsFn={getCoordsFn} offsets={{x: 0.23, y: 0.02}}>
           {hoveredNode && <div>
             <div>{hoveredNode.node.name}</div>
           </div>}
@@ -376,24 +323,30 @@ export default class NetworkGrid extends Component {
 
         <svg className="svg zoomRect">
           <defs>
-            <marker id="black-arrow" markerWidth="10" markerHeight="10" refX="9.4" refY="3.35" orient="auto" markerUnits="strokeWidth" className="arrow-marker">
+            <marker id="black-arrow" markerWidth="10" markerHeight="10" refX="9.4" refY="3.35" orient="auto"
+                    markerUnits="strokeWidth" className="arrow-marker">
               <g transform="scale(0.2)">
                 <g transform="translate(50 1) rotate(90)">
-                  <path d="M 2.65877 11.8328C 2.95253 12.1309 3.43349 12.1309 3.72726 11.8328L 8.46563 7.02378C 8.7594 6.72564 9.24035 6.72564 9.53411 7.02378L 14.2725 11.8328C 14.5663 12.1309 15.0472 12.1309 15.341 11.8328L 17.4813 9.66054C 17.769 9.36857 17.769 8.89972 17.4813 8.60775L 9.53424 0.542201C 9.24047 0.244058 8.75953 0.244058 8.46576 0.542201L 0.518641 8.60777C 0.230967 8.89973 0.230958 9.36856 0.51862 9.66054L 2.65877 11.8328Z"/>
+                  <path
+                    d="M 2.65877 11.8328C 2.95253 12.1309 3.43349 12.1309 3.72726 11.8328L 8.46563 7.02378C 8.7594 6.72564 9.24035 6.72564 9.53411 7.02378L 14.2725 11.8328C 14.5663 12.1309 15.0472 12.1309 15.341 11.8328L 17.4813 9.66054C 17.769 9.36857 17.769 8.89972 17.4813 8.60775L 9.53424 0.542201C 9.24047 0.244058 8.75953 0.244058 8.46576 0.542201L 0.518641 8.60777C 0.230967 8.89973 0.230958 9.36856 0.51862 9.66054L 2.65877 11.8328Z"/>
                 </g>
               </g>
             </marker>
-            <marker id="blue-arrow" markerWidth="10" markerHeight="10" refX="9.4" refY="3.35" orient="auto" markerUnits="strokeWidth" className="arrow-marker">
+            <marker id="blue-arrow" markerWidth="10" markerHeight="10" refX="9.4" refY="3.35" orient="auto"
+                    markerUnits="strokeWidth" className="arrow-marker">
               <g transform="scale(0.2)">
                 <g transform="translate(50 1) rotate(90)">
-                  <path d="M 2.65877 11.8328C 2.95253 12.1309 3.43349 12.1309 3.72726 11.8328L 8.46563 7.02378C 8.7594 6.72564 9.24035 6.72564 9.53411 7.02378L 14.2725 11.8328C 14.5663 12.1309 15.0472 12.1309 15.341 11.8328L 17.4813 9.66054C 17.769 9.36857 17.769 8.89972 17.4813 8.60775L 9.53424 0.542201C 9.24047 0.244058 8.75953 0.244058 8.46576 0.542201L 0.518641 8.60777C 0.230967 8.89973 0.230958 9.36856 0.51862 9.66054L 2.65877 11.8328Z"/>
+                  <path
+                    d="M 2.65877 11.8328C 2.95253 12.1309 3.43349 12.1309 3.72726 11.8328L 8.46563 7.02378C 8.7594 6.72564 9.24035 6.72564 9.53411 7.02378L 14.2725 11.8328C 14.5663 12.1309 15.0472 12.1309 15.341 11.8328L 17.4813 9.66054C 17.769 9.36857 17.769 8.89972 17.4813 8.60775L 9.53424 0.542201C 9.24047 0.244058 8.75953 0.244058 8.46576 0.542201L 0.518641 8.60777C 0.230967 8.89973 0.230958 9.36856 0.51862 9.66054L 2.65877 11.8328Z"/>
                 </g>
               </g>
             </marker>
-            <marker id="red-arrow" markerWidth="10" markerHeight="10" refX="9.4" refY="3.35" orient="auto" markerUnits="strokeWidth" className="arrow-marker">
+            <marker id="red-arrow" markerWidth="10" markerHeight="10" refX="9.4" refY="3.35" orient="auto"
+                    markerUnits="strokeWidth" className="arrow-marker">
               <g transform="scale(0.2)">
                 <g transform="translate(50 1) rotate(90)">
-                  <path d="M 2.65877 11.8328C 2.95253 12.1309 3.43349 12.1309 3.72726 11.8328L 8.46563 7.02378C 8.7594 6.72564 9.24035 6.72564 9.53411 7.02378L 14.2725 11.8328C 14.5663 12.1309 15.0472 12.1309 15.341 11.8328L 17.4813 9.66054C 17.769 9.36857 17.769 8.89972 17.4813 8.60775L 9.53424 0.542201C 9.24047 0.244058 8.75953 0.244058 8.46576 0.542201L 0.518641 8.60777C 0.230967 8.89973 0.230958 9.36856 0.51862 9.66054L 2.65877 11.8328Z"/>
+                  <path
+                    d="M 2.65877 11.8328C 2.95253 12.1309 3.43349 12.1309 3.72726 11.8328L 8.46563 7.02378C 8.7594 6.72564 9.24035 6.72564 9.53411 7.02378L 14.2725 11.8328C 14.5663 12.1309 15.0472 12.1309 15.341 11.8328L 17.4813 9.66054C 17.769 9.36857 17.769 8.89972 17.4813 8.60775L 9.53424 0.542201C 9.24047 0.244058 8.75953 0.244058 8.46576 0.542201L 0.518641 8.60777C 0.230967 8.89973 0.230958 9.36856 0.51862 9.66054L 2.65877 11.8328Z"/>
                 </g>
               </g>
             </marker>
@@ -401,8 +354,7 @@ export default class NetworkGrid extends Component {
           <g className="grid-shifter">
             <g className="zoom-scale">
               <g className="clusters" styleName="clusters-wrapper"/>
-              <g className="blue-arrows"/>
-              <g className="red-arrows"/>
+              <g className="arrows"/>
               <g className="grid"/>
             </g>
           </g>

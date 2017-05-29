@@ -122,8 +122,8 @@ export const getArrows = defaultMemoize((events, coordinatedNodes, currentTime, 
 
   return filteredEvents
     .filter(({ data = {} }) => data.sourceNode && data.sourceNode.id)
+    .sort(event => event.type !== 'newDiscoveredNode' ? 1 : -1)
     .map(event => {
-
       const { data: { sourceNode: { id: start } }, node: { id: end } } = event
       const startNode = nodesMap[start]
       const endNode = nodesMap[end]

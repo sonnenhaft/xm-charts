@@ -11,17 +11,12 @@ const iconsMap = {
   network: Snow,
 }
 const iconsArray = ['data', 'device', 'network']
+const isActive = (type, onlyIcon) => (!onlyIcon || onlyIcon === type) ? 'active' : ''
 
 const ShareButtons = ({ type = '', data = {}, children, onlyIcon }) => {
-
-  const isActive = type => {
-    console.log(type, onlyIcon)
-    return (!onlyIcon || onlyIcon === type) ? 'active' : ''
-  }
-
   return <div styleName={`share-buttons ${type}`}>
     {iconsArray.map(icon => (
-      <div key={icon} styleName={`share-button ${isActive(icon)}`}>
+      <div key={icon} styleName={`share-button ${isActive(icon, onlyIcon)}`}>
         <Icon>{iconsMap[icon]}</Icon>
         <span styleName="limited-text" title={data[icon]}>{data[icon]}</span>
       </div>
