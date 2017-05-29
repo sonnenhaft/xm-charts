@@ -3,14 +3,14 @@ import './Loader.scss'
 
 const SIZE = {
   lg: {
-    transform: 'scale(1)'
+    transform: 'scale(1)',
   },
   md: {
-    transform: 'scale(0.5)'
+    transform: 'scale(0.5)',
   },
   sm: {
-    transform: 'scale(0.25)'
-  }
+    transform: 'scale(0.25)',
+  },
 }
 
 const Loader = ({ size = 'lg', text }) => (
