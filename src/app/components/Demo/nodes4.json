@@ -814,6 +814,53 @@
     }
   },
   {
+    "_id": "592c20e469690406b568bb92",
+    "agentId": "12300000017",
+    "name": "SIM-NODE-17",
+    "productType": "Workstation",
+    "arch": "i386",
+    "lastConnectionTime": "1970-01-01T00:00:00.000Z",
+    "lastStatusChange": "1970-01-01T00:00:00.000Z",
+    "lastDisconnectionReason": "DisconnectionReason_Unknown",
+    "__v": 0,
+    "cmId": "0009",
+    "color": "red",
+    "joinedCampaignAt": "2017-05-29T13:23:47.903Z",
+    "discovered": true,
+    "discoveredAt": "2017-05-29T14:13:46.837Z",
+    "becameRedAt": "2017-05-29T14:13:51.847Z",
+    "notReportedBySouthAt": null,
+    "status": "active",
+    "latestPossibleAgentVersion": {
+      "patch": 0,
+      "minor": 0,
+      "major": 0
+    },
+    "agentVersion": {
+      "patch": 3,
+      "minor": 2,
+      "major": 1
+    },
+    "ipv6": [],
+    "ipv4": [],
+    "os": {
+      "type": "Windows",
+      "distributionName": "",
+      "distributionVersion": "",
+      "name": "Windows [object Object] SP 1.2",
+      "servicePack": {
+        "patch": 3,
+        "minor": 2,
+        "major": 1
+      },
+      "version": {
+        "patch": 3,
+        "minor": 2,
+        "major": 1
+      }
+    }
+  },
+  {
     "_id": "592c20e469690406b568bb93",
     "agentId": "12300000018",
     "name": "SIM-NODE-18",
@@ -45682,6 +45729,53 @@
     }
   },
   {
+    "_id": "592c20e469690406b568bf4a",
+    "agentId": "12300000969",
+    "name": "SIM-NODE-969",
+    "productType": "Workstation",
+    "arch": "i386",
+    "lastConnectionTime": "1970-01-01T00:00:00.000Z",
+    "lastStatusChange": "1970-01-01T00:00:00.000Z",
+    "lastDisconnectionReason": "DisconnectionReason_Unknown",
+    "__v": 0,
+    "cmId": "0009",
+    "color": "red",
+    "joinedCampaignAt": "2017-05-29T13:23:47.913Z",
+    "discovered": true,
+    "discoveredAt": "2017-05-29T14:20:27.951Z",
+    "becameRedAt": "2017-05-29T14:21:10.892Z",
+    "notReportedBySouthAt": null,
+    "status": "active",
+    "latestPossibleAgentVersion": {
+      "patch": 0,
+      "minor": 0,
+      "major": 0
+    },
+    "agentVersion": {
+      "patch": 3,
+      "minor": 2,
+      "major": 1
+    },
+    "ipv6": [],
+    "ipv4": [],
+    "os": {
+      "type": "Windows",
+      "distributionName": "",
+      "distributionVersion": "",
+      "name": "Windows [object Object] SP 1.2",
+      "servicePack": {
+        "patch": 3,
+        "minor": 2,
+        "major": 1
+      },
+      "version": {
+        "patch": 3,
+        "minor": 2,
+        "major": 1
+      }
+    }
+  },
+  {
     "_id": "592c20e469690406b568bf4b",
     "agentId": "12300000970",
     "name": "SIM-NODE-970",
@@ -45697,6 +45791,53 @@
     "discovered": true,
     "discoveredAt": "2017-05-29T14:12:51.755Z",
     "becameRedAt": "2017-05-29T14:14:30.771Z",
+    "notReportedBySouthAt": null,
+    "status": "active",
+    "latestPossibleAgentVersion": {
+      "patch": 0,
+      "minor": 0,
+      "major": 0
+    },
+    "agentVersion": {
+      "patch": 3,
+      "minor": 2,
+      "major": 1
+    },
+    "ipv6": [],
+    "ipv4": [],
+    "os": {
+      "type": "Windows",
+      "distributionName": "",
+      "distributionVersion": "",
+      "name": "Windows [object Object] SP 1.2",
+      "servicePack": {
+        "patch": 3,
+        "minor": 2,
+        "major": 1
+      },
+      "version": {
+        "patch": 3,
+        "minor": 2,
+        "major": 1
+      }
+    }
+  },
+  {
+    "_id": "592c20e469690406b568bf4c",
+    "agentId": "12300000971",
+    "name": "SIM-NODE-971",
+    "productType": "Workstation",
+    "arch": "i386",
+    "lastConnectionTime": "1970-01-01T00:00:00.000Z",
+    "lastStatusChange": "1970-01-01T00:00:00.000Z",
+    "lastDisconnectionReason": "DisconnectionReason_Unknown",
+    "__v": 0,
+    "cmId": "0009",
+    "color": "red",
+    "joinedCampaignAt": "2017-05-29T13:23:47.913Z",
+    "discovered": true,
+    "discoveredAt": "2017-05-29T14:17:40.897Z",
+    "becameRedAt": "2017-05-29T14:21:55.286Z",
     "notReportedBySouthAt": null,
     "status": "active",
     "latestPossibleAgentVersion": {

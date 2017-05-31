@@ -190,14 +190,13 @@ export default class NetworkGrid extends Component {
 
   repaintNodesAndArrows({events, currentTime}) {
     const {coordinatedClusters, coordinatedNodes} = this.cachedClusters
-    const arrowsData = []
-    // getArrows(
-    //   events,
-    //   coordinatedNodes,
-    //   currentTime,
-    //   (1 / 2 - 0.14) / 1.5,
-    //   (1 - 0.25) / 1.5,
-    // )
+    const arrowsData = getArrows(
+      events,
+      coordinatedNodes,
+      currentTime,
+      (1 / 2 - 0.14) / 1.5,
+      (1 - 0.25) / 1.5,
+    )
 
     const status = getNodesEventsDataMap(events, currentTime)
 
