@@ -35,7 +35,7 @@ export default class NetworkGrid extends Component {
 
   constructor(props) {
     super(props)
-    this.zoom = d3.zoom().scaleExtent([1, 1000]).on('zoom', this.onZoomFactorChanged)
+    this.zoom = d3.zoom().scaleExtent([0.5, 1000]).on('zoom', this.onZoomFactorChanged)
   }
 
   // TODO(vlad): remove code below
@@ -54,7 +54,7 @@ export default class NetworkGrid extends Component {
     const nodesChanged = props.nodes !== nodes
     const currentTimeChanged = props.currentTime !== currentTime
 
-    if (nodesChanged) {
+    if (nodesChanged || !this.cachedClusters) {
       this.cachedClusters = calculateClusterCoords(nodes)
     }
 
@@ -86,6 +86,8 @@ export default class NetworkGrid extends Component {
         return `url(#${type}-arrow)`
       })
     }
+
+    this.props.onRepaint()
   }
 
   refRootBlock = rootBlock => {
@@ -93,10 +95,10 @@ export default class NetworkGrid extends Component {
     this.svg = this.rootBlock.select('.svg')
     this.svg.call(this.zoom)
     this.svg.on('click', () => this.setSelectedElement(undefined))
-    setTimeout(() => {
-      // think that better to remember height in here and on window changed
-      this.forceUpdate()
-    }, 1600)
+    // setTimeout(() => {
+    //   // think that better to remember height in here and on window changed
+    //   this.forceUpdate()
+    // }, 1600)
   }
 
   onZoomFactorChanged = () => this.forceUpdate()
@@ -106,9 +108,11 @@ export default class NetworkGrid extends Component {
     if (!this.rootBlock) {
       return {}
     }
-    const {clientWidth: width, clientHeight: height} = this.rootBlock.node()
+    const {clientWidth: width, clientHeight: tempHeight} = this.rootBlock.node().parentNode
 
-    if (!props.nodes.length || !height) { // we just can calculate anything with 0 height
+    const height = tempHeight - 200
+
+    if (!props.nodes.length || !tempHeight) { // we just can calculate anything with 0 height
       return {}
     }
     const centralizeZoomFactor = Math.min(
@@ -226,7 +230,6 @@ export default class NetworkGrid extends Component {
       mouseout: () => this.setState({hoveredNode: null}),
       mouseover: node => {
         if (!this.isSelected(node)) {
-          console.log(node.x, node.y)
           this.setState({hoveredNode: node})
         }
       },
@@ -284,7 +287,6 @@ export default class NetworkGrid extends Component {
       .classed('is-compromised', ({attackPathNumber}) => attackPathNumber)
       .classed('is-blue', arrow => arrow.event.type === 'newDiscoveredNode')
 
-    this.props.onRepaint()
   }
 
   render() {
