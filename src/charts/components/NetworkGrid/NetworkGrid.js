@@ -227,6 +227,7 @@ export default class NetworkGrid extends Component {
       mouseout: () => this.setState({hoveredNode: null}),
       mouseover: node => {
         if (!this.isSelected(node)) {
+          console.log(node.x, node.y)
           this.setState({hoveredNode: node})
         }
       },
