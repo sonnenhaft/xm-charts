@@ -8,6 +8,7 @@ const options = [
   { value: 1, title: 1 },
   { value: 2, title: 2 },
   { value: 3, title: 3 },
+  { value: 4, title: 'broken' },
   { value: 5, title: '2nd +300' },
   { value: 6, title: '2nd +500' },
   { value: 7, title: '2nd +1000' },
@@ -70,7 +71,7 @@ class Demo extends Component {
   state = {
     nodes: [],
     events: [],
-    option: options[1].value,
+    option: options[4].value,
   }
 
   componentDidMount() {
