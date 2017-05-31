@@ -26,31 +26,11 @@
     transform: translateX(-100%);
     transition: all 0.2s cubic-bezier(0.33, 0.76, 0.35, 0.99) 0.21s;
   }
-
-  &.campaign-hub .icon {
-    background: url("http://clients.thefriendlyagency.com/xm/xm001-components-new/img/nav-campaign-hub.svg") no-repeat center/contain;
-  }
-
-  &.campaign-overview .icon {
-    background: url("http://clients.thefriendlyagency.com/xm/xm001-components-new/img/nav-campaign-overview.svg") no-repeat center/contain;
-  }
-  
-  &.performances .icon {
-    background: url("http://clients.thefriendlyagency.com/xm/xm001-components-new/img/nav-performances.svg") no-repeat center/contain;
-  }
   
   &.exit {
     &:before {
       transition: all 0.2s cubic-bezier(0.33, 0.76, 0.35, 0.99) 0s;
     }
-    
-    .icon {
-      background: url("http://clients.thefriendlyagency.com/xm/xm001-components-new/img/nav-exit.svg") no-repeat center/contain;
-    }
-  }
-  
-  &.settings .icon {
-    background: url("http://clients.thefriendlyagency.com/xm/xm001-components-new/img/nav-settings.svg") no-repeat center/contain;
   }
 
   &:hover:before {
@@ -64,14 +44,18 @@
     transform: translateX(0px);
   }
 
-  &:hover.exit .icon {
-    background: url(http://clients.thefriendlyagency.com/xm/xm001-components-new/img/nav-exit-hover.svg) no-repeat center/contain;
+  &.exit .icon g {
+    fill: #666;
+  }
+
+  &:hover.exit .icon g {
+      fill: #fff;
   }
 
   &:last-child {
     position: absolute;
     bottom: 0;
-    border-top: 1px solid #444444;
+    border-top: 1px solid #444;
     border-bottom: none;
   }
 }

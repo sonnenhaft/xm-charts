@@ -18,6 +18,7 @@ const shiftSameTimestamps = assets => {
 export default events => {
 
   const eventsWithDate = events.map(e => ({...e, date: getMicrosconds(e.timestamp)}))
+    .filter(e => e.node)
 
   shiftSameTimestamps(eventsWithDate)
 

@@ -1,7 +1,10 @@
 import React from 'react'
 import GSAP from 'react-gsap-enhancer'
 import {TweenMax, TimelineMax, Expo} from 'gsap'
+import arrowIcon from 'assets/icons/action-panel-arrow.svg'
 import './Sample.scss'
+
+const Icon = ({ children: __html, ...rest }) => <span dangerouslySetInnerHTML={{ __html }} {...rest} />
 
 function createCardHoverInAnim({ target, options: { panel } }) {
   return new TimelineMax({ paused: true, reversed: false })
@@ -55,7 +58,9 @@ class Sample extends React.Component {
         <div styleName="panel" ref={element => { this.panel = element }}>
           <div styleName="toggle" onClick={this.onClick}>
             Campaing Actions
-            <div styleName="arrow" ref={element => { this.arrow = element }}/>
+            <div styleName="arrow" ref={element => { this.arrow = element }}>
+              <Icon>{arrowIcon}</Icon>
+            </div>
           </div>
           <div styleName="container" ref={element => { this.buttons = element }}>
             <div styleName="button primary" >View Simulation</div>

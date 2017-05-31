@@ -11,11 +11,15 @@
   100% { opacity: 0; }
 }
 
-.container {
+.wrapper {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate3d(-50%, -50%, 0) scale(1);
+}
+
+.container {
+  transform: scale(1);
 }
 
 .loader {

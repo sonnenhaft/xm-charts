@@ -46,16 +46,30 @@ export default  defaultMemoize(function(nodes, ratio = 1) {
     item.y += MARGIN_TOP + PADDING_TOP
   })
 
-  const coordinatedNodesMap = items.reduce((nodes, { width, x, y, item: { nodesObject } }) => {
-    return nodes.concat(nodesObject.map((node, index) => {
-      return ({
+  const coordinatedNodesMap = items.reduce((nodes, { width,x, y, item: { nodesObject } }) => {
+    const remapedNodes = []
+
+    let nodeX = 0
+    let nodeY = 0
+    const maxX = width - PADDING_LEFT - PADDING_RIGHT
+
+    for (let index = 0; index < nodesObject.length; index++) {
+      const node = nodesObject[index]
+      remapedNodes.push({
         id: node.agentId + index + x,
         node,
-        x: index % width + x,
-        // yes, in here u see width too, hard to explain, is just works)
-        y: (index - index % width) / width + y,
+        x: nodeX + x,
+        // yes, in here u see width too, hard to explain, is just works), sorry for that
+        y: nodeY + y,
       })
-    }))
+      nodeX++
+      if (nodeX >= maxX) {
+        nodeY++
+        nodeX = 0
+      }
+    }
+
+    return nodes.concat(remapedNodes)
   }, []).reduce((map, value) => {
     map[value.node.agentId] = value
     return map
