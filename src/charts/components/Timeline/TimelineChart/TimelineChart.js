@@ -208,27 +208,28 @@ export default class TimelineChart extends Component {
     const x = this.xScale(event.date) + getMarginLeft(this.props.isToggled)
     const getNodeName = id => this.props.nodes.find(({ agentId }) => agentId === id).name
 
-    let method, subName
+    const type = event.type
+
+    let data
     if ( type === 'newStartingPointNode' ) {
-      method = 'Starting Point'
-    } else if ( type === 'nodeMarkAsRed' ) {
-      const subEvent = this.props.events
+      data = { method: 'Starting Point' }
+    } else if ( type === 'assetCompromised' ) {
+      const sourceEvent = this.props.events
         .filter(({ data, type }) => data && type === 'nodeMarkAsRed')
         .reverse()
         .find(({ date }) => date < event.date)
-      if ( subEvent && subEvent.data ) {
-        method = subEvent.data.method
-        subName = subEvent && getNodeName(subEvent.node.id)
+      data = {
+        source: getNodeName(sourceEvent.data.sourceNode.id),
+        ruleGroup: event.data.asset.ruleGroup,
+        method: event.data.asset.ruleTitle,
       }
     }
 
     this.setState({
       tooltipData: {
         name: getNodeName(event.node.id),
-        date: event.date,
         event,
-        method,
-        subName,
+        ...data,
       },
       isTooltipOpened: true,
       tooltipCoords: {
