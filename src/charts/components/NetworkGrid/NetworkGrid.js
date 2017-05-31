@@ -110,7 +110,7 @@ export default class NetworkGrid extends Component {
     }
     const {clientWidth: width, clientHeight: tempHeight} = this.rootBlock.node().parentNode
 
-    const height = tempHeight - 200
+    const height = Math.max(tempHeight - 200, 200)
 
     if (!props.nodes.length || !tempHeight) { // we just can calculate anything with 0 height
       return {}
