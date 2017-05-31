@@ -58,7 +58,7 @@ export default class TooltipContent extends Component {
 
   render() {
     const data = this.props.data
-    let { name, date, event = {}, subEvent = {}, subName, ruleGroup } = data
+    let { name, date, event = {}, subName, ruleGroup, method } = data
     if ( event.type === 'assetCompromised' ) {
       name = event.data.asset.ruleTitle
       ruleGroup = event.data.asset.ruleGroup
@@ -76,10 +76,10 @@ export default class TooltipContent extends Component {
         {ruleGroup && <div styleName="tooltip-event-icons">
           <ShareButtons type="vertical" onlyIcon={ruleGroup}/>
         </div>}
-        {subEvent && subEvent.data && <div styleName="content">
+        {method && <div styleName="content">
           <div>
             <span styleName="title">Method: </span>
-            <span>{subEvent.data.method}</span>
+            <span>{method}</span>
           </div>
           <div>
             <span styleName="title">Source: </span>
