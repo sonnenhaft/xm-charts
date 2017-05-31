@@ -87,7 +87,7 @@ export default class TooltipContent extends Component {
           </div>
         </div>}
         <div>
-          <b>{d3.timeFormat('%H:%M:%S')(date)}</b>
+          <b>{d3.timeFormat('%m/%d/%y %H:%M:%S')(date)}</b>
         </div>
       </div>
     </div>
