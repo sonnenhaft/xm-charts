@@ -18,14 +18,18 @@ const shiftSameTimestamps = assets => {
 export default events => {
 
   const eventsWithDate = events.map(e => ({...e, date: getMicrosconds(e.timestamp)}))
+    .filter(e => e.node)
 
   shiftSameTimestamps(eventsWithDate)
 
   const timelineEvents = eventsWithDate.filter(({ type }) => type !== 'newAsset')
   const assetEvents = eventsWithDate.filter(({ type }) => type === 'newAsset' || type === 'assetCompromised')
-  const assetEventsByNode = groupBy(assetEvents, e => e.node.id)
 
+  const assetEventsByNode = groupBy(assetEvents, e => e.node.id)
   timelineEvents.forEach(e => {
+    if (!e.node) {
+      console.log(e)
+    }
     e.filteredAssets = assetEventsByNode[e.node.id] // allNodesAssets
   })
 
