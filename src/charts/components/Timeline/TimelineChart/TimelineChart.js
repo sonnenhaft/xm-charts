@@ -41,12 +41,12 @@ export default class TimelineChart extends Component {
   componentWillReceiveProps({ currentTime }) {
     if ( this.props.currentTime !== currentTime ) {
       const currentTimeX = this.xScale(currentTime)
-      if ( currentTimeX >  this.width ) {
+      if ( currentTimeX > this.width ) {
         this.onZoomFactorChangedAndMoved({
           zoomFactor: this.zoom.k,
           zoomPosition: this.zoom.x - currentTimeX,
         })
-      } else if (currentTimeX < 0) {
+      } else if ( currentTimeX < 0 ) {
         this.onZoomFactorChangedAndMoved({
           zoomFactor: this.zoom.k,
           zoomPosition: this.zoom.x - currentTimeX + this.width,
@@ -204,26 +204,39 @@ export default class TimelineChart extends Component {
     if ( !event.type ) {
       return
     }
-      const fixedOffsets = this.rootNode.select('svg').node().getBoundingClientRect()
-      const x = this.xScale(event.date) + getMarginLeft(this.props.isToggled)
-    const subEvent = this.props.events
-      .filter(({data, type}) => data && type === 'nodeMarkAsRed')
-      .reverse()
-      .find(({date}) => date < event.date)
+    const fixedOffsets = this.rootNode.select('svg').node().getBoundingClientRect()
+    const x = this.xScale(event.date) + getMarginLeft(this.props.isToggled)
+    const getNodeName = id => this.props.nodes.find(({ agentId }) => agentId === id).name
+
+    const type = event.type
+
+    let data
+    if ( type === 'newStartingPointNode' ) {
+      data = { method: 'Starting Point' }
+    } else if ( type === 'assetCompromised' ) {
+      const sourceEvent = this.props.events
+        .filter(({ data, type }) => data && type === 'nodeMarkAsRed')
+        .reverse()
+        .find(({ date }) => date < event.date)
+      data = {
+        source: getNodeName(sourceEvent.data.sourceNode.id),
+        ruleGroup: event.data.asset.ruleGroup,
+        method: event.data.asset.ruleTitle,
+      }
+    }
+
     this.setState({
-        tooltipData: {
-          date: event.date,
-          event,
-          subEvent,
-          name: this.props.nodes.find(({agentId}) => agentId === event.node.id).name,
-          subName: subEvent && this.props.nodes.find(({agentId}) => agentId === subEvent.node.id).name,
-        },
-        isTooltipOpened: true,
-        tooltipCoords: {
-          top: fixedOffsets.top,
-          left: x + fixedOffsets.left,
-        },
-      })
+      tooltipData: {
+        name: getNodeName(event.node.id),
+        event,
+        ...data,
+      },
+      isTooltipOpened: true,
+      tooltipCoords: {
+        top: fixedOffsets.top,
+        left: x + fixedOffsets.left,
+      },
+    })
   }
 
   render() {

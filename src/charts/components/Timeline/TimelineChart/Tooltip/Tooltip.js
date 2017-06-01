@@ -58,12 +58,7 @@ export default class TooltipContent extends Component {
 
   render() {
     const data = this.props.data
-    let { name, date, event = {}, subEvent = {}, subName, ruleGroup } = data
-    if ( event.type === 'assetCompromised' ) {
-      name = event.data.asset.ruleTitle
-      ruleGroup = event.data.asset.ruleGroup
-      console.log(ruleGroup)
-    }
+    let { name, event = {}, source, ruleGroup, method } = data
 
     return <div className="tooltipBlock" styleName="tooltip" ref={this.refRootNode}>
       <div styleName="triangle-wrapper" className="triangleWrapper">
@@ -76,19 +71,19 @@ export default class TooltipContent extends Component {
         {ruleGroup && <div styleName="tooltip-event-icons">
           <ShareButtons type="vertical" onlyIcon={ruleGroup}/>
         </div>}
-        {subEvent && subEvent.data && <div styleName="content">
-          <div>
+        <div styleName="content">
+          {method && <div>
             <span styleName="title">Method: </span>
-            <span>{subEvent.data.method}</span>
-          </div>
-          <div>
+            <span>{method}</span>
+          </div>}
+          {source && <div>
             <span styleName="title">Source: </span>
-            <span>{subName}</span>
-          </div>
-        </div>}
-        <div>
-          <b>{d3.timeFormat('%H:%M:%S')(date)}</b>
+            <span>{source}</span>
+          </div>}
         </div>
+        {event && <div>
+          <b>{d3.timeFormat('%m/%d/%y %H:%M:%S')(event.date)}</b>
+        </div>}
       </div>
     </div>
   }
