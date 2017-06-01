@@ -37,8 +37,15 @@
   }
   b {
     line-height: 25px;
+
     &.header {
       font-size: 16px;
+      &.red {
+        color: $red
+      }
+      &.blue {
+        color: $blue
+      }
     }
   }
   b + span {

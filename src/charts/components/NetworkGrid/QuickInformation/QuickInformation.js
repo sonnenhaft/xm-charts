@@ -1,32 +1,28 @@
 import React from 'react'
 import './QuickInformation.scss'
 import { Desktop, Diskette, Snow } from '../IconsGroup'
-import { compose, withState } from 'recompose'
+import { compose, onlyUpdateForKeys, withState } from 'recompose'
 import collapseSvg from './Collapse.svg'
 import expandSvg from './Expand.svg'
 import TabsHeader from './TabsHeader'
 import d3 from 'charts/utils/decorated.d3.v4'
 
 const Icon = ({ className, children: __html }) => {
- return <div {...{className}}><svg dangerouslySetInnerHTML={{ __html }}/></div>
+  return <div {...{ className }}>
+    <svg dangerouslySetInnerHTML={{ __html }}/>
+  </div>
 }
 
 const getIp = ipv4 => ipv4.length && ipv4[0].data.join('.')
 
-function getNodeStatus({ isStartingPoint, isDiscovered, isCompromised } = {}) {
-  if ( isStartingPoint ) {
-    return 'Starting point'
-  } else if ( isDiscovered ) {
-    return 'Discovered'
-  } else if ( isCompromised ) {
-    return 'Asset compromised'
-  } else {
-    return 'undefined'
-  }
+const eventsTypes = {
+  newDiscoveredNode: { type: 'Reconn Event', color: 'blue' },
+  assetCompromised: { type: 'Compromise Event', color: 'red' },
+  nodeMarkAsRed: { type: 'Mark as Red', color: 'red' },
+  newStartingPointNode: { type: 'Starting Point', color: 'red' },
 }
 
 const getActiveClass = (status, { agentId }, key) => {
-  console.log(status[agentId] && status[agentId][key])
   const val = status[agentId] && status[agentId][key]
   return (val === 'discovered' || val === 'compromised') ? 'icon-active' : ''
 }
@@ -36,8 +32,13 @@ const Unknown = () => <span title="developer don't know how to calculate this fi
 
 const headers = { node: 'Device', cluster: 'Segment', arrow: 'Method' }
 
+// TODO(vlad): start splitting into a multiple components
 const QuickInformation = props => {
-  const { selectedElement: { element, type }, status, getClusterData, campainVisible } = props
+  const { selectedElement: { element, type }, status, getClusterData, campainVisible, nodes } = props
+  const nodesMap = nodes.reduce((map, node) => {
+    map[node.agentId] = node
+    return map
+  }, {})
 
   const { tabsVisible, setTabsVisible } = props
   const clusterData = {}
@@ -70,22 +71,36 @@ const QuickInformation = props => {
 
     {tabsVisible && <TabsHeader {...{ ...props, type: headers[type] }}/>}
 
+
     {type === 'node' && <div>
       {tabsVisible && <div>
-        {campainVisible && <div styleName="lines">
-          <div><b styleName="header">Recon Event</b></div>
-          <div><b>Time</b><Unknown/></div>
-          <div><b>Method</b><Unknown/></div>
-          <div><b>Source</b><Unknown/></div>
-          <hr/>
-          <div><b styleName="header">Compromise Event</b></div>
-          <div><b>Time</b><Unknown/></div>
-          <div><b>Method</b><Unknown/></div>
-          <div><b>Source</b><Unknown/></div>
-          <hr/>
-          <div><b styleName="header">Outgoing Recon Event</b></div>
-          <div><b>Total Methods</b><Unknown/></div>
-          <div><b>Total Devices</b><Unknown/></div>
+        {campainVisible && status[element.agentId] && <div>
+          {status[element.agentId].events.map(event => <div key={event.id} styleName="lines">
+            <div>
+              {eventsTypes[event.type] && <b styleName={`header ${eventsTypes[event.type].color}`}>
+                {eventsTypes[event.type].type}
+              </b>}
+              {!eventsTypes[event.type] && <b>{event.type}</b>}
+            </div>
+            <div>
+              <b>Time</b>
+              <span>{d3.timeFormat('%m-%d-%Y %H:%M:%S')(event.date)}</span>
+            </div>
+            {event.data && event.data.method && <div>
+              <b>Method</b>
+              <span>{event.data.method}</span>
+            </div>}
+            {event.data && event.data.sourceNode && <div>
+              <b>Source</b>
+              <span>{nodesMap[event.data.sourceNode.id].name}</span>
+            </div>}
+            <hr/>
+          </div>)}
+          <div styleName="lines">
+            <div><b styleName="header">Outgoing Reconn Events</b></div>
+            <div><b>Total</b><Unknown/></div>
+            <div><b>Methods</b><Unknown/></div>
+          </div>
         </div>}
         {!campainVisible && <div styleName="lines">
           <div><b styleName="header">Basic Details</b></div>
@@ -114,7 +129,7 @@ const QuickInformation = props => {
         <div styleName="lines">
           <div>
             <b>Status: </b>
-            <span>{getNodeStatus(status[element.agentId])}</span>
+            <span><Unknown/></span>
           </div>
           <div><b>Method: </b><Unknown/></div>
           <div><b>Source: </b><Unknown/></div>
@@ -262,6 +277,7 @@ const QuickInformation = props => {
 }
 
 export default compose(
+  onlyUpdateForKeys(['selectedElement', 'status']),
   withState('tabsVisible', 'setTabsVisible', false),
-  withState('campainVisible', 'setCampainVisible', false),
+  withState('campainVisible', 'setCampainVisible', false)
 )(QuickInformation)
