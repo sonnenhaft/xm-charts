@@ -9,7 +9,7 @@
   border-radius: 4px;
   background: white;
   width: 250px;
-  min-height: 400px;
+  max-height: calc(100% - 200px);
   box-shadow: 2px 3px 8px rgba(0, 0, 0, 0.085);
   font-size: 14px;
   .header-with-name {
@@ -24,8 +24,12 @@
   .name {
     font-weight: bold;
     font-size: 20px;
+    margin-bottom: 10px;
   }
   b {
     line-height: 25px;
+  }
+  hr {
+    margin: 10px -15px;
   }
 }

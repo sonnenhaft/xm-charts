@@ -18,7 +18,7 @@ function getStateFromEvent({type, data, compromisedAssets}) {
       return Object
               .entries(compromisedAssets)
               .filter(([_, value]) => value) // eslint-disable-line no-unused-vars
-              .reduce((result, [key]) => ({...result, [key]: 'compromised'}), {})
+              .reduce((result, [key]) => ({...result, [key]: 'compromised'}), {isCompromised: true})
     case 'startingPoint':
     case 'newStartingPointNode':
       return {isStartingPoint: true}
@@ -26,7 +26,7 @@ function getStateFromEvent({type, data, compromisedAssets}) {
       return Object
         .entries(data)
         .filter(([_, value]) => value) // eslint-disable-line no-unused-vars
-        .reduce((result, [key]) => ({...result, [key]: 'discovered'}), {})
+        .reduce((result, [key]) => ({...result, [key]: 'discovered'}), {isDiscovered: true})
   }
 }
 

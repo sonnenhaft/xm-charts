@@ -207,6 +207,7 @@ export default class NetworkGrid extends Component {
     )
 
     const status = getNodesEventsDataMap(events, currentTime)
+    this.status = status
 
     const scale = x => x * NODE_WIDTH
 
@@ -303,9 +304,10 @@ export default class NetworkGrid extends Component {
     return (
       <WindowDependable className={className} refCb={this.refRootBlock}
                         onDimensionsChanged={() => this.forceUpdate()}>
-        <QuickInformation selectedElement={this.state.selectedElement}
+        {this.state.selectedElement && <QuickInformation selectedElement={this.state.selectedElement}
                           nodes={this.props.nodes}
-                          events={this.props.events}/>
+                          events={this.props.events}
+                          status={this.status}/>}
 
         <NetworkTooltip item={selectedCluster} coordsFn={getCoordsFn} isDark={true}
                         offsets={{ h: -4, x: selectedCluster ? selectedCluster.width : 0 }}>
