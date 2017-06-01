@@ -17,8 +17,9 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    margin-bottom: 10px;
     .grey-small-text {
-      color: #dbd8d8;
+      color: #bfbcbc;
       font-size: 12px;
     }
   }
@@ -26,6 +27,9 @@
     font-weight: bold;
     font-size: 20px;
     margin-bottom: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   b {
     line-height: 25px;
@@ -45,17 +49,36 @@
       text-align: center;
     }
   }
-  .cluster-stats {
-    margin-top: 16px;
-    margin-bottom: -16px;
+  .arrow-stats, .cluster-stats {
     > div {
       margin: 0 -16px;
       padding: 8px 16px;
       display: flex;
       justify-content: space-between;
     }
+  }
+  .arrow-stats {
+    margin-top: -16px;
+    margin-bottom: 16px;
+    > div:nth-of-type(2n) {
+      background: #f2f2f2;
+    }
+  }
+  .cluster-stats {
+    margin-top: 16px;
+    margin-bottom: -16px;
     > div:nth-of-type(2n - 1) {
       background: #f2f2f2;
+    }
+  }
+  .block-method-button {
+    padding: 8px;
+    border: 1px solid black;
+    text-align: center;
+    &:hover {
+      background: black;
+      color: white;
+      cursor: not-allowed;
     }
   }
 }
