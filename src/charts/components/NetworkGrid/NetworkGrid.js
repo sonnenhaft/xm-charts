@@ -7,6 +7,7 @@ import WindowDependable from '../common/WindowDependable'
 import NetworkTooltip from './NetworkTooltip/NetworkTooltip'
 import calculateClusterCoords, {getArrows} from './calculateClusterCoords'
 import ShareButtons from '../Timeline/common/ShareButtons'
+import QuickInformation from './QuickInformation'
 
 const NODE_WIDTH = 40
 const ZOOM_CHANGE = 1.2
@@ -14,6 +15,8 @@ const ZOOM_CHANGE = 1.2
 const getClusterName = cluster => cluster === 'undefined' ? 'Unidentified' : cluster
 const getSelectionByType = (selectedElement, type) =>
   (selectedElement && selectedElement.type === type && selectedElement.element) || undefined
+
+
 
 export default class NetworkGrid extends Component {
   state = {
@@ -288,7 +291,6 @@ export default class NetworkGrid extends Component {
     })
       .classed('is-compromised', ({attackPathNumber}) => attackPathNumber)
       .classed('is-blue', arrow => arrow.event.type === 'newDiscoveredNode')
-
   }
 
   render() {
@@ -302,6 +304,7 @@ export default class NetworkGrid extends Component {
     return (
       <WindowDependable className={className} refCb={this.refRootBlock}
                         onDimensionsChanged={() => this.forceUpdate()}>
+        <QuickInformation selectedElement={this.state.selectedElement}/>
 
         <NetworkTooltip item={selectedCluster} coordsFn={getCoordsFn} isDark={true}
                         offsets={{h: -4, x: selectedCluster ? selectedCluster.width : 0}}>
