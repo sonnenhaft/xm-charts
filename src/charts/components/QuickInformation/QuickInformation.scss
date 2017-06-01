@@ -1,0 +1,11 @@
+@import "../../../assets/colors";
+
+.quick-information {
+  position: absolute;
+  right: 0;
+  border: 1px solid black;
+  border-radius: 4px;
+  background: white;
+  width: 200px;
+  min-height: 300px;
+}

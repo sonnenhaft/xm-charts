@@ -1,14 +1,12 @@
 import React, { Component } from 'react'
 import Timeline from './Timeline'
 import NetworkGrid from './NetworkGrid'
+import QuickInformation from './QuickInformation'
 
 import './SimulationChart.scss'
 import eventsAdapter from '../utils/eventsAdapter'
 
-
-const getLastDateOrReturnZero = events => {
-  return (events && events.length) ? events[events.length - 1].date : 0
-}
+const getLastDateOrReturnZero = events =>  (events && events.length) ? events[events.length - 1].date : 0
 
 export default class SimulationChart extends Component {
 
@@ -49,6 +47,7 @@ export default class SimulationChart extends Component {
     return (
       <div className={className} styleName="root">
         <NetworkGrid styleName="network" {...{ events, nodes, currentTime, selectedNodeIndex, onSelectedElementChanged, onRepaint }}/>
+        <QuickInformation/>
         <Timeline styleName="timeline" {...{ events, nodes, currentTime, onCurrentTimeChanged }} />
       </div>
     )
