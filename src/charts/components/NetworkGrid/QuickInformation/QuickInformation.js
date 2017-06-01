@@ -1,10 +1,10 @@
-import React from "react";
-import "./QuickInformation.scss";
-import { Desktop, Diskette, Snow } from "../IconsGroup";
-import { compose, withState } from "recompose";
-import d3 from "charts/utils/decorated.d3.v4";
+import React from 'react'
+import './QuickInformation.scss'
+import { Desktop, Diskette, Snow } from '../IconsGroup'
+import { compose, withState } from 'recompose'
+import d3 from 'charts/utils/decorated.d3.v4'
 
-const Icon = ({ children: __html }) => <svg dangerouslySetInnerHTML={{ __html }}/>
+const Icon = ({ children: __html }) => <div><svg dangerouslySetInnerHTML={{ __html }}/></div>
 
 function getNodeStatus({ isStartingPoint, isDiscovered, isCompromised } = {}) {
   if ( isStartingPoint ) {
@@ -120,7 +120,53 @@ const QuickInformation = props => {
       </div>
     </div>}
 
-    {type === 'cluster' && <div>
+    {type === 'cluster' && tabsVisible && <div>
+      {!campainVisible && <div styleName="lines">
+        <div><b>Basic Details</b></div>
+        <div><b>Segment Name</b>{element.cluster === 'undefined' ? 'Unidentified' : element.cluster}</div>
+        <div><b>OU</b><Unknown/></div>
+        <div><b>IP</b><Unknown/></div>
+        <div><b>Segment Rule</b><Unknown/></div>
+        <div><b>Total Devices</b><span>{element.coordinatedNodes.length}</span></div>
+        <hr/>
+        <div><b>Segment Statistics</b></div>
+        <div><Unknown/></div>
+        <div><Unknown/></div>
+        <div><Unknown/></div>
+      </div>}
+      {campainVisible && <div >
+        <div styleName="lines">
+          <div><b>Assets Summary</b></div>
+          <div><b>Total Assets</b><span><Unknown/>/<Unknown/></span></div>
+          <div><b>Compromised</b><span>{clusterData.compromised}</span></div>
+          <div><b>Reconned</b><span>{clusterData.discovered}</span></div>
+          <div><b>Undiscovered</b><span>{clusterData.undiscovered}</span></div>
+        </div>
+        <div styleName="cluster-icons">
+          <div><Icon>{Desktop}</Icon>Device <br/>{clusterData.device}</div>
+          <div><Icon>{Diskette}</Icon> Data <br/>{clusterData.data}</div>
+          <div><Icon>{Snow}</Icon> Network <br/>{clusterData.network}</div>
+        </div>
+        <hr/>
+        <div styleName="lines">
+          <div><b>Top 3 Recon Methods</b></div>
+          <div><b>Method Name</b><Unknown/></div>
+          <div><b>Method Name</b><Unknown/></div>
+          <div><b>Method Name</b><Unknown/></div>
+          <hr/>
+          <div><b>Top 3 Exploit Methods</b></div>
+          <div><b>Method Name</b><Unknown/></div>
+          <div><b>Method Name</b><Unknown/></div>
+          <div><b>Method Name</b><Unknown/></div>
+          <hr/>
+          <div><b>Outgoing Reconn Events</b></div>
+          <div><b>Total</b><Unknown/></div>
+          <div><b>Methods</b><Unknown/></div>
+        </div>
+      </div>}
+    </div>}
+
+    {type === 'cluster' && !tabsVisible && <div>
       <div styleName="cluster-icons">
         <div><Icon>{Desktop}</Icon>Device <br/>{clusterData.device}</div>
         <div><Icon>{Diskette}</Icon> Data <br/>{clusterData.data}</div>
@@ -131,7 +177,7 @@ const QuickInformation = props => {
         <div><b>Compromised</b><span>{clusterData.compromised}</span></div>
         <div><b>Reconned</b><span>{clusterData.discovered}</span></div>
         <div><b>Undiscovered</b><span>{clusterData.undiscovered}</span></div>
-        {/*<div><b>Segment Rule</b><Unknown/></div>*/}
+        <div><b>Segment Rule</b><Unknown/></div>
       </div>
     </div>}
 
