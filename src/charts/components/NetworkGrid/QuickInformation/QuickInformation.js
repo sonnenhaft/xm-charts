@@ -2,13 +2,13 @@ import React from 'react'
 import './QuickInformation.scss'
 import { Desktop, Diskette, Snow } from '../IconsGroup'
 import { compose, withState } from 'recompose'
+import collapseSvg from './Collapse.svg'
+import expandSvg from './Expand.svg'
+import TabsHeader from './TabsHeader'
 import d3 from 'charts/utils/decorated.d3.v4'
 
-const Icon = ({ children: __html }) => <div>
-  <svg dangerouslySetInnerHTML={{ __html }}/>
-</div>
-
-const getIp = ipv4 => ipv4.map(({ data }) => data.join('.')).join(',')
+const Icon = ({ children: __html }) => <div><svg dangerouslySetInnerHTML={{ __html }}/></div>
+const getIp = ipv4 => ipv4[0].data.join('.')
 
 function getNodeStatus({ isStartingPoint, isDiscovered, isCompromised } = {}) {
   if ( isStartingPoint ) {
@@ -25,18 +25,6 @@ function getNodeStatus({ isStartingPoint, isDiscovered, isCompromised } = {}) {
 const Unknown = () => <span title="developer don't know how to calculate this field"
                             styleName="unknown">Unknown!</span>
 
-
-const TabsHeader = ({ campainVisible, setCampainVisible, type }) => {
-  return <div styleName="tabs">
-    <div styleName={!campainVisible ? 'active-tab' : ''} onClick={() => setCampainVisible(false)}>
-      {type}
-    </div>
-    <div styleName={campainVisible ? 'active-tab' : ''} onClick={() => setCampainVisible(true)}>
-      Campain
-    </div>
-  </div>
-}
-
 const headers = { node: 'Device', cluster: 'Segment', arrow: 'Method' }
 
 const QuickInformation = props => {
@@ -49,16 +37,20 @@ const QuickInformation = props => {
   }
   return <div styleName="quick-information">
     <div styleName="header-with-name">
-      <div styleName="grey-small-text">{headers[type]}</div>
-      <div onClick={() => setTabsVisible(!tabsVisible)} styleName="resize-icon">(resize icon)</div>
-    </div>
-
-    <div styleName="name">
-      {type === 'node' && <span>{element.name}</span>}
-      {type === 'cluster' && <span>
+      <div>
+        <div styleName="grey-small-text">{headers[type]}</div>
+        <div styleName="name">
+          {type === 'node' && <span>{element.name}</span>}
+          {type === 'cluster' && <span>
         {element.cluster === 'undefined' ? 'Unidentified' : element.cluster}
       </span>}
-      {type === 'arrow' && <span>{element.event.data.method}</span>}
+          {type === 'arrow' && <span>{element.event.data.method}</span>}
+        </div>
+      </div>
+
+      <div onClick={() => setTabsVisible(!tabsVisible)} styleName="resize-icon">
+        <Icon>{tabsVisible ? collapseSvg : expandSvg}</Icon>
+      </div>
     </div>
 
     {type === 'node' && <div>event state icons</div>}
@@ -146,7 +138,10 @@ const QuickInformation = props => {
         {campainVisible && <div >
           <div styleName="lines">
             <div><b styleName="header">Assets Summary</b></div>
-            <div><b>Total Assets</b><span><Unknown/>/<Unknown/></span></div>
+            <div>
+              <b>Total Assets</b><span>
+              <Unknown/>/{element.coordinatedNodes.length}</span>
+            </div>
             <div><b>Compromised</b><span>{clusterData.compromised}</span></div>
             <div><b>Reconned</b><span>{clusterData.discovered}</span></div>
             <div><b>Undiscovered</b><span>{clusterData.undiscovered}</span></div>
@@ -175,7 +170,10 @@ const QuickInformation = props => {
         </div>}
         {!campainVisible && <div styleName="lines">
           <div><b styleName="header">Basic Details</b></div>
-          <div><b>Segment Name</b>{element.cluster === 'undefined' ? 'Unidentified' : element.cluster}</div>
+          <div>
+            <b>Segment Name</b>
+            <span>{element.cluster === 'undefined' ? 'Unidentified' : element.cluster}</span>
+          </div>
           <div><b>OU</b><Unknown/></div>
           <div><b>IP</b><Unknown/></div>
           <div><b>Segment Rule</b><Unknown/></div>
@@ -200,7 +198,7 @@ const QuickInformation = props => {
         </div>
       </div>}
       {tabsVisible && <div>
-        {campainVisible && <div>
+        {!campainVisible && <div>
           <div><b styleName="header">Method Description</b></div>
           <Unknown/>
           <hr/>
@@ -212,7 +210,7 @@ const QuickInformation = props => {
             <div><Unknown/></div>
           </div>
         </div>}
-        {!campainVisible && <div>
+        {campainVisible && <div>
           <div styleName="lines">
             <div><b styleName="header">Source Device</b></div>
             <div><b>Device Name</b><span>{element.startNode.node.name}</span></div>
@@ -229,14 +227,18 @@ const QuickInformation = props => {
           <hr/>
           <div styleName="lines">
             <div><b styleName="header">Campain Statistics</b></div>
-            <div><b>Total Device Compromised</b><Unknown/></div>
+            <div><b>Total Devices Compromised</b><Unknown/></div>
             <div><b>Total Assets Compromised</b><Unknown/></div>
           </div>
+          <br/>
+          <br/>
           <div styleName="cluster-icons">
             <div><Icon>{Desktop}</Icon>Device <br/><Unknown/></div>
             <div><Icon>{Diskette}</Icon> Data <br/><Unknown/></div>
             <div><Icon>{Snow}</Icon> Network <br/><Unknown/></div>
           </div>
+          <br/>
+          <br/>
         </div>}
       </div>}
       <div styleName="block-method-button">
@@ -247,6 +249,6 @@ const QuickInformation = props => {
 }
 
 export default compose(
-  withState('tabsVisible', 'setTabsVisible', true),
-  withState('campainVisible', 'setCampainVisible', true),
+  withState('tabsVisible', 'setTabsVisible', false),
+  withState('campainVisible', 'setCampainVisible', false),
 )(QuickInformation)

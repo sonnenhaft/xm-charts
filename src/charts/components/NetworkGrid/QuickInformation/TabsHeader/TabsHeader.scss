@@ -1,0 +1,19 @@
+@import "../../../../../assets/colors";
+.tabs {
+  font-family: 'GeogLt', sans-serif;
+  margin: 8px -16px;
+  display: flex;
+  flex-wrap: nowrap;
+  & > div {
+    width: 50%;
+    text-align: center;
+    cursor: pointer;
+    background: #faf9f9;
+    padding: 10px;
+    font-size: 15px;
+    &.active-tab {
+      color: #faf9f9;
+      background: $blue;
+    }
+  }
+}
