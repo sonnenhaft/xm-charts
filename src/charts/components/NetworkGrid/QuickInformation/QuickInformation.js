@@ -7,8 +7,11 @@ import expandSvg from './Expand.svg'
 import TabsHeader from './TabsHeader'
 import d3 from 'charts/utils/decorated.d3.v4'
 
-const Icon = ({ children: __html }) => <div><svg dangerouslySetInnerHTML={{ __html }}/></div>
-const getIp = ipv4 => ipv4[0].data.join('.')
+const Icon = ({ className, children: __html }) => {
+ return <div {...{className}}><svg dangerouslySetInnerHTML={{ __html }}/></div>
+}
+
+const getIp = ipv4 => ipv4.length && ipv4[0].data.join('.')
 
 function getNodeStatus({ isStartingPoint, isDiscovered, isCompromised } = {}) {
   if ( isStartingPoint ) {
@@ -20,6 +23,12 @@ function getNodeStatus({ isStartingPoint, isDiscovered, isCompromised } = {}) {
   } else {
     return 'undefined'
   }
+}
+
+const getActiveClass = (status, { agentId }, key) => {
+  console.log(status[agentId] && status[agentId][key])
+  const val = status[agentId] && status[agentId][key]
+  return (val === 'discovered' || val === 'compromised') ? 'icon-active' : ''
 }
 
 const Unknown = () => <span title="developer don't know how to calculate this field"
@@ -53,7 +62,11 @@ const QuickInformation = props => {
       </div>
     </div>
 
-    {type === 'node' && <div>event state icons</div>}
+    {type === 'node' && <div styleName="event-state-icons">
+      <Icon styleName={getActiveClass(status, element, 'data')}>{Desktop}</Icon>
+      <Icon styleName={getActiveClass(status, element, 'device')}>{Diskette}</Icon>
+      <Icon styleName={getActiveClass(status, element, 'network')}>{Snow}</Icon>
+    </div>}
 
     {tabsVisible && <TabsHeader {...{ ...props, type: headers[type] }}/>}
 

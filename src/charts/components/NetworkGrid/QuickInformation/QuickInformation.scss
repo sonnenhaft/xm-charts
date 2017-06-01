@@ -120,3 +120,18 @@
     justify-content: space-between;
   }
 }
+
+.event-state-icons {
+  display: flex;
+  margin-top: -14px;
+  svg {
+    opacity: 0.3;
+    width: 30px;
+    height: 30px;
+  }
+  .icon-active {
+    svg {
+      opacity: 1;
+    }
+  }
+}
