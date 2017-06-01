@@ -1,12 +1,31 @@
 @import "../../../../assets/colors";
 
 .quick-information {
+  font-family: sans-serif;
   position: absolute;
-  right: 0;
-  top: 10px;
-  border: 1px solid black;
+  right: 16px;
+  top: 16px;
+  padding: 16px;
   border-radius: 4px;
   background: white;
-  width: 200px;
-  min-height: 300px;
+  width: 250px;
+  min-height: 400px;
+  box-shadow: 2px 3px 8px rgba(0, 0, 0, 0.085);
+  font-size: 14px;
+  .header-with-name {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .grey-small-text {
+      color: #dbd8d8;
+      font-size: 12px;
+    }
+  }
+  .name {
+    font-weight: bold;
+    font-size: 20px;
+  }
+  b {
+    line-height: 25px;
+  }
 }

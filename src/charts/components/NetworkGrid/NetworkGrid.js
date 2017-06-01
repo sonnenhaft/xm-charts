@@ -1,11 +1,11 @@
-import React, {Component, PropTypes as P} from 'react'
-import d3, {Transform} from 'charts/utils/decorated.d3.v4'
-import {getNodesEventsDataMap} from '../../utils/nodeEventData'
-import {Circle, Desktop, Diskette, Snow} from './IconsGroup'
+import React, { Component, PropTypes as P } from 'react'
+import d3, { Transform } from 'charts/utils/decorated.d3.v4'
+import { getNodesEventsDataMap } from '../../utils/nodeEventData'
+import { Circle, Desktop, Diskette, Snow } from './IconsGroup'
 import './NetworkGrid.scss'
 import WindowDependable from '../common/WindowDependable'
 import NetworkTooltip from './NetworkTooltip/NetworkTooltip'
-import calculateClusterCoords, {getArrows} from './calculateClusterCoords'
+import calculateClusterCoords, { getArrows } from './calculateClusterCoords'
 import ShareButtons from '../Timeline/common/ShareButtons'
 import QuickInformation from './QuickInformation'
 
@@ -14,8 +14,7 @@ const ZOOM_CHANGE = 1.2
 
 const getClusterName = cluster => cluster === 'undefined' ? 'Unidentified' : cluster
 const getSelectionByType = (selectedElement, type) =>
-  (selectedElement && selectedElement.type === type && selectedElement.element) || undefined
-
+(selectedElement && selectedElement.type === type && selectedElement.element) || undefined
 
 
 export default class NetworkGrid extends Component {
@@ -42,9 +41,9 @@ export default class NetworkGrid extends Component {
   }
 
   // TODO(vlad): remove code below
-  shouldComponentUpdate({currentTime, events, nodes},
-                        {hoveredNode, selectedElement}) {
-    const {props, state} = this
+  shouldComponentUpdate({ currentTime, events, nodes },
+                        { hoveredNode, selectedElement }) {
+    const { props, state } = this
     return props.currentTime !== currentTime
       || props.events !== events
       || props.nodes !== nodes
@@ -52,38 +51,38 @@ export default class NetworkGrid extends Component {
       || state.selectedElement !== selectedElement
   }
 
-  componentWillUpdate({events, nodes, currentTime}, {selectedElement}) {
-    const {props, state} = this
+  componentWillUpdate({ events, nodes, currentTime }, { selectedElement }) {
+    const { props, state } = this
     const nodesChanged = props.nodes !== nodes
     const currentTimeChanged = props.currentTime !== currentTime
 
-    if (nodesChanged || !this.cachedClusters) {
+    if ( nodesChanged || !this.cachedClusters ) {
       this.cachedClusters = calculateClusterCoords(nodes)
       // if you decide clusters to fill space optimally without margins, uncomment following line
       // this.cachedClusters = calculateClusterCoords(nodes, width/height)
     }
 
-    if (currentTimeChanged) {
+    if ( currentTimeChanged ) {
       this.setSelectedElement(undefined)
     }
     const eventsChanged = props.events !== events
     const disableD3Repaint = !(eventsChanged || nodesChanged || currentTimeChanged)
 
-    if (!disableD3Repaint) {
-      this.repaintNodesAndArrows({events, currentTime})
+    if ( !disableD3Repaint ) {
+      this.repaintNodesAndArrows({ events, currentTime })
     }
 
     const selectedNodeChanged = state.selectedElement !== selectedElement
     const selectedArrow = getSelectionByType(selectedElement, 'arrow')
-    if (selectedNodeChanged) {
+    if ( selectedNodeChanged ) {
       const selectedNode = getSelectionByType(selectedElement, 'node')
       const selectedCluster = getSelectionByType(selectedElement, 'cluster')
-      this.d3Nodes.classed('is-selected', ({node}) => node === selectedNode)
+      this.d3Nodes.classed('is-selected', ({ node }) => node === selectedNode)
       this.d3Clusters.classed('active', cluster => cluster === selectedCluster)
       this.d3Arrows.classed('is-black', arrow => arrow === selectedArrow)
     }
 
-    if (selectedNodeChanged || !disableD3Repaint) {
+    if ( selectedNodeChanged || !disableD3Repaint ) {
       this.d3Arrows.select('.arrow').attr('marker-end', arrow => {
         let type = 'red'
         type = arrow.event.type === 'newDiscoveredNode' ? 'blue' : type
@@ -110,14 +109,14 @@ export default class NetworkGrid extends Component {
 
   setSvgDimensionsAndReturnShifts() {
     const props = this.props
-    if (!this.rootBlock) {
+    if ( !this.rootBlock ) {
       return {}
     }
-    const {clientWidth: width, clientHeight: tempHeight} = this.rootBlock.node().parentNode
+    const { clientWidth: width, clientHeight: tempHeight } = this.rootBlock.node().parentNode
 
     const height = Math.max(tempHeight - 200, 200)
 
-    if (!props.nodes.length || !tempHeight) { // we just can calculate anything with 0 height
+    if ( !props.nodes.length || !tempHeight ) { // we just can calculate anything with 0 height
       return {}
     }
     const centralizeZoomFactor = Math.min(
@@ -125,7 +124,7 @@ export default class NetworkGrid extends Component {
       width / (NODE_WIDTH * this.cachedClusters.totalWidth),
     )
 
-    const {k, x, y} = d3.zoomTransform(this.svg.node())
+    const { k, x, y } = d3.zoomTransform(this.svg.node())
 
     const shiftX = (width - this.cachedClusters.totalWidth * NODE_WIDTH * centralizeZoomFactor ) * k / 2
     const shiftY = (height - this.cachedClusters.totalHeight * NODE_WIDTH * centralizeZoomFactor ) * k / 2
@@ -134,7 +133,7 @@ export default class NetworkGrid extends Component {
     this.svg.classed('icons-visible', currentZoom.k < ZOOM_CHANGE)
     this.svg.selectAll('.grid-shifter').attr('transform', `translate(${shiftX}, ${shiftY})`)
     this.svg.selectAll('.zoom-scale').attr('transform', currentZoom.toString())
-    this.svg.attrs({width, height})
+    this.svg.attrs({ width, height })
 
     this.zoom.translateExtent([[0, 0], [width, height]]).extent([[0, 0], [width, height]])
 
@@ -144,23 +143,23 @@ export default class NetworkGrid extends Component {
     yScale.domain(currentZoom.rescaleY(yScale).domain())
 
     const getCoordsFn = (coords, heightOffset = 0, xCoordOffset = 0, yCoordOffset = 0) => {
-      if (!coords) {
+      if ( !coords ) {
         return {}
       }
-      const {x, y} = coords
+      const { x, y } = coords
       const offsets = this.rootBlock.node().getBoundingClientRect()
       return {
         top: `${yScale(y + yCoordOffset) - heightOffset - 52 + shiftY + offsets.top  }px`,
         left: `${xScale(x + xCoordOffset) + shiftX + offsets.left  }px`,
       }
     }
-    return {xScale, yScale, shiftY, shiftX, currentZoom, getCoordsFn}
+    return { xScale, yScale, shiftY, shiftX, currentZoom, getCoordsFn }
   }
 
   getClusterData(coordinatedCluster) {
     const status = getNodesEventsDataMap(this.props.events, this.props.currentTime)
 
-    const hasAsset = ({node: {agentId}}, key, val1, val2) => {
+    const hasAsset = ({ node: { agentId } }, key, val1, val2) => {
       const val = status[agentId] && status[agentId][key]
       return val === val1 || val === val2
     }
@@ -168,7 +167,7 @@ export default class NetworkGrid extends Component {
     const nodes = coordinatedCluster ? coordinatedCluster.coordinatedNodes : []
     // TODO(vlad): fix devices algorithm
     return nodes
-      .filter(({node}) => status[node.agentId])
+      .filter(({ node }) => status[node.agentId])
       .map(data => ({
         data: hasAsset(data, 'data', 'discovered', 'compromised'),
         device: hasAsset(data, 'device', 'discovered', 'compromised'),
@@ -176,29 +175,29 @@ export default class NetworkGrid extends Component {
       })).reduce((sum, data) => {
         Object.keys(sum).forEach(key => sum[key] += (data[key] ? 1 : 0))
         return sum
-      }, {device: 0, network: 0, data: 0})
+      }, { device: 0, network: 0, data: 0 })
   }
 
   setSelectedElement = (type, element) => {
-    if (this.isSelected(element)) {
+    if ( this.isSelected(element) ) {
       return
     }
 
-    const selectedElement = type && {type, element}
-    this.setState({selectedElement})
+    const selectedElement = type && { type, element }
+    this.setState({ selectedElement })
     this.props.onSelectedElementChanged(selectedElement)
 
-    if (d3.event) {
+    if ( d3.event ) {
       d3.event.stopPropagation()
       return false
     }
   }
 
   isSelected = element => this.state.selectedElement && this.state.selectedElement.element === element
-    || (!this.state.selectedElement && !element)
+  || (!this.state.selectedElement && !element)
 
-  repaintNodesAndArrows({events, currentTime}) {
-    const {coordinatedClusters, coordinatedNodes} = this.cachedClusters
+  repaintNodesAndArrows({ events, currentTime }) {
+    const { coordinatedClusters, coordinatedNodes } = this.cachedClusters
     const arrowsData = getArrows(
       events,
       coordinatedNodes,
@@ -213,7 +212,7 @@ export default class NetworkGrid extends Component {
 
     this.d3Clusters = this.svg.select('.clusters').bindData('g.cluster-group', coordinatedClusters, {
       click: cluster => this.setSelectedElement('cluster', cluster),
-      html: ({x, y, width, height, cluster}) => `<g>
+      html: ({ x, y, width, height, cluster }) => `<g>
         <g transform="translate(${scale(x)}, ${scale(y)})">
           <rect class="cluster" rx="3" ry="3" 
             width="${scale(width)}" height="${scale(height)}"></rect>
@@ -224,18 +223,18 @@ export default class NetworkGrid extends Component {
       </g>`,
     })
 
-    const hasStatus = (key, val1, val2 = 'missed') => ({node: {agentId}}) => {
+    const hasStatus = (key, val1, val2 = 'missed') => ({ node: { agentId } }) => {
       const val = status[agentId] && status[agentId][key]
       return val === val1 || val === val2
     }
 
     this.d3Nodes = this.svg.select('.grid').bindData('g.node', coordinatedNodes, {
-      transform: ({x, y}) => `translate(${scale(x)},${scale(y)})`,
-      click: ({node}) => this.setSelectedElement('node', node),
-      mouseout: () => this.setState({hoveredNode: null}),
+      transform: ({ x, y }) => `translate(${scale(x)},${scale(y)})`,
+      click: ({ node }) => this.setSelectedElement('node', node),
+      mouseout: () => this.setState({ hoveredNode: null }),
       mouseover: node => {
-        if (!this.isSelected(node)) {
-          this.setState({hoveredNode: node})
+        if ( !this.isSelected(node) ) {
+          this.setState({ hoveredNode: node })
         }
       },
       html: () => `<g transform="scale(0.65)">
@@ -272,7 +271,7 @@ export default class NetworkGrid extends Component {
     this.d3Arrows = this.svg.select('g.arrows').bindData('g.arrow-line', arrowsData, {
       cursor: 'pointer',
       click: arrow => this.setSelectedElement('arrow', arrow),
-      html: ({attackPathNumber, middlePoint: {x, y}, startNode: {x: x1, y: y1}, endNode: {x: x2, y: y2}}) => {
+      html: ({ attackPathNumber, middlePoint: { x, y }, startNode: { x: x1, y: y1 }, endNode: { x: x2, y: y2 } }) => {
         x1 = scale(x1)
         x2 = scale(x2)
         y1 = scale(y1)
@@ -289,25 +288,27 @@ export default class NetworkGrid extends Component {
         </g>`
       },
     })
-      .classed('is-compromised', ({attackPathNumber}) => attackPathNumber)
+      .classed('is-compromised', ({ attackPathNumber }) => attackPathNumber)
       .classed('is-blue', arrow => arrow.event.type === 'newDiscoveredNode')
   }
 
   render() {
-    const {className} = this.props
+    const { className } = this.props
     const hoveredNode = this.state.hoveredNode
     const selectedCluster = getSelectionByType(this.state.selectedElement, 'cluster')
     const selectedArrow = getSelectionByType(this.state.selectedElement, 'arrow')
 
-    const {getCoordsFn} = this.setSvgDimensionsAndReturnShifts()
+    const { getCoordsFn } = this.setSvgDimensionsAndReturnShifts()
 
     return (
       <WindowDependable className={className} refCb={this.refRootBlock}
                         onDimensionsChanged={() => this.forceUpdate()}>
-        <QuickInformation selectedElement={this.state.selectedElement}/>
+        <QuickInformation selectedElement={this.state.selectedElement}
+                          nodes={this.props.nodes}
+                          events={this.props.events}/>
 
         <NetworkTooltip item={selectedCluster} coordsFn={getCoordsFn} isDark={true}
-                        offsets={{h: -4, x: selectedCluster ? selectedCluster.width : 0}}>
+                        offsets={{ h: -4, x: selectedCluster ? selectedCluster.width : 0 }}>
           {selectedCluster && <div>
             {selectedCluster.coordinatedNodes.length}
             <div styleName="share-buttons">
@@ -316,7 +317,7 @@ export default class NetworkGrid extends Component {
           </div>}
         </NetworkTooltip>
 
-        <NetworkTooltip item={hoveredNode} coordsFn={getCoordsFn} offsets={{x: 0.23, y: 0.02}}>
+        <NetworkTooltip item={hoveredNode} coordsFn={getCoordsFn} offsets={{ x: 0.23, y: 0.02 }}>
           {hoveredNode && <div>
             <div>{hoveredNode.node.name}</div>
           </div>}
