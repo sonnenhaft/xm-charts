@@ -156,7 +156,7 @@ export default class NetworkGrid extends Component {
     return { xScale, yScale, shiftY, shiftX, currentZoom, getCoordsFn }
   }
 
-  getClusterData(coordinatedCluster) {
+  getClusterData = coordinatedCluster => {
     const status = getNodesEventsDataMap(this.props.events, this.props.currentTime)
 
     const hasAsset = ({ node: { agentId } }, key, val1, val2) => {
@@ -307,7 +307,8 @@ export default class NetworkGrid extends Component {
         {this.state.selectedElement && <QuickInformation selectedElement={this.state.selectedElement}
                           nodes={this.props.nodes}
                           events={this.props.events}
-                          status={this.status}/>}
+                          status={this.status}
+                          getClusterData={this.getClusterData}/>}
 
         <NetworkTooltip item={selectedCluster} coordsFn={getCoordsFn} isDark={true}
                         offsets={{ h: -4, x: selectedCluster ? selectedCluster.width : 0 }}>

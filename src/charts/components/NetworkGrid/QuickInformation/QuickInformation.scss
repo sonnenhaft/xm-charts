@@ -2,16 +2,17 @@
 
 .quick-information {
   font-family: sans-serif;
-  position: absolute;
-  right: 16px;
-  top: 16px;
+  font-size: 14px;
   padding: 16px;
-  border-radius: 4px;
-  background: white;
   width: 250px;
   max-height: calc(100% - 200px);
+  position: absolute;
+  z-index: 11;
+  right: 16px;
+  top: 16px;
+  border-radius: 4px;
+  background: white;
   box-shadow: 2px 3px 8px rgba(0, 0, 0, 0.085);
-  font-size: 14px;
   .header-with-name {
     display: flex;
     flex-direction: row;
@@ -30,6 +31,31 @@
     line-height: 25px;
   }
   hr {
-    margin: 10px -15px;
+    opacity: 0.3;
+    margin: 16px -16px;
+  }
+  .cluster-icons {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    > div {
+      padding: 8px;
+      width: 24%;
+      border: 1px solid lightgrey;
+      text-align: center;
+    }
+  }
+  .cluster-stats {
+    margin-top: 16px;
+    margin-bottom: -16px;
+    > div {
+      margin: 0 -16px;
+      padding: 8px 16px;
+      display: flex;
+      justify-content: space-between;
+    }
+    > div:nth-of-type(2n - 1) {
+      background: #f2f2f2;
+    }
   }
 }
