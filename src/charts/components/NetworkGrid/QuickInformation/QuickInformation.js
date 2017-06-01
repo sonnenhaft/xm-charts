@@ -1,5 +1,7 @@
 import React from 'react'
 import './QuickInformation.scss'
+import { Desktop, Diskette, Snow } from '../IconsGroup'
+const Icon = ({ children: __html }) => <svg dangerouslySetInnerHTML={{ __html }}/>
 
 function getNodeStatus({ isStartingPoint, isDiscovered, isCompromised } = {}) {
   if ( isStartingPoint ) {
@@ -38,10 +40,10 @@ const QuickInformation = ({ selectedElement: { element, type }, status, getClust
       <div>
         <div><b>Data Assets: </b><span>N/A</span></div>
         <div><b>Staging: </b><span>N/A</span></div>
-        <div><b>OS: </b><span>{element.os.name}</span></div>
+        <div><b>OS: </b><span>{element.os.name || element.os.type}</span></div>
         <div>
           <b>IP: </b>
-          {element.ipv4.map(({ data }) => data.join('.')).join(',')}
+          <span>{element.ipv4.map(({ data }) => data.join('.')).join(',')}</span>
         </div>
       </div>
     </div>}
@@ -51,18 +53,18 @@ const QuickInformation = ({ selectedElement: { element, type }, status, getClust
         <div styleName="grey-small-text">Segment</div>
         <div>(resize icon)</div>
       </div>
-      <div styleName="name">{element.cluster}</div>
+      <div styleName="name">{element.cluster === 'undefined' ? 'Unidentified' : element.cluster}</div>
       <hr/>
       <div styleName="cluster-icons">
-        <div>(icon) Device {data.device}</div>
-        <div>(icon) Data {data.data}</div>
-        <div>(icon) Network {data.network}</div>
+        <div><Icon>{Desktop}</Icon>Device <br/>{data.device}</div>
+        <div><Icon>{Diskette}</Icon> Data <br/>{data.data}</div>
+        <div><Icon>{Snow}</Icon> Network <br/>{data.network}</div>
       </div>
       <div styleName="cluster-stats">
-        <div><b>Total Devices</b><span>N/A</span></div>
-        <div><b>Compromised</b><span>N/A</span></div>
+        <div><b>Total Devices</b><span>{element.coordinatedNodes.length}</span></div>
+        <div><b>Compromised</b><span>{data.compromised}</span></div>
         <div><b>Reconned</b><span>N/A</span></div>
-        <div><b>Undiscovered</b><span>N/A</span></div>
+        <div><b>Undiscovered</b><span>{element.coordinatedNodes.length - data.discovered}</span></div>
         <div><b>Segment Rule</b><span>N/A</span></div>
       </div>
     </div>}

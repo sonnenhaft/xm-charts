@@ -159,7 +159,7 @@ export default class NetworkGrid extends Component {
   getClusterData = coordinatedCluster => {
     const status = getNodesEventsDataMap(this.props.events, this.props.currentTime)
 
-    const hasAsset = ({ node: { agentId } }, key, val1, val2) => {
+    const hasAsset = ({ node: { agentId } }, key, val1, val2 = 'some-value') => {
       const val = status[agentId] && status[agentId][key]
       return val === val1 || val === val2
     }
@@ -172,10 +172,17 @@ export default class NetworkGrid extends Component {
         data: hasAsset(data, 'data', 'discovered', 'compromised'),
         device: hasAsset(data, 'device', 'discovered', 'compromised'),
         network: hasAsset(data, 'network', 'discovered', 'compromised'),
+        compromised: hasAsset(data, 'isCompromised', true),
+        discovered: hasAsset(data, 'isDiscovered', true),
       })).reduce((sum, data) => {
-        Object.keys(sum).forEach(key => sum[key] += (data[key] ? 1 : 0))
+        Object.keys(data).forEach(key => {
+          if (!sum.hasOwnProperty(key)) {
+            sum[key] = 0
+          }
+          sum[key] += data[key] ? 1 : 0
+        })
         return sum
-      }, { device: 0, network: 0, data: 0 })
+      }, {})
   }
 
   setSelectedElement = (type, element) => {

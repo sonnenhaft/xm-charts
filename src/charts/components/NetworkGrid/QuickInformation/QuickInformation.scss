@@ -5,7 +5,8 @@
   font-size: 14px;
   padding: 16px;
   width: 250px;
-  max-height: calc(100% - 200px);
+  max-height: calc(100% - 60px);
+  overflow: auto;
   position: absolute;
   z-index: 11;
   right: 16px;
@@ -34,6 +35,9 @@
   b {
     line-height: 25px;
   }
+  b + span {
+    word-break: break-all;
+  }
   hr {
     opacity: 0.3;
     margin: 16px -16px;
@@ -42,10 +46,16 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    svg {
+      width: 30px;
+      height: 30px;
+    }
     > div {
       padding: 8px;
       width: 24%;
-      border: 1px solid lightgrey;
+      font-size: 14px;
+      border-radius: 2px;
+      border: 2px solid #f1f1f1;
       text-align: center;
     }
   }
