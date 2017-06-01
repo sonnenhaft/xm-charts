@@ -172,8 +172,9 @@ export default class NetworkGrid extends Component {
         data: hasAsset(data, 'data', 'discovered', 'compromised'),
         device: hasAsset(data, 'device', 'discovered', 'compromised'),
         network: hasAsset(data, 'network', 'discovered', 'compromised'),
-        compromised: hasAsset(data, 'isCompromised', true),
-        discovered: hasAsset(data, 'isDiscovered', true),
+        compromised: hasAsset(data, 'state', 'compromised'),
+        discovered: hasAsset(data, 'state', 'discovered'),
+        undiscovered: hasAsset(data, 'state', 'undiscovered'),
       })).reduce((sum, data) => {
         Object.keys(data).forEach(key => {
           if (!sum.hasOwnProperty(key)) {
