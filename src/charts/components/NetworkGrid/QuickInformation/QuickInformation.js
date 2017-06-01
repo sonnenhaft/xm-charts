@@ -68,22 +68,22 @@ const QuickInformation = props => {
     {type === 'node' && <div>
       {tabsVisible && <div>
         {campainVisible && <div styleName="lines">
-          <div><b>Recon Event</b></div>
+          <div><b styleName="header">Recon Event</b></div>
           <div><b>Time</b><Unknown/></div>
           <div><b>Method</b><Unknown/></div>
           <div><b>Source</b><Unknown/></div>
           <hr/>
-          <div><b>Compromise Event</b></div>
+          <div><b styleName="header">Compromise Event</b></div>
           <div><b>Time</b><Unknown/></div>
           <div><b>Method</b><Unknown/></div>
           <div><b>Source</b><Unknown/></div>
           <hr/>
-          <div><b>Outgoing Recon Event</b></div>
+          <div><b styleName="header">Outgoing Recon Event</b></div>
           <div><b>Total Methods</b><Unknown/></div>
           <div><b>Total Devices</b><Unknown/></div>
         </div>}
         {!campainVisible && <div styleName="lines">
-          <div><b>Basic Details</b></div>
+          <div><b styleName="header">Basic Details</b></div>
           <div><b>Device Name: </b><span>{element.name}</span></div>
           <div><b>OS: </b><span>{element.os.name || element.os.type}</span></div>
           <div>
@@ -93,7 +93,7 @@ const QuickInformation = props => {
           <div><b>Mac Address: </b><Unknown/></div>
           <div><b>Last User: </b><Unknown/></div>
           <hr/>
-          <div><b>Agent Statistics</b></div>
+          <div><b styleName="header">Agent Statistics</b></div>
           <div><b>ID: </b><span>{element.agentId}</span></div>
           <div><b>Uptime: </b><Unknown/></div>
           <div>
@@ -145,7 +145,7 @@ const QuickInformation = props => {
       {tabsVisible && <div>
         {campainVisible && <div >
           <div styleName="lines">
-            <div><b>Assets Summary</b></div>
+            <div><b styleName="header">Assets Summary</b></div>
             <div><b>Total Assets</b><span><Unknown/>/<Unknown/></span></div>
             <div><b>Compromised</b><span>{clusterData.compromised}</span></div>
             <div><b>Reconned</b><span>{clusterData.discovered}</span></div>
@@ -158,30 +158,30 @@ const QuickInformation = props => {
           </div>
           <hr/>
           <div styleName="lines">
-            <div><b>Top 3 Recon Methods</b></div>
+            <div><b styleName="header">Top 3 Recon Methods</b></div>
             <div><b>Method Name</b><Unknown/></div>
             <div><b>Method Name</b><Unknown/></div>
             <div><b>Method Name</b><Unknown/></div>
             <hr/>
-            <div><b>Top 3 Exploit Methods</b></div>
+            <div><b styleName="header">Top 3 Exploit Methods</b></div>
             <div><b>Method Name</b><Unknown/></div>
             <div><b>Method Name</b><Unknown/></div>
             <div><b>Method Name</b><Unknown/></div>
             <hr/>
-            <div><b>Outgoing Reconn Events</b></div>
+            <div><b styleName="header">Outgoing Reconn Events</b></div>
             <div><b>Total</b><Unknown/></div>
             <div><b>Methods</b><Unknown/></div>
           </div>
         </div>}
         {!campainVisible && <div styleName="lines">
-          <div><b>Basic Details</b></div>
+          <div><b styleName="header">Basic Details</b></div>
           <div><b>Segment Name</b>{element.cluster === 'undefined' ? 'Unidentified' : element.cluster}</div>
           <div><b>OU</b><Unknown/></div>
           <div><b>IP</b><Unknown/></div>
           <div><b>Segment Rule</b><Unknown/></div>
           <div><b>Total Devices</b><span>{element.coordinatedNodes.length}</span></div>
           <hr/>
-          <div><b>Segment Statistics</b></div>
+          <div><b styleName="header">Segment Statistics</b></div>
           <div><Unknown/></div>
           <div><Unknown/></div>
           <div><Unknown/></div>
@@ -201,11 +201,11 @@ const QuickInformation = props => {
       </div>}
       {tabsVisible && <div>
         {campainVisible && <div>
-          <div><b>Method Description</b></div>
+          <div><b styleName="header">Method Description</b></div>
           <Unknown/>
           <hr/>
           <div styleName="lines">
-            <div><b>Method Statistics</b></div>
+            <div><b styleName="header">Method Statistics</b></div>
             <div><b>Local Rank</b><Unknown/></div>
             <div><b>Global Rank</b><Unknown/></div>
             <div><Unknown/></div>
@@ -214,21 +214,21 @@ const QuickInformation = props => {
         </div>}
         {!campainVisible && <div>
           <div styleName="lines">
-            <div><b>Source Device</b></div>
+            <div><b styleName="header">Source Device</b></div>
             <div><b>Device Name</b><span>{element.startNode.node.name}</span></div>
             <div><b>IP</b><span>{getIp(element.startNode.node.ipv4)}</span></div>
             <div><b>Mac</b><Unknown/></div>
           </div>
           <hr/>
           <div styleName="lines">
-            <div><b>Target Device</b></div>
+            <div><b styleName="header">Target Device</b></div>
             <div><b>Device Name</b><span>{element.endNode.node.name}</span></div>
             <div><b>IP</b><span>{getIp(element.endNode.node.ipv4)}</span></div>
             <div><b>Mac</b><Unknown/></div>
           </div>
           <hr/>
           <div styleName="lines">
-            <div><b>Campain Statistics</b></div>
+            <div><b styleName="header">Campain Statistics</b></div>
             <div><b>Total Device Compromised</b><Unknown/></div>
             <div><b>Total Assets Compromised</b><Unknown/></div>
           </div>

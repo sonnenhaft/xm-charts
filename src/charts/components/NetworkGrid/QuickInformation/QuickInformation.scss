@@ -1,10 +1,10 @@
 @import "../../../../assets/colors";
 
 .quick-information {
-  font-family: sans-serif;
-  font-size: 14px;
+  font-family: 'GeogSb', sans-serif;
+  font-size: 13px;
   padding: 16px;
-  width: 350px;
+  width: 330px;
   max-height: calc(100% - 60px);
   overflow: auto;
   position: absolute;
@@ -22,9 +22,11 @@
     .grey-small-text {
       color: #bfbcbc;
       font-size: 12px;
+      font-family: 'GeogLt', sans-serif;
     }
   }
   .name {
+    font-family: sans-serif;
     font-weight: bold;
     font-size: 20px;
     margin-bottom: 10px;
@@ -34,9 +36,13 @@
   }
   b {
     line-height: 25px;
+    &.header {
+      font-size: 16px;
+    }
   }
   b + span {
     word-break: break-all;
+    font-family: sans-serif;
   }
   hr {
     opacity: 0.3;
@@ -100,6 +106,7 @@
 }
 
 .tabs {
+  font-family: 'GeogLt', sans-serif;
   margin: 8px -16px;
   display: flex;
   flex-wrap: nowrap;
