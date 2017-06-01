@@ -1,6 +1,9 @@
-import React from 'react'
-import './QuickInformation.scss'
-import { Desktop, Diskette, Snow } from '../IconsGroup'
+import React from "react";
+import "./QuickInformation.scss";
+import { Desktop, Diskette, Snow } from "../IconsGroup";
+import { compose, withState } from "recompose";
+import d3 from "charts/utils/decorated.d3.v4";
+
 const Icon = ({ children: __html }) => <svg dangerouslySetInnerHTML={{ __html }}/>
 
 function getNodeStatus({ isStartingPoint, isDiscovered, isCompromised } = {}) {
@@ -15,25 +18,89 @@ function getNodeStatus({ isStartingPoint, isDiscovered, isCompromised } = {}) {
   }
 }
 
-const Unknown = () => <span styleName="unknown"
-  title="developer don't know how to calculate this field">
-  Unknown!
-</span>
+const Unknown = () => <span title="developer don't know how to calculate this field"
+                            styleName="unknown">Unknown!</span>
 
-const QuickInformation = ({ selectedElement: { element, type }, status, getClusterData }) => {
-  const data = {}
+
+const TabsHeader = ({ campainVisible, setCampainVisible, type }) => {
+  return <div styleName="tabs">
+    <div styleName={!campainVisible ? 'active-tab' : ''} onClick={() => setCampainVisible(false)}>
+      {type}
+    </div>
+    <div styleName={campainVisible ? 'active-tab' : ''} onClick={() => setCampainVisible(true)}>
+      Campain
+    </div>
+  </div>
+}
+
+const headers = { node: 'Device', cluster: 'Segment', arrow: 'Method' }
+
+const QuickInformation = props => {
+  const { selectedElement: { element, type }, status, getClusterData, campainVisible } = props
+
+  const { tabsVisible, setTabsVisible } = props
+  const clusterData = {}
   if ( type === 'cluster' ) {
-    Object.assign(data, getClusterData(element))
+    Object.assign(clusterData, getClusterData(element))
   }
   return <div styleName="quick-information">
-    {type === 'node' && <div>
-      <div styleName="header-with-name">
-        <div styleName="grey-small-text">Device</div>
-        <div>(resize icon)</div>
-      </div>
-      <div styleName="name">{element.name}</div>
-      <div>event state icons</div>
-      <div>
+
+    <div styleName="header-with-name">
+      <div styleName="grey-small-text">{headers[type]}</div>
+      <div onClick={() => setTabsVisible(!tabsVisible)} styleName="resize-icon">(resize icon)</div>
+    </div>
+    <div styleName="name">
+      {type === 'node' && <span>{element.name}</span>}
+      {type === 'cluster' && <span>
+        {element.cluster === 'undefined' ? 'Unidentified' : element.cluster}
+      </span>}
+      {type === 'arrow' && <span>{element.event.data.method}</span>}
+    </div>
+    {type === 'node' && <div>event state icons</div>}
+
+    {tabsVisible && <TabsHeader {...{ ...props, type: headers[type] }}/>}
+
+    {type === 'node' && tabsVisible && <div>
+      {!campainVisible && <div styleName="lines">
+        <div><b>Basic Details</b></div>
+        <div><b>Device Name: </b><span>{element.name}</span></div>
+        <div><b>OS: </b><span>{element.os.name || element.os.type}</span></div>
+        <div>
+          <b>IP: </b>
+          <span>{element.ipv4.map(({ data }) => data.join('.')).join(',')}</span>
+        </div>
+        <div><b>Mac Address: </b><Unknown/></div>
+        <div><b>Last User: </b><Unknown/></div>
+        <hr/>
+        <div><b>Agent Statistics</b></div>
+        <div><b>ID: </b><span>{element.agentId}</span></div>
+        <div><b>Uptime: </b><Unknown/></div>
+        <div>
+          <b>Last Communication Time: </b>
+          <span>{d3.timeFormat('%m-%d-%Y %H:%M:%S')(new Date(element.lastConnectionTime))}</span>
+        </div>
+        <div><b>Brandwidth: </b><Unknown/></div>
+        <div><b>CPU: </b><span>{element.arch}</span></div>
+        <div><b>Memory: </b><Unknown/></div>
+      </div>}
+      {campainVisible && <div styleName="lines">
+        <div><b>Recon Event</b></div>
+        <div><b>Time</b><Unknown/></div>
+        <div><b>Method</b><Unknown/></div>
+        <div><b>Source</b><Unknown/></div>
+        <hr/>
+        <div><b>Compromise Event</b></div>
+        <div><b>Time</b><Unknown/></div>
+        <div><b>Method</b><Unknown/></div>
+        <div><b>Source</b><Unknown/></div>
+        <hr/>
+        <div><b>Outgoing Recon Event</b></div>
+        <div><b>Total Methods</b><Unknown/></div>
+        <div><b>Total Devices</b><Unknown/></div>
+      </div>}
+    </div>}
+    {type === 'node' && !tabsVisible && <div>
+      <div styleName="lines">
         <div>
           <b>Status: </b>
           <span>{getNodeStatus(status[element.agentId])}</span>
@@ -42,7 +109,7 @@ const QuickInformation = ({ selectedElement: { element, type }, status, getClust
         <div><b>Source: </b><Unknown/></div>
       </div>
       <hr/>
-      <div>
+      <div styleName="lines">
         <div><b>Data Assets: </b><Unknown/></div>
         <div><b>Staging: </b><Unknown/></div>
         <div><b>OS: </b><span>{element.os.name || element.os.type}</span></div>
@@ -54,32 +121,21 @@ const QuickInformation = ({ selectedElement: { element, type }, status, getClust
     </div>}
 
     {type === 'cluster' && <div>
-      <div styleName="header-with-name">
-        <div styleName="grey-small-text">Segment</div>
-        <div>(resize icon)</div>
-      </div>
-      <div styleName="name">{element.cluster === 'undefined' ? 'Unidentified' : element.cluster}</div>
-      <hr/>
       <div styleName="cluster-icons">
-        <div><Icon>{Desktop}</Icon>Device <br/>{data.device}</div>
-        <div><Icon>{Diskette}</Icon> Data <br/>{data.data}</div>
-        <div><Icon>{Snow}</Icon> Network <br/>{data.network}</div>
+        <div><Icon>{Desktop}</Icon>Device <br/>{clusterData.device}</div>
+        <div><Icon>{Diskette}</Icon> Data <br/>{clusterData.data}</div>
+        <div><Icon>{Snow}</Icon> Network <br/>{clusterData.network}</div>
       </div>
       <div styleName="cluster-stats">
         <div><b>Total Devices</b><span>{element.coordinatedNodes.length}</span></div>
-        <div><b>Compromised</b><span>{data.compromised}</span></div>
-        <div><b>Reconned</b><span>{data.discovered}</span></div>
-        <div><b>Undiscovered</b><span>{data.undiscovered}</span></div>
+        <div><b>Compromised</b><span>{clusterData.compromised}</span></div>
+        <div><b>Reconned</b><span>{clusterData.discovered}</span></div>
+        <div><b>Undiscovered</b><span>{clusterData.undiscovered}</span></div>
         {/*<div><b>Segment Rule</b><Unknown/></div>*/}
       </div>
     </div>}
 
     {type === 'arrow' && <div>
-      <div styleName="header-with-name">
-        <div styleName="grey-small-text">Method</div>
-        <div>(resize icon)</div>
-      </div>
-      <div styleName="name">{element.event.data.method}</div>
       <hr/>
       <div styleName="arrow-stats">
         <div><b>Source Device</b><span>{element.startNode.node.name}</span></div>
@@ -94,5 +150,7 @@ const QuickInformation = ({ selectedElement: { element, type }, status, getClust
   </div>
 }
 
-
-export default QuickInformation
+export default compose(
+  withState('tabsVisible', 'setTabsVisible', true),
+  withState('campainVisible', 'setCampainVisible', true),
+)(QuickInformation)
