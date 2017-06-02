@@ -3,8 +3,8 @@ import pack from 'bin-pack'
 import { defaultMemoize } from 'reselect'
 
 const MARGIN = 1
-const MARGIN_LEFT = 0
-const MARGIN_RIGHT = 3
+const MARGIN_LEFT = 1.5
+const MARGIN_RIGHT = 1.5
 const MARGIN_TOP = 1
 const LAYOUT_MARGIN_TOP = MARGIN * 2
 const LAYOUT_MARGIN_BOTTOM = MARGIN / 4
@@ -31,6 +31,11 @@ export default  defaultMemoize(function(nodes, ratio = 1) {
     item.width *= ratio
   })
 
+  const unidentifiedCluster = clusters['undefined']
+  if (unidentifiedCluster) {
+    delete clusters['undefined']
+  }
+
   let { width: totalWidth, height: totalHeight, items } = pack(values(clusters), { inPlace: false })
 
   totalWidth /= ratio
@@ -38,6 +43,17 @@ export default  defaultMemoize(function(nodes, ratio = 1) {
     item.width /= ratio
     item.x /= ratio
   })
+  if (unidentifiedCluster) {
+    items.push({
+      item: unidentifiedCluster,
+      width: unidentifiedCluster.width / ratio,
+      height: unidentifiedCluster.height,
+      x: totalWidth,
+      y: 0,
+    })
+    totalWidth += unidentifiedCluster.width
+    totalHeight = Math.max(unidentifiedCluster.height, totalHeight)
+  }
 
   items.forEach(item => {
     item.width -= MARGIN_LEFT + MARGIN_RIGHT + PADDING_RIGHT + PADDING_LEFT
@@ -45,6 +61,7 @@ export default  defaultMemoize(function(nodes, ratio = 1) {
     item.x += MARGIN_LEFT  + PADDING_LEFT
     item.y += MARGIN_TOP + PADDING_TOP
   })
+
 
   const coordinatedNodesMap = items.reduce((nodes, { width,x, y, item: { nodesObject } }) => {
     const remapedNodes = []
@@ -59,7 +76,6 @@ export default  defaultMemoize(function(nodes, ratio = 1) {
         id: node.agentId + index + x,
         node,
         x: nodeX + x,
-        // yes, in here u see width too, hard to explain, is just works), sorry for that
         y: nodeY + y,
       })
       nodeX++
