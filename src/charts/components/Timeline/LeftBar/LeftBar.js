@@ -195,7 +195,7 @@ export default class LeftBar extends Component {
 
         </div>
         <div styleName="play-buttons-block">
-          <button onClick={this.onRecordButtonClicked} styleName="play-action-button">
+          <button onClick={this.onRecordButtonClicked} styleName="play-action-button reset-circle">
             <Icon>{circleButtonSvgIcon}</Icon>
           </button>
           <CurrentTime {...{ time }} />

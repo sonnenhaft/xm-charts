@@ -2,19 +2,34 @@
 
 .timeline-control-block.is-toggled {
   height: 100px;
-  .four-control-buttons {
-    button {
-      height: 33px;
+  .reset-circle,
+  .circle-block {
+    display: none;
+  }
+  .play-buttons-block {
+    justify-content: center;
+    & > div {
+      margin-top: -6px;
+      transform: scale(1.2)
     }
   }
   .play-action-button {
+    background: none;
     height: 50px;
+  }
+  .four-control-buttons {
+    border-bottom: 1px solid #333;
+    button {
+      height: 33px;
+    }
   }
   .circle-stats-block {
     .stats-block {
       display: flex;
       flex-direction: row;
-      width: 110px;
+      width: 140px;
+      justify-content: space-between;
+      padding: 0 10px;
       .buttoned-item {
         min-width: initial;
         flex-direction: column-reverse;
@@ -144,6 +159,7 @@
   align-items: center;
   justify-content: space-between;
   background: $black-light;
+  height: 50px;
 }
 
 .left-buttons .play-action-button {
@@ -157,6 +173,7 @@
 .black-buttons .play-action-button {
   background: none;
   height: 75px;
+
   &:nth-of-type(even) {
     border-bottom: none;
   }
@@ -171,6 +188,7 @@
     .zoom-menu {
       display: flex;
       flex-direction: row;
+      background: $black-light;
       position: absolute;
       top: 0;
       left: 50px;
