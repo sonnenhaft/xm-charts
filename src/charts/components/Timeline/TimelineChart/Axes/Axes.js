@@ -1,6 +1,7 @@
 import React, { PropTypes, Component } from 'react'
 import d3 from 'charts/utils/decorated.d3.v4'
 import styles from './Axes.scss'
+import {tickFormat} from '../customScaleTime'
 
 const ScaleObjectFunction = PropTypes.func.isRequired
 export default class Axes extends Component {
@@ -35,8 +36,10 @@ export default class Axes extends Component {
       return { transform: `translate(0, ${y})` }
     }
 
-    this.xAxis.attrs({ ...translateY(125, 85), visibility }).call(d3.axisBottom(props.xScale))
-    this.miniMap.attrs(translateY(realHeight - 3, 57)).call(d3.axisBottom(props.xScaleMini))
+    this.xAxis.attrs({ ...translateY(125, 85), visibility })
+      .call(d3.axisBottom(props.xScale).tickFormat(tickFormat))
+    this.miniMap.attrs(translateY(realHeight - 3, 57))
+      .call(d3.axisBottom(props.xScaleMini).tickFormat(tickFormat))
 
     const width = props.xScale.range()[1]
     this.yAxis.call(d3.axisLeft(props.yScale).ticks(5, '%').tickSize(-width)).selectAll('.tick')
@@ -58,3 +61,4 @@ export default class Axes extends Component {
     </g>
   }
 }
+
