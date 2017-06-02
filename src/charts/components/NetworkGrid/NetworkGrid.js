@@ -56,6 +56,8 @@ export default class NetworkGrid extends Component {
 
     if (nodesChanged || !this.cachedClusters) {
       this.cachedClusters = calculateClusterCoords(nodes)
+      // if you decide clusters to fill space optimally without margins, uncomment following line
+      // this.cachedClusters = calculateClusterCoords(nodes, width/height)
     }
 
     if (currentTimeChanged) {
