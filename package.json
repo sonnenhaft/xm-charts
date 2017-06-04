@@ -2,6 +2,7 @@
   "name": "xm-charts",
   "version": "1.0.147",
   "scripts": {
+    "generate-events": "node ./src/app/components/Demo/generate-events.js",
     "start": "webpack-dashboard --port 9001 --minimal -- npm run dev",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open",
     "prod": "cross-env NODE_ENV=production webpack --progress --display-error-details",
@@ -23,6 +24,7 @@
     "d3": "^4.8.0",
     "gsap": "^1.19.1",
     "lorem-ipsum": "^1.0.3",
+    "nodemon": "^1.11.0",
     "prop-types": "^15.5.10",
     "react": "15.4.2",
     "react-dom": "15.4.2",
