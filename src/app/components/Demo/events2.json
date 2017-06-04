@@ -16,6 +16,22 @@
     }
   },
   {
+    "id": "custom-fix-for-missing-starting-point-in-12300000000",
+    "timestamp": "2017-05-14T07:14:38.857Z",
+    "type": "newStartingPointNode",
+    "networkSuperiority": 0.43478260869565216,
+    "compromisedAssets": {
+      "data": 0,
+      "device": 0,
+      "network": 0
+    },
+    "compromisedDataGB": 0,
+    "data": {},
+    "node": {
+      "id": "12300000000"
+    }
+  },
+  {
     "id": "591803de0dc73a47446b7542",
     "timestamp": "2017-05-14T07:14:38.888Z",
     "type": "newDiscoveredNode",

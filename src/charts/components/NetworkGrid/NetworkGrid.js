@@ -177,7 +177,7 @@ export default class NetworkGrid extends Component {
         undiscovered: hasAsset(data, 'state', 'undiscovered'),
       })).reduce((sum, data) => {
         Object.keys(data).forEach(key => {
-          if (!sum.hasOwnProperty(key)) {
+          if ( !sum.hasOwnProperty(key) ) {
             sum[key] = 0
           }
           sum[key] += data[key] ? 1 : 0
@@ -277,6 +277,19 @@ export default class NetworkGrid extends Component {
       .classed('is-network-discovered', hasStatus('network', 'discovered', 'compromised'))
       .classed('is-starting-point', hasStatus('isStartingPoint', true))
 
+    arrowsData.forEach(({ startNode: {node} }) => {
+      if ( hasStatus('state', 'undiscovered')({node}) && !hasStatus('isStartingPoint', true)({node})) {
+        console.warn(
+          '===============\n',
+          `Node "${node.name}" with id #${node.agentId} is "undiscovered" only `,
+          `but was used as source node. It is in cluster "${node.cluster}"\n`,
+          '==============='
+        )
+      }
+
+    })
+    hasStatus('state', 'undiscovered')
+
     this.d3Arrows = this.svg.select('g.arrows').bindData('g.arrow-line', arrowsData, {
       cursor: 'pointer',
       click: arrow => this.setSelectedElement('arrow', arrow),
@@ -313,10 +326,10 @@ export default class NetworkGrid extends Component {
       <WindowDependable className={className} refCb={this.refRootBlock}
                         onDimensionsChanged={() => this.forceUpdate()}>
         {this.state.selectedElement && <QuickInformation selectedElement={this.state.selectedElement}
-                          nodes={this.props.nodes}
-                          events={this.props.events}
-                          status={this.status}
-                          getClusterData={this.getClusterData}/>}
+                                                         nodes={this.props.nodes}
+                                                         events={this.props.events}
+                                                         status={this.status}
+                                                         getClusterData={this.getClusterData}/>}
 
         <NetworkTooltip item={selectedCluster} coordsFn={getCoordsFn} isDark={true}
                         offsets={{ h: -4, x: selectedCluster ? selectedCluster.width : 0 }}>
