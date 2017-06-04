@@ -7,7 +7,9 @@ const events = require(`./events${SOURCE_SET_NUMBER}.json`)
 const fs = require('fs')
 
 const PREFIX = `_${FILE_NUMBER}`
-const rand = (arr, offset = 0) => Object.assign({}, arr[Math.round(offset + Math.random() * (arr.length - 1 - offset))])
+
+const randItem = (arr, offset = 0) => arr[Math.round(offset + Math.random() * (arr.length - 1 - offset))]
+const rand = (arr, offset = 0) => Object.assign({}, randItem(arr, offset))
 
 nodes.forEach(node => {
   node.agentId += PREFIX
@@ -17,7 +19,7 @@ nodes.forEach(node => {
 events.forEach(event => {
   event.id += PREFIX
   event.node.id += PREFIX
-  if (event.data && event.data.sourceNode) {
+  if ( event.data && event.data.sourceNode ) {
     event.data.sourceNode.id += PREFIX
   }
 })
@@ -32,16 +34,20 @@ for (let i = 0; i < NUMBER_OF_NODES_TO_ADD; i++) {
   nodes.push(randomItem)
 }
 
+const startingPoints = events.filter(({ type }) => type === 'newStartingPointNode').map(({ node: {id} }) => id)
+
 for (let i = 0; i < NUMBER_OF_EVENTS_TO_ADD; i++) {
   const lastEvent = events[events.length - 1]
   const event = rand(events)
 
   events.push(Object.assign(event, {
     id: `${event.id}_${i}`,
+    type: 'newDiscoveredNode',
     node: { id: rand(nodes, NUMBER_OF_NODES_TO_ADD).agentId },
     timestamp: new Date(new Date(lastEvent.timestamp).getTime() + 1000).toString(),
     data: Object.assign(event.data, {
-      sourceNode: { id: rand(nodes, NUMBER_OF_NODES_TO_ADD).agentId },
+      method: 'Generated randomly',
+      sourceNode: { id: randItem(startingPoints) },
     }),
     networkSuperiority: Math.min((lastEvent.networkSuperiority + Math.random()), 100),
   }))

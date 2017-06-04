@@ -277,11 +277,15 @@ export default class NetworkGrid extends Component {
       .classed('is-network-discovered', hasStatus('network', 'discovered', 'compromised'))
       .classed('is-starting-point', hasStatus('isStartingPoint', true))
 
-    arrowsData.forEach(({ startNode: {node} }) => {
-      if ( hasStatus('state', 'undiscovered')({node}) && !hasStatus('isStartingPoint', true)({node})) {
+    arrowsData.forEach(({ startNode: { node } }) => {
+      if (
+        !(hasStatus('state', 'discovered')({ node }) ||
+        hasStatus('state', 'compromised')({ node }) ||
+        hasStatus('isStartingPoint', true)({ node }))
+      ) {
         console.warn(
           '===============\n',
-          `Node "${node.name}" with id #${node.agentId} is "undiscovered" only `,
+          `Node "${node.name}" with id #${node.agentId} is colored with white,`,
           `but was used as source node. It is in cluster "${node.cluster}"\n`,
           '==============='
         )
