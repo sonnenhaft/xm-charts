@@ -1,7 +1,7 @@
 import React, { PropTypes as P } from 'react'
 import { compose, onlyUpdateForKeys, setPropTypes, withHandlers, withState } from 'recompose'
 
-import overviewSvgIcon from 'assets/icons/overview.svg'
+import overviewSvgIcon from 'assets/icons/statistics.svg'
 import triangleSvgIcon from 'assets/icons/asset-downloaded.svg'
 import customArrowTop from 'assets/icons/custom-arrow-top.svg'
 import './RightBar.scss'
