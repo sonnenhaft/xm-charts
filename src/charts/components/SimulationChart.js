@@ -30,7 +30,7 @@ export default class SimulationChart extends Component {
     this.state = {events, currentTime}
   }
 
-  onCurrentTimeChanged = currentTime => this.setState({ currentTime })
+  onCurrentTimeChanged = (currentTime, cb) => this.setState({ currentTime }, cb)
 
   onSelectedElementChanged = ({type, element} = {}) => console.log({type, element})
 

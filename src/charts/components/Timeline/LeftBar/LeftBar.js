@@ -85,9 +85,10 @@ export default class LeftBar extends Component {
       this.onPaused()
     } else {
       if ( this.props.currentTime === this.getLast(this.props) ) {
-        this.props.onCurrentTimeChanged(this.props.events[0].date)
+        this.props.onCurrentTimeChanged(this.props.events[0].date, ()=>{
+          this.onPlayStarted()
+        })
       }
-      this.onPlayStarted()
     }
   }
 
