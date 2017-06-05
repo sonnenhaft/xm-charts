@@ -1,6 +1,6 @@
 {
   "name": "xm-charts",
-  "version": "1.0.147",
+  "version": "1.0.149",
   "scripts": {
     "generate-events": "node ./src/app/components/Demo/generate-events.js",
     "start": "webpack-dashboard --port 9001 --minimal -- npm run dev",
@@ -23,8 +23,6 @@
     "babel-polyfill": "^6.23.0",
     "d3": "^4.8.0",
     "gsap": "^1.19.1",
-    "lorem-ipsum": "^1.0.3",
-    "nodemon": "^1.11.0",
     "prop-types": "^15.5.10",
     "react": "15.4.2",
     "react-dom": "15.4.2",
@@ -35,6 +33,7 @@
     "throttle-debounce": "^1.0.1"
   },
   "devDependencies": {
+    "nodemon": "^1.11.0",
     "autoprefixer": "^6.7.5",
     "babel-core": "^6.23.1",
     "babel-eslint": "^7.1.1",
