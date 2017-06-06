@@ -88,7 +88,10 @@ export default class LeftBar extends Component {
         this.props.onCurrentTimeChanged(this.props.events[0].date, ()=>{
           this.onPlayStarted()
         })
+      } else {
+        this.onPlayStarted()
       }
+
     }
   }
 
