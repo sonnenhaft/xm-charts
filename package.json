@@ -1,18 +1,18 @@
 {
   "name": "xm-charts",
-  "version": "1.0.149",
+  "version": "1.0.150",
   "scripts": {
     "generate-events": "node ./src/app/components/Demo/generate-events.js",
     "start": "webpack-dashboard --port 9001 --minimal -- npm run dev",
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open",
-    "prod": "cross-env NODE_ENV=production webpack --progress --display-error-details",
+    "build": "cross-env NODE_ENV=production webpack --progress --display-error-details",
     "update-project": "rm -r ../frontend/src/charts && cp -R src/charts ../frontend/src/charts && cp src/assets/colors.scss ../frontend/src/assets/colors.scss",
     "lint": "eslint src",
     "lint:fix": "eslint --fix src",
     "test": "jest",
     "test:watch": "npm run test -- --watch",
     "test:coverage": "jest --coverage",
-    "build:bitballoon": "npm --no-git-tag-version version patch && npm run prod && node bitballoon",
+    "build:bitballoon": "npm --no-git-tag-version version patch && npm run build && node bitballoon",
     "bitballoon": "node bitballoon.js",
     "bump": "npm version patch --no-git-tag-version && git add package.json"
   },

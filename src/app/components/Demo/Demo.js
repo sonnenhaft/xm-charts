@@ -71,6 +71,7 @@ class Demo extends Component {
   state = {
     nodes: [],
     events: [],
+
     option: options[4].value,
   }
 
