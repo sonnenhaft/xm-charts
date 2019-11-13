@@ -134,7 +134,7 @@ const production = {
     new webpack.optimize.CommonsChunkPlugin({
       names: ['vendor', 'manifest'],
     }),
-    new webpack.optimize.UglifyJsPlugin({compress: {warnings: false,},}),
+    // new webpack.optimize.UglifyJsPlugin({compress: {warnings: false,},}),
   ],
 }
 
