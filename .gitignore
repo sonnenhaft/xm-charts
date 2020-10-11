@@ -1,11 +1,2 @@
-*.log
-npm-debug.log*
-node_modules/
-dist/
-coverage/
-.idea/
-.vscode/
-.DS_Store
-ignored
-npm-debug.log*
-src/assets/all-icons
+node_modules
+.idea
