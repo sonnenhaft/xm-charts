@@ -22,7 +22,7 @@
     "babel-plugin-react-css-modules": "^2.2.0",
     "babel-polyfill": "^6.23.0",
     "d3": "^4.8.0",
-    "gsap": "^1.19.1",
+    "gsap": "^3.6.0",
     "prop-types": "^15.5.10",
     "react": "15.4.2",
     "react-dom": "15.4.2",
