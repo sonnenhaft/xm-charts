@@ -66,7 +66,7 @@
     "html-webpack-plugin": "^2.28.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^19.0.2",
-    "lodash": "^4.17.4",
+    "lodash": "^4.17.21",
     "node-sass": "^4.5.0",
     "postcss-inline-comment": "^3.0.0",
     "postcss-scss": "^0.4.1",
