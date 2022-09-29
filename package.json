@@ -21,7 +21,7 @@
     "array-to-tree": "^2.2.0",
     "babel-plugin-react-css-modules": "^2.2.0",
     "babel-polyfill": "^6.23.0",
-    "d3": "^4.8.0",
+    "d3": "^7.6.1",
     "gsap": "^1.19.1",
     "prop-types": "^15.5.10",
     "react": "15.4.2",
